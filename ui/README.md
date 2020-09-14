@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ```sh
 node --version # v12.18.3
-npm --version 6.14.6 #
+npm --version # 6.14.6
 
 # Then initial setup:
 npm i -g create-react-app@3.4.1
