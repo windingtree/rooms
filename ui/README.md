@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 node --version # v12.18.3
 npm --version # 6.14.6
 
-# Then initial setup:
+# Then initial setup was performed (this is for REFERENCE ONLY. No need to run!):
 npm i -g create-react-app@3.4.1
 create-react-app rooms-ui --scripts-version=3.4.3
 ```
