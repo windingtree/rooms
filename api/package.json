@@ -1,0 +1,33 @@
+{
+  "name": "rooms-api",
+  "version": "0.0.1",
+  "description": "Rooms API",
+  "engines": {
+    "node": ">= 12.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "engineStrict": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "tsc --outDir ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/windingtree/rooms.git"
+  },
+  "keywords": [],
+  "author": "Winding Tree",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/windingtree/rooms/issues"
+  },
+  "homepage": "https://github.com/windingtree/rooms#readme",
+  "dependencies": {
+    "@types/node": "^12.12.56",
+    "@vercel/node": "^1.8.2",
+    "typescript": "^4.0.2"
+  },
+  "devDependencies": {}
+}
