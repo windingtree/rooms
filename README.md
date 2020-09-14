@@ -3,4 +3,4 @@
 - UI part lives in `./ui` folder.
 - API part lives in `./api` folder.
 
-More docs to come ;)
+See sub-folders for documentation.
