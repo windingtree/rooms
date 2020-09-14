@@ -1,0 +1,48 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "",
+    "version": "0.0.1",
+    "title": "Rooms API",
+    "termsOfService": "https://windingtree.com/terms",
+    "contact": {
+      "email": "hi@windingtree.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/windingtree/rooms/blob/master/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://staging.rooms.windingtree.net/api"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {}
+  }
+}

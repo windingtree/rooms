@@ -1,6 +1,14 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 export default (request: NowRequest, response: NowResponse) => {
-  const { name = 'World' } = request.query
-  response.status(200).send(`Hello ${name}!`)
+  response.status(200).send(
+    `
+      <p>
+        OpenAPI docs available at
+        <a href="https://staging.rooms.windingtree.net/api-doc">
+          https://staging.rooms.windingtree.net/api-doc
+        </a>
+      </p>
+    `
+  )
 }
