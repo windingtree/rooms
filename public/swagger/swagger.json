@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://staging.rooms.windingtree.net/api"
+      "url": "https://staging.rooms.windingtree.com/api"
     }
   ],
   "security": [

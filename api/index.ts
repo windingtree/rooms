@@ -5,8 +5,8 @@ export default (request: NowRequest, response: NowResponse) => {
     `
       <p>
         OpenAPI docs available at
-        <a href="https://staging.rooms.windingtree.net/api-doc">
-          https://staging.rooms.windingtree.net/api-doc
+        <a href="https://staging.rooms.windingtree.com/api/doc">
+          https://staging.rooms.windingtree.com/api/doc
         </a>
       </p>
     `
