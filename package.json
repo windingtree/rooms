@@ -15,7 +15,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postman": "node_modules/.bin/newman run ./api/postman_tests/rooms-stg.postman_collection.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,5 +32,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "newman": "^5.2.0"
   }
 }

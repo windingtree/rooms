@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "bd85634b-4edd-4778-ac72-d4f19ca3021e",
+		"name": "rooms-stg",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "837f36df-1c74-4b9e-8e8d-ccb00c889165",
+						"exec": [
+							"pm.test(\"ping status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"ping response\", function () {",
+							"    pm.response.to.have.body('OK');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://staging.rooms.windingtree.com/api/ping",
+					"protocol": "https",
+					"host": [
+						"staging",
+						"rooms",
+						"windingtree",
+						"com"
+					],
+					"path": [
+						"api",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
