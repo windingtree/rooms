@@ -32,6 +32,22 @@
           }
         }
       }
+    },
+    "/health": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -43,6 +59,18 @@
         "bearerFormat": "JWT"
       }
     },
-    "schemas": {}
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "db": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "db"
+        ]
+      }
+    }
   }
 }

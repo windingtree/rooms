@@ -45,6 +45,48 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cde6ebc3-9a6b-4ca4-a687-d0e86e1c5539",
+						"exec": [
+							"pm.test(\"health status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"health response\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.db).to.eql(\"up\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://staging.rooms.windingtree.com/api/health",
+					"protocol": "https",
+					"host": [
+						"staging",
+						"rooms",
+						"windingtree",
+						"com"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
