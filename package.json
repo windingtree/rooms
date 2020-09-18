@@ -16,9 +16,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postman": "newman run ./api/postman_tests/rooms-stg.postman_collection.json",
+    "postman-develop": "newman run ./api/postman_tests/rooms-stg.postman_collection.json",
+    "postman-master": "newman run ./api/postman_tests/rooms-prod.postman_collection.json",
     "generate_swagger_json": "yaml2json ./public/api/v1/swagger.yaml > ./public/api/v1/swagger.json",
-    "deploy_all": "npm run generate_swagger_json && npm run build"
+    "proper_api_host": "sed -i \"s/API_HOST_URL/$API_HOST_URL/g\" ./public/api/doc/index.html && sed -i \"s/API_HOST_URL/$API_HOST_URL/g\" ./public/api/v1/swagger.yaml",
+    "deploy_all": "npm run proper_api_host && npm run generate_swagger_json && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ develop, master ]
-  pull_request:
-    branches: [ develop, master ]
 
 jobs:
   build:
@@ -24,7 +22,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
     - run: npm install
-    - run: npm run build
-    - run: npm run test
-    - run: npm run postman
+    - run: npm run postman-${{ steps.extract_branch.outputs.branch }}

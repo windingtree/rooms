@@ -1,0 +1,93 @@
+{
+  "info": {
+    "_postman_id": "e94fe5c9-3cfe-48d7-aad4-5e7a620ef2bd",
+    "name": "rooms-stg",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ping",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "66af3a71-fb90-402a-aee3-fa6ace420bc1",
+            "exec": [
+              "pm.test(\"ping status\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"ping response\", function () {",
+              "    pm.response.to.have.body('OK');",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://rooms.windingtree.com/api/v1/ping",
+          "protocol": "https",
+          "host": [
+            "rooms",
+            "windingtree",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "ping"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "health",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "e5dcbfef-6646-4b99-a994-222541632ffc",
+            "exec": [
+              "pm.test(\"health status\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"health response\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.db).to.eql(\"up\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://rooms.windingtree.com/api/v1/health",
+          "protocol": "https",
+          "host": [
+            "rooms",
+            "windingtree",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
