@@ -10,7 +10,7 @@ info:
     name: MIT
     url: 'https://github.com/windingtree/rooms/blob/master/LICENSE'
 servers:
-  - url: 'https://staging.rooms.windingtree.com/api'
+  - url: 'https://staging.rooms.windingtree.com/api/v1'
 security:
   - bearerAuth: []
 paths:

@@ -17,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postman": "newman run ./api/postman_tests/rooms-stg.postman_collection.json",
-    "generate_swagger_json": "yaml2json ./public/swagger/swagger.yaml > ./public/swagger/swagger.json",
+    "generate_swagger_json": "yaml2json ./public/api/v1/swagger.yaml > ./public/api/v1/swagger.json",
     "deploy_all": "npm run generate_swagger_json && npm run build"
   },
   "eslintConfig": {

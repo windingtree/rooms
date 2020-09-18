@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Don't include auto-generated swagger.json file in Git commits.
-public/swagger/swagger.json
+public/api/v1/swagger.json

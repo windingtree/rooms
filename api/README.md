@@ -1,10 +1,8 @@
 # Rooms API
 
-To run in development mode:
+To generate JS from TS:
 
 ```sh
 npm install
-npm run dev
+npm run build
 ```
-
-Edit `.env` file to specify the port on which to run the server.
