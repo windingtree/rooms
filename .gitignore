@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Don't include auto-generated swagger.json file in Git commits.
 public/api/v1/swagger.json
+
+.vercel

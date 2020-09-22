@@ -17,9 +17,9 @@ export default (request: NowRequest, response: NowResponse) => {
 
   run(client)
     .then(() => {
-      response.status(200).send({ db: 'up' })
+      response.status(200).json({ db: 'up' })
     })
     .catch((err) => {
-      response.status(500).send({ db: 'down', err })
+      response.status(500).json({ db: 'down', err })
     })
 }
