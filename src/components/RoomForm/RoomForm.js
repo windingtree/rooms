@@ -4,6 +4,7 @@ class RoomForm extends React.Component {
   state = {
     roomNumber: this.props.roomNumber || '',
     roomType: this.props.roomType || '',
+    isEmpty: this.props.isEmpty,
   };
 
   handleRoomNumberChange = (e) => {
@@ -19,6 +20,7 @@ class RoomForm extends React.Component {
       id: this.props.id,
       roomNumber: this.state.roomNumber,
       roomType: this.state.roomType,
+      isEmpty: this.state.isEmpty,
     });
   };
 

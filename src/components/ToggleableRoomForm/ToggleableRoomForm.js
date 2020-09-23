@@ -15,8 +15,8 @@ class ToggleableRoomForm extends React.Component {
     this.setState({ isOpen: false });
   };
 
-  handleFormSubmit = (timer) => {
-    this.props.onFormSubmit(timer);
+  handleFormSubmit = (room) => {
+    this.props.onFormSubmit(room);
     this.setState({ isOpen: false });
   };
 

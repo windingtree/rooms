@@ -27,16 +27,16 @@ class Room extends React.Component {
 
   render() {
     const elapsedString = helpers.renderElapsedString(
-      this.props.elapsed, this.props.runningSince
+      this.props.isEmpty
     );
     return (
       <div className='ui centered card'>
         <div className='content'>
           <div className='header'>
-            {this.props.roomNumber}
+            Room number: {this.props.roomNumber}
           </div>
           <div className='meta'>
-            {this.props.roomType}
+            Type: {this.props.roomType}
           </div>
           <div className='center aligned description'>
             <h2>
@@ -59,7 +59,7 @@ class Room extends React.Component {
           </div>
         </div>
         <RoomActionButton
-          timerIsRunning={!!this.props.runningSince}
+          roomIsEmpty={this.props.isEmpty}
           onStartClick={this.handleStartClick}
           onStopClick={this.handleStopClick}
         />

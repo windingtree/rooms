@@ -8,6 +8,7 @@ import { IRoom } from '../../types/rooms'
 import { MONGODB_URL } from '../../tools/constants'
 import { methodNotImplemented } from '../../tools/generic_response'
 import { isRoomValid } from '../../validators/rooms'
+import { DB } from '../../tools/db'
 
 function getRoomId(request: NowRequest): string|null {
   const {
@@ -24,16 +25,17 @@ function getRoomId(request: NowRequest): string|null {
   return room_id
 }
 
-async function updateRoom(roomId: string, roomNumber: number, roomType: string): Promise<IRoom> {
-  const newRoom: IRoom = { roomId, roomNumber, roomType }
+async function updateRoom(roomId: string, roomNumber: number, roomType: string, isEmpty: number): Promise<IRoom> {
+  const newRoom: IRoom = { roomId, roomNumber, roomType, isEmpty }
 
-  const dbClient = new MongoClient(MONGODB_URL, { useUnifiedTopology: true })
+  const dbClient = await DB.getInstance().getDbClient()
+  if (dbClient === null) {
+    throw new Error('No connection to DB')
+  }
 
   let result
 
   try {
-    await dbClient.connect()
-
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
@@ -46,12 +48,12 @@ async function updateRoom(roomId: string, roomNumber: number, roomType: string):
 
     // create a document that sets the plot of the movie
     const updateDoc = {
-      $set: { roomNumber, roomType }
+      $set: { roomNumber, roomType, isEmpty }
     }
 
     result = await collection.updateOne(filter, updateDoc, options)
-  } finally {
-    await dbClient.close()
+  } catch (err) {
+    throw new Error(err)
   }
 
   if (result.matchedCount === 0) {
@@ -64,13 +66,14 @@ async function updateRoom(roomId: string, roomNumber: number, roomType: string):
 }
 
 async function deleteRoom(roomId: string): Promise<boolean> {
-  const dbClient = new MongoClient(MONGODB_URL, { useUnifiedTopology: true })
+  const dbClient = await DB.getInstance().getDbClient()
+  if (dbClient === null) {
+    throw new Error('No connection to DB')
+  }
 
   let result
 
   try {
-    await dbClient.connect()
-
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
@@ -78,8 +81,8 @@ async function deleteRoom(roomId: string): Promise<boolean> {
     const filter = { _id: new ObjectID(roomId) }
 
     result = await collection.deleteOne(filter)
-  } finally {
-    await dbClient.close()
+  } catch (err) {
+    throw new Error(err)
   }
 
   if (result && result.deletedCount) {
@@ -116,8 +119,9 @@ function methodPut(request: NowRequest, response: NowResponse) {
 
       const roomNumber: number = parseInt(request.body.roomNumber)
       const roomType: string = request.body.roomType
+      const isEmpty: number = request.body.isEmpty
 
-      updateRoom((roomId as string), roomNumber, roomType)
+      updateRoom((roomId as string), roomNumber, roomType, isEmpty)
         .then((room: IRoom) => {
           response.status(200).json(room)
         })

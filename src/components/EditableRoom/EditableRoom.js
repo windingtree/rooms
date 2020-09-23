@@ -16,8 +16,8 @@ class EditableRoom extends React.Component {
     this.closeForm();
   };
 
-  handleSubmit = (timer) => {
-    this.props.onFormSubmit(timer);
+  handleSubmit = (room) => {
+    this.props.onFormSubmit(room);
     this.closeForm();
   };
 
@@ -36,6 +36,7 @@ class EditableRoom extends React.Component {
           id={this.props.id}
           roomNumber={this.props.roomNumber}
           roomType={this.props.roomType}
+          isEmpty={this.props.isEmpty}
           onFormSubmit={this.handleSubmit}
           onFormClose={this.handleFormClose}
         />
@@ -47,7 +48,7 @@ class EditableRoom extends React.Component {
           roomNumber={this.props.roomNumber}
           roomType={this.props.roomType}
           elapsed={this.props.elapsed}
-          runningSince={this.props.runningSince}
+          isEmpty={this.props.isEmpty}
           onEditClick={this.handleEditClick}
           onTrashClick={this.props.onTrashClick}
           onStartClick={this.props.onStartClick}

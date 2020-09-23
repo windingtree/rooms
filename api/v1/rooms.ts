@@ -8,26 +8,37 @@ import { IRoom, IRoomCollection } from '../types/rooms'
 import { MONGODB_URL } from '../tools/constants'
 import { methodNotImplemented } from '../tools/generic_response';
 import { isRoomValid } from '../validators/rooms'
-import { getDbClient } from '../tools/db';
+import { DB } from '../tools/db'
 
 async function getRooms(email: string): Promise<IRoomCollection> {
   let roomCollection: IRoomCollection = []
 
-  const dbClient = await getDbClient()
+  const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw new Error('No connection to DB')
   }
 
   try {
+    /* -------------------------------------------------- */
+    console.log('getting rooms collection ...')
+    console.time('db_rooms_collection')
+
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
+
+    console.timeEnd('db_rooms_collection');
+    /* -------------------------------------------------- */
 
     const query = { email }
 
     const options = {
       sort: { roomNumber: 1 },
-      projection: { _id: 1, email: 1, roomNumber: 1, roomType: 1 }
+      projection: { _id: 1, email: 1, roomNumber: 1, roomType: 1, isEmpty: 1 }
     }
+
+    /* -------------------------------------------------- */
+    console.log('getting rooms data ...')
+    console.time('db_rooms_data')
 
     const cursor = collection.find(query, options);
 
@@ -35,9 +46,17 @@ async function getRooms(email: string): Promise<IRoomCollection> {
       return []
     }
 
-    await cursor.forEach((room) => {
-      roomCollection.push(room)
+    await cursor.forEach((item) => {
+      roomCollection.push({
+        roomId: item._id,
+        roomNumber: item.roomNumber,
+        roomType: item.roomType,
+        isEmpty: item.isEmpty
+      })
     });
+
+    console.timeEnd('db_rooms_data');
+    /* -------------------------------------------------- */
   } catch (err) {
     throw new Error(err)
   }
@@ -45,14 +64,10 @@ async function getRooms(email: string): Promise<IRoomCollection> {
   return roomCollection
 }
 
-async function createRoom(email: string, roomNumber: number, roomType: string): Promise<IRoom> {
-  let newRoom: IRoom = {
-    roomId: '',
-    roomNumber: 0,
-    roomType: ''
-  }
+async function createRoom(email: string, roomNumber: number, roomType: string, isEmpty: number): Promise<IRoom> {
+  let newRoom: IRoom
 
-  const dbClient = await getDbClient()
+  const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw new Error('No connection to DB')
   }
@@ -61,12 +76,15 @@ async function createRoom(email: string, roomNumber: number, roomType: string): 
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    const doc = { email, roomNumber, roomType };
+    const doc = { email, roomNumber, roomType, isEmpty };
     const result = await collection.insertOne(doc);
 
-    newRoom.roomId = result.insertedId
-    newRoom.roomNumber = roomNumber
-    newRoom.roomType = roomType
+    newRoom = {
+      roomId: result.insertedId,
+      roomNumber,
+      roomType,
+      isEmpty
+    }
   } catch (err) {
     throw new Error(err)
   }
@@ -121,8 +139,9 @@ function methodPost(request: NowRequest, response: NowResponse) {
 
       const roomNumber: number = parseInt(request.body.roomNumber)
       const roomType: string = request.body.roomType
+      const isEmpty: number = request.body.isEmpty
 
-      createRoom(email, roomNumber, roomType)
+      createRoom(email, roomNumber, roomType, isEmpty)
         .then((room: IRoom) => {
           response.status(200).json(room)
         })

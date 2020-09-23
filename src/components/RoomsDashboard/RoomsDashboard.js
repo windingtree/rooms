@@ -8,124 +8,133 @@ import ToggleableRoomForm from '../ToggleableRoomForm/ToggleableRoomForm';
 
 class RoomsDashboard extends React.Component {
   state = {
-    timers: [],
+    rooms: [],
   };
 
   componentDidMount() {
-    this.loadTimersFromServer();
-    this.loadTimersFromServerInterval = setInterval(this.loadTimersFromServer, 1000);
+    this.loadRoomsFromServer();
   }
 
   componentWillUnmount() {
-    clearInterval(this.loadTimersFromServerInterval);
+
   }
 
-  loadTimersFromServer = () => {
-    apiClient.getTimers((serverTimers) => (
-        this.setState({ timers: serverTimers })
+  loadRoomsFromServer = () => {
+    apiClient.getRooms((serverRooms) => (
+        this.setState({ rooms: serverRooms })
       )
     );
   };
 
-  handleCreateFormSubmit = (timer) => {
-    this.createTimer(timer);
+  handleCreateFormSubmit = (room) => {
+    this.createRoom(room);
   };
 
   handleEditFormSubmit = (attrs) => {
-    this.updateTimer(attrs);
+    this.updateRoom(attrs);
   };
 
-  handleTrashClick = (timerId) => {
-    this.deleteTimer(timerId);
+  handleTrashClick = (roomId) => {
+    this.deleteRoom(roomId);
   };
 
-  handleStartClick = (timerId) => {
-    this.startTimer(timerId);
+  handleStartClick = (roomId) => {
+    this.startRoom(roomId);
   };
 
-  handleStopClick = (timerId) => {
-    this.stopTimer(timerId);
+  handleStopClick = (roomId) => {
+    this.stopRoom(roomId);
   };
 
-  // Inside RoomsDashboard
-  // ...
-  createTimer = (timer) => {
-    const t = helpers.newTimer(timer);
+  createRoom = (room) => {
+    const t = helpers.newRoom(room);
     this.setState({
-      timers: this.state.timers.concat(t),
+      rooms: this.state.rooms.concat(t),
     });
 
-    apiClient.createTimer(t);
+    apiClient.createRoom(t).then((attrs) => {
+      this.setState({
+        rooms: this.state.rooms.map((room) => {
+          if (room.roomId === t.roomId) {
+            return Object.assign({}, room, {
+              roomId: attrs.roomId
+            });
+          } else {
+            return room;
+          }
+        }),
+      });
+    });
   };
 
-  updateTimer = (attrs) => {
+  updateRoom = (attrs) => {
     this.setState({
-      timers: this.state.timers.map((timer) => {
-        if (timer._id === attrs.id) {
-          return Object.assign({}, timer, {
+      rooms: this.state.rooms.map((room) => {
+        if (room.roomId === attrs.id) {
+          return Object.assign({}, room, {
             roomNumber: attrs.roomNumber,
             roomType: attrs.roomType,
+            isEmpty: attrs.isEmpty
           });
         } else {
-          return timer;
+          return room;
         }
       }),
     });
 
-    apiClient.updateTimer(attrs);
+    apiClient.updateRoom(attrs);
   };
 
-  deleteTimer = (timerId) => {
+  deleteRoom = (roomId) => {
     this.setState({
-      timers: this.state.timers.filter(t => t.id !== timerId),
+      rooms: this.state.rooms.filter(t => t.roomId !== roomId),
     });
 
-    apiClient.deleteTimer(
-      { id: timerId }
+    apiClient.deleteRoom(
+      { id: roomId }
     );
   };
 
-  startTimer = (timerId) => {
-    // ...
-    const now = Date.now();
+  startRoom = (roomId) => {
+    let updatedRoom;
 
     this.setState({
-      timers: this.state.timers.map((timer) => {
-        if (timer._id === timerId) {
-          return Object.assign({}, timer, {
-            runningSince: now,
+      rooms: this.state.rooms.map((room) => {
+        if (room.roomId === roomId) {
+          updatedRoom = Object.assign({}, room, {
+            isEmpty: 0,
           });
+
+          return updatedRoom;
         } else {
-          return timer;
+          return room;
         }
       }),
     });
 
-    apiClient.startTimer(
-      { id: timerId, start: now }
-    );
+    updatedRoom.id = roomId
+    apiClient.updateRoom(updatedRoom);
   };
 
-  stopTimer = (timerId) => {
-    const now = Date.now();
+  stopRoom = (roomId) => {
+    let updatedRoom;
 
     this.setState({
-      timers: this.state.timers.map((timer) => {
-        if (timer._id === timerId) {
-          const lastElapsed = now - timer.runningSince;
-          return Object.assign({}, timer, {
-            elapsed: timer.elapsed + lastElapsed,
-            runningSince: null,
+      rooms: this.state.rooms.map((room) => {
+        if (room.roomId === roomId) {
+          updatedRoom = Object.assign({}, room, {
+            isEmpty: 1,
           });
+
+          return updatedRoom;
         } else {
-          return timer;
+          return room;
         }
       }),
     });
 
-    apiClient.stopTimer(
-      { id: timerId, stop: now }
-    );
+    updatedRoom.id = roomId
+    apiClient.updateRoom(updatedRoom);
   };
 
   render() {
@@ -133,7 +142,7 @@ class RoomsDashboard extends React.Component {
       <div className='ui three column centered grid'>
         <div className='column'>
           <EditableRoomList
-            timers={this.state.timers}
+            rooms={this.state.rooms}
             onFormSubmit={this.handleEditFormSubmit}
             onTrashClick={this.handleTrashClick}
             onStartClick={this.handleStartClick}

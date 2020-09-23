@@ -18,6 +18,17 @@ function isRoomValid(request: NowRequest, response: NowResponse): boolean {
   }
 
   if (
+    (typeof request.body.isEmpty !== 'number') &&
+    (
+      (typeof request.body.isEmpty !== 'string') ||
+      (Number.isNaN(parseInt(request.body.isEmpty)))
+    )
+  ) {
+    response.status(500).json({ err: 'must provide a valid isEmpty state' })
+    return false
+  }
+
+  if (
     (typeof request.body.roomType !== 'string') ||
     (request.body.roomType.length === 0)
   ) {

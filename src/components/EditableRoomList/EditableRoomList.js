@@ -4,14 +4,14 @@ import EditableRoom from '../EditableRoom/EditableRoom';
 
 class EditableRoomList extends React.Component {
   render() {
-    const timers = this.props.timers.map((timer) => (
+    const rooms = this.props.rooms.map((room) => (
       <EditableRoom
-        key={timer._id}
-        id={timer._id}
-        roomNumber={timer.roomNumber}
-        roomType={timer.roomType}
-        elapsed={timer.elapsed}
-        runningSince={timer.runningSince}
+        key={room.roomId}
+        id={room.roomId}
+        roomNumber={room.roomNumber}
+        roomType={room.roomType}
+        elapsed={room.elapsed}
+        isEmpty={room.isEmpty}
         onFormSubmit={this.props.onFormSubmit}
         onTrashClick={this.props.onTrashClick}
         onStartClick={this.props.onStartClick}
@@ -19,8 +19,8 @@ class EditableRoomList extends React.Component {
       />
     ));
     return (
-      <div id='timers'>
-        {timers}
+      <div id='rooms'>
+        {rooms}
       </div>
     );
   }

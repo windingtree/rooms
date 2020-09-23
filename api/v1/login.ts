@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
 import { MONGODB_URL } from '../tools/constants'
-import { getDbClient } from '../tools/db'
+import { DB } from '../tools/db'
 
 async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<string> {
   let oneTimePassword: string = ''
@@ -51,7 +51,7 @@ export default async (request: NowRequest, response: NowResponse) => {
   }
   const ownerEmail: string = (ownerEmailProp as string)
 
-  const dbClient = await getDbClient()
+  const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     response.status(500).json({ err: 'No connection to DB' })
     return

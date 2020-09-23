@@ -1,13 +1,13 @@
 import { MongoClient } from 'mongodb'
 
-import { getDbClient } from './db'
+import { DB } from './db'
 import { MONGODB_URL } from './constants'
 
 async function authorizeUser(email: string, oneTimePassword: string): Promise<boolean> {
   let userIsAuthorized: boolean = false
 
   try {
-    const dbClient = await getDbClient()
+    const dbClient = await DB.getInstance().getDbClient()
     if (dbClient === null) {
       throw new Error('No connection to DB')
     }
