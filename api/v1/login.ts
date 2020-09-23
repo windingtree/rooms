@@ -2,14 +2,13 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
-const mongodb_url = process.env.MONGODB_URL || 'mongodb://localhost:27017/test'
+import { MONGODB_URL } from '../tools/constants'
+import { getDbClient } from '../tools/db'
 
 async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<string> {
   let oneTimePassword: string = ''
 
   try {
-    await dbClient.connect()
-
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('owners')
 
@@ -24,9 +23,6 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
 
     const ownerRecord = await collection.findOne(query, options)
 
-    // since this method returns the matched document, not a cursor, print it directly
-    console.log(ownerRecord)
-
     if (!ownerRecord) {
       oneTimePassword = uuidv4()
 
@@ -35,14 +31,14 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
     } else {
       oneTimePassword = ownerRecord.oneTimePassword
     }
-  } finally {
-    await dbClient.close()
+  } catch (err) {
+    throw new Error(err)
   }
 
   return oneTimePassword
 }
 
-export default (request: NowRequest, response: NowResponse) => {
+export default async (request: NowRequest, response: NowResponse) => {
   if (!request.body) {
     response.status(500).json({ err: 'request must contain a valid body object' })
     return
@@ -55,9 +51,11 @@ export default (request: NowRequest, response: NowResponse) => {
   }
   const ownerEmail: string = (ownerEmailProp as string)
 
-  const dbClient = new MongoClient(mongodb_url, {
-    useUnifiedTopology: true
-  })
+  const dbClient = await getDbClient()
+  if (dbClient === null) {
+    response.status(500).json({ err: 'No connection to DB' })
+    return
+  }
 
   dbLogic(dbClient, ownerEmail)
     .then((oneTimePassword: string) => {

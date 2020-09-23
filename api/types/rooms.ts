@@ -1,4 +1,5 @@
 interface IRoom {
+  roomId: string;
   roomNumber: number;
   roomType: string;
 }
@@ -6,5 +7,6 @@ interface IRoom {
 type IRoomCollection = Array<IRoom>
 
 export {
+  IRoom,
   IRoomCollection
 }

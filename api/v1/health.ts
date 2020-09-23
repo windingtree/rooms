@@ -1,21 +1,25 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import { MongoClient } from 'mongodb'
 
-const mongodb_url = process.env.MONGODB_URL || 'mongodb://localhost:27017/test'
+import { MONGODB_URL } from '../tools/constants'
+import { getDbClient } from '../tools/db'
 
-async function run(client: MongoClient) {
+async function run(dbClient: MongoClient) {
   try {
-    await client.connect()
-    await client.db().admin().ping()
-  } finally {
-    await client.close()
+    await dbClient.db().admin().ping()
+  } catch (err) {
+    throw new Error(err)
   }
 }
 
-export default (request: NowRequest, response: NowResponse) => {
-  const client = new MongoClient(mongodb_url)
+export default async (request: NowRequest, response: NowResponse) => {
+  const dbClient = await getDbClient()
+  if (dbClient === null) {
+    response.status(500).json({ db: 'down', err: 'No connection to DB' })
+    return
+  }
 
-  run(client)
+  run(dbClient)
     .then(() => {
       response.status(200).json({ db: 'up' })
     })
