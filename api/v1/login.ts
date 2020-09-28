@@ -26,8 +26,8 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
     if (!ownerRecord) {
       oneTimePassword = uuidv4()
 
-      const newOwner = { email: ownerEmail, oneTimePassword };
-      const result = await collection.insertOne(newOwner);
+      const newOwner = { email: ownerEmail, oneTimePassword }
+      const result = await collection.insertOne(newOwner)
     } else {
       oneTimePassword = ownerRecord.oneTimePassword
     }

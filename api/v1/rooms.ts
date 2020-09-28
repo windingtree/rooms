@@ -6,7 +6,7 @@ import { authorizeUser } from '../tools/authorize_user'
 import { IDecodedAuthToken } from '../types/auth'
 import { IRoom, IRoomCollection } from '../types/rooms'
 import { MONGODB_URL } from '../tools/constants'
-import { methodNotImplemented } from '../tools/generic_response';
+import { methodNotImplemented } from '../tools/generic_response'
 import { isRoomValid } from '../validators/rooms'
 import { DB } from '../tools/db'
 
@@ -26,7 +26,7 @@ async function getRooms(email: string): Promise<IRoomCollection> {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    console.timeEnd('db_rooms_collection');
+    console.timeEnd('db_rooms_collection')
     /* -------------------------------------------------- */
 
     const query = { email }
@@ -40,7 +40,7 @@ async function getRooms(email: string): Promise<IRoomCollection> {
     console.log('getting rooms data ...')
     console.time('db_rooms_data')
 
-    const cursor = collection.find(query, options);
+    const cursor = collection.find(query, options)
 
     if ((await cursor.count()) === 0) {
       return []
@@ -55,7 +55,7 @@ async function getRooms(email: string): Promise<IRoomCollection> {
       })
     });
 
-    console.timeEnd('db_rooms_data');
+    console.timeEnd('db_rooms_data')
     /* -------------------------------------------------- */
   } catch (err) {
     throw new Error(err)
@@ -76,8 +76,8 @@ async function createRoom(email: string, roomNumber: number, roomType: string, i
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    const doc = { email, roomNumber, roomType, isEmpty };
-    const result = await collection.insertOne(doc);
+    const doc = { email, roomNumber, roomType, isEmpty }
+    const result = await collection.insertOne(doc)
 
     newRoom = {
       roomId: result.insertedId,
@@ -158,12 +158,12 @@ export default (request: NowRequest, response: NowResponse) => {
   switch (request.method) {
     case 'GET':
       methodGet(request, response)
-      break;
+      break
     case 'POST':
       methodPost(request, response)
-      break;
+      break
     default:
       methodNotImplemented(request, response)
-      break;
+      break
   }
 }

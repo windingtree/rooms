@@ -49,36 +49,15 @@ const apiClient = (function () {
     }).then(checkStatus);
   }
 
-  function startRoom(data) {
-    // return fetch('/api/timers/start', {
-    //   method: 'post',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then(checkStatus);
-  }
-
-  function stopRoom(data) {
-    // return fetch('/api/timers/stop', {
-    //   method: 'post',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then(checkStatus);
-  }
-
   function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
       return response;
     } else {
       const error = new Error(`HTTP Error ${response.statusText}`);
+
       error.status = response.statusText;
       error.response = response;
-      console.log(error);
+
       throw error;
     }
   }
@@ -92,8 +71,6 @@ const apiClient = (function () {
     createRoom,
     updateRoom,
     deleteRoom,
-    startRoom,
-    stopRoom,
   };
 }());
 

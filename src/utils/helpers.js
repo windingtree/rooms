@@ -21,7 +21,7 @@ const helpers = (function () {
     });
   }
 
-  function renderElapsedString(isEmpty) {
+  function renderStatusString(isEmpty) {
     if (isEmpty === 1) {
       return 'Empty'
     }
@@ -31,7 +31,7 @@ const helpers = (function () {
   return {
     newRoom,
     findById,
-    renderElapsedString,
+    renderStatusString,
   };
 }());
 

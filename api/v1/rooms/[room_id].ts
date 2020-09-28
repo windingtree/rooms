@@ -176,12 +176,12 @@ export default (request: NowRequest, response: NowResponse) => {
   switch (request.method) {
     case 'PUT':
       methodPut(request, response)
-      break;
+      break
     case 'DELETE':
       methodDelete(request, response)
-      break;
+      break
     default:
       methodNotImplemented(request, response)
-      break;
+      break
   }
 }
