@@ -1,13 +1,12 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
-import HomeIcon from '@material-ui/icons/Home';
-
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import SearchIcon from '@material-ui/icons/Search'
+import HomeIcon from '@material-ui/icons/Home'
+import { Link } from 'react-router-dom'
 
 const useStyles = () => {
   return {
@@ -24,17 +23,17 @@ const useStyles = () => {
       color: '#FFF',
       '&:hover': {
         color: '#FFF',
-      }
-    }
-  };
-};
+      },
+    },
+  }
+}
 
 class NavTop extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
-      <div className={classes.grow}>
+      <div>
         <AppBar position="static">
           <Toolbar>
             <Typography className={classes.title} variant="h6" noWrap>
@@ -54,8 +53,8 @@ class NavTop extends React.Component {
           </Toolbar>
         </AppBar>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(useStyles)(NavTop);
+export default withStyles(useStyles)(NavTop)

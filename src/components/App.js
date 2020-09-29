@@ -1,10 +1,21 @@
 import React from 'react'
 import { Router, Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
+
+const useStyles = () => {
+  return {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+    },
+  }
+}
 
 class App extends React.Component {
   isLoggedIn = true
@@ -14,9 +25,11 @@ class App extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+
     return (
       <Router history={history}>
-        <main>
+        <main className={classes.container}>
           <Switch>
             <Route exact path="/">
               <OnBoarding onLogin={() => this.handleOnLogin()} />
@@ -36,4 +49,4 @@ class App extends React.Component {
   }
 }
 
-export default withRouter(App)
+export default withRouter(withStyles(useStyles)(App))

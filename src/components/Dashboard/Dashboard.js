@@ -1,5 +1,6 @@
 import React from 'react'
 import { Router, Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 import NavTop from './NavTop/NavTop'
 import NavBottom from './NavBottom/NavBottom'
@@ -9,6 +10,20 @@ import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
 import Rates from './Rates/Rates'
 import { history } from '../../utils/history'
+
+const useStyles = () => {
+  return {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+    },
+    main_content: {
+      flex: '1',
+      overflow: 'auto',
+    }
+  }
+}
 
 class Dashboard extends React.Component {
   isLoggedIn = true
@@ -71,31 +86,35 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+
     return (
       <Router history={history}>
-        <main>
+        <main className={classes.container}>
           <NavTop />
-          <Switch>
-            <Route exact path="/dashboard">
-              <Redirect to="/dashboard/room-types" />
-            </Route>
-            <Route exact path="/dashboard/calendar">
-              { this.isLoggedIn ? <Calendar /> : <Redirect to="/" /> }
-            </Route>
-            <Route exact path="/dashboard/bookings">
-              { this.isLoggedIn ? <Bookings /> : <Redirect to="/" /> }
-            </Route>
-            <Route exact path="/dashboard/today">
-              { this.isLoggedIn ? <Today /> : <Redirect to="/" /> }
-            </Route>
-            <Route exact path="/dashboard/room-types">
-              { this.isLoggedIn ? <RoomTypes /> : <Redirect to="/" /> }
-            </Route>
-            <Route exact path="/dashboard/rates">
-              { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }
-            </Route>
-            <Route render={() => <h1>404: page not found</h1>} />
-          </Switch>
+          <div className={classes.main_content}>
+            <Switch>
+              <Route exact path="/dashboard">
+                <Redirect to="/dashboard/room-types" />
+              </Route>
+              <Route exact path="/dashboard/calendar">
+                { this.isLoggedIn ? <Calendar /> : <Redirect to="/" /> }
+              </Route>
+              <Route exact path="/dashboard/bookings">
+                { this.isLoggedIn ? <Bookings /> : <Redirect to="/" /> }
+              </Route>
+              <Route exact path="/dashboard/today">
+                { this.isLoggedIn ? <Today /> : <Redirect to="/" /> }
+              </Route>
+              <Route exact path="/dashboard/room-types">
+                { this.isLoggedIn ? <RoomTypes /> : <Redirect to="/" /> }
+              </Route>
+              <Route exact path="/dashboard/rates">
+                { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }
+              </Route>
+              <Route render={() => <h1>404: page not found</h1>} />
+            </Switch>
+          </div>
           <NavBottom
             currentDashboard={this.state.currentDashboard}
             onNav={(whereTo) => this.handleOnNav(whereTo)}
@@ -106,4 +125,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default withRouter(Dashboard)
+export default withRouter(withStyles(useStyles)(Dashboard))
