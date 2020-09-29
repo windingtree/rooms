@@ -9,14 +9,18 @@ import HotelIcon from '@material-ui/icons/Hotel'
 import SyncAltIcon from '@material-ui/icons/SyncAlt'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 
-const useStyles = () => {
+const useStyles = (theme) => {
   return {
-    navContainer: {
-      backgroundColor: '#FFF',
+    root: {
+      width: '10vw',
+      color: theme.palette.secondary.contrastText,
+      '&$selected': {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.contrastText,
+      },
     },
-    nav: {
-      width: '50%',
-      minWidth: '24em',
+    selected: {
+      // This is left empty. Override default "selected" styles.
     },
   }
 }
@@ -35,6 +39,14 @@ class NavBottom extends React.Component {
     this.props.onNav(newValue)
   }
 
+  iconColor(id) {
+    if (id === this.state.currentDashboard) {
+      return 'primary'
+    } else {
+      return 'action'
+    }
+  }
+
   render() {
     const { classes } = this.props
 
@@ -44,19 +56,37 @@ class NavBottom extends React.Component {
         direction="row"
         justify="center"
         alignItems="center"
-        className={classes.navContainer}
       >
         <BottomNavigation
           value={this.state.currentDashboard}
           onChange={(event, newValue) => this.navChange(newValue)}
           showLabels
-          className={classes.nav}
         >
-          <BottomNavigationAction label="Calendar" icon={<CalendarTodayIcon />} />
-          <BottomNavigationAction label="Bookings" icon={<SyncAltIcon />} />
-          <BottomNavigationAction label="Today" icon={<RoomServiceIcon />} />
-          <BottomNavigationAction label="Room Types" icon={<HotelIcon />} />
-          <BottomNavigationAction label="Rates" icon={<TrendingUpIcon />} />
+          <BottomNavigationAction
+            classes={classes}
+            label="Calendar"
+            icon={<CalendarTodayIcon color={this.iconColor(0)} />}
+          />
+          <BottomNavigationAction
+            classes={classes}
+            label="Bookings"
+            icon={<SyncAltIcon color={this.iconColor(1)} />}
+          />
+          <BottomNavigationAction
+            classes={classes}
+            label="Today"
+            icon={<RoomServiceIcon color={this.iconColor(2)} />}
+          />
+          <BottomNavigationAction
+            classes={classes}
+            label="Room Types"
+            icon={<HotelIcon color={this.iconColor(3)} />}
+          />
+          <BottomNavigationAction
+            classes={classes}
+            label="Rates"
+            icon={<TrendingUpIcon color={this.iconColor(4)} />}
+          />
         </BottomNavigation>
       </Grid>
     )

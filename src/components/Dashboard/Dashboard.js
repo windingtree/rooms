@@ -21,7 +21,11 @@ const useStyles = () => {
     main_content: {
       flex: '1',
       overflow: 'auto',
-    }
+    },
+    nav_bottom: {
+      backgroundColor: '#FFF',
+      flexGrow: 0,
+    },
   }
 }
 
@@ -33,24 +37,28 @@ class Dashboard extends React.Component {
 
     super(props)
 
-    switch (props.match.params.dashboardSectionId) {
-      case 'calendar':
-        currentDashboard = 0
-        break
-      case 'bookings':
-        currentDashboard = 1
-        break
-      case 'today':
-        currentDashboard = 2
-        break
-      case 'room-types':
-        currentDashboard = 3
-        break
-      case 'rates':
-        currentDashboard = 4
-        break
-      default:
-        currentDashboard = 5
+    if (!props.match.params.dashboardSectionId) {
+      currentDashboard = 2
+    } else {
+      switch (props.match.params.dashboardSectionId) {
+        case 'calendar':
+          currentDashboard = 0
+          break
+        case 'bookings':
+          currentDashboard = 1
+          break
+        case 'today':
+          currentDashboard = 2
+          break
+        case 'room-types':
+          currentDashboard = 3
+          break
+        case 'rates':
+          currentDashboard = 4
+          break
+        default:
+          currentDashboard = 5
+      }
     }
 
     this.state = {
@@ -95,7 +103,7 @@ class Dashboard extends React.Component {
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">
-                <Redirect to="/dashboard/room-types" />
+                <Redirect to="/dashboard/today" />
               </Route>
               <Route exact path="/dashboard/calendar">
                 { this.isLoggedIn ? <Calendar /> : <Redirect to="/" /> }
@@ -115,10 +123,12 @@ class Dashboard extends React.Component {
               <Route render={() => <h1>404: page not found</h1>} />
             </Switch>
           </div>
+          <div className={classes.nav_bottom}>
           <NavBottom
             currentDashboard={this.state.currentDashboard}
             onNav={(whereTo) => this.handleOnNav(whereTo)}
           />
+          </div>
         </main>
       </Router>
     )

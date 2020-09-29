@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
 import { Link } from 'react-router-dom'
 
-const useStyles = () => {
+const useStyles = (theme) => {
   return {
     grow: {
       flexGrow: 1,
@@ -20,9 +20,9 @@ const useStyles = () => {
       display: 'flex',
     },
     link: {
-      color: '#FFF',
+      color: theme.palette.primary.contrastText,
       '&:hover': {
-        color: '#FFF',
+        color: theme.palette.primary.contrastText,
       },
     },
   }

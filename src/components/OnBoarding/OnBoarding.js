@@ -37,7 +37,7 @@ class OnBoarding extends React.Component {
             OK
           </Button>
         </header>
-        <Button color="primary" onClick={() => {this.onLogin()}}>
+        <Button variant="contained" color="secondary" onClick={() => {this.onLogin()}}>
           Login
         </Button>
       </div>
