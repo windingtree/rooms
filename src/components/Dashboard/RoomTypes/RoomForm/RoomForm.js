@@ -46,39 +46,37 @@ class RoomForm extends React.Component {
     return (
       <Card className={classes.room_card}>
         <CardContent>
-          <div className='ui form'>
-            <div className='field'>
-              <label>Room Number</label>
-              <input
-                type='text'
-                value={this.state.roomNumber}
-                onChange={this.handleRoomNumberChange}
-              />
-            </div>
-            <div className='field'>
-              <label>Room Type</label>
-              <input
-                type='text'
-                value={this.state.roomType}
-                onChange={this.handleRoomTypeChange}
-              />
-            </div>
-            </div>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant="contained" color="primary"
-              onClick={this.handleSubmit}
-            >
-              {submitText}
-            </Button>
-            <Button
-              variant="contained" color="primary"
-              onClick={this.props.onFormClose}
-            >
-              Cancel
-            </Button>
-          </CardActions>
+          <div>
+            <label>Room Type</label>
+            <input
+              type='text'
+              value={this.state.roomType}
+              onChange={this.handleRoomTypeChange}
+            />
+          </div>
+          <div>
+            <label>Room Quantity</label>
+            <input
+              type='text'
+              value={this.state.roomNumber}
+              onChange={this.handleRoomNumberChange}
+            />
+          </div>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="contained" color="primary"
+            onClick={this.handleSubmit}
+          >
+            {submitText}
+          </Button>
+          <Button
+            variant="contained" color="primary"
+            onClick={this.props.onFormClose}
+          >
+            Cancel
+          </Button>
+        </CardActions>
       </Card>
     );
   }

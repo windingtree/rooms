@@ -1,33 +1,33 @@
-import React from 'react';
+import React from 'react'
 
-import RoomForm from '../RoomForm/RoomForm';
-import Room from '../Room/Room';
+import RoomForm from '../RoomForm/RoomForm'
+import Room from '../Room/Room'
 
 class EditableRoom extends React.Component {
   state = {
     editFormOpen: false,
-  };
+  }
 
   handleEditClick = () => {
-    this.openForm();
-  };
+    this.openForm()
+  }
 
   handleFormClose = () => {
-    this.closeForm();
-  };
+    this.closeForm()
+  }
 
   handleSubmit = (room) => {
-    this.props.onFormSubmit(room);
-    this.closeForm();
-  };
+    this.props.onFormSubmit(room)
+    this.closeForm()
+  }
 
   closeForm = () => {
-    this.setState({ editFormOpen: false });
-  };
+    this.setState({ editFormOpen: false })
+  }
 
   openForm = () => {
-    this.setState({ editFormOpen: true });
-  };
+    this.setState({ editFormOpen: true })
+  }
 
   render() {
     if (this.state.editFormOpen) {
@@ -40,7 +40,7 @@ class EditableRoom extends React.Component {
           onFormSubmit={this.handleSubmit}
           onFormClose={this.handleFormClose}
         />
-      );
+      )
     } else {
       return (
         <Room
@@ -53,8 +53,10 @@ class EditableRoom extends React.Component {
           onTrashClick={this.props.onTrashClick}
           onStartClick={this.props.onStartClick}
           onStopClick={this.props.onStopClick}
+          onRoomTypeChange={this.props.onRoomTypeChange}
+          onRoomNumberChange={this.props.onRoomNumberChange}
         />
-      );
+      )
     }
   }
 }

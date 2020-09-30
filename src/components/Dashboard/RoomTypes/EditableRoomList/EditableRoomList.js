@@ -1,7 +1,7 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import React from 'react'
+import Grid from '@material-ui/core/Grid'
 
-import EditableRoom from '../EditableRoom/EditableRoom';
+import EditableRoom from '../EditableRoom/EditableRoom'
 
 class EditableRoomList extends React.Component {
   render() {
@@ -17,8 +17,10 @@ class EditableRoomList extends React.Component {
         onTrashClick={this.props.onTrashClick}
         onStartClick={this.props.onStartClick}
         onStopClick={this.props.onStopClick}
+        onRoomTypeChange={this.props.onRoomTypeChange}
+        onRoomNumberChange={this.props.onRoomNumberChange}
       />
-    ));
+    ))
     return (
       <Grid
         container
@@ -30,7 +32,7 @@ class EditableRoomList extends React.Component {
           {rooms}
         </div>
       </Grid>
-    );
+    )
   }
 }
 
