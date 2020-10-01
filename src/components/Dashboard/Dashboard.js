@@ -99,7 +99,7 @@ class Dashboard extends React.Component {
     return (
       <Router history={history}>
         <main className={classes.container}>
-          <NavTop />
+          <NavTop handleLogout={this.props.handleLogout} />
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">

@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { Link } from 'react-router-dom'
 
 const useStyles = (theme) => {
@@ -49,6 +50,9 @@ class NavTop extends React.Component {
                   <HomeIcon />
                 </IconButton>
               </Link>
+              <IconButton color="inherit" onClick={this.props.handleLogout}>
+                <ExitToAppIcon />
+              </IconButton>
             </div>
           </Toolbar>
         </AppBar>

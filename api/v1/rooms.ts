@@ -53,7 +53,7 @@ async function getRooms(email: string): Promise<IRoomCollection> {
         roomType: item.roomType,
         isEmpty: item.isEmpty
       })
-    });
+    })
 
     console.timeEnd('db_rooms_data')
     /* -------------------------------------------------- */

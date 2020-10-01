@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
@@ -22,8 +23,8 @@ const useStyles = () => {
 }
 
 class OnBoarding extends React.Component {
-  onLogin() {
-    this.props.onLogin()
+  loginClickHandler = () => {
+    this.props.history.push('/login')
   }
 
   render() {
@@ -37,7 +38,7 @@ class OnBoarding extends React.Component {
             OK
           </Button>
         </header>
-        <Button variant="contained" color="secondary" onClick={() => {this.onLogin()}}>
+        <Button variant="contained" color="secondary" onClick={this.loginClickHandler}>
           Login
         </Button>
       </div>
@@ -45,4 +46,4 @@ class OnBoarding extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(OnBoarding)
+export default withRouter(withStyles(useStyles)(OnBoarding))
