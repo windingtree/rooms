@@ -49,23 +49,30 @@ class Login extends React.Component {
     this._isDestroyed = true
   }
 
-  verifyEmailAddress = (email) => {
-    const isEmailValid = EmailValidator.validate(email)
-    this.setState({ isEmailValid })
-  }
-
   loginClickHandler = () => {
+    if (this.state.isEmailValid === false) {
+      return
+    }
+
     this.tryToLogin()
   }
 
-  handleEditUpdate = (e) => {
-    if (e && e.target && e.target.value) {
-      this.setState({ email: e.target.value })
-      this.verifyEmailAddress(e.target.value)
+  handleEmailEditUpdate = (e) => {
+    if (!e || !e.target) {
+      return
     }
+
+    const email = e.target.value
+
+    if (typeof email !== 'string' || email.length === 0) {
+      return
+    }
+
+    this.setState({ email })
+    this.setState({ isEmailValid: EmailValidator.validate(email) })
   }
 
-  handleEditKeyUp = (e) => {
+  handleEmailEditKeyUp = (e) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
       if (this.state.isEmailValid === false) {
         return
@@ -81,7 +88,9 @@ class Login extends React.Component {
     apiClient
       .login({ email: this.state.email })
       .then((response) => {
-        if (this._isDestroyed) return
+        if (this._isDestroyed) {
+          return
+        }
 
         this.setState({ tryingToLogin: false })
         this.props.onLogin(response.email, response.oneTimePassword)
@@ -98,18 +107,21 @@ class Login extends React.Component {
       <div className={classes.container}>
         <header className={classes.loginForm}>
           <div className={classes.loginTitle}>Log in to Rooms</div>
+
           <TextField
             className={classes.emailInput}
             color="secondary"
             variant="outlined"
             defaultValue={this.state.email}
             label="e-mail"
-            onChange={this.handleEditUpdate}
-            onKeyUp={this.handleEditKeyUp}
+            onChange={this.handleEmailEditUpdate}
+            onKeyUp={this.handleEmailEditKeyUp}
             disabled={this.state.tryingToLogin}
           />
 
-          {(this.state.isEmailValid === true) ?
+          {
+            (this.state.isEmailValid === true) ?
+
             <div className={classes.loginButton}>
               <Button
                 variant="contained"
@@ -120,6 +132,7 @@ class Login extends React.Component {
                 Connect
               </Button>
             </div> :
+
             <div className={classes.loginButton} />
           }
         </header>

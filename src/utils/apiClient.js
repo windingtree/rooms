@@ -1,72 +1,65 @@
+function makeHeaders() {
+  const headers = {}
+
+  headers['Content-Type'] = 'application/json'
+  headers['Accept'] = 'application/json'
+
+  return headers
+}
+
+function makeAuthHeaders() {
+  const headers = makeHeaders()
+  const jwtToken = window.localStorage.getItem('jwt_token')
+
+  headers['Authorization'] = `Bearer ${jwtToken}`
+
+  return headers
+}
+
 const apiClient = (function () {
   function login(data) {
     return fetch('/api/v1/login', {
       method: 'post',
       body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      headers: makeHeaders(),
     }).then(checkStatus)
       .then(parseJSON)
   }
 
-  function getRooms(success) {
-    const jwtToken = window.localStorage.getItem('jwt_token')
-
+  function getRoomTypes() {
     return fetch('/api/v1/rooms', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${jwtToken}`,
-      },
+      method: 'get',
+      headers: makeAuthHeaders(),
     }).then(checkStatus)
       .then(parseJSON)
-      .then(success)
   }
 
-  function createRoom(data) {
-    const jwtToken = window.localStorage.getItem('jwt_token')
-
+  function createRoomType(data) {
     return fetch('/api/v1/rooms', {
       method: 'post',
       body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${jwtToken}`,
-      },
+      headers: makeAuthHeaders(),
     })
       .then(checkStatus)
       .then(parseJSON)
   }
 
-  function updateRoom(data) {
-    const jwtToken = window.localStorage.getItem('jwt_token')
-
-    return fetch('/api/v1/rooms/' + data.id, {
+  function updateRoomType(data) {
+    return fetch('/api/v1/rooms/' + data.roomId, {
       method: 'put',
       body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${jwtToken}`,
-      },
+      headers: makeAuthHeaders(),
     }).then(checkStatus)
+      .then(parseJSON)
   }
 
-  function deleteRoom(data) {
-    const jwtToken = window.localStorage.getItem('jwt_token')
-
-    return fetch('/api/v1/rooms/' + data.id, {
+  function deleteRoomType(data) {
+    return fetch('/api/v1/rooms/' + data.roomId, {
       method: 'delete',
       body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${jwtToken}`,
-      },
+      headers: makeAuthHeaders(),
     }).then(checkStatus)
+      .then(parseJSON)
   }
 
   function checkStatus(response) {
@@ -88,10 +81,10 @@ const apiClient = (function () {
 
   return {
     login,
-    getRooms,
-    createRoom,
-    updateRoom,
-    deleteRoom,
+    getRoomTypes,
+    createRoomType,
+    updateRoomType,
+    deleteRoomType,
   }
 }())
 

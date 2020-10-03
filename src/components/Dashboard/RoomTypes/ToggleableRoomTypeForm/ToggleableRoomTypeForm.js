@@ -3,9 +3,9 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import RoomForm from '../RoomForm/RoomForm'
+import RoomTypeForm from '../RoomTypeForm/RoomTypeForm'
 
-class ToggleableRoomForm extends React.Component {
+class ToggleableRoomTypeForm extends React.Component {
   state = {
     isOpen: false,
   }
@@ -32,7 +32,7 @@ class ToggleableRoomForm extends React.Component {
           justify="center"
           alignItems="center"
         >
-          <RoomForm
+          <RoomTypeForm
             onFormSubmit={this.handleFormSubmit}
             onFormClose={this.handleFormClose}
           />
@@ -55,4 +55,4 @@ class ToggleableRoomForm extends React.Component {
   }
 }
 
-export default ToggleableRoomForm
+export default ToggleableRoomTypeForm

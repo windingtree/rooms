@@ -1,9 +1,9 @@
 import React from 'react'
 
-import RoomForm from '../RoomForm/RoomForm'
-import Room from '../Room/Room'
+import RoomTypeForm from '../RoomTypeForm/RoomTypeForm'
+import RoomType from '../RoomType/RoomType'
 
-class EditableRoom extends React.Component {
+class EditableRoomType extends React.Component {
   state = {
     editFormOpen: false,
   }
@@ -32,8 +32,8 @@ class EditableRoom extends React.Component {
   render() {
     if (this.state.editFormOpen) {
       return (
-        <RoomForm
-          id={this.props.id}
+        <RoomTypeForm
+          roomId={this.props.roomId}
           roomNumber={this.props.roomNumber}
           roomType={this.props.roomType}
           isEmpty={this.props.isEmpty}
@@ -43,16 +43,13 @@ class EditableRoom extends React.Component {
       )
     } else {
       return (
-        <Room
-          id={this.props.id}
+        <RoomType
+          roomId={this.props.roomId}
           roomNumber={this.props.roomNumber}
           roomType={this.props.roomType}
-          elapsed={this.props.elapsed}
           isEmpty={this.props.isEmpty}
           onEditClick={this.handleEditClick}
           onTrashClick={this.props.onTrashClick}
-          onStartClick={this.props.onStartClick}
-          onStopClick={this.props.onStopClick}
           onRoomTypeChange={this.props.onRoomTypeChange}
           onRoomNumberChange={this.props.onRoomNumberChange}
         />
@@ -61,4 +58,4 @@ class EditableRoom extends React.Component {
   }
 }
 
-export default EditableRoom
+export default EditableRoomType

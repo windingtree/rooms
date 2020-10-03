@@ -22,25 +22,17 @@ const useStyles = () => {
   }
 }
 
-class Room extends React.Component {
-  handleStartClick = () => {
-    this.props.onStartClick(this.props.id)
-  }
-
-  handleStopClick = () => {
-    this.props.onStopClick(this.props.id)
-  }
-
+class RoomType extends React.Component {
   handleTrashClick = () => {
-    this.props.onTrashClick(this.props.id)
+    this.props.onTrashClick(this.props.roomId)
   }
 
-  handleRoomTypeChange(e) {
-    this.props.onRoomTypeChange(this.props.id, e)
+  handleRoomTypeChange = (e) => {
+    this.props.onRoomTypeChange(this.props.roomId, e)
   }
 
-  handleRoomNumberChange(e) {
-    this.props.onRoomNumberChange(this.props.id, e)
+  handleRoomNumberChange = (e) => {
+    this.props.onRoomNumberChange(this.props.roomId, e)
   }
 
   render() {
@@ -52,13 +44,13 @@ class Room extends React.Component {
           <TextEditInput
             value={this.props.roomType}
             label="Room Type"
-            onValueChange={(e) => {this.handleRoomTypeChange(e)}}
+            onValueChange={this.handleRoomTypeChange}
           />
 
           <TextEditInput
             value={this.props.roomNumber}
             label="Room Quantity"
-            onValueChange={(e) => {this.handleRoomNumberChange(e)}}
+            onValueChange={this.handleRoomNumberChange}
           />
         </CardContent>
         <CardActions>
@@ -77,4 +69,4 @@ class Room extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(Room)
+export default withStyles(useStyles)(RoomType)

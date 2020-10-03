@@ -1,19 +1,29 @@
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import { apiClient } from '../../../utils/apiClient'
-import { helpers } from '../../../utils/helpers'
 
-import EditableRoomList from './EditableRoomList/EditableRoomList'
-import ToggleableRoomForm from './ToggleableRoomForm/ToggleableRoomForm'
+import EditableRoomTypeList from './EditableRoomTypeList/EditableRoomTypeList'
+import ToggleableRoomTypeForm from './ToggleableRoomTypeForm/ToggleableRoomTypeForm'
+
+function initRoomTypeObj(attrs = {}) {
+  const roomTypeObj = {
+    roomNumber: attrs.roomNumber || 'Room Number',
+    roomType: attrs.roomType || 'Room Type',
+    roomId: attrs.roomId || uuidv4(),
+    isEmpty: attrs.isEmpty || 1,
+  }
+
+  return roomTypeObj
+}
 
 class RoomTypes extends React.Component {
-  _isDestroyed = false
-
   constructor(props) {
     super(props)
 
+    this._isDestroyed = false
     this.state = {
-      rooms: [],
+      roomTypes: [],
     }
   }
 
@@ -26,11 +36,12 @@ class RoomTypes extends React.Component {
   }
 
   loadRoomsFromServer = () => {
-    apiClient.getRooms((serverRooms) => {
-      if (this._isDestroyed) return
+    apiClient.getRoomTypes()
+      .then((serverRooms) => {
+        if (this._isDestroyed) return
 
-      this.setState({ rooms: serverRooms })
-    })
+        this.setState({ roomTypes: serverRooms })
+      })
   }
 
   handleCreateFormSubmit = (room) => {
@@ -45,16 +56,8 @@ class RoomTypes extends React.Component {
     this.deleteRoom(roomId)
   }
 
-  handleStartClick = (roomId) => {
-    this.startRoom(roomId)
-  }
-
-  handleStopClick = (roomId) => {
-    this.stopRoom(roomId)
-  }
-
   handleRoomTypeChange = (roomId, newRoomType) => {
-    const roomToUpdate = this.state.rooms.find((room) => {
+    const roomToUpdate = this.state.roomTypes.find((room) => {
       if (room.roomId === roomId) {
         return true
       }
@@ -67,7 +70,7 @@ class RoomTypes extends React.Component {
     }
 
     this.updateRoom({
-      id: roomToUpdate.roomId,
+      roomId: roomToUpdate.roomId,
       isEmpty: roomToUpdate.isEmpty,
       roomNumber: roomToUpdate.roomNumber,
       roomType: newRoomType,
@@ -75,7 +78,7 @@ class RoomTypes extends React.Component {
   }
 
   handleRoomNumberChange = (roomId, newRoomNumber) => {
-    const roomToUpdate = this.state.rooms.find((room) => {
+    const roomToUpdate = this.state.roomTypes.find((room) => {
       if (room.roomId === roomId) {
         return true
       }
@@ -88,7 +91,7 @@ class RoomTypes extends React.Component {
     }
 
     this.updateRoom({
-      id: roomToUpdate.roomId,
+      roomId: roomToUpdate.roomId,
       isEmpty: roomToUpdate.isEmpty,
       roomNumber: newRoomNumber,
       roomType: roomToUpdate.roomType,
@@ -96,16 +99,17 @@ class RoomTypes extends React.Component {
   }
 
   createRoom = (room) => {
-    const t = helpers.newRoom(room)
+    const t = initRoomTypeObj(room)
+
     this.setState({
-      rooms: this.state.rooms.concat(t),
+      roomTypes: this.state.roomTypes.concat(t),
     })
 
-    apiClient.createRoom(t).then((attrs) => {
+    apiClient.createRoomType(t).then((attrs) => {
       if (this._isDestroyed) return
 
       this.setState({
-        rooms: this.state.rooms.map((room) => {
+        roomTypes: this.state.roomTypes.map((room) => {
           if (room.roomId === t.roomId) {
             return Object.assign({}, room, {
               roomId: attrs.roomId
@@ -120,8 +124,8 @@ class RoomTypes extends React.Component {
 
   updateRoom = (attrs) => {
     this.setState({
-      rooms: this.state.rooms.map((room) => {
-        if (room.roomId === attrs.id) {
+      roomTypes: this.state.roomTypes.map((room) => {
+        if (room.roomId === attrs.roomId) {
           return Object.assign({}, room, {
             roomNumber: attrs.roomNumber,
             roomType: attrs.roomType,
@@ -133,75 +137,31 @@ class RoomTypes extends React.Component {
       }),
     })
 
-    apiClient.updateRoom(attrs)
+    apiClient.updateRoomType(attrs)
   }
 
   deleteRoom = (roomId) => {
     this.setState({
-      rooms: this.state.rooms.filter(t => t.roomId !== roomId),
+      roomTypes: this.state.roomTypes.filter(t => t.roomId !== roomId),
     })
 
-    apiClient.deleteRoom(
-      { id: roomId }
+    apiClient.deleteRoomType(
+      { roomId }
     )
-  }
-
-  startRoom = (roomId) => {
-    let updatedRoom
-
-    this.setState({
-      rooms: this.state.rooms.map((room) => {
-        if (room.roomId === roomId) {
-          updatedRoom = Object.assign({}, room, {
-            isEmpty: 0,
-          })
-
-          return updatedRoom
-        } else {
-          return room
-        }
-      }),
-    })
-
-    updatedRoom.id = roomId
-    apiClient.updateRoom(updatedRoom)
-  }
-
-  stopRoom = (roomId) => {
-    let updatedRoom
-
-    this.setState({
-      rooms: this.state.rooms.map((room) => {
-        if (room.roomId === roomId) {
-          updatedRoom = Object.assign({}, room, {
-            isEmpty: 1,
-          })
-
-          return updatedRoom
-        } else {
-          return room
-        }
-      }),
-    })
-
-    updatedRoom.id = roomId
-    apiClient.updateRoom(updatedRoom)
   }
 
   render() {
     return (
       <div className='ui three column centered grid'>
         <div className='column'>
-          <EditableRoomList
-            rooms={this.state.rooms}
+          <EditableRoomTypeList
+            roomTypes={this.state.roomTypes}
             onFormSubmit={this.handleEditFormSubmit}
             onTrashClick={this.handleTrashClick}
-            onStartClick={this.handleStartClick}
-            onStopClick={this.handleStopClick}
             onRoomTypeChange={this.handleRoomTypeChange}
             onRoomNumberChange={this.handleRoomNumberChange}
           />
-          <ToggleableRoomForm
+          <ToggleableRoomTypeForm
             onFormSubmit={this.handleCreateFormSubmit}
           />
         </div>
