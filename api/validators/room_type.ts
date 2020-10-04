@@ -29,8 +29,7 @@ function isRoomTypeValid(request: NowRequest, response: NowResponse): boolean {
   }
 
   if (
-    (typeof request.body.type !== 'string') ||
-    (request.body.type.length === 0)
+    (typeof request.body.type !== 'string')
   ) {
     response.status(500).json({ err: 'must provide a valid type value' })
     return false

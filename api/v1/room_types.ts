@@ -32,7 +32,7 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
     const query = { email }
 
     const options = {
-      sort: { quantity: 1 },
+      sort: { createdAt: 1 },
       projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1 }
     }
 

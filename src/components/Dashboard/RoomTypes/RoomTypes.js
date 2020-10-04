@@ -1,10 +1,11 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import IconButton from '@material-ui/core/IconButton'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import Grid from '@material-ui/core/Grid'
 
 import { apiClient } from '../../../utils/apiClient'
-
-import EditableRoomTypeList from './EditableRoomTypeList/EditableRoomTypeList'
-import ToggleableRoomTypeForm from './ToggleableRoomTypeForm/ToggleableRoomTypeForm'
+import RoomTypeList from './RoomTypeList/RoomTypeList'
 
 function initRoomTypeObj(attrs = {}) {
   const roomTypeObj = {
@@ -35,19 +36,19 @@ class RoomTypes extends React.Component {
     this._isDestroyed = true
   }
 
-  handleCreateFormSubmit = (attrs) => {
-    this.createRoomType(attrs)
+  handleAddNewClick = () => {
+    this.createRoomType({})
   }
 
-  handleEditFormSubmit = (attrs) => {
-    this.updateRoomType(attrs)
+  handleEditClick = () => {
+    console.log('Edit clicked.')
   }
 
   handleTrashClick = (id) => {
     this.deleteRoomType(id)
   }
 
-  handleTypeChange = (id, newType) => {
+  handlePropValueChange = (id, propName, newValue) => {
     const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
       if (roomType.id === id) {
         return true
@@ -56,37 +57,12 @@ class RoomTypes extends React.Component {
       return false
     })
 
-    if (roomTypeToUpdate.type === newType) {
+    if (roomTypeToUpdate[propName] === newValue) {
       return
     }
+    roomTypeToUpdate[propName] = newValue
 
-    this.updateRoomType({
-      id: roomTypeToUpdate.id,
-      price: roomTypeToUpdate.price,
-      quantity: roomTypeToUpdate.quantity,
-      type: newType,
-    })
-  }
-
-  handleQuantityChange = (id, newRoomNumber) => {
-    const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
-      if (roomType.id === id) {
-        return true
-      }
-
-      return false
-    })
-
-    if (roomTypeToUpdate.quantity === newRoomNumber) {
-      return
-    }
-
-    this.updateRoomType({
-      id: roomTypeToUpdate.id,
-      price: roomTypeToUpdate.price,
-      quantity: newRoomNumber,
-      type: roomTypeToUpdate.type,
-    })
+    this.updateRoomType(roomTypeToUpdate)
   }
 
   getRoomTypes = () => {
@@ -183,16 +159,22 @@ class RoomTypes extends React.Component {
   render() {
     return (
       <div>
-        <EditableRoomTypeList
+        <RoomTypeList
           roomTypes={this.state.roomTypes}
-          onFormSubmit={this.handleEditFormSubmit}
+          onEditClick={this.handleEditClick}
           onTrashClick={this.handleTrashClick}
-          onTypeChange={this.handleTypeChange}
-          onQuantityChange={this.handleQuantityChange}
+          onPropValueChange={this.handlePropValueChange}
         />
-        <ToggleableRoomTypeForm
-          onFormSubmit={this.handleCreateFormSubmit}
-        />
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
+            <AddCircleIcon />
+          </IconButton>
+        </Grid>
       </div>
     )
   }

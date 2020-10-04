@@ -109,6 +109,7 @@ class Login extends React.Component {
           <div className={classes.loginTitle}>Log in to Rooms</div>
 
           <TextField
+            autoFocus
             className={classes.emailInput}
             color="secondary"
             variant="outlined"

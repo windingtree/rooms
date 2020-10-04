@@ -31,40 +31,39 @@ function measureText(text) {
 
 const useStyles = (theme) => {
   return {
-    text_edit_input_container: {
-      marginTop: '2em',
-      marginBottom: '2em',
-      marginLeft: '1em',
+    container: {
+      display: 'inline-block',
       width: (props) => { return `${props.inputWidth}px` },
+      height: '4em',
       cursor: 'pointer',
-      height: '3em',
     },
     simple_text_container: {
-      display: 'block',
-      height: '32px',
+      display: 'inline-flex',
+      flexDirection: 'column',
+      position: 'relative',
     },
     simple_text_label: {
       position: 'relative',
-      display: 'block',
-      top: '-7px',
+      display: 'inline-flex',
       left: '14px',
       fontSize: '0.75em',
       color: theme.palette.secondary.main,
     },
     simple_text_value: {
-      display: 'inline',
-      padding: '18.5px 14px',
-      height: '1.1876em',
+      position: 'relative',
+      display: 'inline-flex',
+      padding: '0px 14px 0px 14px',
       minInlineSize: 'min-content',
       fontSize: '1rem',
       fontWeight: '400',
       lineHeight: '1.7em',
+      minHeight: '1.7em',
       letterSpacing: '0.00938em',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
       whiteSpace: 'nowrap',
     },
-    underline: {
+    simple_text_underline: {
+      position: 'relative',
+      display: 'inline-flex',
       width: (props) => { return `${props.inputWidth - 10}px` },
       height: '2px',
       background: `
@@ -77,8 +76,6 @@ const useStyles = (theme) => {
         )
       `,
       left: '5px',
-      top: '2px',
-      position: 'relative',
     }
   }
 }
@@ -109,7 +106,7 @@ class TextEditInput extends React.Component {
   }
 
   handleTextUpdate(e) {
-    if (e && e.target && e.target.value) {
+    if (e && e.target && typeof e.target.value === 'string') {
       this.setState({ textValue: e.target.value })
     }
   }
@@ -137,9 +134,7 @@ class TextEditInput extends React.Component {
       return ''
     } else if (typeof str === 'number') {
       str = str.toString()
-    } else if (typeof str === 'string') {
-      // Do nothing.
-    } else {
+    } else if (typeof str !== 'string') {
       return ''
     }
 
@@ -187,7 +182,7 @@ class TextEditInput extends React.Component {
     const { classes } = this.props
 
     return (
-      <div className={classes.text_edit_input_container} ref={this.nodeRef}>
+      <div className={classes.container} ref={this.nodeRef}>
         {
           (this.state.isTextEditable === true) ?
             <TextField
@@ -202,7 +197,7 @@ class TextEditInput extends React.Component {
             <div className={classes.simple_text_container}>
               <div className={classes.simple_text_label}>{this.state.textLabel}</div>
               <div className={classes.simple_text_value}>{this.shortStr(this.state.textValue)}</div>
-              <div className={classes.underline} />
+              <div className={classes.simple_text_underline} />
             </div>
         }
       </div>

@@ -1,21 +1,20 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
-import EditableRoomType from '../EditableRoomType/EditableRoomType'
+import RoomType from '../RoomType/RoomType'
 
-class EditableRoomTypeList extends React.Component {
+class RoomTypeList extends React.Component {
   render() {
     const roomTypes = this.props.roomTypes.map((roomType) => (
-      <EditableRoomType
+      <RoomType
         key={roomType.id}
         id={roomType.id}
         quantity={roomType.quantity}
         type={roomType.type}
         price={roomType.price}
-        onFormSubmit={this.props.onFormSubmit}
+        onEditClick={this.props.onEditClick}
         onTrashClick={this.props.onTrashClick}
-        onTypeChange={this.props.onTypeChange}
-        onQuantityChange={this.props.onQuantityChange}
+        onPropValueChange={this.props.onPropValueChange}
       />
     ))
 
@@ -34,4 +33,4 @@ class EditableRoomTypeList extends React.Component {
   }
 }
 
-export default EditableRoomTypeList
+export default RoomTypeList
