@@ -2,13 +2,40 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 
+function measureText(text) {
+  if (!window._tempDivForMeasurement) {
+    window._tempDivForMeasurement = document.createElement('div')
+
+    document.body.appendChild(window._tempDivForMeasurement)
+
+    window._tempDivForMeasurement.style.fontSize = '1rem'
+    window._tempDivForMeasurement.style.fontFamily = 'Roboto'
+    window._tempDivForMeasurement.style.fontWeight = 400
+    window._tempDivForMeasurement.style.letterSpacing = '0.00938em'
+    window._tempDivForMeasurement.style.lineHeight = '1.7em'
+    window._tempDivForMeasurement.style.minInlineSize = 'min-content'
+
+    window._tempDivForMeasurement.style.paddingLeft = '14px'
+    window._tempDivForMeasurement.style.paddingRight = '14px'
+
+    window._tempDivForMeasurement.style.position = 'absolute'
+    window._tempDivForMeasurement.style.display = 'inline'
+    window._tempDivForMeasurement.style.left = '-1000px'
+    window._tempDivForMeasurement.style.top = '-1000px'
+  }
+
+  window._tempDivForMeasurement.innerHTML = text
+
+  return window._tempDivForMeasurement.clientWidth
+}
+
 const useStyles = (theme) => {
   return {
     text_edit_input_container: {
       marginTop: '2em',
       marginBottom: '2em',
       marginLeft: '1em',
-      width: '200px',
+      width: (props) => { return `${props.inputWidth}px` },
       cursor: 'pointer',
       height: '3em',
     },
@@ -26,8 +53,6 @@ const useStyles = (theme) => {
     },
     simple_text_value: {
       display: 'inline',
-      width: '200px',
-      maxWidth: '200px',
       padding: '18.5px 14px',
       height: '1.1876em',
       minInlineSize: 'min-content',
@@ -40,15 +65,15 @@ const useStyles = (theme) => {
       whiteSpace: 'nowrap',
     },
     underline: {
-      width: '180px',
+      width: (props) => { return `${props.inputWidth - 10}px` },
       height: '2px',
       background: `
         repeating-linear-gradient(
         to right,
-        #fff,
-        #fff 4px,
-        ${theme.palette.secondary.main} 8px,
-        ${theme.palette.secondary.main} 8px
+        transparent,
+        transparent 3px,
+        ${theme.palette.secondary.main} 2px,
+        ${theme.palette.secondary.main} 4px
         )
       `,
       left: '5px',
@@ -108,9 +133,27 @@ class TextEditInput extends React.Component {
   }
 
   shortStr(str) {
-    const MAX_LENGTH = 24
+    if ((typeof str === 'undefined') || (str === null)) {
+      return ''
+    } else if (typeof str === 'number') {
+      str = str.toString()
+    } else if (typeof str === 'string') {
+      // Do nothing.
+    } else {
+      return ''
+    }
 
-    return (str.length > MAX_LENGTH) ? str.substr(0, MAX_LENGTH - 1) + '...' : str
+    let MAX_LENGTH = str.length + 1
+    let shortStr = str.substr(0, MAX_LENGTH - 1)
+    let strPixelLength = measureText(`${shortStr}...`)
+
+    while (strPixelLength - 14 >= this.props.inputWidth) {
+      MAX_LENGTH -= 1
+      shortStr = str.substr(0, MAX_LENGTH - 1)
+      strPixelLength = measureText(`${shortStr}...`)
+    }
+
+    return (MAX_LENGTH < str.length + 1) ? `${shortStr}...` : str
   }
 
   mouseDownHandler(e) {

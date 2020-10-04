@@ -45,12 +45,14 @@ class RoomType extends React.Component {
             value={this.props.type}
             label="Type"
             onValueChange={this.handleTypeChange}
+            inputWidth="150"
           />
 
           <TextEditInput
             value={this.props.quantity}
             label="Quantity"
             onValueChange={this.handleQuantityChange}
+            inputWidth="75"
           />
         </CardContent>
         <CardActions>
