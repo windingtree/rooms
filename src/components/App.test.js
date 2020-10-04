@@ -9,6 +9,6 @@ test('renders home link', () => {
       <App />
     </BrowserRouter>
   )
-  const linkElement = getByText(/room/i)
+  const linkElement = getByText(/Pick up in mind any room in your hotel/)
   expect(linkElement).toBeInTheDocument()
 })

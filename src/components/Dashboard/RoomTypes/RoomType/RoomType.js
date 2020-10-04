@@ -14,7 +14,7 @@ const useStyles = () => {
     grow: {
       flexGrow: 1,
     },
-    room_card: {
+    room_type_card: {
       width: '26em',
       marginTop: '1em',
       marginBottom: '1em',
@@ -24,33 +24,33 @@ const useStyles = () => {
 
 class RoomType extends React.Component {
   handleTrashClick = () => {
-    this.props.onTrashClick(this.props.roomId)
+    this.props.onTrashClick(this.props.id)
   }
 
-  handleRoomTypeChange = (e) => {
-    this.props.onRoomTypeChange(this.props.roomId, e)
+  handleTypeChange = (e) => {
+    this.props.onTypeChange(this.props.id, e)
   }
 
-  handleRoomNumberChange = (e) => {
-    this.props.onRoomNumberChange(this.props.roomId, e)
+  handleQuantityChange = (e) => {
+    this.props.onQuantityChange(this.props.id, e)
   }
 
   render() {
     const { classes } = this.props
 
     return (
-      <Card className={classes.room_card}>
+      <Card className={classes.room_type_card}>
         <CardContent>
           <TextEditInput
-            value={this.props.roomType}
-            label="Room Type"
-            onValueChange={this.handleRoomTypeChange}
+            value={this.props.type}
+            label="Type"
+            onValueChange={this.handleTypeChange}
           />
 
           <TextEditInput
-            value={this.props.roomNumber}
-            label="Room Quantity"
-            onValueChange={this.handleRoomNumberChange}
+            value={this.props.quantity}
+            label="Quantity"
+            onValueChange={this.handleQuantityChange}
           />
         </CardContent>
         <CardActions>

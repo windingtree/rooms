@@ -4,8 +4,12 @@ import RoomTypeForm from '../RoomTypeForm/RoomTypeForm'
 import RoomType from '../RoomType/RoomType'
 
 class EditableRoomType extends React.Component {
-  state = {
-    editFormOpen: false,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      editFormOpen: false,
+    }
   }
 
   handleEditClick = () => {
@@ -16,8 +20,8 @@ class EditableRoomType extends React.Component {
     this.closeForm()
   }
 
-  handleSubmit = (room) => {
-    this.props.onFormSubmit(room)
+  handleSubmit = (roomType) => {
+    this.props.onFormSubmit(roomType)
     this.closeForm()
   }
 
@@ -33,10 +37,10 @@ class EditableRoomType extends React.Component {
     if (this.state.editFormOpen) {
       return (
         <RoomTypeForm
-          roomId={this.props.roomId}
-          roomNumber={this.props.roomNumber}
-          roomType={this.props.roomType}
-          isEmpty={this.props.isEmpty}
+          id={this.props.id}
+          quantity={this.props.quantity}
+          type={this.props.type}
+          price={this.props.price}
           onFormSubmit={this.handleSubmit}
           onFormClose={this.handleFormClose}
         />
@@ -44,14 +48,14 @@ class EditableRoomType extends React.Component {
     } else {
       return (
         <RoomType
-          roomId={this.props.roomId}
-          roomNumber={this.props.roomNumber}
-          roomType={this.props.roomType}
-          isEmpty={this.props.isEmpty}
+          id={this.props.id}
+          quantity={this.props.quantity}
+          type={this.props.type}
+          price={this.props.price}
           onEditClick={this.handleEditClick}
           onTrashClick={this.props.onTrashClick}
-          onRoomTypeChange={this.props.onRoomTypeChange}
-          onRoomNumberChange={this.props.onRoomNumberChange}
+          onTypeChange={this.props.onTypeChange}
+          onQuantityChange={this.props.onQuantityChange}
         />
       )
     }

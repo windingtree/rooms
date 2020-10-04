@@ -7,17 +7,18 @@ class EditableRoomTypeList extends React.Component {
   render() {
     const roomTypes = this.props.roomTypes.map((roomType) => (
       <EditableRoomType
-        key={roomType.roomId}
-        roomId={roomType.roomId}
-        roomNumber={roomType.roomNumber}
-        roomType={roomType.roomType}
-        isEmpty={roomType.isEmpty}
+        key={roomType.id}
+        id={roomType.id}
+        quantity={roomType.quantity}
+        type={roomType.type}
+        price={roomType.price}
         onFormSubmit={this.props.onFormSubmit}
         onTrashClick={this.props.onTrashClick}
-        onRoomTypeChange={this.props.onRoomTypeChange}
-        onRoomNumberChange={this.props.onRoomNumberChange}
+        onTypeChange={this.props.onTypeChange}
+        onQuantityChange={this.props.onQuantityChange}
       />
     ))
+
     return (
       <Grid
         container

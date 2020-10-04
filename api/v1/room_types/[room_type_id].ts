@@ -4,29 +4,29 @@ import { MongoClient, ObjectID } from 'mongodb'
 import { decodeToken } from '../../tools/decode_token'
 import { authorizeUser } from '../../tools/authorize_user'
 import { IDecodedAuthToken } from '../../types/auth'
-import { IRoom } from '../../types/rooms'
+import { IRoomType } from '../../types/room_type'
 import { MONGODB_URL } from '../../tools/constants'
 import { methodNotImplemented } from '../../tools/generic_response'
-import { isRoomValid } from '../../validators/rooms'
+import { isRoomTypeValid } from '../../validators/room_type'
 import { DB } from '../../tools/db'
 
-function getRoomId(request: NowRequest): string|null {
+function getRoomTypeId(request: NowRequest): string|null {
   const {
-    query: { room_id }
+    query: { room_type_id }
   } = request
   if (
-    (!room_id ) ||
-    (typeof room_id !== 'string') ||
-    (room_id.length === 0)
+    (!room_type_id ) ||
+    (typeof room_type_id !== 'string') ||
+    (room_type_id.length === 0)
   ) {
     return null
   }
 
-  return room_id
+  return room_type_id
 }
 
-async function updateRoom(roomId: string, roomNumber: number, roomType: string, isEmpty: number): Promise<IRoom> {
-  const newRoom: IRoom = { roomId, roomNumber, roomType, isEmpty }
+async function updateRoomType(id: string, quantity: number, type: string, price: number): Promise<IRoomType> {
+  const newRoomType: IRoomType = { id, quantity, type, price }
 
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
@@ -40,7 +40,7 @@ async function updateRoom(roomId: string, roomNumber: number, roomType: string, 
     const collection = database.collection('rooms')
 
     // create a filter for a document to update
-    const filter = { _id: new ObjectID(roomId) }
+    const filter = { _id: new ObjectID(id) }
 
     // this option instructs the method to NOT create a document
     // (if no documents match the filter)
@@ -48,7 +48,7 @@ async function updateRoom(roomId: string, roomNumber: number, roomType: string, 
 
     // create a document that sets the plot of the movie
     const updateDoc = {
-      $set: { roomNumber, roomType, isEmpty }
+      $set: { quantity, type, price }
     }
 
     result = await collection.updateOne(filter, updateDoc, options)
@@ -62,10 +62,10 @@ async function updateRoom(roomId: string, roomNumber: number, roomType: string, 
     )
   }
 
-  return newRoom
+  return newRoomType
 }
 
-async function deleteRoom(roomId: string): Promise<boolean> {
+async function deleteRoomType(id: string): Promise<boolean> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw new Error('No connection to DB')
@@ -78,7 +78,7 @@ async function deleteRoom(roomId: string): Promise<boolean> {
     const collection = database.collection('rooms')
 
     // create a filter for a document to update
-    const filter = { _id: new ObjectID(roomId) }
+    const filter = { _id: new ObjectID(id) }
 
     result = await collection.deleteOne(filter)
   } catch (err) {
@@ -107,22 +107,22 @@ function methodPut(request: NowRequest, response: NowResponse) {
         return
       }
 
-      if (!isRoomValid(request, response)) {
+      if (!isRoomTypeValid(request, response)) {
         return
       }
 
-      const roomId: string|null = getRoomId(request)
-      if (roomId === null) {
-        response.status(500).json({ err: 'room_id is not set' })
+      const id: string|null = getRoomTypeId(request)
+      if (id === null) {
+        response.status(500).json({ err: 'room_type_id is not set' })
         return
       }
 
-      const roomNumber: number = parseInt(request.body.roomNumber)
-      const roomType: string = request.body.roomType
-      const isEmpty: number = request.body.isEmpty
+      const quantity: number = parseInt(request.body.quantity)
+      const type: string = request.body.type
+      const price: number = request.body.price
 
-      updateRoom((roomId as string), roomNumber, roomType, isEmpty)
-        .then((room: IRoom) => {
+      updateRoomType((id as string), quantity, type, price)
+        .then((room: IRoomType) => {
           response.status(200).json(room)
         })
         .catch((err: Error) => {
@@ -149,13 +149,13 @@ function methodDelete(request: NowRequest, response: NowResponse) {
         return
       }
 
-      const roomId: string|null = getRoomId(request)
-      if (roomId === null) {
-        response.status(500).json({ err: 'room_id is not set' })
+      const id: string|null = getRoomTypeId(request)
+      if (id === null) {
+        response.status(500).json({ err: 'room_type_id is not set' })
         return
       }
 
-      deleteRoom((roomId as string))
+      deleteRoomType((id as string))
         .then((isDeleted: boolean) => {
           if (isDeleted) {
             response.status(200).json({ deleted: 1 })
@@ -173,7 +173,13 @@ function methodDelete(request: NowRequest, response: NowResponse) {
 }
 
 export default (request: NowRequest, response: NowResponse) => {
-  switch (request.method) {
+  if (!request || typeof request.method !== 'string') {
+    throw new Error('must provide request method')
+  }
+
+  const method = request.method.toUpperCase()
+
+  switch (method) {
     case 'PUT':
       methodPut(request, response)
       break

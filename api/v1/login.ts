@@ -2,6 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
+import { methodNotImplemented } from '../tools/generic_response'
 import { MONGODB_URL } from '../tools/constants'
 import { DB } from '../tools/db'
 
@@ -38,7 +39,7 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
   return oneTimePassword
 }
 
-export default async (request: NowRequest, response: NowResponse) => {
+async function methodPost(request: NowRequest, response: NowResponse) {
   if (!request.body) {
     response.status(500).json({ err: 'request must contain a valid body object' })
     return
@@ -64,4 +65,21 @@ export default async (request: NowRequest, response: NowResponse) => {
     .catch((err: Error) => {
       response.status(500).json({ err })
     })
+}
+
+export default async (request: NowRequest, response: NowResponse) => {
+  if (!request || typeof request.method !== 'string') {
+    throw new Error('must provide request method')
+  }
+
+  const method = request.method.toUpperCase()
+
+  switch (method) {
+    case 'POST':
+      await methodPost(request, response)
+      break
+    default:
+      methodNotImplemented(request, response)
+      break
+  }
 }

@@ -8,10 +8,10 @@ import ToggleableRoomTypeForm from './ToggleableRoomTypeForm/ToggleableRoomTypeF
 
 function initRoomTypeObj(attrs = {}) {
   const roomTypeObj = {
-    roomNumber: attrs.roomNumber || 'Room Number',
-    roomType: attrs.roomType || 'Room Type',
-    roomId: attrs.roomId || uuidv4(),
-    isEmpty: attrs.isEmpty || 1,
+    quantity: attrs.quantity || 0,
+    type: attrs.type || '',
+    id: attrs.id || uuidv4(),
+    price: attrs.price || 0,
   }
 
   return roomTypeObj
@@ -28,143 +28,171 @@ class RoomTypes extends React.Component {
   }
 
   componentDidMount() {
-    this.loadRoomsFromServer()
+    this.getRoomTypes()
   }
 
   componentWillUnmount() {
     this._isDestroyed = true
   }
 
-  loadRoomsFromServer = () => {
-    apiClient.getRoomTypes()
-      .then((serverRooms) => {
-        if (this._isDestroyed) return
-
-        this.setState({ roomTypes: serverRooms })
-      })
-  }
-
-  handleCreateFormSubmit = (room) => {
-    this.createRoom(room)
+  handleCreateFormSubmit = (attrs) => {
+    this.createRoomType(attrs)
   }
 
   handleEditFormSubmit = (attrs) => {
-    this.updateRoom(attrs)
+    this.updateRoomType(attrs)
   }
 
-  handleTrashClick = (roomId) => {
-    this.deleteRoom(roomId)
+  handleTrashClick = (id) => {
+    this.deleteRoomType(id)
   }
 
-  handleRoomTypeChange = (roomId, newRoomType) => {
-    const roomToUpdate = this.state.roomTypes.find((room) => {
-      if (room.roomId === roomId) {
+  handleTypeChange = (id, newType) => {
+    const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
+      if (roomType.id === id) {
         return true
       }
 
       return false
     })
 
-    if (roomToUpdate.roomType === newRoomType) {
+    if (roomTypeToUpdate.type === newType) {
       return
     }
 
-    this.updateRoom({
-      roomId: roomToUpdate.roomId,
-      isEmpty: roomToUpdate.isEmpty,
-      roomNumber: roomToUpdate.roomNumber,
-      roomType: newRoomType,
+    this.updateRoomType({
+      id: roomTypeToUpdate.id,
+      price: roomTypeToUpdate.price,
+      quantity: roomTypeToUpdate.quantity,
+      type: newType,
     })
   }
 
-  handleRoomNumberChange = (roomId, newRoomNumber) => {
-    const roomToUpdate = this.state.roomTypes.find((room) => {
-      if (room.roomId === roomId) {
+  handleQuantityChange = (id, newRoomNumber) => {
+    const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
+      if (roomType.id === id) {
         return true
       }
 
       return false
     })
 
-    if (roomToUpdate.roomNumber === newRoomNumber) {
+    if (roomTypeToUpdate.quantity === newRoomNumber) {
       return
     }
 
-    this.updateRoom({
-      roomId: roomToUpdate.roomId,
-      isEmpty: roomToUpdate.isEmpty,
-      roomNumber: newRoomNumber,
-      roomType: roomToUpdate.roomType,
+    this.updateRoomType({
+      id: roomTypeToUpdate.id,
+      price: roomTypeToUpdate.price,
+      quantity: newRoomNumber,
+      type: roomTypeToUpdate.type,
     })
   }
 
-  createRoom = (room) => {
-    const t = initRoomTypeObj(room)
+  getRoomTypes = () => {
+    apiClient
+      .getRoomTypes()
+      .then((roomTypes) => {
+        if (this._isDestroyed) return
 
-    this.setState({
-      roomTypes: this.state.roomTypes.concat(t),
-    })
-
-    apiClient.createRoomType(t).then((attrs) => {
-      if (this._isDestroyed) return
-
-      this.setState({
-        roomTypes: this.state.roomTypes.map((room) => {
-          if (room.roomId === t.roomId) {
-            return Object.assign({}, room, {
-              roomId: attrs.roomId
-            })
-          } else {
-            return room
-          }
-        }),
+        this.setState({ roomTypes })
       })
-    })
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+      })
   }
 
-  updateRoom = (attrs) => {
+  createRoomType = (attrs) => {
+    const newRoomType = initRoomTypeObj(attrs)
+
     this.setState({
-      roomTypes: this.state.roomTypes.map((room) => {
-        if (room.roomId === attrs.roomId) {
-          return Object.assign({}, room, {
-            roomNumber: attrs.roomNumber,
-            roomType: attrs.roomType,
-            isEmpty: attrs.isEmpty
+      roomTypes: this.state.roomTypes.concat(newRoomType),
+    })
+
+    apiClient.createRoomType(newRoomType)
+      .then((attrs) => {
+        if (this._isDestroyed) return
+
+        this.setState({
+          roomTypes: this.state.roomTypes.map((roomType) => {
+            if (roomType.id === newRoomType.id) {
+              return Object.assign({}, roomType, {
+                id: attrs.id,
+              })
+            } else {
+              return roomType
+            }
+          }),
+        })
+      })
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+      })
+  }
+
+  updateRoomType = (attrs) => {
+    this.setState({
+      roomTypes: this.state.roomTypes.map((roomType) => {
+        if (roomType.id === attrs.id) {
+          return Object.assign({}, roomType, {
+            quantity: attrs.quantity,
+            type: attrs.type,
+            price: attrs.price,
           })
         } else {
-          return room
+          return roomType
         }
       }),
     })
 
-    apiClient.updateRoomType(attrs)
+    apiClient
+      .updateRoomType(attrs)
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+      })
   }
 
-  deleteRoom = (roomId) => {
+  deleteRoomType = (id) => {
     this.setState({
-      roomTypes: this.state.roomTypes.filter(t => t.roomId !== roomId),
+      roomTypes: this.state.roomTypes.filter(t => t.id !== id),
     })
 
-    apiClient.deleteRoomType(
-      { roomId }
-    )
+    apiClient
+      .deleteRoomType(id)
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+      })
   }
 
   render() {
     return (
-      <div className='ui three column centered grid'>
-        <div className='column'>
-          <EditableRoomTypeList
-            roomTypes={this.state.roomTypes}
-            onFormSubmit={this.handleEditFormSubmit}
-            onTrashClick={this.handleTrashClick}
-            onRoomTypeChange={this.handleRoomTypeChange}
-            onRoomNumberChange={this.handleRoomNumberChange}
-          />
-          <ToggleableRoomTypeForm
-            onFormSubmit={this.handleCreateFormSubmit}
-          />
-        </div>
+      <div>
+        <EditableRoomTypeList
+          roomTypes={this.state.roomTypes}
+          onFormSubmit={this.handleEditFormSubmit}
+          onTrashClick={this.handleTrashClick}
+          onTypeChange={this.handleTypeChange}
+          onQuantityChange={this.handleQuantityChange}
+        />
+        <ToggleableRoomTypeForm
+          onFormSubmit={this.handleCreateFormSubmit}
+        />
       </div>
     )
   }

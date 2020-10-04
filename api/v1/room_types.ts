@@ -4,14 +4,14 @@ import { MongoClient } from 'mongodb'
 import { decodeToken } from '../tools/decode_token'
 import { authorizeUser } from '../tools/authorize_user'
 import { IDecodedAuthToken } from '../types/auth'
-import { IRoom, IRoomCollection } from '../types/rooms'
+import { IRoomType, IRoomTypeCollection } from '../types/room_type'
 import { MONGODB_URL } from '../tools/constants'
 import { methodNotImplemented } from '../tools/generic_response'
-import { isRoomValid } from '../validators/rooms'
+import { isRoomTypeValid } from '../validators/room_type'
 import { DB } from '../tools/db'
 
-async function getRooms(email: string): Promise<IRoomCollection> {
-  let roomCollection: IRoomCollection = []
+async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
+  let roomCollection: IRoomTypeCollection = []
 
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
@@ -32,8 +32,8 @@ async function getRooms(email: string): Promise<IRoomCollection> {
     const query = { email }
 
     const options = {
-      sort: { roomNumber: 1 },
-      projection: { _id: 1, email: 1, roomNumber: 1, roomType: 1, isEmpty: 1 }
+      sort: { quantity: 1 },
+      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1 }
     }
 
     /* -------------------------------------------------- */
@@ -48,10 +48,10 @@ async function getRooms(email: string): Promise<IRoomCollection> {
 
     await cursor.forEach((item) => {
       roomCollection.push({
-        roomId: item._id,
-        roomNumber: item.roomNumber,
-        roomType: item.roomType,
-        isEmpty: item.isEmpty
+        id: item._id,
+        quantity: item.quantity,
+        type: item.type,
+        price: item.price
       })
     })
 
@@ -64,8 +64,8 @@ async function getRooms(email: string): Promise<IRoomCollection> {
   return roomCollection
 }
 
-async function createRoom(email: string, roomNumber: number, roomType: string, isEmpty: number): Promise<IRoom> {
-  let newRoom: IRoom
+async function createRoomType(email: string, quantity: number, type: string, price: number): Promise<IRoomType> {
+  let newRoomType: IRoomType
 
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
@@ -76,20 +76,20 @@ async function createRoom(email: string, roomNumber: number, roomType: string, i
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    const doc = { email, roomNumber, roomType, isEmpty }
+    const doc = { email, quantity, type, price }
     const result = await collection.insertOne(doc)
 
-    newRoom = {
-      roomId: result.insertedId,
-      roomNumber,
-      roomType,
-      isEmpty
+    newRoomType = {
+      id: result.insertedId,
+      quantity,
+      type,
+      price
     }
   } catch (err) {
     throw new Error(err)
   }
 
-  return newRoom
+  return newRoomType
 }
 
 function methodGet(request: NowRequest, response: NowResponse) {
@@ -107,8 +107,8 @@ function methodGet(request: NowRequest, response: NowResponse) {
         return
       }
 
-      getRooms(email)
-        .then((roomCollection: IRoomCollection) => {
+      getRoomTypes(email)
+        .then((roomCollection: IRoomTypeCollection) => {
           response.status(200).json(roomCollection)
         })
         .catch((err: Error) => {
@@ -135,14 +135,14 @@ function methodPost(request: NowRequest, response: NowResponse) {
         return
       }
 
-      if (!isRoomValid(request, response)) return
+      if (!isRoomTypeValid(request, response)) return
 
-      const roomNumber: number = parseInt(request.body.roomNumber)
-      const roomType: string = request.body.roomType
-      const isEmpty: number = request.body.isEmpty
+      const quantity: number = parseInt(request.body.quantity)
+      const type: string = request.body.type
+      const price: number = request.body.price
 
-      createRoom(email, roomNumber, roomType, isEmpty)
-        .then((room: IRoom) => {
+      createRoomType(email, quantity, type, price)
+        .then((room: IRoomType) => {
           response.status(200).json(room)
         })
         .catch((err: Error) => {
@@ -155,7 +155,13 @@ function methodPost(request: NowRequest, response: NowResponse) {
 }
 
 export default (request: NowRequest, response: NowResponse) => {
-  switch (request.method) {
+  if (!request || typeof request.method !== 'string') {
+    throw new Error('must provide request method')
+  }
+
+  const method = request.method.toUpperCase()
+
+  switch (method) {
     case 'GET':
       methodGet(request, response)
       break

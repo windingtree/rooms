@@ -6,8 +6,12 @@ import Grid from '@material-ui/core/Grid'
 import RoomTypeForm from '../RoomTypeForm/RoomTypeForm'
 
 class ToggleableRoomTypeForm extends React.Component {
-  state = {
-    isOpen: false,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      isOpen: false,
+    }
   }
 
   handleFormOpen = () => {
@@ -18,8 +22,8 @@ class ToggleableRoomTypeForm extends React.Component {
     this.setState({ isOpen: false })
   }
 
-  handleFormSubmit = (room) => {
-    this.props.onFormSubmit(room)
+  handleFormSubmit = (roomType) => {
+    this.props.onFormSubmit(roomType)
     this.setState({ isOpen: false })
   }
 

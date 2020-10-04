@@ -20,14 +20,14 @@ const apiClient = (function () {
   function login(data) {
     return fetch('/api/v1/login', {
       method: 'post',
-      body: JSON.stringify(data),
       headers: makeHeaders(),
+      body: JSON.stringify(data),
     }).then(checkStatus)
       .then(parseJSON)
   }
 
   function getRoomTypes() {
-    return fetch('/api/v1/rooms', {
+    return fetch('/api/v1/room_types', {
       method: 'get',
       headers: makeAuthHeaders(),
     }).then(checkStatus)
@@ -35,28 +35,27 @@ const apiClient = (function () {
   }
 
   function createRoomType(data) {
-    return fetch('/api/v1/rooms', {
+    return fetch('/api/v1/room_types', {
       method: 'post',
-      body: JSON.stringify(data),
       headers: makeAuthHeaders(),
+      body: JSON.stringify(data),
     })
       .then(checkStatus)
       .then(parseJSON)
   }
 
   function updateRoomType(data) {
-    return fetch('/api/v1/rooms/' + data.roomId, {
+    return fetch('/api/v1/room_types/' + data.id, {
       method: 'put',
-      body: JSON.stringify(data),
       headers: makeAuthHeaders(),
+      body: JSON.stringify(data),
     }).then(checkStatus)
       .then(parseJSON)
   }
 
-  function deleteRoomType(data) {
-    return fetch('/api/v1/rooms/' + data.roomId, {
+  function deleteRoomType(id) {
+    return fetch('/api/v1/room_types/' + id, {
       method: 'delete',
-      body: JSON.stringify(data),
       headers: makeAuthHeaders(),
     }).then(checkStatus)
       .then(parseJSON)

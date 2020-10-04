@@ -20,51 +20,51 @@ class RoomTypeForm extends React.Component {
     super(props)
 
     this.state = {
-      roomId: this.props.roomId || null,
-      roomNumber: this.props.roomNumber || '',
-      roomType: this.props.roomType || '',
-      isEmpty: this.props.isEmpty || 1,
+      id: this.props.id || null,
+      quantity: this.props.quantity || 0,
+      type: this.props.type || '',
+      price: this.props.price || 0,
     }
   }
 
-  handleRoomNumberChange = (e) => {
-    this.setState({ roomNumber: e.target.value })
+  handleQuantityChange = (e) => {
+    this.setState({ quantity: e.target.value })
   }
 
-  handleRoomTypeChange = (e) => {
-    this.setState({ roomType: e.target.value })
+  handleTypeChange = (e) => {
+    this.setState({ type: e.target.value })
   }
 
   handleSubmit = () => {
     this.props.onFormSubmit({
-      roomId: this.state.roomId,
-      roomNumber: this.state.roomNumber,
-      roomType: this.state.roomType,
-      isEmpty: this.state.isEmpty,
+      id: this.state.id,
+      quantity: this.state.quantity,
+      type: this.state.type,
+      price: this.state.price,
     })
   }
 
   render() {
-    const submitText = this.props.roomId ? 'Update' : 'Create'
+    const submitText = this.props.id ? 'Update' : 'Create'
     const { classes } = this.props
 
     return (
       <Card className={classes.room_type_card}>
         <CardContent>
           <div>
-            <label>Room Type</label>
+            <label>Type</label>
             <input
               type='text'
-              value={this.state.roomType}
-              onChange={this.handleRoomTypeChange}
+              value={this.state.type}
+              onChange={this.handleTypeChange}
             />
           </div>
           <div>
-            <label>Room Quantity</label>
+            <label>Quantity</label>
             <input
               type='text'
-              value={this.state.roomNumber}
-              onChange={this.handleRoomNumberChange}
+              value={this.state.quantity}
+              onChange={this.handleQuantityChange}
             />
           </div>
         </CardContent>
