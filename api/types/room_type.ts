@@ -3,6 +3,7 @@ interface IRoomType {
   quantity: number
   type: string
   price: number
+  amenities: string
 }
 
 type IRoomTypeCollection = Array<IRoomType>

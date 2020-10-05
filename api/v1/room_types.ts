@@ -33,7 +33,7 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
 
     const options = {
       sort: { createdAt: 1 },
-      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1 }
+      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
     }
 
     /* -------------------------------------------------- */
@@ -51,7 +51,8 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
         id: item._id,
         quantity: item.quantity,
         type: item.type,
-        price: item.price
+        price: item.price,
+        amenities: item.amenities,
       })
     })
 
@@ -64,7 +65,7 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
   return roomCollection
 }
 
-async function createRoomType(email: string, quantity: number, type: string, price: number): Promise<IRoomType> {
+async function createRoomType(email: string, quantity: number, type: string, price: number, amenities: string): Promise<IRoomType> {
   let newRoomType: IRoomType
 
   const dbClient = await DB.getInstance().getDbClient()
@@ -76,14 +77,15 @@ async function createRoomType(email: string, quantity: number, type: string, pri
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    const doc = { email, quantity, type, price }
+    const doc = { email, quantity, type, price, amenities }
     const result = await collection.insertOne(doc)
 
     newRoomType = {
       id: result.insertedId,
       quantity,
       type,
-      price
+      price,
+      amenities
     }
   } catch (err) {
     throw new Error(err)
@@ -139,9 +141,10 @@ function methodPost(request: NowRequest, response: NowResponse) {
 
       const quantity: number = parseInt(request.body.quantity)
       const type: string = request.body.type
-      const price: number = request.body.price
+      const price: number = parseFloat(request.body.price)
+      const amenities: string = request.body.amenities
 
-      createRoomType(email, quantity, type, price)
+      createRoomType(email, quantity, type, price, amenities)
         .then((room: IRoomType) => {
           response.status(200).json(room)
         })

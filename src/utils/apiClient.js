@@ -34,6 +34,14 @@ const apiClient = (function () {
       .then(parseJSON)
   }
 
+  function getRoomType(id) {
+    return fetch(`/api/v1/room_types/${id}`, {
+      method: 'get',
+      headers: makeAuthHeaders(),
+    }).then(checkStatus)
+      .then(parseJSON)
+  }
+
   function createRoomType(data) {
     return fetch('/api/v1/room_types', {
       method: 'post',
@@ -81,6 +89,7 @@ const apiClient = (function () {
   return {
     login,
     getRoomTypes,
+    getRoomType,
     createRoomType,
     updateRoomType,
     deleteRoomType,

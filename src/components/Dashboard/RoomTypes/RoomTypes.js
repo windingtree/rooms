@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
@@ -13,6 +14,7 @@ function initRoomTypeObj(attrs = {}) {
     type: attrs.type || '',
     id: attrs.id || uuidv4(),
     price: attrs.price || 0,
+    amenities: attrs.amenities || '',
   }
 
   return roomTypeObj
@@ -24,7 +26,7 @@ class RoomTypes extends React.Component {
 
     this._isDestroyed = false
     this.state = {
-      roomTypes: [],
+      roomTypes: null,
     }
   }
 
@@ -40,8 +42,8 @@ class RoomTypes extends React.Component {
     this.createRoomType({})
   }
 
-  handleEditClick = () => {
-    console.log('Edit clicked.')
+  handleEditClick = (id) => {
+    this.props.history.push(`/dashboard/room-types/${id}`)
   }
 
   handleTrashClick = (id) => {
@@ -122,6 +124,7 @@ class RoomTypes extends React.Component {
             quantity: attrs.quantity,
             type: attrs.type,
             price: attrs.price,
+            amenities: attrs.amenities,
           })
         } else {
           return roomType
@@ -158,26 +161,35 @@ class RoomTypes extends React.Component {
 
   render() {
     return (
-      <div>
-        <RoomTypeList
-          roomTypes={this.state.roomTypes}
-          onEditClick={this.handleEditClick}
-          onTrashClick={this.handleTrashClick}
-          onPropValueChange={this.handlePropValueChange}
-        />
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
-            <AddCircleIcon />
-          </IconButton>
-        </Grid>
-      </div>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        {
+          (this.state.roomTypes === null) ?
+            <div>Loading ...</div> :
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+              <RoomTypeList
+                roomTypes={this.state.roomTypes}
+                onEditClick={this.handleEditClick}
+                onTrashClick={this.handleTrashClick}
+                onPropValueChange={this.handlePropValueChange}
+              />
+              <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
+                <AddCircleIcon />
+              </IconButton>
+            </Grid>
+        }
+      </Grid>
     )
   }
 }
 
-export default RoomTypes
+export default withRouter(RoomTypes)

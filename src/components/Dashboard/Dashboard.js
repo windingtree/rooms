@@ -8,6 +8,7 @@ import Calendar from './Calendar/Calendar'
 import Bookings from './Bookings/Bookings'
 import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
+import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
 import Rates from './Rates/Rates'
 import { history } from '../../utils/history'
 
@@ -116,6 +117,9 @@ class Dashboard extends React.Component {
               </Route>
               <Route exact path="/dashboard/room-types">
                 { this.isLoggedIn ? <RoomTypes /> : <Redirect to="/" /> }
+              </Route>
+              <Route exact path="/dashboard/room-types/:roomTypeId">
+                { this.isLoggedIn ? <RoomTypeEdit /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/rates">
                 { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }

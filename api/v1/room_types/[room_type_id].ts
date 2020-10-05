@@ -25,8 +25,8 @@ function getRoomTypeId(request: NowRequest): string|null {
   return room_type_id
 }
 
-async function updateRoomType(id: string, quantity: number, type: string, price: number): Promise<IRoomType> {
-  const newRoomType: IRoomType = { id, quantity, type, price }
+async function updateRoomType(id: string, quantity: number, type: string, price: number, amenities: string): Promise<IRoomType> {
+  const newRoomType: IRoomType = { id, quantity, type, price, amenities }
 
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
@@ -39,16 +39,10 @@ async function updateRoomType(id: string, quantity: number, type: string, price:
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    // create a filter for a document to update
     const filter = { _id: new ObjectID(id) }
-
-    // this option instructs the method to NOT create a document
-    // (if no documents match the filter)
     const options = { upsert: false }
-
-    // create a document that sets the plot of the movie
     const updateDoc = {
-      $set: { quantity, type, price }
+      $set: { quantity, type, price, amenities }
     }
 
     result = await collection.updateOne(filter, updateDoc, options)
@@ -77,7 +71,6 @@ async function deleteRoomType(id: string): Promise<boolean> {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('rooms')
 
-    // create a filter for a document to update
     const filter = { _id: new ObjectID(id) }
 
     result = await collection.deleteOne(filter)
@@ -90,6 +83,41 @@ async function deleteRoomType(id: string): Promise<boolean> {
   }
 
   return false
+}
+
+async function getRoomType(id: string): Promise<IRoomType|null> {
+  const dbClient = await DB.getInstance().getDbClient()
+  if (dbClient === null) {
+    throw new Error('No connection to DB')
+  }
+
+  let result
+
+  try {
+    const database = dbClient.db('rooms-staging')
+    const collection = database.collection('rooms')
+
+    const query = { _id: new ObjectID(id) }
+    const options = {
+      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
+    }
+
+    result = await collection.findOne(query, options)
+  } catch (err) {
+    throw new Error(err)
+  }
+
+  if (result !== null) {
+    return {
+      id: result._id,
+      quantity: result.quantity,
+      type: result.type,
+      price: result.price,
+      amenities: result.amenities,
+    }
+  } else {
+    return null
+  }
 }
 
 function methodPut(request: NowRequest, response: NowResponse) {
@@ -119,11 +147,50 @@ function methodPut(request: NowRequest, response: NowResponse) {
 
       const quantity: number = parseInt(request.body.quantity)
       const type: string = request.body.type
-      const price: number = request.body.price
+      const price: number = parseFloat(request.body.price)
+      const amenities: string = request.body.amenities
 
-      updateRoomType((id as string), quantity, type, price)
+      updateRoomType((id as string), quantity, type, price, amenities)
         .then((room: IRoomType) => {
           response.status(200).json(room)
+        })
+        .catch((err: Error) => {
+          response.status(500).json({ err })
+        })
+    })
+    .catch((err: Error) => {
+      response.status(500).json({ err })
+    })
+}
+
+function methodGet(request: NowRequest, response: NowResponse) {
+  let decodedToken: IDecodedAuthToken|null = decodeToken(request, response)
+
+  if (decodedToken === null) return
+
+  const email: string = (decodedToken as IDecodedAuthToken).email
+  const oneTimePassword: string = (decodedToken as IDecodedAuthToken).oneTimePassword
+
+  authorizeUser(email, oneTimePassword)
+    .then((userIsAuthorized: boolean) => {
+      if (!userIsAuthorized) {
+        response.status(401).json({ err: 'email or password do not match' })
+        return
+      }
+
+      const id: string|null = getRoomTypeId(request)
+      if (id === null) {
+        response.status(500).json({ err: 'room_type_id is not set' })
+        return
+      }
+
+      getRoomType((id as string))
+        .then((roomType: IRoomType|null) => {
+          if (roomType === null) {
+            response.status(404).json({ found: 0 })
+          } else {
+            response.status(200).json(roomType)
+          }
         })
         .catch((err: Error) => {
           response.status(500).json({ err })
@@ -182,6 +249,9 @@ export default (request: NowRequest, response: NowResponse) => {
   switch (method) {
     case 'PUT':
       methodPut(request, response)
+      break
+    case 'GET':
+      methodGet(request, response)
       break
     case 'DELETE':
       methodDelete(request, response)

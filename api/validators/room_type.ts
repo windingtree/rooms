@@ -35,6 +35,13 @@ function isRoomTypeValid(request: NowRequest, response: NowResponse): boolean {
     return false
   }
 
+  if (
+    (typeof request.body.amenities !== 'string')
+  ) {
+    response.status(500).json({ err: 'must provide a valid amenities value' })
+    return false
+  }
+
   return true
 }
 

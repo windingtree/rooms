@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import DoneIcon from '@material-ui/icons/Done';
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
@@ -35,7 +35,7 @@ class RoomType extends React.Component {
   }
 
   handleEditClick = () => {
-    this.props.onEditClick(this.props.id)
+    this.props.onDoneClick(this.props.id)
   }
 
   handleTypeChange = (e) => {
@@ -48,6 +48,10 @@ class RoomType extends React.Component {
 
   handlePriceChange = (e) => {
     this.props.onPropValueChange(this.props.id, 'price', e)
+  }
+
+  handleAmenitiesChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'amenities', e)
   }
 
   render() {
@@ -86,11 +90,19 @@ class RoomType extends React.Component {
               />
               <div className={classes.price_currency}>USD</div>
             </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.amenities}
+                label="Amenities"
+                onValueChange={this.handleAmenitiesChange}
+                inputWidth="250"
+              />
+            </Grid>
           </Grid>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="edit" onClick={this.handleEditClick}>
-            <EditIcon />
+          <IconButton aria-label="done" onClick={this.handleEditClick}>
+            <DoneIcon />
           </IconButton>
 
           <div className={classes.grow}></div>

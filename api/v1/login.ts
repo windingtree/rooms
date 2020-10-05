@@ -14,11 +14,8 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
     const collection = database.collection('owners')
 
     const query = { email: ownerEmail }
-
     const options = {
-      // sort matched documents in descending order by rating
       sort: { rating: -1 },
-      // Include only the `email` and `imdb` fields in the returned document
       projection: { _id: 0, email: 1, oneTimePassword: 1 },
     }
 
