@@ -14,5 +14,5 @@ type IRoomTypeCollection = Array<IRoomType>
 export {
   IBaseRoomType,
   IRoomType,
-  IRoomTypeCollection
+  IRoomTypeCollection,
 }

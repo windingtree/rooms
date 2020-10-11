@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-import { MONGODB_URL } from './constants'
+import { MONGODB_URL } from '../constants'
 
 class DB {
   private static _instance: DB = new DB()
@@ -8,7 +8,7 @@ class DB {
 
   constructor() {
     if (DB._instance) {
-      throw new Error("Error: Instantiation failed: Use DB.getInstance() instead of new.")
+      throw 'DB class instantiation failed. Use DB.getInstance() instead of new operator.'
     }
     DB._instance = this
   }
@@ -32,8 +32,6 @@ class DB {
     try {
       await this._dbClient.connect()
     } catch (err) {
-      console.timeEnd('db_connect')
-
       this._dbClient = null
       return
     }
@@ -46,5 +44,5 @@ class DB {
 }
 
 export {
-  DB
+  DB,
 }

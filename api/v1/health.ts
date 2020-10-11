@@ -1,7 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
-import { DB } from '../tools/db'
+import { genericApiMethodHandler, DB } from '../tools'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()

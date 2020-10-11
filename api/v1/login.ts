@@ -1,8 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import { v4 as uuidv4 } from 'uuid'
 
-import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
-import { DB } from '../tools/db'
+import { genericApiMethodHandler, DB } from '../tools'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   if (!request.body) {

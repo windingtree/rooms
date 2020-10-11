@@ -1,25 +1,9 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import { ObjectID } from 'mongodb'
 
-import { getUserAuthDetails } from '../../tools/authorize_user'
-import { IUserAuthDetails } from '../../types/auth'
-import { IBaseRoomType, IRoomType } from '../../types/room_type'
-import { genericApiMethodHandler } from '../../tools/generic_api_method_handler'
-import { checkRoomType } from '../../validators/room_type'
-import { DB } from '../../tools/db'
-
-function getRoomTypeId(request: NowRequest): string {
-  const { query: { room_type_id } } = request
-
-  if (
-    (typeof room_type_id !== 'string') ||
-    (room_type_id.length === 0)
-  ) {
-    throw 'Room type ID is not set.'
-  }
-
-  return room_type_id
-}
+import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue } from '../../tools'
+import { checkRoomType } from '../../validators'
+import { IUserAuthDetails, IBaseRoomType, IRoomType } from '../../types'
 
 async function updateRoomType(id: string, email: string, roomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
@@ -118,7 +102,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
   let id: string
   try {
-    id = getRoomTypeId(request)
+    id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     response.status(500).json({ err })
     return
@@ -160,7 +144,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
   let id: string
   try {
-    id = getRoomTypeId(request)
+    id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     response.status(500).json({ err })
     return
@@ -187,7 +171,7 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
 
   let id: string
   try {
-    id = getRoomTypeId(request)
+    id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     response.status(500).json({ err })
     return

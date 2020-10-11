@@ -1,18 +1,16 @@
 import { NowRequest } from '@vercel/node'
 import { MongoClient } from 'mongodb'
 
-import { DB } from './db'
-import { IDecodedAuthToken, IUserAuthDetails } from '../types/auth'
-import { decodeToken } from './decode_token'
+import { DB, decodeToken } from './'
+import { IDecodedAuthToken, IUserAuthDetails } from '../types'
 
 async function authorizeUser(email: string, oneTimePassword: string): Promise<boolean> {
-  let userIsAuthorized: boolean
-
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
   }
 
+  let userIsAuthorized: boolean
   try {
     const database = (dbClient as MongoClient).db('rooms-staging')
     const collection = database.collection('owners')
@@ -20,7 +18,6 @@ async function authorizeUser(email: string, oneTimePassword: string): Promise<bo
     const query = { email }
 
     const options = {
-      sort: { rating: -1 },
       projection: { _id: 0, email: 1, oneTimePassword: 1 },
     }
 

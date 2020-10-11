@@ -1,10 +1,8 @@
 import { NowRequest } from '@vercel/node'
 import * as jwt from 'jsonwebtoken'
 
-import { IDecodedAuthToken, IAnyObject } from '../types/auth'
-
-const JWT_SECRET = 'wjjEQRQvCYX5e3ClaPTy8jaYapwWacJiAHnyRNXoHlge7iWjLSo7PDqitV9FnYsS'
-const REQUIRED_JWT_FIELDS = [ 'email', 'oneTimePassword' ]
+import { JWT_SECRET } from '../constants'
+import { IDecodedAuthToken, IAnyObject } from '../types'
 
 function decodeToken(request: NowRequest): IDecodedAuthToken {
   const authHeaderValue = request.headers['authorization']
@@ -25,7 +23,8 @@ function decodeToken(request: NowRequest): IDecodedAuthToken {
   }
   const decodedAuthToken: IDecodedAuthToken = (decodedToken as IDecodedAuthToken)
 
-  REQUIRED_JWT_FIELDS.every((field) => {
+  const requiredFields: Array<string> = ['email', 'oneTimePassword']
+  requiredFields.every((field: string) => {
     if (typeof decodedAuthToken[field] !== 'string' || decodedAuthToken[field].length === 0) {
       throw `Field "${field}" is missing from JWT token.`
     }
@@ -37,5 +36,5 @@ function decodeToken(request: NowRequest): IDecodedAuthToken {
 }
 
 export {
-  decodeToken
+  decodeToken,
 }

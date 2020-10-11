@@ -1,11 +1,8 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getUserAuthDetails } from '../tools/authorize_user'
-import { IUserAuthDetails } from '../types/auth'
-import { IBaseRoomType, IRoomType, IRoomTypeCollection } from '../types/room_type'
-import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
-import { checkRoomType } from '../validators/room_type'
-import { DB } from '../tools/db'
+import { getUserAuthDetails, genericApiMethodHandler, DB } from '../tools'
+import { checkRoomType } from '../validators'
+import { IUserAuthDetails, IBaseRoomType, IRoomType, IRoomTypeCollection } from '../types'
 
 async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
   const dbClient = await DB.getInstance().getDbClient()

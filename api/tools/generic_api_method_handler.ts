@@ -1,7 +1,10 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { IMethodHandlerHash, TMethodFunc } from '../types/api'
-import { methodNotImplemented } from './generic_response'
+import { IMethodHandlerHash, TMethodFunc } from '../types'
+
+async function methodNotImplemented(request: NowRequest, response: NowResponse): Promise<void> {
+  response.status(501).json({ err: `Method ${request.method} not implemented.` })
+}
 
 async function genericApiMethodHandler(
   request: NowRequest, response: NowResponse,
@@ -23,5 +26,6 @@ async function genericApiMethodHandler(
 }
 
 export {
-  genericApiMethodHandler
+  methodNotImplemented,
+  genericApiMethodHandler,
 }

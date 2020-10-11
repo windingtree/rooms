@@ -39,5 +39,5 @@ function checkRoomType(request: NowRequest): void {
 }
 
 export {
-  checkRoomType
+  checkRoomType,
 }

@@ -10,12 +10,7 @@ interface IUserAuthDetails {
   oneTimePassword: string
 }
 
-interface IAnyObject {
-
-}
-
 export {
-  IUserAuthDetails,
   IDecodedAuthToken,
-  IAnyObject,
+  IUserAuthDetails,
 }
