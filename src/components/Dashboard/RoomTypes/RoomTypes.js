@@ -5,14 +5,15 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import { apiClient } from '../../../utils/apiClient'
+import { apiClient } from '../../../utils/api/client'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 
 function initRoomTypeObj(attrs = {}) {
   const roomTypeObj = {
-    quantity: attrs.quantity || 0,
-    type: attrs.type || '',
     id: attrs.id || uuidv4(),
+
+    type: attrs.type || '',
+    quantity: attrs.quantity || 0,
     price: attrs.price || 0,
     amenities: attrs.amenities || '',
   }

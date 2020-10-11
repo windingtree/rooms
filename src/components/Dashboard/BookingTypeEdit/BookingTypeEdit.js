@@ -3,21 +3,21 @@ import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
 import { apiClient } from '../../../utils/api/client'
-import RoomType from './RoomType/RoomType'
+import Booking from './Booking/Booking'
 
-class RoomTypeEdit extends React.Component {
+class BookingEdit extends React.Component {
   constructor(props) {
     super(props)
 
     this._isDestroyed = false
     this.state = {
-      roomTypeId: props.match.params.roomTypeId,
-      roomType: null
+      bookingId: props.match.params.bookingId,
+      booking: null
     }
   }
 
   componentDidMount() {
-    this.getRoomType(this.state.roomTypeId)
+    this.getBooking(this.state.bookingId)
   }
 
   componentWillUnmount() {
@@ -25,31 +25,31 @@ class RoomTypeEdit extends React.Component {
   }
 
   handleDoneClick = () => {
-    this.props.history.push('/dashboard/room-types')
+    this.props.history.push('/dashboard/bookings')
   }
 
   handleTrashClick = (id) => {
-    this.deleteRoomType(id)
+    this.deleteBooking(id)
   }
 
   handlePropValueChange = (id, propName, newValue) => {
-    let roomType = Object.assign({}, this.state.roomType)
+    let booking = Object.assign({}, this.state.booking)
 
-    if (roomType[propName] === newValue) {
+    if (booking[propName] === newValue) {
       return
     }
-    roomType[propName] = newValue
+    booking[propName] = newValue
 
-    this.updateRoomType(roomType)
+    this.updateBooking(booking)
   }
 
-  getRoomType = (roomTypeId) => {
+  getBooking = (bookingId) => {
     apiClient
-      .getRoomType(roomTypeId)
-      .then((roomType) => {
+      .getBooking(bookingId)
+      .then((booking) => {
         if (this._isDestroyed) return
 
-        this.setState({ roomType })
+        this.setState({ booking })
       })
       .catch((error) => {
         if (this._isDestroyed) return
@@ -60,11 +60,11 @@ class RoomTypeEdit extends React.Component {
       })
   }
 
-  updateRoomType = (roomType) => {
-    this.setState({ roomType })
+  updateBooking = (booking) => {
+    this.setState({ booking })
 
     apiClient
-      .updateRoomType(roomType)
+      .updateBooking(booking)
       .catch((error) => {
         if (this._isDestroyed) return
 
@@ -74,13 +74,13 @@ class RoomTypeEdit extends React.Component {
       })
   }
 
-  deleteRoomType = (id) => {
+  deleteBooking = (id) => {
     apiClient
-      .deleteRoomType(id)
+      .deleteBooking(id)
       .then(() => {
         if (this._isDestroyed) return
 
-        this.props.history.push('/dashboard/room-types')
+        this.props.history.push('/dashboard/bookings')
       })
       .catch((error) => {
         if (this._isDestroyed) return
@@ -100,15 +100,19 @@ class RoomTypeEdit extends React.Component {
         alignItems="center"
       >
         {
-          (this.state.roomType === null) ?
+          (this.state.booking === null) ?
             <div>Loading...</div> :
-            <RoomType
-              key={this.state.roomType.id}
-              id={this.state.roomType.id}
-              quantity={this.state.roomType.quantity}
-              type={this.state.roomType.type}
-              price={this.state.roomType.price}
-              amenities={this.state.roomType.amenities}
+            <Booking
+              key={this.state.booking.id}
+              id={this.state.booking.id}
+
+              checkInDate={this.state.booking.checkInDate}
+              checkOutDate={this.state.booking.checkOutDate}
+              guestName={this.state.booking.guestName}
+              guestEmail={this.state.booking.guestEmail}
+              phoneNumber={this.state.booking.phoneNumber}
+              roomType={this.state.booking.roomType}
+
               onDoneClick={this.handleDoneClick}
               onTrashClick={this.handleTrashClick}
               onPropValueChange={this.handlePropValueChange}
@@ -119,4 +123,4 @@ class RoomTypeEdit extends React.Component {
   }
 }
 
-export default withRouter(RoomTypeEdit)
+export default withRouter(BookingEdit)

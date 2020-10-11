@@ -6,6 +6,7 @@ import NavTop from './NavTop/NavTop'
 import NavBottom from './NavBottom/NavBottom'
 import Calendar from './Calendar/Calendar'
 import Bookings from './Bookings/Bookings'
+import BookingTypeEdit from './BookingTypeEdit/BookingTypeEdit'
 import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
 import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
@@ -109,18 +110,25 @@ class Dashboard extends React.Component {
               <Route exact path="/dashboard/calendar">
                 { this.isLoggedIn ? <Calendar /> : <Redirect to="/" /> }
               </Route>
+
               <Route exact path="/dashboard/bookings">
                 { this.isLoggedIn ? <Bookings /> : <Redirect to="/" /> }
               </Route>
+              <Route exact path="/dashboard/bookings/:bookingId">
+                { this.isLoggedIn ? <BookingTypeEdit /> : <Redirect to="/" /> }
+              </Route>
+
               <Route exact path="/dashboard/today">
                 { this.isLoggedIn ? <Today /> : <Redirect to="/" /> }
               </Route>
+
               <Route exact path="/dashboard/room-types">
                 { this.isLoggedIn ? <RoomTypes /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/room-types/:roomTypeId">
                 { this.isLoggedIn ? <RoomTypeEdit /> : <Redirect to="/" /> }
               </Route>
+
               <Route exact path="/dashboard/rates">
                 { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }
               </Route>
