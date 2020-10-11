@@ -1,33 +1,22 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { MongoClient } from 'mongodb'
 
-import { decodeToken } from '../tools/decode_token'
-import { authorizeUser } from '../tools/authorize_user'
-import { IDecodedAuthToken } from '../types/auth'
-import { IRoomType, IRoomTypeCollection } from '../types/room_type'
-import { MONGODB_URL } from '../tools/constants'
-import { methodNotImplemented } from '../tools/generic_response'
-import { isRoomTypeValid } from '../validators/room_type'
+import { getUserAuthDetails } from '../tools/authorize_user'
+import { IUserAuthDetails } from '../types/auth'
+import { IBaseRoomType, IRoomType, IRoomTypeCollection } from '../types/room_type'
+import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
+import { checkRoomType } from '../validators/room_type'
 import { DB } from '../tools/db'
 
 async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
-  let roomCollection: IRoomTypeCollection = []
-
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
-    throw new Error('No connection to DB')
+    throw 'Could not connect to the database.'
   }
 
+  let roomTypeCollection: IRoomTypeCollection
   try {
-    /* -------------------------------------------------- */
-    console.log('getting rooms collection ...')
-    console.time('db_rooms_collection')
-
     const database = dbClient.db('rooms-staging')
-    const collection = database.collection('rooms')
-
-    console.timeEnd('db_rooms_collection')
-    /* -------------------------------------------------- */
+    const collection = database.collection('room-types')
 
     const query = { email }
 
@@ -36,18 +25,15 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
       projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
     }
 
-    /* -------------------------------------------------- */
-    console.log('getting rooms data ...')
-    console.time('db_rooms_data')
-
     const cursor = collection.find(query, options)
 
     if ((await cursor.count()) === 0) {
       return []
     }
 
+    roomTypeCollection = []
     await cursor.forEach((item) => {
-      roomCollection.push({
+      roomTypeCollection.push({
         id: item._id,
         quantity: item.quantity,
         type: item.type,
@@ -55,124 +41,91 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
         amenities: item.amenities,
       })
     })
-
-    console.timeEnd('db_rooms_data')
-    /* -------------------------------------------------- */
   } catch (err) {
-    throw new Error(err)
+    throw 'An error occurred while getting room types.'
   }
 
-  return roomCollection
+  return roomTypeCollection
 }
 
-async function createRoomType(email: string, quantity: number, type: string, price: number, amenities: string): Promise<IRoomType> {
-  let newRoomType: IRoomType
-
+async function createRoomType(email: string, newRoomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
-    throw new Error('No connection to DB')
+    throw 'Could not connect to the database.'
+  }
+
+  let roomType: IRoomType
+  try {
+    const database = dbClient.db('rooms-staging')
+    const collection = database.collection('room-types')
+
+    const doc = Object.assign({ email }, newRoomType)
+    const result = await collection.insertOne(doc)
+
+    if (!result) {
+      throw 'An error occurred while creating a new room type.'
+    }
+
+    roomType = Object.assign({ id: result.insertedId }, newRoomType)
+  } catch (err) {
+    throw 'An error occurred while creating a new room type.'
+  }
+
+  return roomType
+}
+
+async function GET(request: NowRequest, response: NowResponse): Promise<void> {
+  let userAuthDetails: IUserAuthDetails
+  try {
+    userAuthDetails = await getUserAuthDetails(request)
+  } catch (err) {
+    response.status(500).json({ err })
+    return
+  }
+
+  let roomCollection: IRoomTypeCollection
+  try {
+    roomCollection = await getRoomTypes(userAuthDetails.email)
+  } catch (err) {
+    response.status(500).json({ err })
+    return
+  }
+
+  response.status(200).json(roomCollection)
+}
+
+async function POST(request: NowRequest, response: NowResponse): Promise<void> {
+  let userAuthDetails: IUserAuthDetails
+  try {
+    userAuthDetails = await getUserAuthDetails(request)
+  } catch (err) {
+    response.status(500).json({ err })
+    return
   }
 
   try {
-    const database = dbClient.db('rooms-staging')
-    const collection = database.collection('rooms')
-
-    const doc = { email, quantity, type, price, amenities }
-    const result = await collection.insertOne(doc)
-
-    newRoomType = {
-      id: result.insertedId,
-      quantity,
-      type,
-      price,
-      amenities
-    }
+    checkRoomType(request)
   } catch (err) {
-    throw new Error(err)
+    response.status(500).json({ err })
+    return
   }
 
-  return newRoomType
-}
+  const type: string = request.body.type
+  const quantity: number = parseInt(request.body.quantity)
+  const price: number = parseFloat(request.body.price)
+  const amenities: string = request.body.amenities
 
-function methodGet(request: NowRequest, response: NowResponse) {
-  let decodedToken: IDecodedAuthToken|null = decodeToken(request, response)
-
-  if (decodedToken === null) return
-
-  const email: string = (decodedToken as IDecodedAuthToken).email
-  const oneTimePassword: string = (decodedToken as IDecodedAuthToken).oneTimePassword
-
-  authorizeUser(email, oneTimePassword)
-    .then((userIsAuthorized: boolean) => {
-      if (!userIsAuthorized) {
-        response.status(401).json({ err: 'email or password do not match' })
-        return
-      }
-
-      getRoomTypes(email)
-        .then((roomCollection: IRoomTypeCollection) => {
-          response.status(200).json(roomCollection)
-        })
-        .catch((err: Error) => {
-          response.status(500).json({ err })
-        })
-    })
-    .catch((err: Error) => {
-      response.status(500).json({ err })
-    })
-}
-
-function methodPost(request: NowRequest, response: NowResponse) {
-  let decodedToken: IDecodedAuthToken|null = decodeToken(request, response)
-
-  if (decodedToken === null) return
-
-  const email: string = (decodedToken as IDecodedAuthToken).email
-  const oneTimePassword: string = (decodedToken as IDecodedAuthToken).oneTimePassword
-
-  authorizeUser(email, oneTimePassword)
-    .then((userIsAuthorized: boolean) => {
-      if (!userIsAuthorized) {
-        response.status(401).json({ err: 'email or password do not match' })
-        return
-      }
-
-      if (!isRoomTypeValid(request, response)) return
-
-      const quantity: number = parseInt(request.body.quantity)
-      const type: string = request.body.type
-      const price: number = parseFloat(request.body.price)
-      const amenities: string = request.body.amenities
-
-      createRoomType(email, quantity, type, price, amenities)
-        .then((room: IRoomType) => {
-          response.status(200).json(room)
-        })
-        .catch((err: Error) => {
-          response.status(500).json({ err })
-        })
-    })
-    .catch((err: Error) => {
-      response.status(500).json({ err })
-    })
-}
-
-export default (request: NowRequest, response: NowResponse) => {
-  if (!request || typeof request.method !== 'string') {
-    throw new Error('must provide request method')
+  let roomType: IRoomType
+  try {
+    roomType = await createRoomType(userAuthDetails.email, { type, quantity, price, amenities })
+  } catch (err) {
+    response.status(500).json({ err })
+    return
   }
 
-  const method = request.method.toUpperCase()
+  response.status(200).json(roomType)
+}
 
-  switch (method) {
-    case 'GET':
-      methodGet(request, response)
-      break
-    case 'POST':
-      methodPost(request, response)
-      break
-    default:
-      methodNotImplemented(request, response)
-      break
-  }
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, { GET, POST })
 }

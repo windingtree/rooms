@@ -1,14 +1,35 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
-import { methodNotImplemented } from '../tools/generic_response'
-import { MONGODB_URL } from '../tools/constants'
+import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
 import { DB } from '../tools/db'
 
-async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<string> {
-  let oneTimePassword: string = ''
+async function POST(request: NowRequest, response: NowResponse): Promise<void> {
+  if (!request.body) {
+    response.status(500).json({ err: 'request must contain a valid body object' })
+    return
+  }
 
+  const ownerEmailProp = request.body.email
+  if (!ownerEmailProp || typeof ownerEmailProp !== 'string' || ownerEmailProp.length === 0) {
+    response.status(500).json({ err: 'owner email not specified' })
+    return
+  }
+  const ownerEmail: string = (ownerEmailProp as string)
+
+  let dbClient
+  try {
+    dbClient = await DB.getInstance().getDbClient()
+  } catch (err) {
+    response.status(500).json({ err })
+    return
+  }
+  if (dbClient === null) {
+    response.status(500).json({ err: 'No connection to DB' })
+    return
+  }
+
+  let oneTimePassword: string
   try {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('owners')
@@ -26,57 +47,21 @@ async function dbLogic(dbClient: MongoClient, ownerEmail: string): Promise<strin
 
       const newOwner = { email: ownerEmail, oneTimePassword }
       const result = await collection.insertOne(newOwner)
+
+      if (!result) {
+        throw 'An error occurred while creating a new owner.'
+      }
     } else {
       oneTimePassword = ownerRecord.oneTimePassword
     }
   } catch (err) {
-    throw new Error(err)
+    response.status(500).json({ err })
+    return
   }
 
-  return oneTimePassword
+  response.status(200).json({ email: ownerEmail, oneTimePassword })
 }
 
-async function methodPost(request: NowRequest, response: NowResponse) {
-  if (!request.body) {
-    response.status(500).json({ err: 'request must contain a valid body object' })
-    return
-  }
-
-  const ownerEmailProp: any = request.body.email
-  if (!ownerEmailProp || typeof ownerEmailProp !== 'string' || ownerEmailProp.length === 0) {
-    response.status(500).json({ err: 'owner email not specified' })
-    return
-  }
-  const ownerEmail: string = (ownerEmailProp as string)
-
-  const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    response.status(500).json({ err: 'No connection to DB' })
-    return
-  }
-
-  dbLogic(dbClient, ownerEmail)
-    .then((oneTimePassword: string) => {
-      response.status(200).json({ email: ownerEmail, oneTimePassword })
-    })
-    .catch((err: Error) => {
-      response.status(500).json({ err })
-    })
-}
-
-export default async (request: NowRequest, response: NowResponse) => {
-  if (!request || typeof request.method !== 'string') {
-    throw new Error('must provide request method')
-  }
-
-  const method = request.method.toUpperCase()
-
-  switch (method) {
-    case 'POST':
-      await methodPost(request, response)
-      break
-    default:
-      methodNotImplemented(request, response)
-      break
-  }
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, { POST })
 }

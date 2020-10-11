@@ -1,24 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { methodNotImplemented } from '../tools/generic_response'
+import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
 
-function methodGet(request: NowRequest, response: NowResponse) {
+async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   response.status(200).send('OK')
 }
 
-export default (request: NowRequest, response: NowResponse) => {
-  if (!request || typeof request.method !== 'string') {
-    throw new Error('must provide request method')
-  }
-
-  const method = request.method.toUpperCase()
-
-  switch (method) {
-    case 'GET':
-      methodGet(request, response)
-      break
-    default:
-      methodNotImplemented(request, response)
-      break
-  }
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, { GET })
 }

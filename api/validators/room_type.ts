@@ -1,9 +1,8 @@
-import { NowRequest, NowResponse } from '@vercel/node'
+import { NowRequest } from '@vercel/node'
 
-function isRoomTypeValid(request: NowRequest, response: NowResponse): boolean {
+function checkRoomType(request: NowRequest): void {
   if (!request.body) {
-    response.status(500).json({ err: 'must provide a valid body with request' })
-    return false
+    throw 'must provide a valid body with request'
   }
 
   if (
@@ -13,8 +12,7 @@ function isRoomTypeValid(request: NowRequest, response: NowResponse): boolean {
       (Number.isNaN(parseInt(request.body.quantity)))
     )
   ) {
-    response.status(500).json({ err: 'must provide a valid quantity value' })
-    return false
+    throw 'must provide a valid quantity value'
   }
 
   if (
@@ -24,27 +22,22 @@ function isRoomTypeValid(request: NowRequest, response: NowResponse): boolean {
       (Number.isNaN(parseInt(request.body.price)))
     )
   ) {
-    response.status(500).json({ err: 'must provide a valid price value' })
-    return false
+    throw 'must provide a valid price value'
   }
 
   if (
     (typeof request.body.type !== 'string')
   ) {
-    response.status(500).json({ err: 'must provide a valid type value' })
-    return false
+    throw 'must provide a valid type value'
   }
 
   if (
     (typeof request.body.amenities !== 'string')
   ) {
-    response.status(500).json({ err: 'must provide a valid amenities value' })
-    return false
+    throw 'must provide a valid amenities value'
   }
-
-  return true
 }
 
 export {
-  isRoomTypeValid
+  checkRoomType
 }

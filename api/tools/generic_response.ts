@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-function methodNotImplemented(request: NowRequest, response: NowResponse) {
+async function methodNotImplemented(request: NowRequest, response: NowResponse): Promise<void> {
   response.status(501).json({ err: `Method ${request.method} not implemented.` })
 }
 

@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node index.js",
     "build": "tsc --outDir ./dist",
+    "lint": "eslint -c ./.eslintrc.js --resolve-plugins-relative-to ./ '*.ts' '*/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,5 +36,9 @@
     "typescript": "^4.0.2",
     "uuid": "^8.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "eslint": "^7.11.0"
+  }
 }

@@ -4,8 +4,7 @@ import { MONGODB_URL } from './constants'
 
 class DB {
   private static _instance: DB = new DB()
-
-  private _dbClient: MongoClient | null = null
+  private _dbClient: MongoClient|null = null
 
   constructor() {
     if (DB._instance) {
@@ -18,21 +17,26 @@ class DB {
     return DB._instance
   }
 
-  private async createDbConnection() {
+  private async createDbConnection(): Promise<void> {
     if (this._dbClient) {
       return
     }
 
-    this._dbClient = new MongoClient(MONGODB_URL, { useUnifiedTopology: true })
+    try {
+      this._dbClient = new MongoClient(MONGODB_URL, { useUnifiedTopology: true })
+    } catch (err) {
+      this._dbClient = null
+      return
+    }
 
-    /* -------------------------------------------------- */
-    console.log('calling _dbClient.connect() ...')
-    console.time('db_connect')
+    try {
+      await this._dbClient.connect()
+    } catch (err) {
+      console.timeEnd('db_connect')
 
-    await this._dbClient.connect()
-
-    console.timeEnd('db_connect')
-    /* -------------------------------------------------- */
+      this._dbClient = null
+      return
+    }
   }
 
   public async getDbClient(): Promise<MongoClient|null> {

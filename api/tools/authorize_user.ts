@@ -1,17 +1,19 @@
+import { NowRequest } from '@vercel/node'
 import { MongoClient } from 'mongodb'
 
 import { DB } from './db'
-import { MONGODB_URL } from './constants'
+import { IDecodedAuthToken, IUserAuthDetails } from '../types/auth'
+import { decodeToken } from './decode_token'
 
 async function authorizeUser(email: string, oneTimePassword: string): Promise<boolean> {
-  let userIsAuthorized: boolean = false
+  let userIsAuthorized: boolean
+
+  const dbClient = await DB.getInstance().getDbClient()
+  if (dbClient === null) {
+    throw 'Could not connect to the database.'
+  }
 
   try {
-    const dbClient = await DB.getInstance().getDbClient()
-    if (dbClient === null) {
-      throw new Error('No connection to DB')
-    }
-
     const database = (dbClient as MongoClient).db('rooms-staging')
     const collection = database.collection('owners')
 
@@ -26,14 +28,44 @@ async function authorizeUser(email: string, oneTimePassword: string): Promise<bo
 
     if (ownerRecord && ownerRecord.oneTimePassword === oneTimePassword) {
       userIsAuthorized = true
+    } else {
+      userIsAuthorized = false
     }
   } catch (err) {
-    userIsAuthorized = false
+    throw 'Could not authenticate user.'
   }
 
   return userIsAuthorized
 }
 
+async function getUserAuthDetails(request: NowRequest): Promise<IUserAuthDetails> {
+  let decodedToken: IDecodedAuthToken
+  try {
+    decodedToken = decodeToken(request)
+  } catch (err) {
+    throw err
+  }
+
+  const email: string = (decodedToken as IDecodedAuthToken).email
+  const oneTimePassword: string = (decodedToken as IDecodedAuthToken).oneTimePassword
+
+  let userIsAuthorized: boolean
+  try {
+    userIsAuthorized = await authorizeUser(email, oneTimePassword)
+  } catch (err) {
+    throw err
+  }
+
+  if (userIsAuthorized !== true) {
+    throw 'Email or one time password are not valid.'
+  }
+
+  return {
+    userIsAuthorized, email, oneTimePassword
+  }
+}
+
 export {
-  authorizeUser
+  getUserAuthDetails,
+  authorizeUser,
 }

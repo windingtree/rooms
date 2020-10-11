@@ -1,47 +1,25 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { MongoClient } from 'mongodb'
 
-import { methodNotImplemented } from '../tools/generic_response'
-import { MONGODB_URL } from '../tools/constants'
+import { genericApiMethodHandler } from '../tools/generic_api_method_handler'
 import { DB } from '../tools/db'
 
-async function run(dbClient: MongoClient) {
-  try {
-    await dbClient.db().admin().ping()
-  } catch (err) {
-    throw new Error(err)
-  }
-}
-
-async function methodGet(request: NowRequest, response: NowResponse) {
+async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
-    response.status(500).json({ db: 'down', err: 'No connection to DB' })
+    response.status(500).json({ err: 'Could not connect to the database.' })
     return
   }
 
-  run(dbClient)
-    .then(() => {
-      response.status(200).json({ db: 'up' })
-    })
-    .catch((err) => {
-      response.status(500).json({ db: 'down', err })
-    })
+  try {
+    await dbClient.db().admin().ping()
+  } catch (err) {
+    response.status(500).json({ err: 'Could not complete ping() operation on the database.' })
+    return
+  }
+
+  response.status(200).json({ db: 'up' })
 }
 
-export default async (request: NowRequest, response: NowResponse) => {
-  if (!request || typeof request.method !== 'string') {
-    throw new Error('must provide request method')
-  }
-
-  const method = request.method.toUpperCase()
-
-  switch (method) {
-    case 'GET':
-      await methodGet(request, response)
-      break
-    default:
-      methodNotImplemented(request, response)
-      break
-  }
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, { GET })
 }

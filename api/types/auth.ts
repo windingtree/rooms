@@ -4,6 +4,18 @@ interface IDecodedAuthToken {
   oneTimePassword: string
 }
 
+interface IUserAuthDetails {
+  userIsAuthorized: boolean
+  email: string
+  oneTimePassword: string
+}
+
+interface IAnyObject {
+
+}
+
 export {
-  IDecodedAuthToken
+  IUserAuthDetails,
+  IDecodedAuthToken,
+  IAnyObject,
 }
