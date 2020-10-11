@@ -2,10 +2,10 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { ObjectID } from 'mongodb'
 
 import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue } from '../../tools'
-import { checkRoomType } from '../../validators'
-import { IUserAuthDetails, IBaseRoomType, IRoomType } from '../../types'
+import { checkBooking } from '../../validators'
+import { IUserAuthDetails, IBaseBooking, IBooking } from '../../types'
 
-async function updateRoomType(id: string, email: string, roomType: IBaseRoomType): Promise<IRoomType> {
+async function updateBooking(id: string, email: string, booking: IBaseBooking): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
@@ -14,27 +14,27 @@ async function updateRoomType(id: string, email: string, roomType: IBaseRoomType
   let result
   try {
     const database = dbClient.db('rooms-staging')
-    const collection = database.collection('room-types')
+    const collection = database.collection('bookings')
 
     const filter = { _id: new ObjectID(id) }
     const options = { upsert: false }
     const updateDoc = {
-      $set: Object.assign({ email }, roomType)
+      $set: Object.assign({ email }, booking)
     }
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw 'An error occurred while updating a room type.'
+    throw 'An error occurred while updating a booking.'
   }
 
   if (!result || !result.matchedCount) {
-    throw `Could not find a room type to update with ID '${id}'.`
+    throw `Could not find a booking to update with ID '${id}'.`
   }
 
-  return Object.assign({ id }, roomType)
+  return Object.assign({ id }, booking)
 }
 
-async function deleteRoomType(id: string): Promise<void> {
+async function deleteBooking(id: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
@@ -43,21 +43,21 @@ async function deleteRoomType(id: string): Promise<void> {
   let result
   try {
     const database = dbClient.db('rooms-staging')
-    const collection = database.collection('room-types')
+    const collection = database.collection('bookings')
 
     const filter = { _id: new ObjectID(id) }
 
     result = await collection.deleteOne(filter)
   } catch (err) {
-    throw 'An error occurred while deleting a room type.'
+    throw 'An error occurred while deleting a booking.'
   }
 
   if (!result || !result.deletedCount) {
-    throw `Could not find a room type to delete with ID '${id}'.`
+    throw `Could not find a booking to delete with ID '${id}'.`
   }
 }
 
-async function getRoomType(id: string): Promise<IRoomType> {
+async function getBooking(id: string): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
@@ -66,28 +66,39 @@ async function getRoomType(id: string): Promise<IRoomType> {
   let result
   try {
     const database = dbClient.db('rooms-staging')
-    const collection = database.collection('room-types')
+    const collection = database.collection('bookings')
 
     const query = { _id: new ObjectID(id) }
     const options = {
-      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
+      projection: {
+        _id: 1,
+        email: 1,
+        checkInDate: 1,
+        checkOutDate: 1,
+        guestName: 1,
+        guestEmail: 1,
+        phoneNumber: 1,
+        roomType: 1,
+      }
     }
 
     result = await collection.findOne(query, options)
   } catch (err) {
-    throw 'An error occurred while getting a room type.'
+    throw 'An error occurred while getting a booking.'
   }
 
   if (result === null) {
-    throw `Could not find a room type with ID '${id}'.`
+    throw `Could not find a booking with ID '${id}'.`
   }
 
   return {
     id: result._id,
-    quantity: result.quantity,
-    type: result.type,
-    price: result.price,
-    amenities: result.amenities,
+    checkInDate: result.checkInDate,
+    checkOutDate: result.checkOutDate,
+    guestName: result.guestName,
+    guestEmail: result.guestEmail,
+    phoneNumber: result.phoneNumber,
+    roomType: result.roomType,
   }
 }
 
@@ -102,14 +113,14 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
   let id: string
   try {
-    id = getQueryParamValue(request, 'room_type_id')
+    id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
   try {
-    checkRoomType(request)
+    checkBooking(request)
   } catch (err) {
     response.status(500).json({ err })
     return
@@ -117,22 +128,29 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
   const email: string = userAuthDetails.email
 
-  const type: string = request.body.type
-  const quantity: number = parseInt(request.body.quantity)
-  const price: number = parseFloat(request.body.price)
-  const amenities: string = request.body.amenities
+  const checkInDate: string = request.body.checkInDate
+  const checkOutDate: string = request.body.checkOutDate
+  const guestName: string = request.body.guestName
+  const guestEmail: string = request.body.guestEmail
+  const phoneNumber: string = request.body.phoneNumber
+  const roomType: string = request.body.roomType
 
-  let roomType: IRoomType
+  let booking: IBooking
   try {
-    roomType = await updateRoomType(
-      id, email, { type, quantity, price, amenities }
-    )
+    booking = await updateBooking(id, email, {
+      checkInDate,
+      checkOutDate,
+      guestName,
+      guestEmail,
+      phoneNumber,
+      roomType,
+    })
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
-  response.status(200).json(roomType)
+  response.status(200).json(booking)
 }
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
@@ -145,21 +163,21 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
   let id: string
   try {
-    id = getQueryParamValue(request, 'room_type_id')
+    id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
-  let roomType: IRoomType
+  let booking: IBooking
   try {
-    roomType = await getRoomType(id)
+    booking = await getBooking(id)
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
-  response.status(200).json(roomType)
+  response.status(200).json(booking)
 }
 
 async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
@@ -172,14 +190,14 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
 
   let id: string
   try {
-    id = getQueryParamValue(request, 'room_type_id')
+    id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
   try {
-    await deleteRoomType(id)
+    await deleteBooking(id)
   } catch (err) {
     response.status(500).json({ err })
     return

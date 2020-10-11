@@ -18,6 +18,12 @@ import {
   IRoomTypeCollection,
 } from './room_type'
 
+import {
+  IBaseBooking,
+  IBooking,
+  IBookingCollection,
+} from './booking'
+
 export {
   TMethodFunc,
   IMethodHandlerHash,
@@ -30,4 +36,8 @@ export {
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
+
+  IBaseBooking,
+  IBooking,
+  IBookingCollection,
 }
