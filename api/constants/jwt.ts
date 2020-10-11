@@ -1,4 +1,4 @@
-const JWT_SECRET = 'wjjEQRQvCYX5e3ClaPTy8jaYapwWacJiAHnyRNXoHlge7iWjLSo7PDqitV9FnYsS'
+const JWT_SECRET = process.env.JWT_SECRET || ''
 
 export {
   JWT_SECRET,

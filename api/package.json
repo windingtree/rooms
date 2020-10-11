@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/windingtree/rooms#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongodb": "^3.5.27",
     "@types/node": "^12.12.56",

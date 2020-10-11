@@ -1,5 +1,6 @@
 import {
   login,
+  emailOneTimePassword,
 } from './auth'
 
 import {
@@ -21,6 +22,7 @@ import {
 const apiClient = (function () {
   return {
     login,
+    emailOneTimePassword,
 
     getRoomTypes,
     getRoomType,

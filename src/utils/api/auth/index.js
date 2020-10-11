@@ -13,6 +13,15 @@ function login(data) {
     .then(parseJSON)
 }
 
+function emailOneTimePassword(data) {
+  return fetch('/api/v1/send_one_time_pass', {
+    method: 'post',
+    headers: makeHeaders(),
+    body: JSON.stringify(data),
+  }).then(checkStatus)
+    .then(parseJSON)}
+
 export {
   login,
+  emailOneTimePassword,
 }

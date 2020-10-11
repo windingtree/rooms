@@ -1,5 +1,4 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { v4 as uuidv4 } from 'uuid'
 
 import { genericApiMethodHandler, DB } from '../tools'
 
@@ -9,31 +8,31 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     return
   }
 
-  const ownerEmailProp = request.body.email
-  if (!ownerEmailProp || typeof ownerEmailProp !== 'string' || ownerEmailProp.length === 0) {
-    response.status(500).json({ err: 'owner email not specified' })
+  const emailProp = request.body.email
+  if (!emailProp || typeof emailProp !== 'string' || emailProp.length === 0) {
+    response.status(500).json({ err: 'Property email not specified.' })
     return
   }
-  const ownerEmail: string = (ownerEmailProp as string)
+  const email: string = (emailProp as string)
 
-  let dbClient
-  try {
-    dbClient = await DB.getInstance().getDbClient()
-  } catch (err) {
-    response.status(500).json({ err })
+  const oneTimePasswordProp = request.body.oneTimePassword
+  if (!oneTimePasswordProp || typeof oneTimePasswordProp !== 'string' || oneTimePasswordProp.length === 0) {
+    response.status(500).json({ err: 'Property oneTimePassword not specified' })
     return
   }
+  const oneTimePassword: string = (oneTimePasswordProp as string)
+
+  const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
-    response.status(500).json({ err: 'No connection to DB' })
+    response.status(500).json({ err: 'Could not connect to the database.' })
     return
   }
 
-  let oneTimePassword: string
   try {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('owners')
 
-    const query = { email: ownerEmail }
+    const query = { email }
     const options = {
       sort: { rating: -1 },
       projection: { _id: 0, email: 1, oneTimePassword: 1 },
@@ -41,24 +40,15 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
     const ownerRecord = await collection.findOne(query, options)
 
-    if (!ownerRecord) {
-      oneTimePassword = uuidv4()
-
-      const newOwner = { email: ownerEmail, oneTimePassword }
-      const result = await collection.insertOne(newOwner)
-
-      if (!result) {
-        throw 'An error occurred while creating a new owner.'
-      }
-    } else {
-      oneTimePassword = ownerRecord.oneTimePassword
+    if (!ownerRecord || oneTimePassword !== ownerRecord.oneTimePassword) {
+      throw 'Email or oneTimePassword do not match a user.'
     }
   } catch (err) {
     response.status(500).json({ err })
     return
   }
 
-  response.status(200).json({ email: ownerEmail, oneTimePassword })
+  response.status(200).json({ login: 'OK', email, oneTimePassword })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

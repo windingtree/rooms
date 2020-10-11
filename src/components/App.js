@@ -8,7 +8,7 @@ import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
 
-const JWT_SECRET = 'wjjEQRQvCYX5e3ClaPTy8jaYapwWacJiAHnyRNXoHlge7iWjLSo7PDqitV9FnYsS'
+const JWT_SECRET = process.env.REACT_APP_JWT_SECRET
 
 const useStyles = () => {
   return {

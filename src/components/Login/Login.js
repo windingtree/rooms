@@ -41,6 +41,12 @@ class Login extends React.Component {
     this.state = {
       isEmailValid: false,
       email: '',
+
+      canInputOneTimePassword: false,
+      isOneTimePasswordValid: false,
+      oneTimePassword: '',
+
+      tryingToEmailPass: false,
       tryingToLogin: false,
     }
   }
@@ -49,12 +55,45 @@ class Login extends React.Component {
     this._isDestroyed = true
   }
 
+  emailOneTimePassClickHandler = () => {
+    if (this.state.isEmailValid === false) {
+      return
+    }
+
+    this.tryToEmailOneTimePass()
+  }
+
   loginClickHandler = () => {
     if (this.state.isEmailValid === false) {
       return
     }
 
     this.tryToLogin()
+  }
+
+  handleOTPEditUpdate = (e) => {
+    if (!e || !e.target) {
+      return
+    }
+
+    const otp = e.target.value
+
+    if (typeof otp !== 'string' || otp.length === 0) {
+      return
+    }
+
+    this.setState({ oneTimePassword: otp })
+    this.setState({ isOneTimePasswordValid: true })
+  }
+
+  handleOTPEditKeyUp = (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      if (this.state.isOneTimePasswordValid === false) {
+        return
+      }
+
+      this.tryToLogin()
+    }
   }
 
   handleEmailEditUpdate = (e) => {
@@ -78,15 +117,34 @@ class Login extends React.Component {
         return
       }
 
-      this.tryToLogin()
+      this.tryToEmailOneTimePass()
     }
+  }
+
+  tryToEmailOneTimePass = () => {
+    this.setState({ tryingToEmailPass: true })
+
+    apiClient
+      .emailOneTimePassword({ email: this.state.email })
+      .then((response) => {
+        if (this._isDestroyed) {
+          return
+        }
+
+        this.setState({ tryingToEmailPass: false })
+        this.setState({ canInputOneTimePassword: true })
+      })
+      .catch((err) => {
+        this.setState({ tryingToEmailPass: false })
+        this.setState({ canInputOneTimePassword: false })
+      })
   }
 
   tryToLogin = () => {
     this.setState({ tryingToLogin: true })
 
     apiClient
-      .login({ email: this.state.email })
+      .login({ email: this.state.email, oneTimePassword: this.state.oneTimePassword })
       .then((response) => {
         if (this._isDestroyed) {
           return
@@ -117,7 +175,7 @@ class Login extends React.Component {
             label="e-mail"
             onChange={this.handleEmailEditUpdate}
             onKeyUp={this.handleEmailEditKeyUp}
-            disabled={this.state.tryingToLogin}
+            disabled={this.state.tryingToLogin || this.state.tryingToEmailPass}
           />
 
           {
@@ -127,8 +185,45 @@ class Login extends React.Component {
               <Button
                 variant="contained"
                 color="primary"
+                onClick={this.emailOneTimePassClickHandler}
+                disabled={this.state.tryingToLogin || this.state.tryingToEmailPass}
+              >
+                Email Me A Password
+              </Button>
+            </div> :
+
+            <div className={classes.loginButton} />
+          }
+
+          {
+            (this.state.canInputOneTimePassword === true) ?
+
+            <div className={classes.loginButton}>
+              <TextField
+                autoFocus
+                className={classes.emailInput}
+                color="secondary"
+                variant="outlined"
+                defaultValue={this.state.oneTimePassword}
+                label="One Time Password"
+                onChange={this.handleOTPEditUpdate}
+                onKeyUp={this.handleOTPEditKeyUp}
+                disabled={this.state.tryingToLogin || this.state.tryingToEmailPass}
+              />
+            </div> :
+
+            <div className={classes.loginButton} />
+          }
+
+          {
+            (this.state.isOneTimePasswordValid === true) ?
+
+            <div className={classes.loginButton}>
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={this.loginClickHandler}
-                disabled={this.state.tryingToLogin}
+                disabled={this.state.tryingToLogin || this.state.tryingToEmailPass}
               >
                 Connect
               </Button>
