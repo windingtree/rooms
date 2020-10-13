@@ -1,26 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler, DB } from '../tools'
+import { genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkLogin } from '../validators'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  try {
-    checkLogin(request)
-  } catch (err) {
-    response.status(500).json({ err })
-    return
-  }
-
+async function loginUser(email: string, oneTimePassword: string, sessionToken: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    response.status(500).json({ err: 'Could not connect to the database.' })
-    return
-  }
 
-  const email: string = request.body.email
-  const oneTimePassword: string = request.body.oneTimePassword
-  const sessionToken: string = request.body.sessionToken
-
+  let ownerRecord
   try {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('owners')
@@ -30,18 +16,35 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
       projection: { _id: 0, email: 1, oneTimePassword: 1, sessionToken: 1 },
     }
 
-    const ownerRecord = await collection.findOne(query, options)
-
-    if (
-      (!ownerRecord) ||
-      (oneTimePassword !== ownerRecord.oneTimePassword) ||
-      (sessionToken !== ownerRecord.sessionToken)
-    ) {
-      throw 'Email or oneTimePassword is wrong.'
-    }
+    ownerRecord = await collection.findOne(query, options)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    throw new CError(500, 'Could not login.')
+  }
+
+  if (
+    (!ownerRecord) ||
+    (oneTimePassword !== ownerRecord.oneTimePassword) ||
+    (sessionToken !== ownerRecord.sessionToken)
+  ) {
+    throw new CError(500, 'Email or oneTimePassword is wrong.')
+  }
+}
+
+async function POST(request: NowRequest, response: NowResponse): Promise<void> {
+  try {
+    checkLogin(request)
+  } catch (err) {
+    return errorHandler(response, err)
+  }
+
+  const email: string = request.body.email
+  const oneTimePassword: string = request.body.oneTimePassword
+  const sessionToken: string = request.body.sessionToken
+
+  try {
+    await loginUser(email, oneTimePassword, sessionToken)
+  } catch (err) {
+    return errorHandler(response, err)
   }
 
   response.status(200).json({ login: 'OK', email, oneTimePassword })

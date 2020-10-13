@@ -1,14 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getUserAuthDetails, genericApiMethodHandler, DB } from '../tools'
+import { getUserAuthDetails, genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkBooking } from '../validators'
 import { IUserAuthDetails, IBaseBooking, IBooking, IBookingCollection } from '../types'
 
 async function getBookings(email: string): Promise<IBookingCollection> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let bookingCollection: IBookingCollection
   try {
@@ -50,7 +47,7 @@ async function getBookings(email: string): Promise<IBookingCollection> {
       })
     })
   } catch (err) {
-    throw 'An error occurred while getting bookings.'
+    throw new CError(500, 'An error occurred while getting bookings.')
   }
 
   return bookingCollection
@@ -58,26 +55,23 @@ async function getBookings(email: string): Promise<IBookingCollection> {
 
 async function createBooking(email: string, newBooking: IBaseBooking): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
-  let booking: IBooking
+  let result
   try {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('bookings')
 
     const doc = Object.assign({ email }, newBooking)
-    const result = await collection.insertOne(doc)
-
-    if (!result) {
-      throw 'An error occurred while creating a new booking.'
-    }
-
-    booking = Object.assign({ id: result.insertedId }, newBooking)
+    result = await collection.insertOne(doc)
   } catch (err) {
-    throw 'An error occurred while creating a new booking.'
+    throw new CError(500, 'An error occurred while creating a new booking.')
   }
+
+  if (!result) {
+    throw new CError(500, 'Could not create a new booking.')
+  }
+
+  const booking: IBooking = Object.assign({ id: result.insertedId }, newBooking)
 
   return booking
 }
@@ -87,16 +81,14 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let bookingCollection: IBookingCollection
   try {
     bookingCollection = await getBookings(userAuthDetails.email)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(bookingCollection)
@@ -107,15 +99,13 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     checkBooking(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   const checkInDate: string = request.body.checkInDate
@@ -136,8 +126,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
       roomType,
     })
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(booking)

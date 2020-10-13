@@ -1,15 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import { ObjectID } from 'mongodb'
 
-import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue } from '../../tools'
+import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue, CError, errorHandler } from '../../tools'
 import { checkRoomType } from '../../validators'
 import { IUserAuthDetails, IBaseRoomType, IRoomType } from '../../types'
 
 async function updateRoomType(id: string, email: string, roomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -24,11 +21,11 @@ async function updateRoomType(id: string, email: string, roomType: IBaseRoomType
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw 'An error occurred while updating a room type.'
+    throw new CError(500, 'An error occurred while updating a room type.')
   }
 
   if (!result || !result.matchedCount) {
-    throw `Could not find a room type to update with ID '${id}'.`
+    throw new CError(500, `Could not find a room type to update with ID '${id}'.`)
   }
 
   return Object.assign({ id }, roomType)
@@ -36,9 +33,6 @@ async function updateRoomType(id: string, email: string, roomType: IBaseRoomType
 
 async function deleteRoomType(id: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -49,19 +43,16 @@ async function deleteRoomType(id: string): Promise<void> {
 
     result = await collection.deleteOne(filter)
   } catch (err) {
-    throw 'An error occurred while deleting a room type.'
+    throw new CError(500, 'An error occurred while deleting a room type.')
   }
 
   if (!result || !result.deletedCount) {
-    throw `Could not find a room type to delete with ID '${id}'.`
+    throw new CError(500, `Could not find a room type to delete with ID '${id}'.`)
   }
 }
 
 async function getRoomType(id: string): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -75,11 +66,11 @@ async function getRoomType(id: string): Promise<IRoomType> {
 
     result = await collection.findOne(query, options)
   } catch (err) {
-    throw 'An error occurred while getting a room type.'
+    throw new CError(500, 'An error occurred while getting a room type.')
   }
 
   if (result === null) {
-    throw `Could not find a room type with ID '${id}'.`
+    throw new CError(500, `Could not find a room type with ID '${id}'.`)
   }
 
   return {
@@ -96,23 +87,20 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     checkRoomType(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   const email: string = userAuthDetails.email
@@ -124,12 +112,9 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
   let roomType: IRoomType
   try {
-    roomType = await updateRoomType(
-      id, email, { type, quantity, price, amenities }
-    )
+    roomType = await updateRoomType(id, email, { type, quantity, price, amenities })
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(roomType)
@@ -139,24 +124,21 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let roomType: IRoomType
   try {
     roomType = await getRoomType(id)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(roomType)
@@ -166,23 +148,20 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   try {
     await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     await deleteRoomType(id)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json({ id, deleted: true })

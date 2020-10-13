@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb'
 
+import { CError } from './'
 import { MONGODB_URL } from '../constants'
 
 class DB {
@@ -8,7 +9,7 @@ class DB {
 
   constructor() {
     if (DB._instance) {
-      throw 'DB class instantiation failed. Use DB.getInstance() instead of new operator.'
+      throw new CError(500, 'DB class instantiation failed. Use DB.getInstance() instead of new operator.')
     }
     DB._instance = this
   }
@@ -37,8 +38,13 @@ class DB {
     }
   }
 
-  public async getDbClient(): Promise<MongoClient|null> {
+  public async getDbClient(): Promise<MongoClient> {
     await DB._instance.createDbConnection()
+
+    if (this._dbClient === null) {
+      throw new CError(503, 'Could not connect to the database.')
+    }
+
     return this._dbClient
   }
 }

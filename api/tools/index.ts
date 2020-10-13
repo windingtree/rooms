@@ -20,6 +20,14 @@ import {
   getQueryParamValue,
 } from './url'
 
+import {
+  CError,
+} from './c_error'
+
+import {
+  errorHandler,
+} from './error_handler'
+
 export {
   getUserAuthDetails,
   authorizeUser,
@@ -32,4 +40,8 @@ export {
   genericApiMethodHandler,
 
   getQueryParamValue,
+
+  CError,
+
+  errorHandler,
 }

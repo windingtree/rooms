@@ -1,15 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import { ObjectID } from 'mongodb'
 
-import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue } from '../../tools'
+import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue, CError, errorHandler } from '../../tools'
 import { checkBooking } from '../../validators'
 import { IUserAuthDetails, IBaseBooking, IBooking } from '../../types'
 
 async function updateBooking(id: string, email: string, booking: IBaseBooking): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -24,11 +21,11 @@ async function updateBooking(id: string, email: string, booking: IBaseBooking): 
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw 'An error occurred while updating a booking.'
+    throw new CError(500, 'An error occurred while updating a booking.')
   }
 
   if (!result || !result.matchedCount) {
-    throw `Could not find a booking to update with ID '${id}'.`
+    throw new CError(500, `Could not find a booking to update with ID '${id}'.`)
   }
 
   return Object.assign({ id }, booking)
@@ -36,9 +33,6 @@ async function updateBooking(id: string, email: string, booking: IBaseBooking): 
 
 async function deleteBooking(id: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -49,19 +43,16 @@ async function deleteBooking(id: string): Promise<void> {
 
     result = await collection.deleteOne(filter)
   } catch (err) {
-    throw 'An error occurred while deleting a booking.'
+    throw new CError(500, 'An error occurred while deleting a booking.')
   }
 
   if (!result || !result.deletedCount) {
-    throw `Could not find a booking to delete with ID '${id}'.`
+    throw new CError(500, `Could not find a booking to delete with ID '${id}'.`)
   }
 }
 
 async function getBooking(id: string): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let result
   try {
@@ -84,11 +75,11 @@ async function getBooking(id: string): Promise<IBooking> {
 
     result = await collection.findOne(query, options)
   } catch (err) {
-    throw 'An error occurred while getting a booking.'
+    throw new CError(500, 'An error occurred while getting a booking.')
   }
 
   if (result === null) {
-    throw `Could not find a booking with ID '${id}'.`
+    throw new CError(500, `Could not find a booking with ID '${id}'.`)
   }
 
   return {
@@ -107,23 +98,20 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     checkBooking(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   const email: string = userAuthDetails.email
@@ -146,8 +134,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
       roomType,
     })
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(booking)
@@ -157,24 +144,21 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let booking: IBooking
   try {
     booking = await getBooking(id)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(booking)
@@ -184,23 +168,20 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   try {
     await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let id: string
   try {
     id = getQueryParamValue(request, 'booking_id')
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     await deleteBooking(id)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json({ id, deleted: true })

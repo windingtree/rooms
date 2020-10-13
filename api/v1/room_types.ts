@@ -1,14 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getUserAuthDetails, genericApiMethodHandler, DB } from '../tools'
+import { getUserAuthDetails, genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkRoomType } from '../validators'
 import { IUserAuthDetails, IBaseRoomType, IRoomType, IRoomTypeCollection } from '../types'
 
 async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
   let roomTypeCollection: IRoomTypeCollection
   try {
@@ -39,7 +36,7 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
       })
     })
   } catch (err) {
-    throw 'An error occurred while getting room types.'
+    throw new CError(500, 'An error occurred while getting room types.')
   }
 
   return roomTypeCollection
@@ -47,26 +44,23 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
 
 async function createRoomType(email: string, newRoomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    throw 'Could not connect to the database.'
-  }
 
-  let roomType: IRoomType
+  let result
   try {
     const database = dbClient.db('rooms-staging')
     const collection = database.collection('room-types')
 
     const doc = Object.assign({ email }, newRoomType)
-    const result = await collection.insertOne(doc)
-
-    if (!result) {
-      throw 'An error occurred while creating a new room type.'
-    }
-
-    roomType = Object.assign({ id: result.insertedId }, newRoomType)
+    result = await collection.insertOne(doc)
   } catch (err) {
-    throw 'An error occurred while creating a new room type.'
+    throw new CError(500, 'An error occurred while creating a new room type.')
   }
+
+  if (!result) {
+    throw new CError(500, 'Could not create a new room type.')
+  }
+
+  const roomType: IRoomType = Object.assign({ id: result.insertedId }, newRoomType)
 
   return roomType
 }
@@ -76,16 +70,14 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   let roomCollection: IRoomTypeCollection
   try {
     roomCollection = await getRoomTypes(userAuthDetails.email)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(roomCollection)
@@ -96,15 +88,13 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     userAuthDetails = await getUserAuthDetails(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   try {
     checkRoomType(request)
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   const type: string = request.body.type
@@ -116,8 +106,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
     roomType = await createRoomType(userAuthDetails.email, { type, quantity, price, amenities })
   } catch (err) {
-    response.status(500).json({ err })
-    return
+    return errorHandler(response, err)
   }
 
   response.status(200).json(roomType)

@@ -1,8 +1,10 @@
 import { NowRequest } from '@vercel/node'
 
+import { CError } from '../tools'
+
 function checkRoomType(request: NowRequest): void {
   if (!request.body) {
-    throw 'must provide a valid body with request'
+    throw new CError(500, 'must provide a valid body with request')
   }
 
   if (
@@ -12,7 +14,7 @@ function checkRoomType(request: NowRequest): void {
       (Number.isNaN(parseInt(request.body.quantity)))
     )
   ) {
-    throw 'must provide a valid quantity value'
+    throw new CError(500, 'must provide a valid quantity value')
   }
 
   if (
@@ -22,19 +24,19 @@ function checkRoomType(request: NowRequest): void {
       (Number.isNaN(parseInt(request.body.price)))
     )
   ) {
-    throw 'must provide a valid price value'
+    throw new CError(500, 'must provide a valid price value')
   }
 
   if (
     (typeof request.body.type !== 'string')
   ) {
-    throw 'must provide a valid type value'
+    throw new CError(500, 'must provide a valid type value')
   }
 
   if (
     (typeof request.body.amenities !== 'string')
   ) {
-    throw 'must provide a valid amenities value'
+    throw new CError(500, 'must provide a valid amenities value')
   }
 }
 

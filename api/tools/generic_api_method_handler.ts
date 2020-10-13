@@ -1,9 +1,10 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { errorHandler, CError } from './'
 import { IMethodHandlerHash, TMethodFunc } from '../types'
 
 async function methodNotImplemented(request: NowRequest, response: NowResponse): Promise<void> {
-  response.status(501).json({ err: `Method ${request.method} not implemented.` })
+  return errorHandler(response, new CError(501, `Method ${request.method} not implemented.`))
 }
 
 async function genericApiMethodHandler(
@@ -11,8 +12,7 @@ async function genericApiMethodHandler(
   availMethodHandlers: IMethodHandlerHash
 ): Promise<void> {
   if (!request || typeof request.method !== 'string') {
-    response.status(500).json({ err: 'Must provide request method.' })
-    return
+    return errorHandler(response, new CError(500, 'Must provide request method.'))
   }
 
   const method = request.method.toUpperCase()

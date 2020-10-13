@@ -1,19 +1,22 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler, DB } from '../tools'
+import { genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
+async function pingDb(): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
-  if (dbClient === null) {
-    response.status(500).json({ err: 'Could not connect to the database.' })
-    return
-  }
 
   try {
     await dbClient.db().admin().ping()
   } catch (err) {
-    response.status(500).json({ err: 'Could not complete ping() operation on the database.' })
-    return
+    throw new CError(500, 'Could not complete ping() operation on the database.')
+  }
+}
+
+async function GET(request: NowRequest, response: NowResponse): Promise<void> {
+  try {
+    await pingDb()
+  } catch (err) {
+    return errorHandler(response, err)
   }
 
   response.status(200).json({ db: 'up' })

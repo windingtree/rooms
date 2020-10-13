@@ -1,5 +1,7 @@
 import { NowRequest } from '@vercel/node'
 
+import { CError } from './'
+
 function getQueryParamValue(request: NowRequest, queryParamName: string): string {
   const queryParamValue = request.query[queryParamName]
 
@@ -7,7 +9,7 @@ function getQueryParamValue(request: NowRequest, queryParamName: string): string
     (typeof queryParamValue !== 'string') ||
     (queryParamValue.length === 0)
   ) {
-    throw `Query param '${queryParamName}' is not set.`
+    throw new CError(500, `Query param '${queryParamName}' is not set.`)
   }
 
   return queryParamValue
