@@ -7,6 +7,15 @@ function checkStatus(response) {
     error.status = response.statusText
     error.response = response
 
+    if (
+      ((error) && (error.status === 'Unauthorized')) ||
+      ((error) && (error.response) && (error.response.status === 401))
+    ) {
+      if (typeof window.__global_logout_method !== 'undefined') {
+        window.__global_logout_method()
+      }
+    }
+
     throw error
   }
 }

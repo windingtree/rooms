@@ -36,7 +36,18 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
+    if (typeof window.__global_logout_method === 'undefined') {
+      window.__global_logout_method = () => {
+        this.handleLogout()
+      }
+    }
+  }
 
+  componentWillUnmount = () => {
+    if (typeof window.__global_logout_method !== 'undefined') {
+      window.__global_logout_method = undefined
+      delete window.__global_logout_method
+    }
   }
 
   handleOnLogin = (email, oneTimePassword) => {
