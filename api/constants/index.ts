@@ -9,6 +9,7 @@ import {
 
 import {
   SENDGRID_API_KEY,
+  SENDGRID_CALLBACK_URL,
 } from './send_grid'
 
 export {
@@ -18,4 +19,5 @@ export {
   MONGODB_URL,
 
   SENDGRID_API_KEY,
+  SENDGRID_CALLBACK_URL,
 }

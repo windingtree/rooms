@@ -4,7 +4,8 @@ import sgMail from '@sendgrid/mail'
 import { ObjectID } from 'mongodb'
 
 import { genericApiMethodHandler, DB } from '../tools'
-import { SENDGRID_API_KEY } from '../constants'
+import { checkSendOneTimePass } from '../validators'
+import { SENDGRID_API_KEY, SENDGRID_CALLBACK_URL } from '../constants'
 
 async function sendMail(email: string, oneTimePassword: string): Promise<void> {
   try {
@@ -13,12 +14,20 @@ async function sendMail(email: string, oneTimePassword: string): Promise<void> {
     throw `Could not set Send Grid API key '${SENDGRID_API_KEY}'.`
   }
 
+  const link = `${SENDGRID_CALLBACK_URL}/${oneTimePassword}`
+
   const msg = {
     to: email,
     from: 'Rooms auth <auth@em.windingtree.com>',
     subject: 'One time password for rooms app',
-    text: `Please use ${oneTimePassword}`,
-    html: `Please use <strong>${oneTimePassword}</strong>`,
+    text: `Please use "${oneTimePassword}", or click the following link ${link}.`,
+    html: `` +
+      `<p>Please use:</p>` +
+      `<strong>${oneTimePassword}</strong>` +
+      `<p>` +
+        `or click the following link ` +
+        `<a href="${link}">${link}</a>.` +
+      `</p>`,
   }
 
   try {
@@ -28,7 +37,7 @@ async function sendMail(email: string, oneTimePassword: string): Promise<void> {
   }
 }
 
-async function updateOneTimePassword(id: string): Promise<string> {
+async function updateOneTimePassword(id: string, sessionToken: string): Promise<string> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
@@ -43,7 +52,7 @@ async function updateOneTimePassword(id: string): Promise<string> {
     const filter = { _id: new ObjectID(id) }
     const options = { upsert: false }
     const updateDoc = {
-      $set: Object.assign({}, { oneTimePassword })
+      $set: Object.assign({}, { oneTimePassword, sessionToken })
     }
 
     result = await collection.updateOne(filter, updateDoc, options)
@@ -59,23 +68,21 @@ async function updateOneTimePassword(id: string): Promise<string> {
 }
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  if (!request.body) {
-    response.status(500).json({ err: 'request must contain a valid body object' })
+  try {
+    checkSendOneTimePass(request)
+  } catch (err) {
+    response.status(500).json({ err })
     return
   }
-
-  const emailProp = request.body.email
-  if (!emailProp || typeof emailProp !== 'string' || emailProp.length === 0) {
-    response.status(500).json({ err: 'owner email not specified' })
-    return
-  }
-  const email: string = (emailProp as string)
 
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     response.status(500).json({ err: 'Could not connect to the database.' })
     return
   }
+
+  const email: string = request.body.email
+  const sessionToken: string = request.body.sessionToken
 
   let oneTimePassword: string
   try {
@@ -84,8 +91,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
     const query = { email }
     const options = {
-      sort: { rating: -1 },
-      projection: { _id: 1, email: 1, oneTimePassword: 1 },
+      projection: { _id: 1, email: 1 },
     }
 
     const ownerRecord = await collection.findOne(query, options)
@@ -93,14 +99,14 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     if (!ownerRecord) {
       oneTimePassword = uuidv4()
 
-      const newOwner = { email, oneTimePassword }
+      const newOwner = { email, oneTimePassword, sessionToken }
       const result = await collection.insertOne(newOwner)
 
       if (!result) {
         throw 'An error occurred while creating a new owner.'
       }
     } else {
-      oneTimePassword = await updateOneTimePassword(ownerRecord._id)
+      oneTimePassword = await updateOneTimePassword(ownerRecord._id, sessionToken)
     }
   } catch (err) {
     response.status(500).json({ err })

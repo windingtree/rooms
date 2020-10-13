@@ -2,6 +2,7 @@ import React from 'react'
 import { Router, Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import * as jwt from 'jsonwebtoken'
+import { v4 as uuidv4 } from 'uuid'
 
 import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
@@ -20,37 +21,13 @@ const useStyles = () => {
   }
 }
 
-function areWeLoggedIn() {
-  let isLoggedIn = false
-  let decodedToken = {}
-
-  const jwtToken = window.localStorage.getItem('jwt_token')
-
-  try {
-    decodedToken = jwt.verify(jwtToken, JWT_SECRET)
-  } catch (err) {
-    decodedToken = {}
-  }
-
-  if (
-    (typeof decodedToken.email !== 'string' || decodedToken.email.length === 0) ||
-    (typeof decodedToken.oneTimePassword !== 'string' || decodedToken.oneTimePassword.length === 0)
-  ) {
-    isLoggedIn = false
-  } else {
-    isLoggedIn = true
-  }
-
-  return isLoggedIn
-}
-
 class App extends React.Component {
   constructor(props) {
     super(props)
 
-    const isLoggedIn = areWeLoggedIn()
+    const isLoggedIn = this.areWeLoggedIn()
     if (!isLoggedIn) {
-      window.localStorage.setItem('jwt_token', '')
+      this.resetLocalStorage(false)
     }
 
     this.state = {
@@ -58,8 +35,13 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+
+  }
+
   handleOnLogin = (email, oneTimePassword) => {
-    const token = jwt.sign({ email, oneTimePassword }, JWT_SECRET)
+    const sessionToken = window.localStorage.getItem('session_token')
+    const token = jwt.sign({ email, oneTimePassword, sessionToken }, JWT_SECRET)
 
     window.localStorage.setItem('jwt_token', token)
     this.setState({ isLoggedIn: true })
@@ -67,8 +49,49 @@ class App extends React.Component {
     this.props.history.push('/dashboard')
   }
 
-  handleLogout = () => {
+  areWeLoggedIn = () => {
+    let isLoggedIn = false
+    let decodedToken = {}
+
+    const jwtToken = window.localStorage.getItem('jwt_token')
+    const sessionToken = window.localStorage.getItem('session_token')
+
+    try {
+      decodedToken = jwt.verify(jwtToken, JWT_SECRET)
+    } catch (err) {
+      decodedToken = {}
+    }
+
+    if (
+      (typeof decodedToken.email !== 'string' || decodedToken.email.length === 0) ||
+      (typeof decodedToken.oneTimePassword !== 'string' || decodedToken.oneTimePassword.length === 0) ||
+      (typeof decodedToken.sessionToken !== 'string' || decodedToken.sessionToken.length === 0) ||
+      (typeof sessionToken !== 'string' || sessionToken.length === 0) ||
+      (sessionToken !== decodedToken.sessionToken)
+    ) {
+      isLoggedIn = false
+    } else {
+      isLoggedIn = true
+    }
+
+    return isLoggedIn
+  }
+
+  resetLocalStorage = (refreshSessionToken) => {
     window.localStorage.setItem('jwt_token', '')
+
+    const sessionToken = window.localStorage.getItem('session_token')
+    if (
+      (typeof sessionToken !== 'string') ||
+      (sessionToken.length === 0) ||
+      (refreshSessionToken === true)
+    ) {
+      window.localStorage.setItem('session_token', uuidv4())
+    }
+  }
+
+  handleLogout = () => {
+    this.resetLocalStorage(true)
     this.setState({ isLoggedIn: false })
   }
 
@@ -83,7 +106,10 @@ class App extends React.Component {
               { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
             </Route>
             <Route exact path="/login">
-              <Login onLogin={this.handleOnLogin} />
+              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
+            </Route>
+            <Route exact path="/login/:oneTimePassword">
+              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
             </Route>
             <Route exact path="/dashboard">
               { this.state.isLoggedIn ?

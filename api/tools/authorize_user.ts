@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb'
 import { DB, decodeToken } from './'
 import { IDecodedAuthToken, IUserAuthDetails } from '../types'
 
-async function authorizeUser(email: string, oneTimePassword: string): Promise<boolean> {
+async function authorizeUser(email: string, oneTimePassword: string, sessionToken: string): Promise<boolean> {
   const dbClient = await DB.getInstance().getDbClient()
   if (dbClient === null) {
     throw 'Could not connect to the database.'
@@ -18,12 +18,16 @@ async function authorizeUser(email: string, oneTimePassword: string): Promise<bo
     const query = { email }
 
     const options = {
-      projection: { _id: 0, email: 1, oneTimePassword: 1 },
+      projection: { _id: 0, email: 1, oneTimePassword: 1, sessionToken: 1 },
     }
 
     const ownerRecord = await collection.findOne(query, options)
 
-    if (ownerRecord && ownerRecord.oneTimePassword === oneTimePassword) {
+    if (
+      (ownerRecord) &&
+      (ownerRecord.oneTimePassword === oneTimePassword) &&
+      (ownerRecord.sessionToken === sessionToken)
+    ) {
       userIsAuthorized = true
     } else {
       userIsAuthorized = false
@@ -43,12 +47,13 @@ async function getUserAuthDetails(request: NowRequest): Promise<IUserAuthDetails
     throw err
   }
 
-  const email: string = (decodedToken as IDecodedAuthToken).email
-  const oneTimePassword: string = (decodedToken as IDecodedAuthToken).oneTimePassword
+  const email: string = decodedToken.email
+  const oneTimePassword: string = decodedToken.oneTimePassword
+  const sessionToken: string = decodedToken.sessionToken
 
   let userIsAuthorized: boolean
   try {
-    userIsAuthorized = await authorizeUser(email, oneTimePassword)
+    userIsAuthorized = await authorizeUser(email, oneTimePassword, sessionToken)
   } catch (err) {
     throw err
   }
