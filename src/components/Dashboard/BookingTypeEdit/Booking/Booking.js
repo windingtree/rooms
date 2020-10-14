@@ -6,7 +6,10 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import DoneIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done'
+import {
+  KeyboardDatePicker
+} from '@material-ui/pickers'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
@@ -49,17 +52,31 @@ class Booking extends React.Component {
             alignItems="stretch"
           >
             <Grid item>
-              <TextEditInput
-                value={this.props.checkInDate}
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="DD/MM/yyyy"
+                margin="normal"
                 label="Check In"
-                onValueChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
-                inputWidth="150"
+                value={this.props.checkInDate}
+                onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
               />
-              <TextEditInput
-                value={this.props.checkOutDate}
+            </Grid>
+            <Grid item>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="DD/MM/yyyy"
+                margin="normal"
                 label="Check Out"
-                onValueChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
-                inputWidth="150"
+                value={this.props.checkOutDate}
+                onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
               />
             </Grid>
             <Grid item>

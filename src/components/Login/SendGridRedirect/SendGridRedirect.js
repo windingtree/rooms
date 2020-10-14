@@ -15,16 +15,17 @@ class SendGridRedirect extends React.Component {
   }
 
   componentDidMount() {
-    this.tryToLogin(this.state.oneTimePassword)
+    this.tryToLogin()
   }
 
   componentWillUnmount() {
     this._isDestroyed = true
   }
 
-  tryToLogin = (oneTimePassword) => {
-    const sessionToken = window.localStorage.getItem('session_token')
+  tryToLogin = () => {
     const email = window.localStorage.getItem('session_email')
+    const oneTimePassword = this.state.oneTimePassword
+    const sessionToken = window.localStorage.getItem('session_token')
 
     apiClient
       .login({
@@ -39,7 +40,11 @@ class SendGridRedirect extends React.Component {
 
         this.props.onLogin(response.email, response.oneTimePassword)
       })
-      .catch((err) => {
+      .catch((error) => {
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+
         this.props.onLogout()
         this.props.history.push('/login')
       })

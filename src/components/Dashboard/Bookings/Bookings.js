@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
+import * as moment from 'moment'
 
 import { apiClient } from '../../../utils/api/client'
 import BookingList from './BookingList/BookingList'
@@ -12,8 +13,8 @@ function initBookingObj(attrs = {}) {
   const bookingObj = {
     id: attrs.id || uuidv4(),
 
-    checkInDate: attrs.checkInDate || '',
-    checkOutDate: attrs.checkOutDate || '',
+    checkInDate: attrs.checkInDate || moment(new Date()).format(),
+    checkOutDate: attrs.checkOutDate || moment(new Date()).add(1, 'days').format(),
     guestName: attrs.guestName || '',
     guestEmail: attrs.guestEmail || '',
     phoneNumber: attrs.phoneNumber || '',

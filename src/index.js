@@ -25,16 +25,29 @@ const theme = createMuiTheme({
   },
 })
 
-ReactDOM.render(
-  <React.StrictMode>
+if (false) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Router history={history}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Router>
+    </React.StrictMode>,
+    document.getElementById('root')
+  )
+} else {
+  ReactDOM.render(
     <Router history={history}>
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
-    </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+    </Router>,
+    document.getElementById('root')
+  )
+}
+
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
