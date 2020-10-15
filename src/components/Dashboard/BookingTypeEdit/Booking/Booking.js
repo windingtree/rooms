@@ -10,6 +10,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import {
   KeyboardDatePicker
 } from '@material-ui/pickers'
+import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
@@ -27,6 +28,25 @@ const useStyles = () => {
 }
 
 class Booking extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      checkInDate: this.props.checkInDate,
+      checkOutDate: this.props.checkOutDate,
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.checkInDate !== prevProps.checkInDate) {
+      this.setState({ checkInDate: this.props.checkInDate })
+    }
+
+    if (this.props.checkOutDate !== prevProps.checkOutDate) {
+      this.setState({ checkOutDate: this.props.checkOutDate })
+    }
+  }
+
   handleTrashClick = () => {
     this.props.onTrashClick(this.props.id)
   }
@@ -36,6 +56,18 @@ class Booking extends React.Component {
   }
 
   handlePropChange = (e, propName) => {
+    if ((propName === 'checkInDate') || (propName === 'checkOutDate')) {
+      if (!e.isValid()) {
+        return
+      }
+
+      e = moment(e).format()
+
+      const updatedState = {}
+      updatedState[propName] = e
+      this.setState(updatedState)
+    }
+
     this.props.onPropValueChange(this.props.id, propName, e)
   }
 
@@ -58,7 +90,7 @@ class Booking extends React.Component {
                 format="DD/MM/yyyy"
                 margin="normal"
                 label="Check In"
-                value={this.props.checkInDate}
+                value={this.state.checkInDate}
                 onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
@@ -72,7 +104,7 @@ class Booking extends React.Component {
                 format="DD/MM/yyyy"
                 margin="normal"
                 label="Check Out"
-                value={this.props.checkOutDate}
+                value={this.state.checkOutDate}
                 onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',

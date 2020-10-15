@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import {
   KeyboardDatePicker
 } from '@material-ui/pickers'
+import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
@@ -36,6 +37,16 @@ class Booking extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.checkInDate !== prevProps.checkInDate) {
+      this.setState({ checkInDate: this.props.checkInDate })
+    }
+
+    if (this.props.checkOutDate !== prevProps.checkOutDate) {
+      this.setState({ checkOutDate: this.props.checkOutDate })
+    }
+  }
+
   handleTrashClick = () => {
     this.props.onTrashClick(this.props.id)
   }
@@ -45,9 +56,18 @@ class Booking extends React.Component {
   }
 
   handlePropChange = (e, propName) => {
-    const newObj = {}
-    newObj[propName] = e
-    this.setState(newObj)
+    if ((propName === 'checkInDate') || (propName === 'checkOutDate')) {
+      if (!e.isValid()) {
+        return
+      }
+
+      e = moment(e).format()
+
+      const updatedState = {}
+      updatedState[propName] = e
+      this.setState(updatedState)
+    }
+
     this.props.onPropValueChange(this.props.id, propName, e)
   }
 
