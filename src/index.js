@@ -7,29 +7,17 @@ import './index.css'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 import { history } from './utils/history'
+import { baseMuiThemeObj } from './utils/themes'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ffffff',
-      main: '#fff',
-      dark: '#bfbfbf',
-      contrastText: '#9e21af',
-    },
-    secondary: {
-      light: '#ffffff',
-      main: '#d9abca',
-      dark: '#8f6882',
-      contrastText: '#000000',
-    },
-  },
-})
+const baseMuiTheme = createMuiTheme(baseMuiThemeObj)
 
-if (false) {
+const enableStrictMode = false
+
+if (enableStrictMode === true) {
   ReactDOM.render(
     <React.StrictMode>
       <Router history={history}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={baseMuiTheme}>
           <App />
         </ThemeProvider>
       </Router>
@@ -39,15 +27,13 @@ if (false) {
 } else {
   ReactDOM.render(
     <Router history={history}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={baseMuiTheme}>
         <App />
       </ThemeProvider>
     </Router>,
     document.getElementById('root')
   )
 }
-
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

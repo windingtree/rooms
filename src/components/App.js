@@ -1,6 +1,4 @@
 import React from 'react'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import MomentUtils from '@date-io/moment'
 import { Router, Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import * as jwt from 'jsonwebtoken'
@@ -114,7 +112,6 @@ class App extends React.Component {
     const { classes } = this.props
 
     return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
       <Router history={history}>
         <main className={classes.container}>
           <Switch>
@@ -143,7 +140,6 @@ class App extends React.Component {
           </Switch>
         </main>
       </Router>
-      </MuiPickersUtilsProvider>
     )
   }
 }

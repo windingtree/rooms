@@ -1,5 +1,10 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+
+import { createMuiTheme } from '@material-ui/core'
+import { withStyles, ThemeProvider } from '@material-ui/core/styles'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import MomentUtils from '@date-io/moment'
+
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import CardActions from '@material-ui/core/CardActions'
@@ -13,6 +18,9 @@ import {
 import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
+import { datePickerThemeObj } from '../../../../utils/themes'
+
+const datePickerTheme = createMuiTheme(datePickerThemeObj);
 
 const useStyles = () => {
   return {
@@ -84,32 +92,40 @@ class Booking extends React.Component {
             alignItems="stretch"
           >
             <Grid item>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="DD/MM/yyyy"
-                margin="normal"
-                label="Check In"
-                value={this.state.checkInDate}
-                onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
+              <ThemeProvider theme={datePickerTheme}>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="DD/MM/yyyy"
+                  margin="normal"
+                  label="Check In"
+                  value={this.state.checkInDate}
+                  onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              </ThemeProvider>
             </Grid>
             <Grid item>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="DD/MM/yyyy"
-                margin="normal"
-                label="Check Out"
-                value={this.state.checkOutDate}
-                onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
+              <ThemeProvider theme={datePickerTheme}>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="DD/MM/yyyy"
+                  margin="normal"
+                  label="Check Out"
+                  value={this.state.checkOutDate}
+                  onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              </ThemeProvider>
             </Grid>
             <Grid item>
               <TextEditInput
