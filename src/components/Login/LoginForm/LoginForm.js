@@ -101,7 +101,7 @@ class LoginForm extends React.Component {
       return
     }
 
-    const email = e.target.value
+    let email = e.target.value
 
     if (typeof email !== 'string' || email.length === 0) {
       return

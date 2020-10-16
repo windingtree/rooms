@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
+import Spinner from '../../base/Spinner/Spinner'
 
 function initRoomTypeObj(attrs = {}) {
   const roomTypeObj = {
@@ -27,7 +28,8 @@ class RoomTypes extends React.Component {
 
     this._isDestroyed = false
     this.state = {
-      roomTypes: null,
+      roomTypes: [],
+      apiLoading: true,
     }
   }
 
@@ -69,7 +71,10 @@ class RoomTypes extends React.Component {
   }
 
   getRoomTypes = () => {
-    this.setState({ roomTypes: apiCache.getRoomTypes() })
+    this.setState({
+      roomTypes: apiCache.getRoomTypes(),
+      apiLoading: true,
+    })
 
     apiClient
       .getRoomTypes()
@@ -78,7 +83,10 @@ class RoomTypes extends React.Component {
 
         apiCache.setRoomTypes(roomTypes)
 
-        this.setState({ roomTypes })
+        this.setState({
+          roomTypes,
+          apiLoading: false,
+        })
       })
       .catch((error) => {
         if (this._isDestroyed) return
@@ -180,13 +188,14 @@ class RoomTypes extends React.Component {
     return (
       <Grid
         container
-        direction="row"
+        direction="column"
         justify="center"
         alignItems="center"
+        style={{ minHeight: '100%' }}
       >
         {
-          (this.state.roomTypes === null) ?
-            <div>Loading ...</div> :
+          ((!this.state.roomTypes || !this.state.roomTypes.length) && (this.state.apiLoading)) ?
+            <Spinner info="loading" /> :
             <Grid
               container
               direction="row"

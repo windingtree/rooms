@@ -1,8 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
 
 import { apiClient } from '../../../utils/api'
+import Spinner from '../../base/Spinner/Spinner'
 
 class SendGridRedirect extends React.Component {
   constructor(props) {
@@ -52,14 +52,7 @@ class SendGridRedirect extends React.Component {
 
   render() {
     return (
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        {this.state.oneTimePassword}
-      </Grid>
+      <Spinner info="authenticating" />
     )
   }
 }

@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid'
 
 import { apiCache, apiClient } from '../../../utils/api'
 import Booking from './Booking/Booking'
+import Spinner from '../../base/Spinner/Spinner'
 
 class BookingEdit extends React.Component {
   constructor(props) {
@@ -107,10 +108,11 @@ class BookingEdit extends React.Component {
         direction="column"
         justify="center"
         alignItems="center"
+        style={{ minHeight: '100%' }}
       >
         {
-          (this.state.booking === null) ?
-            <div>Loading...</div> :
+          (!this.state.booking) ?
+            <Spinner info="loading" /> :
             <Booking
               key={this.state.booking.id}
               id={this.state.booking.id}

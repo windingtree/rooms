@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid'
 
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomType from './RoomType/RoomType'
+import Spinner from '../../base/Spinner/Spinner'
 
 class RoomTypeEdit extends React.Component {
   constructor(props) {
@@ -107,10 +108,11 @@ class RoomTypeEdit extends React.Component {
         direction="column"
         justify="center"
         alignItems="center"
+        style={{ minHeight: '100%' }}
       >
         {
-          (this.state.roomType === null) ?
-            <div>Loading...</div> :
+          (!this.state.roomType) ?
+            <Spinner info="loading" /> :
             <RoomType
               key={this.state.roomType.id}
               id={this.state.roomType.id}

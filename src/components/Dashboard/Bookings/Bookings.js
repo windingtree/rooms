@@ -8,6 +8,7 @@ import * as moment from 'moment'
 
 import { apiCache, apiClient } from '../../../utils/api'
 import BookingList from './BookingList/BookingList'
+import Spinner from '../../base/Spinner/Spinner'
 
 function initBookingObj(attrs = {}) {
   const bookingObj = {
@@ -30,7 +31,8 @@ class Bookings extends React.Component {
 
     this._isDestroyed = false
     this.state = {
-      bookings: null,
+      bookings: [],
+      apiLoading: true,
     }
   }
 
@@ -72,7 +74,10 @@ class Bookings extends React.Component {
   }
 
   getBookings = () => {
-    this.setState({ bookings: apiCache.getBookings() })
+    this.setState({
+      bookings: apiCache.getBookings(),
+      apiLoading: true,
+    })
 
     apiClient
       .getBookings()
@@ -81,7 +86,10 @@ class Bookings extends React.Component {
 
         apiCache.setBookings(bookings)
 
-        this.setState({ bookings })
+        this.setState({
+          bookings,
+          apiLoading: false,
+        })
       })
       .catch((error) => {
         if (this._isDestroyed) return
@@ -185,13 +193,14 @@ class Bookings extends React.Component {
     return (
       <Grid
         container
-        direction="row"
+        direction="column"
         justify="center"
         alignItems="center"
+        style={{ minHeight: '100%' }}
       >
         {
-          (this.state.bookings === null) ?
-            <div>Loading ...</div> :
+          ((!this.state.bookings || !this.state.bookings.length) && (this.state.apiLoading)) ?
+            <Spinner info="loading" /> :
             <Grid
               container
               direction="row"
