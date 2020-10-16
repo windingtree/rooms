@@ -6,7 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 import * as moment from 'moment'
 
-import { apiClient } from '../../../utils/api/client'
+import { apiCache, apiClient } from '../../../utils/api'
 import BookingList from './BookingList/BookingList'
 
 function initBookingObj(attrs = {}) {
@@ -72,10 +72,14 @@ class Bookings extends React.Component {
   }
 
   getBookings = () => {
+    this.setState({ bookings: apiCache.getBookings() })
+
     apiClient
       .getBookings()
       .then((bookings) => {
         if (this._isDestroyed) return
+
+        apiCache.setBookings(bookings)
 
         this.setState({ bookings })
       })
@@ -91,6 +95,8 @@ class Bookings extends React.Component {
   createBooking = (attrs) => {
     const newBooking = initBookingObj(attrs)
 
+    apiCache.addBooking(newBooking)
+
     this.setState({
       bookings: this.state.bookings.concat(newBooking),
     })
@@ -102,9 +108,13 @@ class Bookings extends React.Component {
         this.setState({
           bookings: this.state.bookings.map((booking) => {
             if (booking.id === newBooking.id) {
-              return Object.assign({}, booking, {
+              const _booking = Object.assign({}, booking, {
                 id: attrs.id,
               })
+
+              apiCache.updateBooking(booking.id, _booking)
+
+              return _booking
             } else {
               return booking
             }
@@ -124,7 +134,7 @@ class Bookings extends React.Component {
     this.setState({
       bookings: this.state.bookings.map((booking) => {
         if (booking.id === attrs.id) {
-          return Object.assign({}, booking, {
+          const _booking = Object.assign({}, booking, {
             checkInDate: attrs.checkInDate,
             checkOutDate: attrs.checkOutDate,
             guestName: attrs.guestName,
@@ -132,6 +142,10 @@ class Bookings extends React.Component {
             phoneNumber: attrs.phoneNumber,
             roomType: attrs.roomType,
           })
+
+          apiCache.updateBooking(booking.id, _booking)
+
+          return _booking
         } else {
           return booking
         }
@@ -150,6 +164,8 @@ class Bookings extends React.Component {
   }
 
   deleteBooking = (id) => {
+    apiCache.deleteBooking(id)
+
     this.setState({
       bookings: this.state.bookings.filter(t => t.id !== id),
     })

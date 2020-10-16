@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { apiClient } from '../../../utils/api/client'
+import { apiCache, apiClient } from '../../../utils/api'
 import RoomType from './RoomType/RoomType'
 
 class RoomTypeEdit extends React.Component {
@@ -44,6 +44,11 @@ class RoomTypeEdit extends React.Component {
   }
 
   getRoomType = (roomTypeId) => {
+    const _roomType = apiCache.getRoomType(roomTypeId)
+    if (_roomType) {
+      this.setState({ roomType: _roomType })
+    }
+
     apiClient
       .getRoomType(roomTypeId)
       .then((roomType) => {
@@ -61,6 +66,8 @@ class RoomTypeEdit extends React.Component {
   }
 
   updateRoomType = (roomType) => {
+    apiCache.updateRoomType(roomType.id, roomType)
+
     this.setState({ roomType })
 
     apiClient
@@ -75,6 +82,8 @@ class RoomTypeEdit extends React.Component {
   }
 
   deleteRoomType = (id) => {
+    apiCache.deleteRoomType(id)
+
     apiClient
       .deleteRoomType(id)
       .then(() => {

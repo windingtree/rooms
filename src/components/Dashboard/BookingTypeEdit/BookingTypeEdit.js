@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { apiClient } from '../../../utils/api/client'
+import { apiCache, apiClient } from '../../../utils/api'
 import Booking from './Booking/Booking'
 
 class BookingEdit extends React.Component {
@@ -44,6 +44,11 @@ class BookingEdit extends React.Component {
   }
 
   getBooking = (bookingId) => {
+    const _booking = apiCache.getBooking(bookingId)
+    if (_booking) {
+      this.setState({ booking: _booking })
+    }
+
     apiClient
       .getBooking(bookingId)
       .then((booking) => {
@@ -61,6 +66,8 @@ class BookingEdit extends React.Component {
   }
 
   updateBooking = (booking) => {
+    apiCache.updateBooking(booking.id, booking)
+
     this.setState({ booking })
 
     apiClient
@@ -75,6 +82,8 @@ class BookingEdit extends React.Component {
   }
 
   deleteBooking = (id) => {
+    apiCache.deleteBooking(id)
+
     apiClient
       .deleteBooking(id)
       .then(() => {

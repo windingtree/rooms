@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { apiClient } from '../../../utils/api/client'
+import { apiClient } from '../../../utils/api'
 
 class SendGridRedirect extends React.Component {
   constructor(props) {

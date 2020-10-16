@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import * as jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
 
+import { apiCache } from '../utils/api'
 import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
@@ -91,6 +92,7 @@ class App extends React.Component {
   }
 
   resetLocalStorage = (refreshSessionToken) => {
+    apiCache.clearCache()
     window.localStorage.setItem('jwt_token', '')
 
     const sessionToken = window.localStorage.getItem('session_token')

@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import { apiClient } from '../../../utils/api/client'
+import { apiCache, apiClient } from '../../../utils/api'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 
 function initRoomTypeObj(attrs = {}) {
@@ -69,10 +69,14 @@ class RoomTypes extends React.Component {
   }
 
   getRoomTypes = () => {
+    this.setState({ roomTypes: apiCache.getRoomTypes() })
+
     apiClient
       .getRoomTypes()
       .then((roomTypes) => {
         if (this._isDestroyed) return
+
+        apiCache.setRoomTypes(roomTypes)
 
         this.setState({ roomTypes })
       })
@@ -88,6 +92,8 @@ class RoomTypes extends React.Component {
   createRoomType = (attrs) => {
     const newRoomType = initRoomTypeObj(attrs)
 
+    apiCache.addRoomType(newRoomType)
+
     this.setState({
       roomTypes: this.state.roomTypes.concat(newRoomType),
     })
@@ -99,9 +105,13 @@ class RoomTypes extends React.Component {
         this.setState({
           roomTypes: this.state.roomTypes.map((roomType) => {
             if (roomType.id === newRoomType.id) {
-              return Object.assign({}, roomType, {
+              const _roomType = Object.assign({}, roomType, {
                 id: attrs.id,
               })
+
+              apiCache.updateRoomType(roomType.id, _roomType)
+
+              return _roomType
             } else {
               return roomType
             }
@@ -121,12 +131,16 @@ class RoomTypes extends React.Component {
     this.setState({
       roomTypes: this.state.roomTypes.map((roomType) => {
         if (roomType.id === attrs.id) {
-          return Object.assign({}, roomType, {
+          const _roomType = Object.assign({}, roomType, {
             quantity: attrs.quantity,
             type: attrs.type,
             price: attrs.price,
             amenities: attrs.amenities,
           })
+
+          apiCache.updateRoomType(roomType.id, _roomType)
+
+          return _roomType
         } else {
           return roomType
         }
@@ -145,6 +159,8 @@ class RoomTypes extends React.Component {
   }
 
   deleteRoomType = (id) => {
+    apiCache.deleteRoomType(id)
+
     this.setState({
       roomTypes: this.state.roomTypes.filter(t => t.id !== id),
     })
