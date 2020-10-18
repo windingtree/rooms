@@ -12,6 +12,10 @@ import {
   SENDGRID_CALLBACK_URL,
 } from './send_grid'
 
+import {
+  ROOMS_DB_NAME,
+} from './mongo'
+
 export {
   JWT_SECRET,
 
@@ -20,4 +24,6 @@ export {
 
   SENDGRID_API_KEY,
   SENDGRID_CALLBACK_URL,
+
+  ROOMS_DB_NAME,
 }

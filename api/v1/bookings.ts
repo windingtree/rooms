@@ -3,13 +3,14 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getUserAuthDetails, genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkBooking } from '../validators'
 import { IUserAuthDetails, IBaseBooking, IBooking, IBookingCollection } from '../types'
+import { ROOMS_DB_NAME } from '../constants'
 
 async function getBookings(email: string): Promise<IBookingCollection> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let bookingCollection: IBookingCollection
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('bookings')
 
     const query = { email }
@@ -58,7 +59,7 @@ async function createBooking(email: string, newBooking: IBaseBooking): Promise<I
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('bookings')
 
     const doc = Object.assign({ email }, newBooking)

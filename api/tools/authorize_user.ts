@@ -3,13 +3,14 @@ import { MongoClient } from 'mongodb'
 
 import { DB, decodeToken, CError } from './'
 import { IDecodedAuthToken, IUserAuthDetails } from '../types'
+import { ROOMS_DB_NAME } from '../constants'
 
 async function authorizeUser(email: string, oneTimePassword: string, sessionToken: string): Promise<boolean> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let ownerRecord
   try {
-    const database = (dbClient as MongoClient).db('rooms-staging')
+    const database = (dbClient as MongoClient).db(ROOMS_DB_NAME)
     const collection = database.collection('owners')
 
     const query = { email }

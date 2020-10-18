@@ -3,13 +3,14 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getUserAuthDetails, genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkRoomType } from '../validators'
 import { IUserAuthDetails, IBaseRoomType, IRoomType, IRoomTypeCollection } from '../types'
+import { ROOMS_DB_NAME } from '../constants'
 
 async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let roomTypeCollection: IRoomTypeCollection
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('room-types')
 
     const query = { email }
@@ -47,7 +48,7 @@ async function createRoomType(email: string, newRoomType: IBaseRoomType): Promis
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('room-types')
 
     const doc = Object.assign({ email }, newRoomType)

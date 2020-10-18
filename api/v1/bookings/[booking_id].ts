@@ -4,13 +4,14 @@ import { ObjectID } from 'mongodb'
 import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue, CError, errorHandler } from '../../tools'
 import { checkBooking } from '../../validators'
 import { IUserAuthDetails, IBaseBooking, IBooking } from '../../types'
+import { ROOMS_DB_NAME } from '../../constants'
 
 async function updateBooking(id: string, email: string, booking: IBaseBooking): Promise<IBooking> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('bookings')
 
     const filter = { _id: new ObjectID(id) }
@@ -36,7 +37,7 @@ async function deleteBooking(id: string): Promise<void> {
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('bookings')
 
     const filter = { _id: new ObjectID(id) }
@@ -56,7 +57,7 @@ async function getBooking(id: string): Promise<IBooking> {
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('bookings')
 
     const query = { _id: new ObjectID(id) }

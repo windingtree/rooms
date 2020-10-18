@@ -4,13 +4,14 @@ import { ObjectID } from 'mongodb'
 import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue, CError, errorHandler } from '../../tools'
 import { checkRoomType } from '../../validators'
 import { IUserAuthDetails, IBaseRoomType, IRoomType } from '../../types'
+import { ROOMS_DB_NAME } from '../../constants'
 
 async function updateRoomType(id: string, email: string, roomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('room-types')
 
     const filter = { _id: new ObjectID(id) }
@@ -36,7 +37,7 @@ async function deleteRoomType(id: string): Promise<void> {
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('room-types')
 
     const filter = { _id: new ObjectID(id) }
@@ -56,7 +57,7 @@ async function getRoomType(id: string): Promise<IRoomType> {
 
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('room-types')
 
     const query = { _id: new ObjectID(id) }

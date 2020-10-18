@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb'
 
 import { genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkSendOneTimePass } from '../validators'
-import { SENDGRID_API_KEY, SENDGRID_CALLBACK_URL } from '../constants'
+import { SENDGRID_API_KEY, SENDGRID_CALLBACK_URL, ROOMS_DB_NAME } from '../constants'
 
 async function sendMail(email: string, oneTimePassword: string): Promise<void> {
   try {
@@ -43,7 +43,7 @@ async function updateOneTimePassword(id: string, sessionToken: string): Promise<
   const oneTimePassword = uuidv4()
   let result
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('owners')
 
     const filter = { _id: new ObjectID(id) }
@@ -70,7 +70,7 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
   let oneTimePassword: string
   let ownerRecord
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('owners')
 
     const query = { email }
@@ -90,7 +90,7 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
 
     let result
     try {
-      const database = dbClient.db('rooms-staging')
+      const database = dbClient.db(ROOMS_DB_NAME)
       const collection = database.collection('owners')
 
       result = await collection.insertOne(newOwner)

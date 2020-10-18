@@ -2,13 +2,14 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { genericApiMethodHandler, DB, CError, errorHandler } from '../tools'
 import { checkLogin } from '../validators'
+import { ROOMS_DB_NAME } from '../constants'
 
 async function loginUser(email: string, oneTimePassword: string, sessionToken: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let ownerRecord
   try {
-    const database = dbClient.db('rooms-staging')
+    const database = dbClient.db(ROOMS_DB_NAME)
     const collection = database.collection('owners')
 
     const query = { email }
