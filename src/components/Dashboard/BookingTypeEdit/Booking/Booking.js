@@ -13,15 +13,20 @@ import DoneIcon from '@material-ui/icons/Done'
 import {
   KeyboardDatePicker
 } from '@material-ui/pickers'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
-import { datePickerThemeObj } from '../../../../utils/themes'
+import { datePickerThemeObj, dropDownThemeObj } from '../../../../utils/themes'
 
-const datePickerTheme = createMuiTheme(datePickerThemeObj);
+const datePickerTheme = createMuiTheme(datePickerThemeObj)
+const dropDownTheme = createMuiTheme(dropDownThemeObj)
 
-const useStyles = () => {
+const useStyles = (theme) => {
   return {
     grow: {
       flexGrow: 1,
@@ -30,6 +35,12 @@ const useStyles = () => {
       width: '26em',
       marginTop: '1em',
       marginBottom: '1em',
+    },
+    roomTypeSelect: {
+      width: '12em',
+    },
+    roomTypeSelectLabel: {
+      color: theme.palette.secondary.main,
     },
   }
 }
@@ -149,12 +160,32 @@ class Booking extends React.Component {
               />
             </Grid>
             <Grid item>
-              <TextEditInput
-                value={this.props.roomType}
-                label="Room Type"
-                onValueChange={(e) => { this.handlePropChange(e, 'roomType') }}
-                inputWidth="150"
-              />
+              <ThemeProvider theme={dropDownTheme}>
+              <FormControl variant="outlined" className={classes.roomTypeSelect}>
+                <InputLabel
+                  id="demo-simple-select-outlined-label"
+                  className={classes.roomTypeSelectLabel}
+                >
+                  Room Type
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  value={this.props.roomType}
+                  onChange={(e, j) => { this.handlePropChange(j.props.value, 'roomType') }}
+                  label="Room Type"
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+
+                  {this.props.roomTypes.map(roomType => (
+                    <MenuItem value={roomType.id} key={roomType.id}>
+                      {roomType.type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              </ThemeProvider>
             </Grid>
           </Grid>
         </CardContent>

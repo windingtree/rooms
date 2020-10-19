@@ -1,6 +1,11 @@
-import { NowRequest } from '@vercel/node'
+import { NowRequest, NowResponse } from '@vercel/node'
+import { genericApiMethodHandler, CError } from '../tools'
 
-import { CError } from '../tools'
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, {})
+}
+
+/* --------------- internal API methods/structure below --------------- */
 
 function checkSendOneTimePass(request: NowRequest): void {
   if (!request.body) {

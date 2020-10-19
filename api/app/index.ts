@@ -8,17 +8,9 @@ export default async (request: NowRequest, response: NowResponse): Promise<void>
 /* --------------- internal API methods/structure below --------------- */
 
 export {
-  checkRoomType,
+  createRoomType,
+  getRoomType,
+  updateRoomType,
+  deleteRoomType,
+  getRoomTypes,
 } from './room_type'
-
-export {
-  checkBooking,
-} from './booking'
-
-export {
-  checkLogin,
-} from './login'
-
-export {
-  checkSendOneTimePass,
-} from './send_one_time_pass'

@@ -104,7 +104,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    checkBooking(request)
+    await checkBooking(request)
   } catch (err) {
     return errorHandler(response, err)
   }

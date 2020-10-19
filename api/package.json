@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node index.js",
     "build": "tsc --outDir ./dist",
-    "lint": "eslint -c ./.eslintrc.js --resolve-plugins-relative-to ./ '*.ts' '*/**/*.ts'",
+    "lint": "eslint -c ./.eslintrc.js --resolve-plugins-relative-to ./ './**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

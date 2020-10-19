@@ -1,8 +1,15 @@
-import { NowRequest } from '@vercel/node'
+import { NowRequest, NowResponse } from '@vercel/node'
 
-import { CError } from '../tools'
+import { getRoomType } from '../app'
+import { genericApiMethodHandler, CError } from '../tools'
 
-function checkBooking(request: NowRequest): void {
+export default async (request: NowRequest, response: NowResponse): Promise<void> => {
+  await genericApiMethodHandler(request, response, {})
+}
+
+/* --------------- internal API methods/structure below --------------- */
+
+async function checkBooking(request: NowRequest): Promise<void> {
   if (!request.body) {
     throw new CError(500, 'must provide a valid body with request')
   }
@@ -41,6 +48,14 @@ function checkBooking(request: NowRequest): void {
     (typeof request.body.roomType !== 'string')
   ) {
     throw new CError(500, 'must provide a valid roomType value')
+  }
+
+  if (request.body.roomType !== '') {
+    try {
+      await getRoomType(request.body.roomType)
+    } catch (err) {
+      throw new CError(500, 'specified roomType does not exist')
+    }
   }
 }
 

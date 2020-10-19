@@ -1,87 +1,9 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { ObjectID } from 'mongodb'
 
-import { getUserAuthDetails, DB, genericApiMethodHandler, getQueryParamValue, CError, errorHandler } from '../../tools'
+import { getRoomType, updateRoomType, deleteRoomType } from '../../app'
+import { getUserAuthDetails, genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../tools'
 import { checkRoomType } from '../../validators'
-import { IUserAuthDetails, IBaseRoomType, IRoomType } from '../../types'
-import { ROOMS_DB_NAME } from '../../constants'
-
-async function updateRoomType(id: string, email: string, roomType: IBaseRoomType): Promise<IRoomType> {
-  const dbClient = await DB.getInstance().getDbClient()
-
-  let result
-  try {
-    const database = dbClient.db(ROOMS_DB_NAME)
-    const collection = database.collection('room-types')
-
-    const filter = { _id: new ObjectID(id) }
-    const options = { upsert: false }
-    const updateDoc = {
-      $set: Object.assign({ email }, roomType)
-    }
-
-    result = await collection.updateOne(filter, updateDoc, options)
-  } catch (err) {
-    throw new CError(500, 'An error occurred while updating a room type.')
-  }
-
-  if (!result || !result.matchedCount) {
-    throw new CError(500, `Could not find a room type to update with ID '${id}'.`)
-  }
-
-  return Object.assign({ id }, roomType)
-}
-
-async function deleteRoomType(id: string): Promise<void> {
-  const dbClient = await DB.getInstance().getDbClient()
-
-  let result
-  try {
-    const database = dbClient.db(ROOMS_DB_NAME)
-    const collection = database.collection('room-types')
-
-    const filter = { _id: new ObjectID(id) }
-
-    result = await collection.deleteOne(filter)
-  } catch (err) {
-    throw new CError(500, 'An error occurred while deleting a room type.')
-  }
-
-  if (!result || !result.deletedCount) {
-    throw new CError(500, `Could not find a room type to delete with ID '${id}'.`)
-  }
-}
-
-async function getRoomType(id: string): Promise<IRoomType> {
-  const dbClient = await DB.getInstance().getDbClient()
-
-  let result
-  try {
-    const database = dbClient.db(ROOMS_DB_NAME)
-    const collection = database.collection('room-types')
-
-    const query = { _id: new ObjectID(id) }
-    const options = {
-      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
-    }
-
-    result = await collection.findOne(query, options)
-  } catch (err) {
-    throw new CError(500, 'An error occurred while getting a room type.')
-  }
-
-  if (result === null) {
-    throw new CError(500, `Could not find a room type with ID '${id}'.`)
-  }
-
-  return {
-    id: result._id,
-    quantity: result.quantity,
-    type: result.type,
-    price: result.price,
-    amenities: result.amenities,
-  }
-}
+import { IUserAuthDetails, IRoomType } from '../../types'
 
 async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
   let userAuthDetails: IUserAuthDetails

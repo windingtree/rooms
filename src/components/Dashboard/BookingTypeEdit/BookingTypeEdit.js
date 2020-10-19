@@ -13,11 +13,13 @@ class BookingEdit extends React.Component {
     this._isDestroyed = false
     this.state = {
       bookingId: props.match.params.bookingId,
-      booking: null
+      booking: null,
+      roomTypes: [],
     }
   }
 
   componentDidMount() {
+    this.getRoomTypes()
     this.getBooking(this.state.bookingId)
   }
 
@@ -42,6 +44,31 @@ class BookingEdit extends React.Component {
     booking[propName] = newValue
 
     this.updateBooking(booking)
+  }
+
+  getRoomTypes = () => {
+    this.setState({
+      roomTypes: apiCache.getRoomTypes(),
+    })
+
+    apiClient
+      .getRoomTypes()
+      .then((roomTypes) => {
+        if (this._isDestroyed) return
+
+        apiCache.setRoomTypes(roomTypes)
+
+        this.setState({
+          roomTypes,
+        })
+      })
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        error.response.json().then((errorData) => {
+          console.log('errorData', errorData)
+        })
+      })
   }
 
   getBooking = (bookingId) => {
@@ -123,6 +150,8 @@ class BookingEdit extends React.Component {
               guestEmail={this.state.booking.guestEmail}
               phoneNumber={this.state.booking.phoneNumber}
               roomType={this.state.booking.roomType}
+
+              roomTypes={this.state.roomTypes}
 
               onDoneClick={this.handleDoneClick}
               onTrashClick={this.handleTrashClick}

@@ -33,7 +33,24 @@ const _datePickerThemeAdditionsObj = {
   },
 }
 
-const baseMuiThemeObj = Object.assign({}, JSON.parse(JSON.stringify(_baseMuiThemeObj)))
+const _dropDownThemeAdditionsObj = {
+  overrides: {
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "#9e21af",
+          fontWeight: "bold",
+        },
+      },
+      focused: {},
+    },
+  },
+}
+
+const baseMuiThemeObj = Object.assign(
+  {},
+  JSON.parse(JSON.stringify(_baseMuiThemeObj))
+)
 
 const datePickerThemeObj = Object.assign(
   {},
@@ -41,7 +58,14 @@ const datePickerThemeObj = Object.assign(
   JSON.parse(JSON.stringify(_datePickerThemeAdditionsObj))
 )
 
+const dropDownThemeObj = Object.assign(
+  {},
+  JSON.parse(JSON.stringify(_baseMuiThemeObj)),
+  JSON.parse(JSON.stringify(_dropDownThemeAdditionsObj))
+)
+
 export {
   baseMuiThemeObj,
-  datePickerThemeObj
+  datePickerThemeObj,
+  dropDownThemeObj,
 }
