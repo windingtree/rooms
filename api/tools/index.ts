@@ -1,3 +1,5 @@
+import { disableApiRequestsHere } from './disable_api_requests_here'
+
 import {
   getUserAuthDetails,
   authorizeUser,
@@ -28,20 +30,19 @@ import {
   errorHandler,
 } from './error_handler'
 
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
+
 export {
+  disableApiRequestsHere,
   getUserAuthDetails,
   authorizeUser,
-
   DB,
-
   decodeToken,
-
   methodNotImplemented,
   genericApiMethodHandler,
-
   getQueryParamValue,
-
   CError,
-
   errorHandler,
 }

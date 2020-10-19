@@ -1,5 +1,10 @@
 import { NowResponse } from '@vercel/node'
-import { CError } from './'
+
+import { CError, disableApiRequestsHere } from './'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
 
 function errorHandler(response: NowResponse, error: unknown): void {
   if (error instanceof CError) {

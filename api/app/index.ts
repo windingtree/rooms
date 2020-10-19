@@ -1,9 +1,6 @@
-import { NowRequest, NowResponse } from '@vercel/node'
-import { genericApiMethodHandler } from '../tools'
+import { disableApiRequestsHere } from '../tools'
 
-export default async (request: NowRequest, response: NowResponse): Promise<void> => {
-  await genericApiMethodHandler(request, response, {})
-}
+export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
@@ -14,3 +11,7 @@ export {
   deleteRoomType,
   getRoomTypes,
 } from './room_type'
+
+export {
+  authorizeUser,
+} from './authorize_user'

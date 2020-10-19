@@ -1,9 +1,13 @@
 import { NowRequest } from '@vercel/node'
 import * as jwt from 'jsonwebtoken'
 
-import { CError } from './'
+import { CError, disableApiRequestsHere } from './'
 import { JWT_SECRET } from '../constants'
 import { IDecodedAuthToken, IAnyObject } from '../types'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
 
 function decodeToken(request: NowRequest): IDecodedAuthToken {
   const authHeaderValue = request.headers['authorization']

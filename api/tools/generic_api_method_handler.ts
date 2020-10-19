@@ -1,7 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError } from './'
+import { errorHandler, CError, disableApiRequestsHere } from './'
 import { IMethodHandlerHash, TMethodFunc } from '../types'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
 
 async function methodNotImplemented(request: NowRequest, response: NowResponse): Promise<void> {
   return errorHandler(response, new CError(501, `Method ${request.method} not implemented.`))

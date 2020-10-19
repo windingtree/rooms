@@ -1,8 +1,12 @@
 import { ObjectID } from 'mongodb'
 
-import { DB, CError } from '../tools'
+import { DB, CError, disableApiRequestsHere } from '../tools'
 import { IRoomType, IBaseRoomType, IRoomTypeCollection } from '../types'
 import { ROOMS_DB_NAME } from '../constants'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
 
 async function createRoomType(email: string, newRoomType: IBaseRoomType): Promise<IRoomType> {
   const dbClient = await DB.getInstance().getDbClient()
@@ -22,9 +26,7 @@ async function createRoomType(email: string, newRoomType: IBaseRoomType): Promis
     throw new CError(500, 'Could not create a new room type.')
   }
 
-  const roomType: IRoomType = Object.assign({ id: result.insertedId }, newRoomType)
-
-  return roomType
+  return Object.assign({ id: result.insertedId }, newRoomType)
 }
 
 async function getRoomType(id: string): Promise<IRoomType> {

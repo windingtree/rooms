@@ -1,7 +1,11 @@
 import { MongoClient } from 'mongodb'
 
-import { CError } from './'
+import { CError, disableApiRequestsHere } from './'
 import { MONGODB_URL } from '../constants'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
 
 class DB {
   private static _instance: DB = new DB()
