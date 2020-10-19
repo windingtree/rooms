@@ -1,43 +1,31 @@
-import {
+import { disableApiRequestsHere } from '../tools'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
+
+export {
   TMethodFunc,
   IMethodHandlerHash,
 } from './api'
 
-import {
+export {
   IDecodedAuthToken,
   IUserAuthDetails,
 } from './auth'
 
-import {
+export {
   IAnyObject,
 } from './base'
 
-import {
+export {
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
 } from './room_type'
 
-import {
+export {
   IBaseBooking,
   IBooking,
   IBookingCollection,
 } from './booking'
-
-export {
-  TMethodFunc,
-  IMethodHandlerHash,
-
-  IDecodedAuthToken,
-  IUserAuthDetails,
-
-  IAnyObject,
-
-  IBaseRoomType,
-  IRoomType,
-  IRoomTypeCollection,
-
-  IBaseBooking,
-  IBooking,
-  IBookingCollection,
-}

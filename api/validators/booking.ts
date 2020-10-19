@@ -1,11 +1,9 @@
-import { NowRequest, NowResponse } from '@vercel/node'
+import { NowRequest } from '@vercel/node'
 
 import { getRoomType } from '../app'
-import { genericApiMethodHandler, CError } from '../tools'
+import { disableApiRequestsHere, CError } from '../tools'
 
-export default async (request: NowRequest, response: NowResponse): Promise<void> => {
-  await genericApiMethodHandler(request, response, {})
-}
+export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 

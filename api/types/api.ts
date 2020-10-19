@@ -1,5 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { disableApiRequestsHere } from '../tools'
+
+export default disableApiRequestsHere
+
+/* --------------- internal API methods/structure below --------------- */
+
 type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<void>
 
 interface IMethodHandlerHash {
