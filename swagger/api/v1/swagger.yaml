@@ -1,0 +1,40 @@
+components:
+  parameters: {}
+  schemas:
+    HealthResponse:
+      properties:
+        db: {type: string}
+      required: [db]
+      type: object
+  securitySchemes:
+    bearerAuth: {bearerFormat: JWT, scheme: bearer, type: http}
+info:
+  contact: {email: hi@windingtree.com}
+  description: This is the public interface documentation for the REST API of Winding
+    Tree Rooms project.
+  license: {name: MIT, url: 'https://github.com/windingtree/rooms/blob/master/LICENSE'}
+  termsOfService: https://windingtree.com/terms
+  title: Rooms API
+  version: 0.0.1
+openapi: 3.0.0
+paths:
+  /health:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/HealthResponse'}
+          description: OK
+      tags: [Health]
+  /ping:
+    get:
+      responses:
+        '200': {description: OK}
+      tags: [Health]
+security:
+- bearerAuth: []
+servers:
+- {url: API_HOST_URL/v1}
+tags:
+- {description: Health API end-points to determine server status, name: Health}

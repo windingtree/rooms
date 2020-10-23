@@ -9,7 +9,7 @@ export {
 } from './jwt'
 
 export {
-  API_HOST_URL,
+  API_DOC_URL,
   MONGODB_URL,
 } from './url'
 

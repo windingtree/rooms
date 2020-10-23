@@ -27,3 +27,7 @@ public/api/v1/swagger.json
 
 .vercel
 .env
+
+# Swagger generated output
+public/api
+public/api-local

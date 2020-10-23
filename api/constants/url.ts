@@ -4,10 +4,10 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-const API_HOST_URL = process.env.API_HOST_URL || ''
+const API_DOC_URL = process.env.API_DOC_URL || ''
 const MONGODB_URL = process.env.MONGODB_URL || ''
 
 export {
-  API_HOST_URL,
+  API_DOC_URL,
   MONGODB_URL,
 }
