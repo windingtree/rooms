@@ -1,16 +1,26 @@
+const WHITE = '#ffffff'
+const BLACK = '#000000'
+
+const DARK_GRAY = '#bfbfbf'
+const LIGHT_GRAY = '#bfbfbf'
+
+const DARK_PURPLE = '#9e21af'
+const MIDDLE_PURPLE = '#8f6882'
+const LIGHT_PURPLE = '#d9abca'
+
 const _baseMuiThemeObj = {
   palette: {
     primary: {
-      light: '#ffffff',
-      main: '#fff',
-      dark: '#bfbfbf',
-      contrastText: '#9e21af',
+      light: WHITE,
+      main: WHITE,
+      dark: LIGHT_GRAY,
+      contrastText: DARK_PURPLE,
     },
     secondary: {
-      light: '#ffffff',
-      main: '#d9abca',
-      dark: '#8f6882',
-      contrastText: '#000000',
+      light: WHITE,
+      main: LIGHT_PURPLE,
+      dark: MIDDLE_PURPLE,
+      contrastText: BLACK,
     },
   },
 }
@@ -19,16 +29,16 @@ const _datePickerThemeAdditionsObj = {
   overrides: {
     MuiPickersDay: {
       daySelected: {
-        color: '#ffffff',
+        color: WHITE,
       },
       current: {
-        color: "#545362",
+        color: DARK_GRAY,
       },
     },
   },
   palette: {
     primary: {
-      main: '#9e21af',
+      main: DARK_PURPLE,
     },
   },
 }
@@ -37,19 +47,20 @@ const _dropDownThemeAdditionsObj = {
   overrides: {
     MuiFormLabel: {
       root: {
-        "&$focused": {
-          color: "#9e21af",
-          fontWeight: "bold",
+        '&$focused': {
+          color: DARK_PURPLE,
+          fontWeight: 'bold',
         },
-      },
-      focused: {
-        // This is left empty. Override default "focused" styles.
       },
     },
     MuiOutlinedInput: {
       root: {
+        '&:hover:not($disabled):not($focused):not($error) $notchedOutline': {
+          borderColor: MIDDLE_PURPLE,
+          borderWidth: '1px',
+        },
         '&$focused $notchedOutline': {
-          borderColor: '#bfbfbf',
+          borderColor: MIDDLE_PURPLE,
           borderWidth: '1px',
         },
       },
