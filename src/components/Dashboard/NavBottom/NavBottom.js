@@ -26,21 +26,12 @@ const useStyles = (theme) => {
 }
 
 class NavBottom extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      currentDashboard: this.props.currentDashboard
-    }
-  }
-
-  navChange(newValue) {
-    this.setState({ currentDashboard: newValue })
+  navChange = (event, newValue) => {
     this.props.onNav(newValue)
   }
 
-  iconColor(id) {
-    if (id === this.state.currentDashboard) {
+  iconColor = (id) => {
+    if (id === this.props.currentDashboard) {
       return 'primary'
     } else {
       return 'action'
@@ -58,8 +49,8 @@ class NavBottom extends React.Component {
         alignItems="center"
       >
         <BottomNavigation
-          value={this.state.currentDashboard}
-          onChange={(event, newValue) => this.navChange(newValue)}
+          value={this.props.currentDashboard}
+          onChange={this.navChange}
           showLabels
         >
           <BottomNavigationAction

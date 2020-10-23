@@ -45,7 +45,7 @@ class NavTop extends React.Component {
               <IconButton color="inherit">
                 <SearchIcon />
               </IconButton>
-              <Link to="../" className={classes.link}>
+              <Link to="/dashboard/profile" className={classes.link}>
                 <IconButton color="inherit">
                   <HomeIcon />
                 </IconButton>

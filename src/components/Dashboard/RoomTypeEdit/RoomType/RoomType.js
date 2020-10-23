@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import DoneIcon from '@material-ui/icons/Done';
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
+import MultiAutocomplete from '../../../base/MultiAutocomplete/MultiAutocomplete'
 
 const useStyles = () => {
   return {
@@ -30,6 +31,22 @@ const useStyles = () => {
 }
 
 class RoomType extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      availableAmenities: [
+        { name: 'WiFi' },
+        { name: 'Fridge' },
+        { name: 'Double Bed' },
+        { name: 'Phone' },
+        { name: 'Air Conditioning' },
+        { name: 'Balcony' },
+        { name: 'Massage' },
+      ],
+    }
+  }
+
   handleTrashClick = () => {
     this.props.onTrashClick(this.props.id)
   }
@@ -91,10 +108,11 @@ class RoomType extends React.Component {
               <div className={classes.price_currency}>USD</div>
             </Grid>
             <Grid item>
-              <TextEditInput
+              <MultiAutocomplete
+                options={this.state.availableAmenities}
                 value={this.props.amenities}
-                label="Amenities"
                 onValueChange={this.handleAmenitiesChange}
+                inputLabel="Amenities"
                 inputWidth="250"
               />
             </Grid>

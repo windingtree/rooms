@@ -19,7 +19,7 @@ const _datePickerThemeAdditionsObj = {
   overrides: {
     MuiPickersDay: {
       daySelected: {
-        color: '#ffffff'
+        color: '#ffffff',
       },
       current: {
         color: "#545362",
@@ -42,7 +42,17 @@ const _dropDownThemeAdditionsObj = {
           fontWeight: "bold",
         },
       },
-      focused: {},
+      focused: {
+        // This is left empty. Override default "focused" styles.
+      },
+    },
+    MuiOutlinedInput: {
+      root: {
+        '&$focused $notchedOutline': {
+          borderColor: '#bfbfbf',
+          borderWidth: '1px',
+        },
+      },
     },
   },
 }

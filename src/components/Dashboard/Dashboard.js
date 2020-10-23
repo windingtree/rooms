@@ -11,6 +11,7 @@ import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
 import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
 import Rates from './Rates/Rates'
+import Profile from './Profile/Profile'
 import { history } from '../../utils/history'
 
 const useStyles = () => {
@@ -35,14 +36,38 @@ class Dashboard extends React.Component {
   isLoggedIn = true
 
   constructor(props) {
-    let currentDashboard
-
     super(props)
 
-    if (!props.match.params.dashboardSectionId) {
+    this.state = {
+      currentDashboard: this.getCurrentDashboard(),
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps &&
+      prevProps.match &&
+      prevProps.match.params &&
+
+      this.props &&
+      this.props.match &&
+      this.props.match.params
+    ) {
+      if (this.props.match.params.dashboardSectionId !== prevProps.match.params.dashboardSectionId) {
+        this.setState({
+          currentDashboard: this.getCurrentDashboard(),
+        })
+      }
+    }
+  }
+
+  getCurrentDashboard() {
+    let currentDashboard
+
+    if (!this.props.match.params.dashboardSectionId) {
       currentDashboard = 2
     } else {
-      switch (props.match.params.dashboardSectionId) {
+      switch (this.props.match.params.dashboardSectionId) {
         case 'calendar':
           currentDashboard = 0
           break
@@ -59,13 +84,12 @@ class Dashboard extends React.Component {
           currentDashboard = 4
           break
         default:
-          currentDashboard = 5
+          // Maybe a valid URL, but no icon for it in bottom nav panel.
+          currentDashboard = -1
       }
     }
 
-    this.state = {
-      currentDashboard,
-    }
+    return currentDashboard
   }
 
   handleOnNav(whereTo) {
@@ -132,6 +156,11 @@ class Dashboard extends React.Component {
               <Route exact path="/dashboard/rates">
                 { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }
               </Route>
+
+              <Route exact path="/dashboard/profile">
+                { this.isLoggedIn ? <Profile /> : <Redirect to="/" /> }
+              </Route>
+
               <Route render={() => <h1>404: page not found</h1>} />
             </Switch>
           </div>
