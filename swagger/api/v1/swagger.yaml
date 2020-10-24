@@ -3,17 +3,24 @@ components:
   schemas:
     HealthResponse:
       properties:
-        db: {type: string}
-      required: [db]
+        db:
+          type: string
+      required:
+        - db
       type: object
   securitySchemes:
-    bearerAuth: {bearerFormat: JWT, scheme: bearer, type: http}
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
 info:
-  contact: {email: hi@windingtree.com}
-  description: This is the public interface documentation for the REST API of Winding
-    Tree Rooms project.
-  license: {name: MIT, url: 'https://github.com/windingtree/rooms/blob/master/LICENSE'}
-  termsOfService: https://windingtree.com/terms
+  contact:
+    email: hi@windingtree.com
+  description: This is the public interface documentation for the REST API of Winding Tree Rooms project.
+  license:
+    name: MIT
+    url: 'https://github.com/windingtree/rooms/blob/master/LICENSE'
+  termsOfService: 'https://windingtree.com/terms'
   title: Rooms API
   version: 0.0.1
 openapi: 3.0.0
@@ -24,17 +31,26 @@ paths:
         '200':
           content:
             application/json:
-              schema: {$ref: '#/components/schemas/HealthResponse'}
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
           description: OK
-      tags: [Health]
+      tags:
+        - Health
+      description: Provides information on DB status.
+      operationId: GetHealth
   /ping:
     get:
       responses:
-        '200': {description: OK}
-      tags: [Health]
+        '200':
+          description: OK
+      tags:
+        - Health
+      description: Provides information on service availability.
+      operationId: GetPing
 security:
-- bearerAuth: []
+  - bearerAuth: []
 servers:
-- {url: API_HOST_URL/v1}
+  - url: API_HOST_URL/v1
 tags:
-- {description: Health API end-points to determine server status, name: Health}
+  - description: Health API end-points to determine server status
+    name: Health
