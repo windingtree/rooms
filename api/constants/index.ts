@@ -21,3 +21,7 @@ export {
 export {
   ROOMS_DB_NAME,
 } from './mongo'
+
+export {
+  WT_VERIFICATION_CODE,
+} from './wt'
