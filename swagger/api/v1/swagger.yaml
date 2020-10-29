@@ -8,6 +8,62 @@ components:
       required:
         - db
       type: object
+    LoginResponse:
+      description: ''
+      type: object
+      properties:
+        email:
+          type: string
+        login:
+          type: string
+        oneTimePassword:
+          type: string
+      required:
+        - email
+        - login
+        - oneTimePassword
+    SendOneTimePassResponse:
+      description: ''
+      type: object
+      x-examples:
+        example:
+          email: valera@windingtree.com
+          oneTimePassword: sent
+      properties:
+        email:
+          type: string
+        oneTimePassword:
+          type: string
+      required:
+        - email
+        - oneTimePassword
+    RoomTypesResponse:
+      type: array
+      description: ''
+      uniqueItems: false
+      x-examples: {}
+      items:
+        $ref: '#/components/schemas/RoomType'
+    RoomType:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        quantity:
+          type: number
+        price:
+          type: number
+        amenities:
+          type: string
+      required:
+        - id
+        - type
+        - quantity
+        - price
+        - amenities
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
@@ -33,20 +89,314 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
-          description: OK
+          description: ''
       tags:
         - Health
       description: Provides information on DB status.
       operationId: GetHealth
+      security: []
   /ping:
     get:
       responses:
         '200':
-          description: OK
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                example:
+                  value: '"OK"'
       tags:
         - Health
       description: Provides information on service availability.
       operationId: GetPing
+      security: []
+  /login:
+    post:
+      summary: ''
+      operationId: PostLogin
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              examples:
+                example:
+                  value:
+                    login: OK
+                    email: user@example.com
+                    oneTimePassword: b5dea680-a407-4b3f-91d8-268de6619b30
+      description: 'Perform a login operation, if you have a OneTimePassword received by email.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 1
+                oneTimePassword:
+                  type: string
+                  minLength: 1
+                sessionToken:
+                  type: string
+                  minLength: 1
+              required:
+                - email
+                - oneTimePassword
+                - sessionToken
+            examples:
+              example:
+                value:
+                  email: user@example.com
+                  sessionToken: b4eda8e0-a7cc-43a4-af4c-12f1e379ddc0
+                  oneTimePassword: b5dea680-a407-4b3f-91d8-268de6619b30
+        description: ''
+      tags:
+        - Auth
+      security: []
+  /send_one_time_pass:
+    post:
+      summary: ''
+      operationId: PostSendOneTimePass
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendOneTimePassResponse'
+              examples:
+                example:
+                  value:
+                    email: user@example.com
+                    oneTimePassword: sent
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+      description: Request a OneTimePassword to be sent to a specified email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 1
+                sessionToken:
+                  type: string
+                  minLength: 1
+              required:
+                - email
+                - sessionToken
+            examples:
+              example:
+                value:
+                  email: user@example.com
+                  sessionToken: b4eda8e0-a7cc-43a4-af4c-12f1e379ddc0
+      security: []
+      tags:
+        - Auth
+  /wt_verification:
+    get:
+      summary: ''
+      tags:
+        - WT
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                description: ''
+                type: string
+              examples:
+                example:
+                  value: '"0x08b490a10b9fcf5649083c4fcdda83d2d5146be21f8456c35b5efd2e20e94140"'
+          headers: {}
+      operationId: GetWtVerification
+      description: API end point used by Windingtree Marketplace to verify organization URL.
+      security: []
+  /room_types:
+    get:
+      summary: ''
+      tags:
+        - RoomTypes
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomTypesResponse'
+              examples:
+                example:
+                  value:
+                    - id: 5f8ce2d0af5e7200082f0df1
+                      quantity: 20
+                      type: Small
+                      price: 50.5
+                      amenities: Massage;
+                    - id: 5f8ce311af5e7200082f0df3
+                      quantity: 10
+                      type: Lagre
+                      price: 1
+                      amenities: Phone;Double Bed;
+                    - id: 5f8d745e9a99e40007f0f5b2
+                      quantity: 0
+                      type: Tiny
+                      price: 0
+                      amenities: Phone;Air Conditioning;
+      operationId: GetRoomTypes
+      description: Get all available Room Types.
+      parameters: []
+    post:
+      summary: ''
+      operationId: PostRoomTypes
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomType'
+              examples:
+                example:
+                  value:
+                    id: 5f9a2f42d7da911bb093f524
+                    type: Large
+                    quantity: 20
+                    price: 39.99
+                    amenities: Shower;WiFi;
+      description: Create a new Room Type.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                type:
+                  type: string
+                quantity:
+                  type: number
+                price:
+                  type: number
+                amenities:
+                  type: string
+              required:
+                - type
+                - quantity
+                - price
+                - amenities
+            examples:
+              example:
+                value:
+                  type: Large
+                  quantity: 20
+                  price: 39.99
+                  amenities: Shower;WiFi;
+        description: ''
+      tags:
+        - RoomTypes
+  '/room_types/{roomTypeId}':
+    parameters:
+      - schema:
+          type: string
+        name: roomTypeId
+        in: path
+        required: true
+        description: Room Type ID
+    get:
+      summary: ''
+      tags:
+        - RoomTypes
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomType'
+              examples:
+                example:
+                  value:
+                    id: 5f9a2f42d7da911bb093f524
+                    type: Large
+                    quantity: 20
+                    price: 39.99
+                    amenities: Shower;WiFi;
+      operationId: GetRoomTypesRoomTypeId
+      description: Get a Room Type by ID.
+    put:
+      summary: ''
+      operationId: PutRoomTypesRoomTypeId
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomType'
+              examples:
+                example:
+                  value:
+                    id: 5f9a2f42d7da911bb093f524
+                    type: Large
+                    quantity: 20
+                    price: 39.99
+                    amenities: Shower;WiFi;
+      description: Update a Room Type by ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomType'
+            examples:
+              example:
+                value:
+                  id: 5f9a2f42d7da911bb093f524
+                  type: Large
+                  quantity: 20
+                  price: 39.99
+                  amenities: Shower;WiFi;
+      tags:
+        - RoomTypes
+    delete:
+      summary: ''
+      operationId: DeleteRoomTypesRoomTypeId
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                  deleted:
+                    type: boolean
+                required:
+                  - id
+                  - deleted
+              examples:
+                example:
+                  value:
+                    id: 5f8ce311af5e7200082f0df3
+                    deleted: true
+      description: Delete a Room Type by ID.
+      tags:
+        - RoomTypes
 security:
   - bearerAuth: []
 servers:
@@ -54,3 +404,9 @@ servers:
 tags:
   - description: Health API end-points to determine server status
     name: Health
+  - description: Authentication API end-points used for logging in a user
+    name: Auth
+  - description: Windingtree Marketplace helper API end-points
+    name: WT
+  - description: API end-points to work with Room Types
+    name: RoomTypes
