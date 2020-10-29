@@ -64,6 +64,31 @@ components:
         - quantity
         - price
         - amenities
+    BookingsResponse:
+      type: array
+      description: ''
+      uniqueItems: false
+      x-examples: {}
+      items:
+        $ref: '#/components/schemas/Booking'
+    Booking:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: string
+        checkInDate:
+          type: string
+        checkOutDate:
+          type: string
+        guestName:
+          type: string
+        guestEmail:
+          type: string
+        phoneNumber:
+          type: string
+        roomType:
+          type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
@@ -397,6 +422,204 @@ paths:
       description: Delete a Room Type by ID.
       tags:
         - RoomTypes
+  /bookings:
+    get:
+      summary: ''
+      tags:
+        - Bookings
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingsResponse'
+              examples:
+                example:
+                  value:
+                    - id: 5f89aec3062a972399eecfb5
+                      checkInDate: '1900-01-23T00:00:00+02:02'
+                      checkOutDate: '2020-10-17T17:31:28+03:00'
+                      guestName: Smith
+                      guestEmail: ''
+                      phoneNumber: ''
+                      roomType: 5f8d745e9a99e40007f0f5b2
+                    - id: 5f89aee3c78ee923da3096d4
+                      checkInDate: '2020-11-25T17:32:00+02:00'
+                      checkOutDate: '2020-11-26T17:32:00+02:00'
+                      guestName: Valera
+                      guestEmail: ''
+                      phoneNumber: ''
+                      roomType: 5f8ce311af5e7200082f0df3
+                    - id: 5f8d7413a0e78900088a7b88
+                      checkInDate: '2020-10-19T14:10:09+03:00'
+                      checkOutDate: '2020-10-20T14:10:09+03:00'
+                      guestName: Tomy
+                      guestEmail: ''
+                      phoneNumber: ''
+                      roomType: 5f8ce311af5e7200082f0df3
+      operationId: GetBookings
+      description: Get all available Bookings.
+      parameters: []
+    post:
+      summary: ''
+      operationId: PostBookings
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+              examples:
+                example:
+                  value:
+                    id: 5f89aec3062a972399eecfb5
+                    checkInDate: '1900-01-23T00:00:00+02:02'
+                    checkOutDate: '2020-10-17T17:31:28+03:00'
+                    guestName: Smith
+                    guestEmail: ''
+                    phoneNumber: ''
+                    roomType: 5f8d745e9a99e40007f0f5b2
+      description: Create a new Booking.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                checkInDate:
+                  type: string
+                  minLength: 1
+                checkOutDate:
+                  type: string
+                  minLength: 1
+                guestName:
+                  type: string
+                  minLength: 1
+                guestEmail:
+                  type: string
+                phoneNumber:
+                  type: string
+                roomType:
+                  type: string
+                  minLength: 1
+              required:
+                - checkInDate
+                - checkOutDate
+                - guestName
+                - guestEmail
+                - phoneNumber
+                - roomType
+            examples:
+              example:
+                value:
+                  checkInDate: '1900-01-23T00:00:00+02:02'
+                  checkOutDate: '2020-10-17T17:31:28+03:00'
+                  guestName: Smith
+                  guestEmail: ''
+                  phoneNumber: ''
+                  roomType: 5f8d745e9a99e40007f0f5b2
+        description: ''
+      tags:
+        - Bookings
+  '/bookings/{bookingId}':
+    parameters:
+      - schema:
+          type: string
+        name: bookingId
+        in: path
+        required: true
+        description: Booking ID
+    get:
+      summary: ''
+      tags:
+        - Bookings
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+              examples:
+                example:
+                  value:
+                    id: 5f89aec3062a972399eecfb5
+                    checkInDate: '1900-01-23T00:00:00+02:02'
+                    checkOutDate: '2020-10-17T17:31:28+03:00'
+                    guestName: Smith
+                    guestEmail: ''
+                    phoneNumber: ''
+                    roomType: 5f8d745e9a99e40007f0f5b2
+      operationId: GetBookingsBookingId
+      description: Get a Booking by ID.
+    put:
+      summary: ''
+      operationId: PutBookingsBookingId
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+              examples:
+                example:
+                  value:
+                    id: 5f89aec3062a972399eecfb5
+                    checkInDate: '1900-01-23T00:00:00+02:02'
+                    checkOutDate: '2020-10-17T17:31:28+03:00'
+                    guestName: Smith
+                    guestEmail: ''
+                    phoneNumber: ''
+                    roomType: 5f8d745e9a99e40007f0f5b2
+      description: Update a Booking by ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+            examples:
+              example:
+                value:
+                  id: 5f89aec3062a972399eecfb5
+                  checkInDate: '1900-01-23T00:00:00+02:02'
+                  checkOutDate: '2020-10-17T17:31:28+03:00'
+                  guestName: Smith
+                  guestEmail: ''
+                  phoneNumber: ''
+                  roomType: 5f8d745e9a99e40007f0f5b2
+      tags:
+        - Bookings
+    delete:
+      summary: ''
+      operationId: DeleteBookingsBookingId
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                  deleted:
+                    type: boolean
+                required:
+                  - id
+                  - deleted
+              examples:
+                example:
+                  value:
+                    id: 5f8ce311af5e7200082f0df3
+                    deleted: true
+      description: Delete a Booking by ID.
+      tags:
+        - Bookings
 security:
   - bearerAuth: []
 servers:
@@ -410,3 +633,5 @@ tags:
     name: WT
   - description: API end-points to work with Room Types
     name: RoomTypes
+  - description: API end-points to work with Bookings
+    name: Bookings
