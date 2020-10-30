@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "35c2be99-188f-4a25-8933-4b0753ccb839",
+		"name": "bookings/{ID}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bookings/{ID}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{hostname}}/api/v1/bookings/5f834c5b26757e71ee2f1dd6",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"5f834c5b26757e71ee2f1dd6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings/{ID}",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{hostname}}/api/v1/bookings/5f834b71adf10970a30f3634",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"5f834b71adf10970a30f3634"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings/{ID}",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"checkInDate\": \"7th, June, 2020\",\n    \"checkOutDate\": \"10th June, 2020\",\n    \"guestName\": \"Valera Rozuvan\",\n    \"guestEmail\": \"valera@w.com\",\n    \"phoneNumber\": \"+38 (093) 159-19-74\",\n    \"roomType\": \"Large XXXXX\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/api/v1/bookings/5f834c5b26757e71ee2f1dd6",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"5f834c5b26757e71ee2f1dd6"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
