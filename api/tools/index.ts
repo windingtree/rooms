@@ -10,7 +10,6 @@ export {
 
 export {
   getUserAuthDetails,
-  authorizeUser,
 } from './authorize_user'
 
 export {
@@ -37,3 +36,7 @@ export {
 export {
   errorHandler,
 } from './error_handler'
+
+export {
+  emailOneTimePassword,
+} from './email'

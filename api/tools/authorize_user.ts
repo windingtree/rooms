@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { authorizeUser } from '../app'
+import { checkIfUserAuthenticated } from '../app'
 import { decodeToken, disableApiRequestsHere } from './'
 import { IDecodedAuthToken, IUserAuthDetails } from '../types'
 
@@ -15,14 +15,13 @@ async function getUserAuthDetails(request: NowRequest): Promise<IUserAuthDetails
   const oneTimePassword: string = decodedToken.oneTimePassword
   const sessionToken: string = decodedToken.sessionToken
 
-  const userIsAuthorized: boolean = await authorizeUser(email, oneTimePassword, sessionToken)
+  const userIsAuthenticated: boolean = await checkIfUserAuthenticated(email, oneTimePassword, sessionToken)
 
   return {
-    userIsAuthorized, email, oneTimePassword
+    userIsAuthenticated, email, oneTimePassword
   }
 }
 
 export {
   getUserAuthDetails,
-  authorizeUser,
 }

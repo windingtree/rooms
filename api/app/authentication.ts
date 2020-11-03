@@ -5,7 +5,7 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-async function authorizeUser(email: string, oneTimePassword: string, sessionToken: string): Promise<boolean> {
+async function checkIfUserAuthenticated(email: string, oneTimePassword: string, sessionToken: string): Promise<boolean> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let ownerRecord
@@ -36,5 +36,5 @@ async function authorizeUser(email: string, oneTimePassword: string, sessionToke
 }
 
 export {
-  authorizeUser,
+  checkIfUserAuthenticated,
 }

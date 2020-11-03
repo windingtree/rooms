@@ -12,7 +12,7 @@ interface IDecodedAuthToken {
 }
 
 interface IUserAuthDetails {
-  userIsAuthorized: boolean
+  userIsAuthenticated: boolean
   email: string
   oneTimePassword: string
 }

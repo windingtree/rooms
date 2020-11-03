@@ -13,5 +13,21 @@ export {
 } from './room_type'
 
 export {
-  authorizeUser,
-} from './authorize_user'
+  createBooking,
+  getBooking,
+  updateBooking,
+  deleteBooking,
+  getBookings,
+} from './booking'
+
+export {
+  checkIfUserAuthenticated,
+} from './authentication'
+
+export {
+  getOneTimePassword,
+} from './one_time_password'
+
+export {
+  pingDatabase,
+} from './health'
