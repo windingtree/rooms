@@ -21,15 +21,19 @@ async function checkIfUserAuthenticated(email: string, oneTimePassword: string, 
 
     ownerRecord = await collection.findOne(query, options)
   } catch (err) {
-    throw new CError(401, 'Could not authenticate user.')
+    throw new CError(500, 'Something went wrong while authenticating user.')
   }
 
-  if (
-    (!ownerRecord) ||
-    (ownerRecord.oneTimePassword !== oneTimePassword) ||
-    (ownerRecord.sessionToken !== sessionToken)
-  ) {
-    throw new CError(401, 'Email or one time password are not valid.')
+  if (!ownerRecord) {
+    throw new CError(401, 'Provided email address did not match any user.')
+  }
+
+  if (ownerRecord.oneTimePassword !== oneTimePassword) {
+    throw new CError(401, 'One time password is not valid.')
+  }
+
+  if (ownerRecord.sessionToken !== sessionToken) {
+    throw new CError(401, 'Session token is not valid.')
   }
 
   return true
