@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "e94fe5c9-3cfe-48d7-aad4-5e7a620ef2bd",
-		"name": "rooms-stg",
+		"_postman_id": "2aeff3c8-a426-4c8a-8e98-af626918a13d",
+		"name": "API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "66af3a71-fb90-402a-aee3-fa6ace420bc1",
+						"id": "f929344a-b7e6-46a4-b155-58e8b017c541",
 						"exec": [
 							"pm.test(\"ping status\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -30,13 +30,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://staging.rooms.windingtree.com/api/v1/ping",
-					"protocol": "https",
+					"raw": "{{hostname}}/api/v1/ping",
 					"host": [
-						"staging",
-						"rooms",
-						"windingtree",
-						"com"
+						"{{hostname}}"
 					],
 					"path": [
 						"api",
@@ -53,7 +49,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e5dcbfef-6646-4b99-a994-222541632ffc",
+						"id": "29463674-dc0e-48ff-8f15-735bd0ef0869",
 						"exec": [
 							"pm.test(\"health status\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -73,13 +69,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://staging.rooms.windingtree.com/api/v1/health",
-					"protocol": "https",
+					"raw": "{{hostname}}/api/v1/health",
 					"host": [
-						"staging",
-						"rooms",
-						"windingtree",
-						"com"
+						"{{hostname}}"
 					],
 					"path": [
 						"api",
