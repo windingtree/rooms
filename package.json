@@ -13,9 +13,11 @@
     "@testing-library/user-event": "^7.2.1",
     "email-validator": "^2.0.4",
     "jsonwebtoken": "^8.5.1",
+    "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-leaflet": "^3.0.0-rc.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
   },

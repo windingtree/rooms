@@ -2,6 +2,13 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 
+const DEFAULT_INPUT_WIDTH = 200
+const DEFAULT_INPUT_LABEL = 'Label'
+
+function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}
+
 function measureText(text) {
   if (!window._tempDivForMeasurement) {
     window._tempDivForMeasurement = document.createElement('div')
@@ -33,9 +40,22 @@ const useStyles = (theme) => {
   return {
     container: {
       display: 'inline-block',
-      width: (props) => { return `${props.inputWidth}px` },
+      width: (props) => {
+        let inputWidth = DEFAULT_INPUT_WIDTH
+        if (typeof props.inputWidth === 'number') {
+          inputWidth = props.inputWidth
+        }
+
+        return `${inputWidth}px`
+      },
       height: '4em',
-      cursor: 'pointer',
+      cursor: (props) => {
+        if (props.editable === false) {
+          return 'default'
+        }
+
+        return 'pointer'
+      },
     },
     simple_text_container: {
       display: 'inline-flex',
@@ -64,7 +84,14 @@ const useStyles = (theme) => {
     simple_text_underline: {
       position: 'relative',
       display: 'inline-flex',
-      width: (props) => { return `${props.inputWidth - 10}px` },
+      width: (props) => {
+        let inputWidth = DEFAULT_INPUT_WIDTH
+        if (typeof props.inputWidth === 'number') {
+          inputWidth = props.inputWidth
+        }
+
+        return `${inputWidth}px`
+      },
       height: '2px',
       background: `
         repeating-linear-gradient(
@@ -91,7 +118,7 @@ class TextEditInput extends React.Component {
 
     this.state = {
       textValue: this.props.value,
-      textLabel: this.props.label,
+      textLabel: (this.props.label) ? this.props.label : DEFAULT_INPUT_LABEL,
       isTextEditable: false,
     }
   }
@@ -103,6 +130,26 @@ class TextEditInput extends React.Component {
   componentWillUnmount() {
     this._isDestroyed = true
     document.removeEventListener('mousedown', this.mouseDownListener)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps) {
+      if (typeof prevProps.value === 'string') {
+        if (prevProps.value !== this.props.value) {
+          this.setState({
+            textValue: this.props.value
+          })
+        }
+      }
+
+      if (typeof prevProps.label === 'string') {
+        if (prevProps.label !== this.props.label) {
+          this.setState({
+            textLabel: (this.props.label) ? this.props.label : DEFAULT_INPUT_LABEL
+          })
+        }
+      }
+    }
   }
 
   handleTextUpdate(e) {
@@ -117,7 +164,10 @@ class TextEditInput extends React.Component {
         return
       }
 
-      this.props.onValueChange(this.state.textValue)
+      if (isFunction(this.props.onValueChange)) {
+        this.props.onValueChange(this.state.textValue)
+      }
+
       this.setState({ isTextEditable: false })
     } else if (e.key === 'Escape' || e.keyCode === 27) {
       if (this.state.isTextEditable === false) {
@@ -142,7 +192,12 @@ class TextEditInput extends React.Component {
     let shortStr = str.substr(0, MAX_LENGTH - 1)
     let strPixelLength = measureText(`${shortStr}...`)
 
-    while (strPixelLength - 14 >= this.props.inputWidth) {
+    let inputWidth = DEFAULT_INPUT_WIDTH
+    if (typeof this.props.inputWidth === 'number') {
+      inputWidth = this.props.inputWidth
+    }
+
+    while (strPixelLength - 14 >= inputWidth) {
       MAX_LENGTH -= 1
       shortStr = str.substr(0, MAX_LENGTH - 1)
       strPixelLength = measureText(`${shortStr}...`)
@@ -153,6 +208,10 @@ class TextEditInput extends React.Component {
 
   mouseDownHandler(e) {
     if (this._isDestroyed === true) {
+      return
+    }
+
+    if (this.props.editable === false) {
       return
     }
 
@@ -174,7 +233,10 @@ class TextEditInput extends React.Component {
       return
     }
 
-    this.props.onValueChange(this.state.textValue)
+    if (isFunction(this.props.onValueChange)) {
+      this.props.onValueChange(this.state.textValue)
+    }
+
     this.setState({ isTextEditable: false })
   }
 
@@ -193,6 +255,7 @@ class TextEditInput extends React.Component {
               label={this.state.textLabel}
               onChange={(e) => {this.handleTextUpdate(e)}}
               onKeyUp={(e) => {this.handleKeyUp(e)}}
+              fullWidth={true}
             /> :
             <div className={classes.simple_text_container}>
               <div className={classes.simple_text_label}>{this.state.textLabel}</div>

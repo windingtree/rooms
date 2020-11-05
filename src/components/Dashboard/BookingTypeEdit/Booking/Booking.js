@@ -142,13 +142,13 @@ class Booking extends React.Component {
                 value={this.props.guestName}
                 label="Name"
                 onValueChange={(e) => { this.handlePropChange(e, 'guestName') }}
-                inputWidth="150"
+                inputWidth={150}
               />
               <TextEditInput
                 value={this.props.guestEmail}
                 label="Email"
                 onValueChange={(e) => { this.handlePropChange(e, 'guestEmail') }}
-                inputWidth="150"
+                inputWidth={150}
               />
             </Grid>
             <Grid item>
@@ -156,7 +156,7 @@ class Booking extends React.Component {
                 value={this.props.phoneNumber}
                 label="Phone"
                 onValueChange={(e) => { this.handlePropChange(e, 'phoneNumber') }}
-                inputWidth="150"
+                inputWidth={150}
               />
             </Grid>
             <Grid item>

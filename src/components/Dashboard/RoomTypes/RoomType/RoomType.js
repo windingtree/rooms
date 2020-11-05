@@ -68,13 +68,13 @@ class RoomType extends React.Component {
                 value={this.props.type}
                 label="Type"
                 onValueChange={this.handleTypeChange}
-                inputWidth="150"
+                inputWidth={150}
               />
               <TextEditInput
                 value={this.props.quantity}
                 label="Quantity"
                 onValueChange={this.handleQuantityChange}
-                inputWidth="75"
+                inputWidth={75}
               />
             </Grid>
             <Grid item>
@@ -82,7 +82,7 @@ class RoomType extends React.Component {
                 value={this.props.price}
                 label="Price"
                 onValueChange={this.handlePriceChange}
-                inputWidth="90"
+                inputWidth={90}
               />
               <div className={classes.price_currency}>USD</div>
             </Grid>

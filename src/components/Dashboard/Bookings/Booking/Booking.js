@@ -132,7 +132,7 @@ class Booking extends React.Component {
                 value={this.props.guestName}
                 label="Name"
                 onValueChange={(e) => { this.handlePropChange(e, 'guestName') }}
-                inputWidth="150"
+                inputWidth={150}
               />
             </Grid>
           </Grid>
