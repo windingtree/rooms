@@ -5,19 +5,19 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger } from '../../../utils'
+import { errorLogger, objClone } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
 
-function initRoomTypeObj(attrs = {}) {
+function initRoomTypeObj() {
   const roomTypeObj = {
-    id: attrs.id || uuidv4(),
+    id: uuidv4(),
 
-    type: attrs.type || '',
-    quantity: attrs.quantity || 0,
-    price: attrs.price || 0,
-    amenities: attrs.amenities || '',
+    type: '',
+    quantity: 0,
+    price: 0,
+    amenities: '',
   }
 
   return roomTypeObj
@@ -43,7 +43,7 @@ class RoomTypes extends React.Component {
   }
 
   handleAddNewClick = () => {
-    this.createRoomType({})
+    this.createRoomType()
   }
 
   handleEditClick = (id) => {
@@ -82,8 +82,6 @@ class RoomTypes extends React.Component {
       .then((roomTypes) => {
         if (this._isDestroyed) return
 
-        apiCache.setRoomTypes(roomTypes)
-
         this.setState({
           roomTypes,
           apiLoading: false,
@@ -96,10 +94,8 @@ class RoomTypes extends React.Component {
       })
   }
 
-  createRoomType = (attrs) => {
-    const newRoomType = initRoomTypeObj(attrs)
-
-    apiCache.addRoomType(newRoomType)
+  createRoomType = () => {
+    const newRoomType = initRoomTypeObj()
 
     this.setState({
       roomTypes: this.state.roomTypes.concat(newRoomType),
@@ -112,11 +108,13 @@ class RoomTypes extends React.Component {
         this.setState({
           roomTypes: this.state.roomTypes.map((roomType) => {
             if (roomType.id === newRoomType.id) {
-              const _roomType = Object.assign({}, roomType, {
-                id: attrs.id,
-              })
-
-              apiCache.updateRoomType(roomType.id, _roomType)
+              const _roomType = Object.assign(
+                {},
+                objClone(roomType),
+                {
+                  id: attrs.id,
+                }
+              )
 
               return _roomType
             } else {
@@ -136,14 +134,16 @@ class RoomTypes extends React.Component {
     this.setState({
       roomTypes: this.state.roomTypes.map((roomType) => {
         if (roomType.id === attrs.id) {
-          const _roomType = Object.assign({}, roomType, {
-            quantity: attrs.quantity,
-            type: attrs.type,
-            price: attrs.price,
-            amenities: attrs.amenities,
-          })
-
-          apiCache.updateRoomType(roomType.id, _roomType)
+          const _roomType = Object.assign(
+            {},
+            objClone(roomType),
+            {
+              quantity: attrs.quantity,
+              type: attrs.type,
+              price: attrs.price,
+              amenities: attrs.amenities,
+            }
+          )
 
           return _roomType
         } else {
@@ -162,8 +162,6 @@ class RoomTypes extends React.Component {
   }
 
   deleteRoomType = (id) => {
-    apiCache.deleteRoomType(id)
-
     this.setState({
       roomTypes: this.state.roomTypes.filter(t => t.id !== id),
     })

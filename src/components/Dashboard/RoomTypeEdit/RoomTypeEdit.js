@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger } from '../../../utils'
+import { errorLogger, objClone } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomType from './RoomType/RoomType'
 import Spinner from '../../base/Spinner/Spinner'
@@ -35,7 +35,7 @@ class RoomTypeEdit extends React.Component {
   }
 
   handlePropValueChange = (id, propName, newValue) => {
-    let roomType = Object.assign({}, this.state.roomType)
+    let roomType = objClone(this.state.roomType)
 
     if (roomType[propName] === newValue) {
       return
@@ -66,8 +66,6 @@ class RoomTypeEdit extends React.Component {
   }
 
   updateRoomType = (roomType) => {
-    apiCache.updateRoomType(roomType.id, roomType)
-
     this.setState({ roomType })
 
     apiClient
@@ -80,8 +78,6 @@ class RoomTypeEdit extends React.Component {
   }
 
   deleteRoomType = (id) => {
-    apiCache.deleteRoomType(id)
-
     apiClient
       .deleteRoomType(id)
       .then(() => {

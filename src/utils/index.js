@@ -11,3 +11,7 @@ export {
   datePickerThemeObj,
   dropDownThemeObj,
 } from './themes'
+
+export {
+  objClone,
+} from './obj_clone'

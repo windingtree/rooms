@@ -1,3 +1,5 @@
+import { objClone } from '../../'
+
 function getBookings() {
   const _bookings = []
 
@@ -6,7 +8,7 @@ function getBookings() {
   }
 
   this.cache.bookings.forEach((booking) => {
-    _bookings.push(Object.assign({}, booking))
+    _bookings.push(objClone(booking))
   })
 
   return _bookings
@@ -16,7 +18,7 @@ function setBookings(bookings) {
   const _bookings = []
 
   bookings.forEach((booking) => {
-    _bookings.push(Object.assign({}, booking))
+    _bookings.push(objClone(booking))
   })
 
   this.cache.bookings = _bookings
@@ -39,7 +41,7 @@ function getBooking(bookingId) {
     return null
   }
 
-  return Object.assign({}, _booking)
+  return objClone(_booking)
 }
 
 function addBooking(booking) {
@@ -47,7 +49,7 @@ function addBooking(booking) {
 
   if (this.cache.bookings) {
     this.cache.bookings.forEach((booking) => {
-      _bookings.push(Object.assign({}, booking))
+      _bookings.push(objClone(booking))
     })
   }
 
@@ -66,9 +68,9 @@ function updateBooking(bookingId, newBooking) {
 
   this.cache.bookings.forEach((booking) => {
     if (booking.id === bookingId) {
-      _bookings.push(Object.assign({}, newBooking))
+      _bookings.push(objClone(newBooking))
     } else {
-      _bookings.push(Object.assign({}, booking))
+      _bookings.push(objClone(booking))
     }
   })
 
@@ -88,7 +90,7 @@ function deleteBooking(bookingId) {
       return
     }
 
-    _bookings.push(Object.assign({}, booking))
+    _bookings.push(objClone(booking))
   })
 
   this.cache.bookings = _bookings

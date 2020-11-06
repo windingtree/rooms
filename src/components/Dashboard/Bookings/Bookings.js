@@ -6,21 +6,22 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 import * as moment from 'moment'
 
-import { errorLogger } from '../../../utils'
+import { errorLogger, objClone } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import BookingList from './BookingList/BookingList'
 import Spinner from '../../base/Spinner/Spinner'
 
-function initBookingObj(attrs = {}) {
+function initBookingObj() {
+  const now = new Date()
   const bookingObj = {
-    id: attrs.id || uuidv4(),
+    id: uuidv4(),
 
-    checkInDate: attrs.checkInDate || moment(new Date()).format(),
-    checkOutDate: attrs.checkOutDate || moment(new Date()).add(1, 'days').format(),
-    guestName: attrs.guestName || '',
-    guestEmail: attrs.guestEmail || '',
-    phoneNumber: attrs.phoneNumber || '',
-    roomType: attrs.roomType || '',
+    checkInDate: moment(now).format(),
+    checkOutDate: moment(now).add(1, 'days').format(),
+    guestName: '',
+    guestEmail: '',
+    phoneNumber: '',
+    roomType: '',
   }
 
   return bookingObj
@@ -46,7 +47,7 @@ class Bookings extends React.Component {
   }
 
   handleAddNewClick = () => {
-    this.createBooking({})
+    this.createBooking()
   }
 
   handleEditClick = (id) => {
@@ -85,8 +86,6 @@ class Bookings extends React.Component {
       .then((bookings) => {
         if (this._isDestroyed) return
 
-        apiCache.setBookings(bookings)
-
         this.setState({
           bookings,
           apiLoading: false,
@@ -99,10 +98,8 @@ class Bookings extends React.Component {
       })
   }
 
-  createBooking = (attrs) => {
-    const newBooking = initBookingObj(attrs)
-
-    apiCache.addBooking(newBooking)
+  createBooking = () => {
+    const newBooking = initBookingObj()
 
     this.setState({
       bookings: this.state.bookings.concat(newBooking),
@@ -115,11 +112,13 @@ class Bookings extends React.Component {
         this.setState({
           bookings: this.state.bookings.map((booking) => {
             if (booking.id === newBooking.id) {
-              const _booking = Object.assign({}, booking, {
-                id: attrs.id,
-              })
-
-              apiCache.updateBooking(booking.id, _booking)
+              const _booking = Object.assign(
+                {},
+                objClone(booking),
+                {
+                  id: attrs.id
+                }
+              )
 
               return _booking
             } else {
@@ -139,16 +138,18 @@ class Bookings extends React.Component {
     this.setState({
       bookings: this.state.bookings.map((booking) => {
         if (booking.id === attrs.id) {
-          const _booking = Object.assign({}, booking, {
-            checkInDate: attrs.checkInDate,
-            checkOutDate: attrs.checkOutDate,
-            guestName: attrs.guestName,
-            guestEmail: attrs.guestEmail,
-            phoneNumber: attrs.phoneNumber,
-            roomType: attrs.roomType,
-          })
-
-          apiCache.updateBooking(booking.id, _booking)
+          const _booking = Object.assign(
+            {},
+            objClone(booking),
+            {
+              checkInDate: attrs.checkInDate,
+              checkOutDate: attrs.checkOutDate,
+              guestName: attrs.guestName,
+              guestEmail: attrs.guestEmail,
+              phoneNumber: attrs.phoneNumber,
+              roomType: attrs.roomType,
+            }
+          )
 
           return _booking
         } else {
@@ -167,8 +168,6 @@ class Bookings extends React.Component {
   }
 
   deleteBooking = (id) => {
-    apiCache.deleteBooking(id)
-
     this.setState({
       bookings: this.state.bookings.filter(t => t.id !== id),
     })

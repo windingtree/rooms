@@ -1,3 +1,5 @@
+import { objClone } from '../../'
+
 function getRoomTypes() {
   const _roomTypes = []
 
@@ -6,7 +8,7 @@ function getRoomTypes() {
   }
 
   this.cache.roomTypes.forEach((roomType) => {
-    _roomTypes.push(Object.assign({}, roomType))
+    _roomTypes.push(objClone(roomType))
   })
 
   return _roomTypes
@@ -16,7 +18,7 @@ function setRoomTypes(roomTypes) {
   const _roomTypes = []
 
   roomTypes.forEach((roomType) => {
-    _roomTypes.push(Object.assign({}, roomType))
+    _roomTypes.push(objClone(roomType))
   })
 
   this.cache.roomTypes = _roomTypes
@@ -39,7 +41,7 @@ function getRoomType(roomTypeId) {
     return null
   }
 
-  return Object.assign({}, _roomType)
+  return objClone(_roomType)
 }
 
 function addRoomType(roomType) {
@@ -47,7 +49,7 @@ function addRoomType(roomType) {
 
   if (this.cache.roomTypes) {
     this.cache.roomTypes.forEach((roomType) => {
-      _roomTypes.push(Object.assign({}, roomType))
+      _roomTypes.push(objClone(roomType))
     })
   }
 
@@ -66,9 +68,9 @@ function updateRoomType(roomTypeId, newRoomType) {
 
   this.cache.roomTypes.forEach((roomType) => {
     if (roomType.id === roomTypeId) {
-      _roomTypes.push(Object.assign({}, newRoomType))
+      _roomTypes.push(objClone(newRoomType))
     } else {
-      _roomTypes.push(Object.assign({}, roomType))
+      _roomTypes.push(objClone(roomType))
     }
   })
 
@@ -88,7 +90,7 @@ function deleteRoomType(roomTypeId) {
       return
     }
 
-    _roomTypes.push(Object.assign({}, roomType))
+    _roomTypes.push(objClone(roomType))
   })
 
   this.cache.roomTypes = _roomTypes

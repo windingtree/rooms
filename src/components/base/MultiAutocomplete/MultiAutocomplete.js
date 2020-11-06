@@ -6,7 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import Chip from '@material-ui/core/Chip'
 import { v4 as uuidv4 } from 'uuid'
 
-import { dropDownThemeObj } from '../../../utils'
+import { dropDownThemeObj, objClone } from '../../../utils'
 
 const dropDownTheme = createMuiTheme(dropDownThemeObj)
 
@@ -85,7 +85,7 @@ class MultiAutocomplete extends React.Component {
 
   handleDeleteChip = (chipToDelete) => () => {
     const chipData = this.state.chipData.map((chip) => {
-      return Object.assign({}, chip)
+      return objClone(chip)
     }).filter((chip) => {
       return chip.key !== chipToDelete.key
     })
@@ -97,7 +97,7 @@ class MultiAutocomplete extends React.Component {
         disabled = false
       }
 
-      return Object.assign({}, option, { disabled })
+      return Object.assign({}, objClone(option), { disabled })
     })
 
     this.setState({
@@ -112,7 +112,7 @@ class MultiAutocomplete extends React.Component {
   }
 
   handleAddChip = (option) => {
-    const chipData = JSON.parse(JSON.stringify(this.state.chipData))
+    const chipData = objClone(this.state.chipData)
 
     chipData.push({
       key: uuidv4(),
@@ -127,7 +127,7 @@ class MultiAutocomplete extends React.Component {
         disabled = true
       }
 
-      return Object.assign({}, _option, { disabled })
+      return Object.assign({}, objClone(_option), { disabled })
     })
 
     this.setState({

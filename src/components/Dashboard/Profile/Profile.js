@@ -77,8 +77,6 @@ class Profile extends React.Component {
       .then((profile) => {
         if (this._isDestroyed) return
 
-        apiCache.setProfile(profile)
-
         this.setStateFromProfile(profile)
         this.setState({
           apiLoading: false,
@@ -94,11 +92,6 @@ class Profile extends React.Component {
   updateProfile = (property, value) => {
     apiClient
       .updateProfile({ property, value })
-      .then((profile) => {
-        if (this._isDestroyed) return
-
-        apiCache.setProfile(profile)
-      })
       .catch((error) => {
         if (this._isDestroyed) return
 

@@ -1,7 +1,8 @@
+import { objClone } from './obj_clone'
+
 const WHITE = '#ffffff'
 const BLACK = '#000000'
 
-const DARK_GRAY = '#bfbfbf'
 const LIGHT_GRAY = '#bfbfbf'
 
 const DARK_PURPLE = '#9e21af'
@@ -32,7 +33,8 @@ const _datePickerThemeAdditionsObj = {
         color: WHITE,
       },
       current: {
-        color: DARK_GRAY,
+        color: DARK_PURPLE,
+        backgroundColor: LIGHT_GRAY,
       },
     },
   },
@@ -70,19 +72,19 @@ const _dropDownThemeAdditionsObj = {
 
 const baseMuiThemeObj = Object.assign(
   {},
-  JSON.parse(JSON.stringify(_baseMuiThemeObj))
+  objClone(_baseMuiThemeObj)
 )
 
 const datePickerThemeObj = Object.assign(
   {},
-  JSON.parse(JSON.stringify(_baseMuiThemeObj)),
-  JSON.parse(JSON.stringify(_datePickerThemeAdditionsObj))
+  objClone(_baseMuiThemeObj),
+  objClone(_datePickerThemeAdditionsObj)
 )
 
 const dropDownThemeObj = Object.assign(
   {},
-  JSON.parse(JSON.stringify(_baseMuiThemeObj)),
-  JSON.parse(JSON.stringify(_dropDownThemeAdditionsObj))
+  objClone(_baseMuiThemeObj),
+  objClone(_dropDownThemeAdditionsObj)
 )
 
 export {

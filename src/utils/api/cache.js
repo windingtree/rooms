@@ -19,6 +19,7 @@ import {
 import {
   getProfile,
   setProfile,
+  updateProfile,
 } from './cache-mixins/profile'
 
 class ApiCache {
@@ -38,7 +39,7 @@ class ApiCache {
       return
     }
 
-    this.cache = Object.assign({}, _cache)
+    this.cache = _cache
   }
 
   saveCache = () => {
@@ -74,6 +75,7 @@ Object.assign(ApiCache.prototype, {
 
   getProfile,
   setProfile,
+  updateProfile,
 })
 
 let apiCache

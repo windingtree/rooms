@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger } from '../../../utils'
+import { errorLogger, objClone } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import Booking from './Booking/Booking'
 import Spinner from '../../base/Spinner/Spinner'
@@ -37,7 +37,7 @@ class BookingEdit extends React.Component {
   }
 
   handlePropValueChange = (id, propName, newValue) => {
-    let booking = Object.assign({}, this.state.booking)
+    let booking = objClone(this.state.booking)
 
     if (booking[propName] === newValue) {
       return
@@ -56,8 +56,6 @@ class BookingEdit extends React.Component {
       .getRoomTypes()
       .then((roomTypes) => {
         if (this._isDestroyed) return
-
-        apiCache.setRoomTypes(roomTypes)
 
         this.setState({
           roomTypes,
@@ -91,8 +89,6 @@ class BookingEdit extends React.Component {
   }
 
   updateBooking = (booking) => {
-    apiCache.updateBooking(booking.id, booking)
-
     this.setState({ booking })
 
     apiClient
@@ -105,8 +101,6 @@ class BookingEdit extends React.Component {
   }
 
   deleteBooking = (id) => {
-    apiCache.deleteBooking(id)
-
     apiClient
       .deleteBooking(id)
       .then(() => {
