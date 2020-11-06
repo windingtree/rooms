@@ -5,7 +5,7 @@ import {
   addBooking,
   updateBooking,
   deleteBooking,
-} from './cache-mixins/bookings'
+} from './mixins/bookings'
 
 import {
   getRoomTypes,
@@ -14,13 +14,15 @@ import {
   addRoomType,
   updateRoomType,
   deleteRoomType,
-} from './cache-mixins/roomTypes'
+} from './mixins/roomTypes'
 
 import {
   getProfile,
   setProfile,
   updateProfile,
-} from './cache-mixins/profile'
+} from './mixins/profile'
+
+const LOCAL_STORAGE_CACHE_KEY = 'api_cache'
 
 class ApiCache {
   constructor() {
@@ -32,7 +34,7 @@ class ApiCache {
     let _cache
 
     try {
-      const _cacheStr = window.localStorage.getItem('api-cache')
+      const _cacheStr = window.localStorage.getItem(LOCAL_STORAGE_CACHE_KEY)
       _cache = JSON.parse(_cacheStr)
     } catch (err) {
       this.clearCache()
@@ -44,7 +46,7 @@ class ApiCache {
 
   saveCache = () => {
     const _cacheStr = JSON.stringify(this.cache)
-    window.localStorage.setItem('api-cache', _cacheStr)
+    window.localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, _cacheStr)
   }
 
   clearCache = () => {
@@ -87,5 +89,5 @@ if (typeof window.__apiCache__instance__ === 'undefined') {
 }
 
 export {
-  apiCache
+  apiCache,
 }

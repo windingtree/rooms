@@ -34,6 +34,12 @@ export {
 } from './health'
 
 export {
+  createProfile,
   getProfile,
-  updateProfile,
+  patchProfile,
+  deleteProfile,
 } from './profile'
+
+export {
+  apiTestReset,
+} from './api_test_reset'

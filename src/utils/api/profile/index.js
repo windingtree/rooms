@@ -6,7 +6,7 @@ import {
 
 import {
   apiCache,
-} from '../'
+} from '../../api_cache'
 
 function getProfile() {
   return fetch('/api/v1/profile', {

@@ -1,10 +1,45 @@
 import { DB, CError, disableApiRequestsHere } from '../tools'
-import { IProfile, IObjectHash } from '../types'
+import { IProfile, IExtendedProfile, IObjectHash } from '../types'
 import { ROOMS_DB_NAME } from '../constants'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
+
+async function createProfile(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfile> {
+  const dbClient = await DB.getInstance().getDbClient()
+
+  const profile: IProfile = {
+    email,
+
+    hotelName: '',
+    hotelAddress: '',
+    hotelLocation: { lat: 0, lng: 0 },
+  }
+  const extendedProfile: IExtendedProfile = Object.assign(
+    {
+      oneTimePassword,
+      sessionToken,
+    },
+    profile
+  )
+
+  let result
+  try {
+    const database = dbClient.db(ROOMS_DB_NAME)
+    const collection = database.collection('owners')
+
+    result = await collection.insertOne(extendedProfile)
+  } catch (err) {
+    throw new CError(500, 'An error occurred while creating a new owner.')
+  }
+
+  if (!result) {
+    throw new CError(500, 'An error occurred while creating a new owner.')
+  }
+
+  return profile
+}
 
 async function getProfile(email: string): Promise<IProfile> {
   const dbClient = await DB.getInstance().getDbClient()
@@ -45,7 +80,7 @@ async function getProfile(email: string): Promise<IProfile> {
   return profile
 }
 
-async function updateProfile(email: string, property: string, value: string): Promise<void> {
+async function patchProfile(email: string, property: string, value: string): Promise<void> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let result
@@ -73,7 +108,29 @@ async function updateProfile(email: string, property: string, value: string): Pr
   }
 }
 
+async function deleteProfile(email: string): Promise<void> {
+  const dbClient = await DB.getInstance().getDbClient()
+
+  let result
+  try {
+    const database = dbClient.db(ROOMS_DB_NAME)
+    const collection = database.collection('owners')
+
+    const filter = { email }
+
+    result = await collection.deleteOne(filter)
+  } catch (err) {
+    throw new CError(500, 'An error occurred while deleting a profile.')
+  }
+
+  if (!result || !result.deletedCount) {
+    throw new CError(500, `Could not find a profile to delete with email '${email}'.`)
+  }
+}
+
 export {
+  createProfile,
   getProfile,
-  updateProfile,
+  patchProfile,
+  deleteProfile,
 }

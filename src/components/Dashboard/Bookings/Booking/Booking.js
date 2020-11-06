@@ -18,7 +18,7 @@ import {
 import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
-import { datePickerThemeObj } from '../../../../utils'
+import { datePickerThemeObj } from '../../../../utils/themes'
 
 const datePickerTheme = createMuiTheme(datePickerThemeObj);
 

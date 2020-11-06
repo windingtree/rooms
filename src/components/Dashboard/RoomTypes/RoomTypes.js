@@ -5,8 +5,9 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger, objClone } from '../../../utils'
-import { apiCache, apiClient } from '../../../utils/api'
+import { errorLogger, objClone } from '../../../utils/functions'
+import { apiClient } from '../../../utils/api'
+import { apiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
 

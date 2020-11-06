@@ -2,8 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger, objClone } from '../../../utils'
-import { apiCache, apiClient } from '../../../utils/api'
+import { errorLogger, objClone } from '../../../utils/functions'
+import { apiClient } from '../../../utils/api'
+import { apiCache } from '../../../utils/api_cache'
 import RoomType from './RoomType/RoomType'
 import Spinner from '../../base/Spinner/Spinner'
 

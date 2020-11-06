@@ -16,7 +16,13 @@ interface IProfile {
   hotelLocation: IHotelLocation
 }
 
+interface IExtendedProfile extends IProfile {
+  oneTimePassword: string
+  sessionToken: string
+}
+
 export {
   IHotelLocation,
   IProfile,
+  IExtendedProfile,
 }

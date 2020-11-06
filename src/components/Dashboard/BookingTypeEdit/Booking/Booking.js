@@ -21,7 +21,7 @@ import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 
-import { datePickerThemeObj, dropDownThemeObj } from '../../../../utils'
+import { datePickerThemeObj, dropDownThemeObj } from '../../../../utils/themes'
 
 const datePickerTheme = createMuiTheme(datePickerThemeObj)
 const dropDownTheme = createMuiTheme(dropDownThemeObj)
