@@ -6,7 +6,7 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-function checkLogin(request: NowRequest): void {
+async function checkLogin(request: NowRequest): Promise<void> {
   if (!request.body) {
     throw new CError(500, 'must provide a valid body with request')
   }

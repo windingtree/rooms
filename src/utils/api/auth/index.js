@@ -6,7 +6,7 @@ import {
 
 function login(data) {
   return fetch('/api/v1/login', {
-    method: 'post',
+    method: 'POST',
     headers: makeHeaders(),
     body: JSON.stringify(data),
   }).then(checkStatus)
@@ -15,7 +15,7 @@ function login(data) {
 
 function emailOneTimePassword(data) {
   return fetch('/api/v1/send_one_time_pass', {
-    method: 'post',
+    method: 'POST',
     headers: makeHeaders(),
     body: JSON.stringify(data),
   }).then(checkStatus)

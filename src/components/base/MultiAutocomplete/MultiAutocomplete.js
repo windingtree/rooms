@@ -6,7 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import Chip from '@material-ui/core/Chip'
 import { v4 as uuidv4 } from 'uuid'
 
-import { dropDownThemeObj } from '../../../utils/themes'
+import { dropDownThemeObj } from '../../../utils'
 
 const dropDownTheme = createMuiTheme(dropDownThemeObj)
 

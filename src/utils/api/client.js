@@ -19,6 +19,11 @@ import {
   deleteBooking,
 } from './bookings'
 
+import {
+  getProfile,
+  updateProfile,
+} from './profile'
+
 const apiClient = (function () {
   return {
     login,
@@ -35,6 +40,9 @@ const apiClient = (function () {
     createBooking,
     updateBooking,
     deleteBooking,
+
+    getProfile,
+    updateProfile,
   }
 }())
 

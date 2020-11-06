@@ -8,7 +8,7 @@ import { apiCache } from '../utils/api'
 import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
-import { history } from '../utils/history'
+import { history } from '../utils'
 
 const JWT_SECRET = process.env.REACT_APP_JWT_SECRET
 

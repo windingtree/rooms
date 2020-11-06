@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import { apiClient } from '../../../utils/api'
 import Spinner from '../../base/Spinner/Spinner'
+import { errorLogger } from '../../../utils'
 
 class SendGridRedirect extends React.Component {
   constructor(props) {
@@ -41,9 +42,11 @@ class SendGridRedirect extends React.Component {
         this.props.onLogin(response.email, response.oneTimePassword)
       })
       .catch((error) => {
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        if (this._isDestroyed) {
+          return
+        }
+
+        errorLogger(error)
 
         this.props.onLogout()
         this.props.history.push('/login')

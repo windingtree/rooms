@@ -144,10 +144,49 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
   return roomTypeCollection
 }
 
+async function getAllRoomTypes(): Promise<IRoomTypeCollection> {
+  const dbClient = await DB.getInstance().getDbClient()
+
+  let roomTypeCollection: IRoomTypeCollection
+  try {
+    const database = dbClient.db(ROOMS_DB_NAME)
+    const collection = database.collection('room-types')
+
+    const query = {}
+
+    const options = {
+      sort: { createdAt: 1 },
+      projection: { _id: 1, email: 1, quantity: 1, type: 1, price: 1, amenities: 1 }
+    }
+
+    const cursor = collection.find(query, options)
+
+    if ((await cursor.count()) === 0) {
+      return []
+    }
+
+    roomTypeCollection = []
+    await cursor.forEach((item) => {
+      roomTypeCollection.push({
+        id: item._id,
+        quantity: item.quantity,
+        type: item.type,
+        price: item.price,
+        amenities: item.amenities,
+      })
+    })
+  } catch (err) {
+    throw new CError(500, 'An error occurred while getting room types.')
+  }
+
+  return roomTypeCollection
+}
+
 export {
   createRoomType,
   getRoomType,
   updateRoomType,
   deleteRoomType,
   getRoomTypes,
+  getAllRoomTypes,
 }

@@ -6,7 +6,7 @@ import {
 
 function getBookings() {
   return fetch('/api/v1/bookings', {
-    method: 'get',
+    method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
@@ -14,7 +14,7 @@ function getBookings() {
 
 function getBooking(id) {
   return fetch(`/api/v1/bookings/${id}`, {
-    method: 'get',
+    method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
@@ -22,7 +22,7 @@ function getBooking(id) {
 
 function createBooking(data) {
   return fetch('/api/v1/bookings', {
-    method: 'post',
+    method: 'POST',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),
   })
@@ -32,7 +32,7 @@ function createBooking(data) {
 
 function updateBooking(data) {
   return fetch('/api/v1/bookings/' + data.id, {
-    method: 'put',
+    method: 'PUT',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),
   }).then(checkStatus)
@@ -41,7 +41,7 @@ function updateBooking(data) {
 
 function deleteBooking(id) {
   return fetch('/api/v1/bookings/' + id, {
-    method: 'delete',
+    method: 'DELETE',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)

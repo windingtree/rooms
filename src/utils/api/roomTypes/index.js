@@ -6,7 +6,7 @@ import {
 
 function getRoomTypes() {
   return fetch('/api/v1/room_types', {
-    method: 'get',
+    method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
@@ -14,7 +14,7 @@ function getRoomTypes() {
 
 function getRoomType(id) {
   return fetch(`/api/v1/room_types/${id}`, {
-    method: 'get',
+    method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
@@ -22,7 +22,7 @@ function getRoomType(id) {
 
 function createRoomType(data) {
   return fetch('/api/v1/room_types', {
-    method: 'post',
+    method: 'POST',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),
   })
@@ -32,7 +32,7 @@ function createRoomType(data) {
 
 function updateRoomType(data) {
   return fetch('/api/v1/room_types/' + data.id, {
-    method: 'put',
+    method: 'PUT',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),
   }).then(checkStatus)
@@ -41,7 +41,7 @@ function updateRoomType(data) {
 
 function deleteRoomType(id) {
   return fetch('/api/v1/room_types/' + id, {
-    method: 'delete',
+    method: 'DELETE',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)

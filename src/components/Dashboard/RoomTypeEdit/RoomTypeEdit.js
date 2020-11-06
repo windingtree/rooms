@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
+import { errorLogger } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomType from './RoomType/RoomType'
 import Spinner from '../../base/Spinner/Spinner'
@@ -60,9 +61,7 @@ class RoomTypeEdit extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -76,9 +75,7 @@ class RoomTypeEdit extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -95,9 +92,7 @@ class RoomTypeEdit extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 

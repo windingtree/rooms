@@ -6,7 +6,7 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-function checkRoomType(request: NowRequest): void {
+async function checkRoomType(request: NowRequest): Promise<void> {
   if (!request.body) {
     throw new CError(500, 'must provide a valid body with request')
   }

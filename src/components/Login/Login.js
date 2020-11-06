@@ -3,7 +3,7 @@ import { Router, Route, Switch, withRouter } from 'react-router-dom'
 
 import LoginForm from './LoginForm/LoginForm'
 import SendGridRedirect from './SendGridRedirect/SendGridRedirect'
-import { history } from '../../utils/history'
+import { history } from '../../utils'
 
 class Login extends React.Component {
   render() {

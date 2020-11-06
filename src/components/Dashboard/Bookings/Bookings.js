@@ -6,6 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 import * as moment from 'moment'
 
+import { errorLogger } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import BookingList from './BookingList/BookingList'
 import Spinner from '../../base/Spinner/Spinner'
@@ -94,9 +95,7 @@ class Bookings extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -132,9 +131,7 @@ class Bookings extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -165,9 +162,7 @@ class Bookings extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -183,9 +178,7 @@ class Bookings extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 

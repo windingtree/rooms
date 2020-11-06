@@ -6,7 +6,7 @@ import { checkSendOneTimePass } from '../validators'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    checkSendOneTimePass(request)
+    await checkSendOneTimePass(request)
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
+import { errorLogger } from '../../../utils'
 import { apiCache, apiClient } from '../../../utils/api'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
@@ -91,9 +92,7 @@ class RoomTypes extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -129,9 +128,7 @@ class RoomTypes extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -160,9 +157,7 @@ class RoomTypes extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 
@@ -178,9 +173,7 @@ class RoomTypes extends React.Component {
       .catch((error) => {
         if (this._isDestroyed) return
 
-        error.response.json().then((errorData) => {
-          console.log('errorData', errorData)
-        })
+        errorLogger(error)
       })
   }
 

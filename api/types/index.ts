@@ -16,6 +16,7 @@ export {
 
 export {
   IAnyObject,
+  IObjectHash,
 } from './base'
 
 export {
@@ -29,3 +30,8 @@ export {
   IBooking,
   IBookingCollection,
 } from './booking'
+
+export {
+  IHotelLocation,
+  IProfile,
+} from './profile'

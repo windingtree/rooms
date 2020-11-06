@@ -32,7 +32,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    checkRoomType(request)
+    await checkRoomType(request)
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -19,3 +19,7 @@ export {
 export {
   checkSendOneTimePass,
 } from './send_one_time_pass'
+
+export {
+  checkProfilePatchData,
+} from './profile'

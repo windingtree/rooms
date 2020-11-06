@@ -10,6 +10,7 @@ export {
   updateRoomType,
   deleteRoomType,
   getRoomTypes,
+  getAllRoomTypes,
 } from './room_type'
 
 export {
@@ -31,3 +32,8 @@ export {
 export {
   pingDatabase,
 } from './health'
+
+export {
+  getProfile,
+  updateProfile,
+} from './profile'

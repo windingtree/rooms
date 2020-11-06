@@ -16,6 +16,11 @@ import {
   deleteRoomType,
 } from './cache-mixins/roomTypes'
 
+import {
+  getProfile,
+  setProfile,
+} from './cache-mixins/profile'
+
 class ApiCache {
   constructor() {
     this.cache = {}
@@ -45,6 +50,7 @@ class ApiCache {
     this.cache = {
       bookings: [],
       roomTypes: [],
+      profile: {},
     }
 
     this.saveCache()
@@ -65,6 +71,9 @@ Object.assign(ApiCache.prototype, {
   addRoomType,
   updateRoomType,
   deleteRoomType,
+
+  getProfile,
+  setProfile,
 })
 
 let apiCache

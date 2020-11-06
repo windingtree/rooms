@@ -6,8 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import './index.css'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
-import { history } from './utils/history'
-import { baseMuiThemeObj } from './utils/themes'
+import { history, baseMuiThemeObj } from './utils'
 
 const baseMuiTheme = createMuiTheme(baseMuiThemeObj)
 

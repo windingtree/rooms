@@ -6,7 +6,7 @@ import { checkLogin } from '../validators'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    checkLogin(request)
+    await checkLogin(request)
   } catch (err) {
     return errorHandler(response, err)
   }
