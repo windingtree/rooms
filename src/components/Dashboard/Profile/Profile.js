@@ -5,9 +5,10 @@ import Grid from '@material-ui/core/Grid'
 
 import UseMapEventsHook from './UseMapEventsHook'
 import TextEditInput from '../../base/TextEditInput/TextEditInput'
-import { apiCache, apiClient } from '../../../utils/api'
+import { apiClient } from '../../../utils/api'
+import { apiCache } from '../../../utils/api_cache'
 import Spinner from '../../base/Spinner/Spinner'
-import { errorLogger } from '../../../utils'
+import { errorLogger } from '../../../utils/functions'
 
 const useStyles = () => {
   return {

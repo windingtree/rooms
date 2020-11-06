@@ -25,3 +25,11 @@ export {
 export {
   WT_VERIFICATION_CODE,
 } from './wt'
+
+export {
+  API_TEST_ENABLED,
+
+  API_TEST_EMAIL,
+  API_TEST_ONE_TIME_PASSWORD,
+  API_TEST_SESSION_TOKEN,
+} from './api_test'

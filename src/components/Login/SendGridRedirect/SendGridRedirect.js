@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import { apiClient } from '../../../utils/api'
 import Spinner from '../../base/Spinner/Spinner'
-import { errorLogger } from '../../../utils'
+import { errorLogger } from '../../../utils/functions'
 
 class SendGridRedirect extends React.Component {
   constructor(props) {

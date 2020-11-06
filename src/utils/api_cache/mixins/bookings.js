@@ -1,4 +1,4 @@
-import { objClone } from '../../'
+import { objClone } from '../../functions'
 
 function getBookings() {
   const _bookings = []

@@ -6,7 +6,7 @@ import {
 
 import {
   apiCache,
-} from '../'
+} from '../../api_cache'
 
 function getRoomTypes() {
   return fetch('/api/v1/room_types', {

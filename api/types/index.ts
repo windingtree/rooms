@@ -34,4 +34,5 @@ export {
 export {
   IHotelLocation,
   IProfile,
+  IExtendedProfile,
 } from './profile'

@@ -1,4 +1,4 @@
-import { objClone } from '../../'
+import { objClone } from '../../functions'
 
 function getRoomTypes() {
   const _roomTypes = []

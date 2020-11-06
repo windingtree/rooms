@@ -1,4 +1,4 @@
-import { objClone } from '../../'
+import { objClone } from '../../functions'
 
 function getProfile() {
   const _profile = objClone(this.cache.profile)

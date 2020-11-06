@@ -12,7 +12,7 @@ import RoomTypes from './RoomTypes/RoomTypes'
 import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
 import Rates from './Rates/Rates'
 import Profile from './Profile/Profile'
-import { history } from '../../utils'
+import { history } from '../../utils/history'
 
 const useStyles = () => {
   return {

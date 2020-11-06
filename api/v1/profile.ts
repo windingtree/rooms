@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getProfile, updateProfile } from '../app'
+import { getProfile, patchProfile } from '../app'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkProfilePatchData } from '../validators'
 import { IUserAuthDetails, IProfile } from '../types'
@@ -41,7 +41,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   const value: string = request.body.value
 
   try {
-    await updateProfile(userAuthDetails.email, property, value)
+    await patchProfile(userAuthDetails.email, property, value)
   } catch (err) {
     return errorHandler(response, err)
   }
