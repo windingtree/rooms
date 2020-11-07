@@ -14,14 +14,14 @@ components:
       properties:
         email:
           type: string
-        login:
-          type: string
         oneTimePassword:
+          type: string
+        sessionToken:
           type: string
       required:
         - email
-        - login
         - oneTimePassword
+        - sessionToken
     SendOneTimePassResponse:
       description: ''
       type: object
@@ -151,8 +151,8 @@ paths:
               examples:
                 example:
                   value:
-                    login: OK
                     email: user@example.com
+                    sessionToken: b4eda8e0-a7cc-43a4-af4c-12f1e379ddc0
                     oneTimePassword: b5dea680-a407-4b3f-91d8-268de6619b30
       description: 'Perform a login operation, if you have a OneTimePassword received by email.'
       requestBody:
