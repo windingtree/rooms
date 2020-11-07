@@ -33,6 +33,7 @@ export {
 
 export {
   IHotelLocation,
-  IProfile,
+  IProfileAuth,
+  IProfileData,
   IExtendedProfile,
 } from './profile'

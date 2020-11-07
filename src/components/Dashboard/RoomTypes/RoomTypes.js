@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid'
 
 import { errorLogger, objClone } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
-import { apiCache } from '../../../utils/api_cache'
+import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
 
@@ -27,6 +27,8 @@ function initRoomTypeObj() {
 class RoomTypes extends React.Component {
   constructor(props) {
     super(props)
+
+    this.apiCache = ApiCache.getInstance()
 
     this._isDestroyed = false
     this.state = {
@@ -74,7 +76,7 @@ class RoomTypes extends React.Component {
 
   getRoomTypes = () => {
     this.setState({
-      roomTypes: apiCache.getRoomTypes(),
+      roomTypes: this.apiCache.getRoomTypes(),
       apiLoading: true,
     })
 

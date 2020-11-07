@@ -4,13 +4,15 @@ import Grid from '@material-ui/core/Grid'
 
 import { errorLogger, objClone } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
-import { apiCache } from '../../../utils/api_cache'
+import { ApiCache } from '../../../utils/api_cache'
 import Booking from './Booking/Booking'
 import Spinner from '../../base/Spinner/Spinner'
 
 class BookingEdit extends React.Component {
   constructor(props) {
     super(props)
+
+    this.apiCache = ApiCache.getInstance()
 
     this._isDestroyed = false
     this.state = {
@@ -50,7 +52,7 @@ class BookingEdit extends React.Component {
 
   getRoomTypes = () => {
     this.setState({
-      roomTypes: apiCache.getRoomTypes(),
+      roomTypes: this.apiCache.getRoomTypes(),
     })
 
     apiClient
@@ -70,7 +72,7 @@ class BookingEdit extends React.Component {
   }
 
   getBooking = (bookingId) => {
-    const _booking = apiCache.getBooking(bookingId)
+    const _booking = this.apiCache.getBooking(bookingId)
     if (_booking) {
       this.setState({ booking: _booking })
     }

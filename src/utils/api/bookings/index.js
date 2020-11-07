@@ -5,8 +5,10 @@ import {
 } from '../helpers'
 
 import {
-  apiCache,
+  ApiCache,
 } from '../../api_cache'
+
+const apiCache = ApiCache.getInstance()
 
 function getBookings() {
   return fetch('/api/v1/bookings', {

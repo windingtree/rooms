@@ -1,13 +1,13 @@
 import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../app'
 import { CError, disableApiRequestsHere } from '../tools'
-import { IBookingCollection, IRoomTypeCollection, IProfile } from '../types'
+import { IBookingCollection, IRoomTypeCollection, IProfileData } from '../types'
 import { API_TEST_EMAIL, API_TEST_ONE_TIME_PASSWORD, API_TEST_SESSION_TOKEN } from '../constants'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-async function apiTestReset(): Promise<IProfile> {
+async function apiTestReset(): Promise<IProfileData> {
   if (typeof API_TEST_EMAIL !== 'string' || API_TEST_EMAIL === '') {
     throw new CError(500, 'API_TEST_EMAIL environment variable is not set.')
   }
@@ -43,9 +43,9 @@ async function apiTestReset(): Promise<IProfile> {
   const oneTimePassword: string = API_TEST_ONE_TIME_PASSWORD
   const sessionToken: string = API_TEST_SESSION_TOKEN
 
-  const profile: IProfile = await createProfile(email, oneTimePassword, sessionToken)
+  const profileData: IProfileData = await createProfile({email, oneTimePassword, sessionToken})
 
-  return profile
+  return profileData
 }
 
 export {

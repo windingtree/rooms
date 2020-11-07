@@ -5,8 +5,10 @@ import {
 } from '../helpers'
 
 import {
-  apiCache,
+  ApiCache,
 } from '../../api_cache'
+
+const apiCache = ApiCache.getInstance()
 
 function getRoomTypes() {
   return fetch('/api/v1/room_types', {

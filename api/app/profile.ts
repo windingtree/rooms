@@ -1,28 +1,22 @@
 import { DB, CError, disableApiRequestsHere } from '../tools'
-import { IProfile, IExtendedProfile, IObjectHash } from '../types'
+import { IProfileData, IProfileAuth, IExtendedProfile, IObjectHash } from '../types'
 import { ROOMS_DB_NAME } from '../constants'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-async function createProfile(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfile> {
+async function createProfile(profileAuth: IProfileAuth): Promise<IProfileData> {
   const dbClient = await DB.getInstance().getDbClient()
 
-  const profile: IProfile = {
-    email,
+  const profileData: IProfileData = {
+    email: profileAuth.email,
 
     hotelName: '',
     hotelAddress: '',
     hotelLocation: { lat: 0, lng: 0 },
   }
-  const extendedProfile: IExtendedProfile = Object.assign(
-    {
-      oneTimePassword,
-      sessionToken,
-    },
-    profile
-  )
+  const extendedProfile: IExtendedProfile = Object.assign({}, profileAuth, profileData)
 
   let result
   try {
@@ -35,13 +29,13 @@ async function createProfile(email: string, oneTimePassword: string, sessionToke
   }
 
   if (!result) {
-    throw new CError(500, 'An error occurred while creating a new owner.')
+    throw new CError(500, 'Could not create a new owner.')
   }
 
-  return profile
+  return profileData
 }
 
-async function getProfile(email: string): Promise<IProfile> {
+async function getProfile(email: string): Promise<IProfileData> {
   const dbClient = await DB.getInstance().getDbClient()
 
   let ownerRecord
@@ -70,14 +64,51 @@ async function getProfile(email: string): Promise<IProfile> {
     throw new CError(404, 'User profile not found.')
   }
 
-  const profile: IProfile = {
+  const profileData: IProfileData = {
     email: ownerRecord.email,
     hotelName: ownerRecord.hotelName,
     hotelAddress: ownerRecord.hotelAddress,
     hotelLocation: ownerRecord.hotelLocation,
   }
 
-  return profile
+  return profileData
+}
+
+async function getProfileAuth(email: string): Promise<IProfileAuth> {
+  const dbClient = await DB.getInstance().getDbClient()
+
+  let ownerRecord
+  try {
+    const database = dbClient.db(ROOMS_DB_NAME)
+    const collection = database.collection('owners')
+
+    const query = { email }
+
+    const options = {
+      projection: {
+        _id: 0,
+        email: 1,
+        oneTimePassword: 1,
+        sessionToken: 1,
+      },
+    }
+
+    ownerRecord = await collection.findOne(query, options)
+  } catch (err) {
+    throw new CError(500, 'Something went wrong while getting a profile.')
+  }
+
+  if (!ownerRecord) {
+    throw new CError(404, 'User profile not found.')
+  }
+
+  const profileAuth: IProfileAuth = {
+    email: ownerRecord.email,
+    oneTimePassword: ownerRecord.oneTimePassword,
+    sessionToken: ownerRecord.sessionToken,
+  }
+
+  return profileAuth
 }
 
 async function patchProfile(email: string, property: string, value: string): Promise<void> {
@@ -131,6 +162,7 @@ async function deleteProfile(email: string): Promise<void> {
 export {
   createProfile,
   getProfile,
+  getProfileAuth,
   patchProfile,
   deleteProfile,
 }

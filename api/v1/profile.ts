@@ -3,7 +3,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getProfile, patchProfile } from '../app'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkProfilePatchData } from '../validators'
-import { IUserAuthDetails, IProfile } from '../types'
+import { IUserAuthDetails, IProfileData } from '../types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let userAuthDetails: IUserAuthDetails
@@ -13,14 +13,14 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  let profile: IProfile
+  let profileData: IProfileData
   try {
-    profile = await getProfile(userAuthDetails.email)
+    profileData = await getProfile(userAuthDetails.email)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json(profile)
+  response.status(200).json(profileData)
 }
 
 async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
@@ -46,14 +46,14 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
     return errorHandler(response, err)
   }
 
-  let profile: IProfile
+  let profileData: IProfileData
   try {
-    profile = await getProfile(userAuthDetails.email)
+    profileData = await getProfile(userAuthDetails.email)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json(profile)
+  response.status(200).json(profileData)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

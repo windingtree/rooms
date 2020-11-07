@@ -4,13 +4,15 @@ import Grid from '@material-ui/core/Grid'
 
 import { errorLogger, objClone } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
-import { apiCache } from '../../../utils/api_cache'
+import { ApiCache } from '../../../utils/api_cache'
 import RoomType from './RoomType/RoomType'
 import Spinner from '../../base/Spinner/Spinner'
 
 class RoomTypeEdit extends React.Component {
   constructor(props) {
     super(props)
+
+    this.apiCache = ApiCache.getInstance()
 
     this._isDestroyed = false
     this.state = {
@@ -47,7 +49,7 @@ class RoomTypeEdit extends React.Component {
   }
 
   getRoomType = (roomTypeId) => {
-    const _roomType = apiCache.getRoomType(roomTypeId)
+    const _roomType = this.apiCache.getRoomType(roomTypeId)
     if (_roomType) {
       this.setState({ roomType: _roomType })
     }

@@ -36,6 +36,7 @@ export {
 export {
   createProfile,
   getProfile,
+  getProfileAuth,
   patchProfile,
   deleteProfile,
 } from './profile'

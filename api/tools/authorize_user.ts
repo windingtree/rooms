@@ -15,10 +15,10 @@ async function getUserAuthDetails(request: NowRequest): Promise<IUserAuthDetails
   const oneTimePassword: string = decodedToken.oneTimePassword
   const sessionToken: string = decodedToken.sessionToken
 
-  const userIsAuthenticated: boolean = await checkIfUserAuthenticated(email, oneTimePassword, sessionToken)
+  await checkIfUserAuthenticated(email, oneTimePassword, sessionToken)
 
   return {
-    userIsAuthenticated, email, oneTimePassword
+    userIsAuthenticated: true, email, oneTimePassword
   }
 }
 

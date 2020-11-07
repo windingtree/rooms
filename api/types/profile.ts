@@ -9,20 +9,24 @@ interface IHotelLocation {
   lng: number
 }
 
-interface IProfile {
+interface IProfileAuth {
+  email: string
+  oneTimePassword: string
+  sessionToken: string
+}
+
+interface IProfileData {
   email: string
   hotelName: string
   hotelAddress: string
   hotelLocation: IHotelLocation
 }
 
-interface IExtendedProfile extends IProfile {
-  oneTimePassword: string
-  sessionToken: string
-}
+interface IExtendedProfile extends IProfileAuth, IProfileData {}
 
 export {
   IHotelLocation,
-  IProfile,
+  IProfileAuth,
+  IProfileData,
   IExtendedProfile,
 }

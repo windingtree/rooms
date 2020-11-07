@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid'
 import UseMapEventsHook from './UseMapEventsHook'
 import TextEditInput from '../../base/TextEditInput/TextEditInput'
 import { apiClient } from '../../../utils/api'
-import { apiCache } from '../../../utils/api_cache'
+import { ApiCache } from '../../../utils/api_cache'
 import Spinner from '../../base/Spinner/Spinner'
 import { errorLogger } from '../../../utils/functions'
 
@@ -26,6 +26,8 @@ const useStyles = () => {
 class Profile extends React.Component {
   constructor(props) {
     super(props)
+
+    this.apiCache = ApiCache.getInstance()
 
     this._isDestroyed = false
 
@@ -66,7 +68,7 @@ class Profile extends React.Component {
   }
 
   getProfile = () => {
-    const profile = apiCache.getProfile()
+    const profile = this.apiCache.getProfile()
 
     this.setStateFromProfile(profile)
     this.setState({

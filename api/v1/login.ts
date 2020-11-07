@@ -21,7 +21,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ login: 'OK', email, oneTimePassword })
+  response.status(200).json({ email, oneTimePassword, sessionToken })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
