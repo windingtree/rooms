@@ -37,3 +37,7 @@ export {
   IProfileData,
   IExtendedProfile,
 } from './profile'
+
+export {
+  IOrgDetails,
+} from './orgid'
