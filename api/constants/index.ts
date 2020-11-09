@@ -10,8 +10,7 @@ export {
 
 export {
   API_DOC_URL,
-  MONGODB_URL,
-} from './url'
+} from './api_doc'
 
 export {
   SENDGRID_API_KEY,
@@ -19,11 +18,13 @@ export {
 } from './send_grid'
 
 export {
+  MONGODB_URL,
   ROOMS_DB_NAME,
 } from './mongo'
 
 export {
   WT_VERIFICATION_CODE,
+  WT_THEGRAPH_API_URL,
 } from './wt'
 
 export {

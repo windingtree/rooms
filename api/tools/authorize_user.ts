@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { checkIfUserAuthenticated } from '../app'
+import { checkIfUserAuthenticated } from '../app/rooms'
 import { decodeToken, disableApiRequestsHere } from './'
 import { IDecodedAuthToken, IUserAuthDetails } from '../types'
 

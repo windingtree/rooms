@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getOneTimePassword } from '../app'
+import { getOneTimePassword } from '../app/rooms'
 import { genericApiMethodHandler, errorHandler, emailOneTimePassword } from '../tools'
 import { checkSendOneTimePass } from '../validators'
 

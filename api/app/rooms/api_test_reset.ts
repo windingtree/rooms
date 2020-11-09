@@ -1,7 +1,7 @@
-import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../app'
-import { CError, disableApiRequestsHere } from '../tools'
-import { IBookingCollection, IRoomTypeCollection, IProfileData } from '../types'
-import { API_TEST_EMAIL, API_TEST_ONE_TIME_PASSWORD, API_TEST_SESSION_TOKEN } from '../constants'
+import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../rooms'
+import { CError, disableApiRequestsHere } from '../../tools'
+import { IBookingCollection, IRoomTypeCollection, IProfileData } from '../../types'
+import { API_TEST_EMAIL, API_TEST_ONE_TIME_PASSWORD, API_TEST_SESSION_TOKEN } from '../../constants'
 
 export default disableApiRequestsHere
 

@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { checkIfUserAuthenticated } from '../app'
+import { checkIfUserAuthenticated } from '../app/rooms'
 import { genericApiMethodHandler, errorHandler } from '../tools'
 import { checkLogin } from '../validators'
 

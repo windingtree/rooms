@@ -1,6 +1,6 @@
-import { getProfileAuth } from '../app'
-import { CError, disableApiRequestsHere } from '../tools'
-import { IProfileAuth } from '../types'
+import { getProfileAuth } from '../rooms'
+import { CError, disableApiRequestsHere } from '../../tools'
+import { IProfileAuth } from '../../types'
 
 export default disableApiRequestsHere
 

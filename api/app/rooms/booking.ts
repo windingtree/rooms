@@ -1,8 +1,8 @@
 import { ObjectID } from 'mongodb'
 
-import { DB, CError, disableApiRequestsHere } from '../tools'
-import { IBooking, IBaseBooking, IBookingCollection } from '../types'
-import { ROOMS_DB_NAME } from '../constants'
+import { DB, CError, disableApiRequestsHere } from '../../tools'
+import { IBooking, IBaseBooking, IBookingCollection } from '../../types'
+import { ROOMS_DB_NAME } from '../../constants'
 
 export default disableApiRequestsHere
 

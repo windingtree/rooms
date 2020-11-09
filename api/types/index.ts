@@ -40,4 +40,6 @@ export {
 
 export {
   IOrgDetails,
+  IDecodedOrgToken,
+  IVerifiedOrgJwtResults,
 } from './orgid'

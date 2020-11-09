@@ -1,13 +1,36 @@
-interface IOrgDetails {
+interface IOrgPublicKey {
   id: string
-  did: string
-  publicKeyId: string
   publicKeyPem: string
-  publicKeyType: string
-  owner: string
-  isActive: boolean
+  type: string
+}
+
+interface IOrgDetails {
+  organization: {
+    id: string
+    did: string
+    publicKey: IOrgPublicKey[]
+    owner: string
+    isActive: boolean
+  }
+}
+
+interface IDecodedOrgToken {
+  payload: {
+    exp: string
+    aud: string
+    iss: string
+  }
+}
+
+interface IVerifiedOrgJwtResults {
+  aud: string
+  iss: string
+  exp: string
+  didResult: IOrgDetails
 }
 
 export {
   IOrgDetails,
+  IDecodedOrgToken,
+  IVerifiedOrgJwtResults,
 }

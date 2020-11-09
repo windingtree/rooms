@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createBooking, getBookings } from '../app'
+import { createBooking, getBookings } from '../app/rooms'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkBooking } from '../validators'
 import { IUserAuthDetails, IBooking, IBookingCollection } from '../types'

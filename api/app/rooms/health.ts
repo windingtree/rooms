@@ -1,4 +1,4 @@
-import { disableApiRequestsHere, DB, CError } from '../tools'
+import { disableApiRequestsHere, DB, CError } from '../../tools'
 
 export default disableApiRequestsHere
 

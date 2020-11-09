@@ -1,6 +1,6 @@
-import { DB, CError, disableApiRequestsHere } from '../tools'
-import { IProfileData, IProfileAuth, IExtendedProfile, IObjectHash } from '../types'
-import { ROOMS_DB_NAME } from '../constants'
+import { DB, CError, disableApiRequestsHere } from '../../tools'
+import { IProfileData, IProfileAuth, IExtendedProfile, IObjectHash } from '../../types'
+import { ROOMS_DB_NAME } from '../../constants'
 
 export default disableApiRequestsHere
 

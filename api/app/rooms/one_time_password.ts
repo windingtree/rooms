@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { getProfileAuth, createProfile, patchProfile } from '../app'
-import { disableApiRequestsHere } from '../tools'
-import { IProfileAuth } from '../types'
+import { getProfileAuth, createProfile, patchProfile } from '../rooms'
+import { disableApiRequestsHere } from '../../tools'
+import { IProfileAuth } from '../../types'
 
 export default disableApiRequestsHere
 

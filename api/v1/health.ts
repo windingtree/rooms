@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { pingDatabase } from '../app'
+import { pingDatabase } from '../app/rooms'
 import { genericApiMethodHandler, errorHandler } from '../tools'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {

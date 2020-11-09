@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getProfile, patchProfile } from '../app'
+import { getProfile, patchProfile } from '../app/rooms'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkProfilePatchData } from '../validators'
 import { IUserAuthDetails, IProfileData } from '../types'

@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { getRoomType } from '../app'
+import { getRoomType } from '../app/rooms'
 import { disableApiRequestsHere, CError } from '../tools'
 
 export default disableApiRequestsHere
