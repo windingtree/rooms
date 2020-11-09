@@ -4,7 +4,7 @@ import { getOrgDetails } from '../marketplace'
 import { CError } from '../../tools'
 import { IDecodedOrgToken, IVerifiedOrgJwtResults } from '../../types'
 
-async function verifyJwt(jwtStr: string): Promise<IVerifiedOrgJwtResults> {
+async function verifyOrgJwt(jwtStr: string): Promise<IVerifiedOrgJwtResults> {
   let decodedToken
   try {
     // Decode the token using JWT library
@@ -97,5 +97,5 @@ async function verifyJwt(jwtStr: string): Promise<IVerifiedOrgJwtResults> {
 }
 
 export {
-  verifyJwt,
+  verifyOrgJwt,
 }

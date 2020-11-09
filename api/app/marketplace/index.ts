@@ -3,5 +3,5 @@ export {
 } from './get_org_details'
 
 export {
-  verifyJwt,
-} from './verify_jwt'
+  verifyOrgJwt,
+} from './verify_org_jwt'
