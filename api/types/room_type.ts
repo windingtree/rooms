@@ -12,6 +12,7 @@ interface IBaseRoomType {
 }
 
 interface IRoomType extends IBaseRoomType {
+  email: string
   id: string
 }
 

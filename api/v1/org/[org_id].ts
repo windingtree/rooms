@@ -1,10 +1,17 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { getUserAuthDetails } from '../../tools'
 import { getOrgDetails } from '../../app/marketplace'
 import { genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../tools'
 import { IOrgDetails } from '../../types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
+  try {
+    await getUserAuthDetails(request)
+  } catch (err) {
+    return errorHandler(response, err)
+  }
+
   let orgId: string
   try {
     orgId = getQueryParamValue(request, 'org_id')

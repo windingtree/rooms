@@ -26,7 +26,7 @@ async function createRoomType(email: string, newRoomType: IBaseRoomType): Promis
     throw new CError(500, 'Could not create a new room type.')
   }
 
-  return Object.assign({ id: result.insertedId }, newRoomType)
+  return Object.assign({ id: result.insertedId, email }, newRoomType)
 }
 
 async function getRoomType(id: string): Promise<IRoomType> {
@@ -53,6 +53,7 @@ async function getRoomType(id: string): Promise<IRoomType> {
 
   return {
     id: result._id,
+    email: result.email,
     quantity: result.quantity,
     type: result.type,
     price: result.price,
@@ -83,7 +84,7 @@ async function updateRoomType(id: string, email: string, roomType: IBaseRoomType
     throw new CError(500, `Could not find a room type to update with ID '${id}'.`)
   }
 
-  return Object.assign({ id }, roomType)
+  return Object.assign({ id, email }, roomType)
 }
 
 async function deleteRoomType(id: string): Promise<void> {
@@ -131,6 +132,7 @@ async function getRoomTypes(email: string): Promise<IRoomTypeCollection> {
     await cursor.forEach((item) => {
       roomTypeCollection.push({
         id: item._id,
+        email: item.email,
         quantity: item.quantity,
         type: item.type,
         price: item.price,
@@ -169,6 +171,7 @@ async function getAllRoomTypes(): Promise<IRoomTypeCollection> {
     await cursor.forEach((item) => {
       roomTypeCollection.push({
         id: item._id,
+        email: item.email,
         quantity: item.quantity,
         type: item.type,
         price: item.price,

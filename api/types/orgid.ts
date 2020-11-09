@@ -14,19 +14,18 @@ interface IOrgDetails {
   }
 }
 
-interface IDecodedOrgToken {
-  payload: {
-    exp: string
-    aud: string
-    iss: string
-  }
-}
-
-interface IVerifiedOrgJwtResults {
+interface IJwtOptions {
   aud: string
   iss: string
   exp: string
-  didResult: IOrgDetails
+}
+
+interface IDecodedOrgToken {
+  payload: IJwtOptions
+}
+
+interface IVerifiedOrgJwtResults extends IJwtOptions {
+  orgDetails: IOrgDetails
 }
 
 export {

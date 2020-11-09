@@ -36,6 +36,7 @@ export {
   IProfileAuth,
   IProfileData,
   IExtendedProfile,
+  IProfileDataCollection,
 } from './profile'
 
 export {

@@ -10,7 +10,7 @@ export {
 
 export {
   getUserAuthDetails,
-} from './authorize_user'
+} from './get_user_auth_details'
 
 export {
   DB,
@@ -40,3 +40,7 @@ export {
 export {
   emailOneTimePassword,
 } from './email'
+
+export {
+  getOrgToken,
+} from './get_org_token'

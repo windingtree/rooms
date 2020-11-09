@@ -25,6 +25,7 @@ export {
 export {
   WT_VERIFICATION_CODE,
   WT_THEGRAPH_API_URL,
+  WT_ROOMS_ORGID,
 } from './wt'
 
 export {

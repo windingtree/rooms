@@ -1,5 +1,5 @@
 import { DB, CError, disableApiRequestsHere } from '../../tools'
-import { IProfileData, IProfileAuth, IExtendedProfile, IObjectHash } from '../../types'
+import { IProfileData, IProfileAuth, IExtendedProfile, IObjectHash, IProfileDataCollection } from '../../types'
 import { ROOMS_DB_NAME } from '../../constants'
 
 export default disableApiRequestsHere
@@ -159,10 +159,53 @@ async function deleteProfile(email: string): Promise<void> {
   }
 }
 
+async function getAllProfiles(): Promise<IProfileDataCollection> {
+  const dbClient = await DB.getInstance().getDbClient()
+
+  let profileCollection: IProfileDataCollection
+  try {
+    const database = dbClient.db(ROOMS_DB_NAME)
+    const collection = database.collection('owners')
+
+    const query = {}
+
+    const options = {
+      projection: {
+        _id: 0,
+        email: 1,
+        hotelName: 1,
+        hotelAddress: 1,
+        hotelLocation: 1,
+      },
+    }
+
+    const cursor = collection.find(query, options)
+
+    if ((await cursor.count()) === 0) {
+      return []
+    }
+
+    profileCollection = []
+    await cursor.forEach((item) => {
+      profileCollection.push({
+        email: item.email,
+        hotelName: item.hotelName,
+        hotelAddress: item.hotelAddress,
+        hotelLocation: item.hotelLocation,
+      })
+    })
+  } catch (err) {
+    throw new CError(500, 'Something went wrong while getting profiles.')
+  }
+
+  return profileCollection
+}
+
 export {
   createProfile,
   getProfile,
   getProfileAuth,
   patchProfile,
   deleteProfile,
+  getAllProfiles,
 }
