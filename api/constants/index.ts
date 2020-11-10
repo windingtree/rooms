@@ -5,6 +5,10 @@ export default disableApiRequestsHere
 /* --------------- internal API methods/structure below --------------- */
 
 export {
+  APP_VERSION,
+} from './app'
+
+export {
   JWT_SECRET,
 } from './jwt'
 
