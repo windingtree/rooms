@@ -22,6 +22,8 @@ interface IProfileData {
   hotelLocation: IHotelLocation
 }
 
+type IProfileDataCollection = Array<IProfileData>
+
 interface IExtendedProfile extends IProfileAuth, IProfileData {}
 
 export {
@@ -29,4 +31,5 @@ export {
   IProfileAuth,
   IProfileData,
   IExtendedProfile,
+  IProfileDataCollection,
 }
