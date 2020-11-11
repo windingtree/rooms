@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-import { CError, disableApiRequestsHere } from './'
+import { CError, disableApiRequestsHere } from '../tools'
 import { MONGODB_URL } from '../constants'
 
 export default disableApiRequestsHere

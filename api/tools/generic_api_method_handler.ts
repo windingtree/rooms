@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError, disableApiRequestsHere } from './'
+import { errorHandler, CError, disableApiRequestsHere } from '../tools'
 import { IMethodHandlerHash, TMethodFunc } from '../types'
 
 export default disableApiRequestsHere

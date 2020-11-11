@@ -1,7 +1,7 @@
 import { NowRequest } from '@vercel/node'
 import * as jwt from 'jsonwebtoken'
 
-import { CError, disableApiRequestsHere } from './'
+import { CError, disableApiRequestsHere } from '../tools'
 import { JWT_SECRET } from '../constants'
 import { IDecodedAuthToken, IAnyObject } from '../types'
 

@@ -44,3 +44,8 @@ export {
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,
 } from './orgid'
+
+export {
+  IAppConfig,
+  IAppConfigDbItem,
+} from './app_config'

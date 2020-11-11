@@ -1,6 +1,6 @@
 import { NowResponse } from '@vercel/node'
 
-import { CError, disableApiRequestsHere } from './'
+import { CError, disableApiRequestsHere } from '../tools'
 
 export default disableApiRequestsHere
 

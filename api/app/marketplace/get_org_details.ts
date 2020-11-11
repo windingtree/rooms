@@ -1,10 +1,9 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
 import { IOrgDetails } from '../../types'
-import { WT_THEGRAPH_API_URL } from '../../constants'
-import { CError } from '../../tools'
+import { CError, AppConfig } from '../../tools'
 
-function makeGraphqlRequest(orgId: string): Promise<IOrgDetails> {
+function makeGraphqlRequest(apiUrl: string, orgId: string): Promise<IOrgDetails> {
   let resolutionFunc: (data: IOrgDetails) => void
   let rejectionFunc: (err: unknown) => void
 
@@ -13,7 +12,7 @@ function makeGraphqlRequest(orgId: string): Promise<IOrgDetails> {
     rejectionFunc = _rejectionFunc
   })
 
-  const graphQLClient = new GraphQLClient(WT_THEGRAPH_API_URL, { headers: {} })
+  const graphQLClient = new GraphQLClient(apiUrl, { headers: {} })
 
   const query = gql`
     {
@@ -47,10 +46,11 @@ function makeGraphqlRequest(orgId: string): Promise<IOrgDetails> {
 }
 
 async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
-  let orgDetails
+  const appConfig = await AppConfig.getInstance().getConfig()
 
+  let orgDetails
   try {
-    orgDetails = await makeGraphqlRequest(orgId)
+    orgDetails = await makeGraphqlRequest(appConfig.WT_THEGRAPH_API_URL, orgId)
   } catch (err) {
     throw new CError(500, `Could not resolve org details for orgId '${orgId}'.`)
   }

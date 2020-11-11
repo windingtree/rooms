@@ -44,3 +44,7 @@ export {
 export {
   getOrgToken,
 } from './get_org_token'
+
+export {
+  AppConfig,
+} from './app_config'

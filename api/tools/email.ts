@@ -1,20 +1,21 @@
 import sgMail from '@sendgrid/mail'
 
-import { CError, disableApiRequestsHere } from '.'
-import { SENDGRID_API_KEY, SENDGRID_CALLBACK_URL } from '../constants'
+import { CError, disableApiRequestsHere, AppConfig } from '../tools'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
 async function emailOneTimePassword(email: string, oneTimePassword: string): Promise<void> {
+  const appConfig = await AppConfig.getInstance().getConfig()
+
   try {
-    sgMail.setApiKey(SENDGRID_API_KEY)
+    sgMail.setApiKey(appConfig.SENDGRID_API_KEY)
   } catch (err) {
-    throw new CError(500, `Could not set Send Grid API key '${SENDGRID_API_KEY}'.`)
+    throw new CError(500, `Could not set Send Grid API key '${appConfig.SENDGRID_API_KEY}'.`)
   }
 
-  const link = `${SENDGRID_CALLBACK_URL}/${oneTimePassword}`
+  const link = `${appConfig.SENDGRID_CALLBACK_URL}/${oneTimePassword}`
 
   const msg = {
     to: email,

@@ -31,3 +31,6 @@ public/api/v1/swagger.json
 # Swagger generated output
 public/api
 public/api-local
+
+# Sensitive stuff in api migrations folder
+api/db_migrations

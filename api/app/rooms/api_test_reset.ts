@@ -1,17 +1,18 @@
 import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../rooms'
-import { CError, disableApiRequestsHere } from '../../tools'
+import { CError, disableApiRequestsHere, AppConfig } from '../../tools'
 import { IBookingCollection, IRoomTypeCollection, IProfileData } from '../../types'
-import { API_TEST_EMAIL, API_TEST_ONE_TIME_PASSWORD, API_TEST_SESSION_TOKEN } from '../../constants'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
 async function apiTestReset(): Promise<IProfileData> {
-  if (typeof API_TEST_EMAIL !== 'string' || API_TEST_EMAIL === '') {
-    throw new CError(500, 'API_TEST_EMAIL environment variable is not set.')
+  const appConfig = await AppConfig.getInstance().getConfig()
+
+  if (typeof appConfig.API_TEST_EMAIL !== 'string' || appConfig.API_TEST_EMAIL === '') {
+    throw new CError(500, 'appConfig.API_TEST_EMAIL config variable is not set.')
   }
-  const email: string = API_TEST_EMAIL
+  const email: string = appConfig.API_TEST_EMAIL
   let c1: number
 
   const bookings: IBookingCollection = await getBookings(email)
@@ -33,15 +34,15 @@ async function apiTestReset(): Promise<IProfileData> {
     // See below.
   }
 
-  if (typeof API_TEST_ONE_TIME_PASSWORD !== 'string' || API_TEST_ONE_TIME_PASSWORD === '') {
-    throw new CError(500, 'API_TEST_ONE_TIME_PASSWORD environment variable is not set.')
+  if (typeof appConfig.API_TEST_ONE_TIME_PASSWORD !== 'string' || appConfig.API_TEST_ONE_TIME_PASSWORD === '') {
+    throw new CError(500, 'appConfig.API_TEST_ONE_TIME_PASSWORD config variable is not set.')
   }
-  if (typeof API_TEST_SESSION_TOKEN !== 'string' || API_TEST_SESSION_TOKEN === '') {
-    throw new CError(500, 'API_TEST_SESSION_TOKEN environment variable is not set.')
+  if (typeof appConfig.API_TEST_SESSION_TOKEN !== 'string' || appConfig.API_TEST_SESSION_TOKEN === '') {
+    throw new CError(500, 'appConfig.API_TEST_SESSION_TOKEN config variable is not set.')
   }
 
-  const oneTimePassword: string = API_TEST_ONE_TIME_PASSWORD
-  const sessionToken: string = API_TEST_SESSION_TOKEN
+  const oneTimePassword: string = appConfig.API_TEST_ONE_TIME_PASSWORD
+  const sessionToken: string = appConfig.API_TEST_SESSION_TOKEN
 
   const profileData: IProfileData = await createProfile({email, oneTimePassword, sessionToken})
 

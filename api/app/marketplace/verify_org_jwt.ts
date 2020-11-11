@@ -1,11 +1,12 @@
 import { JWK, JWT } from 'jose'
 
 import { getOrgDetails } from '../marketplace'
-import { CError } from '../../tools'
+import { CError, AppConfig } from '../../tools'
 import { IDecodedOrgToken, IVerifiedOrgJwtResults, IOrgDetails } from '../../types'
-import { WT_ROOMS_ORGID } from '../../constants'
 
 async function verifyOrgJwt(jwtStr: string): Promise<IVerifiedOrgJwtResults> {
+  const appConfig = await AppConfig.getInstance().getConfig()
+
   let decodedToken
   try {
     // Decode the token using JWT library
@@ -75,7 +76,7 @@ async function verifyOrgJwt(jwtStr: string): Promise<IVerifiedOrgJwtResults> {
 
   const jwtOptions = {
     typ: 'JWT',
-    aud: WT_ROOMS_ORGID,
+    aud: appConfig.WT_ROOMS_ORGID,
   }
 
   try {
