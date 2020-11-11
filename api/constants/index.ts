@@ -6,6 +6,7 @@ export default disableApiRequestsHere
 
 export {
   APP_VERSION,
+  ENV_ENCRYPTION_DETAILS,
 } from './app'
 
 export {

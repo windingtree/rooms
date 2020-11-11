@@ -48,3 +48,8 @@ export {
 export {
   AppConfig,
 } from './app_config'
+
+export {
+  encryptText,
+  decryptText,
+} from './crypto'

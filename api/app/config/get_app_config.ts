@@ -1,6 +1,6 @@
-import { DB, CError, disableApiRequestsHere } from '../../tools'
+import { DB, CError, disableApiRequestsHere, decryptText } from '../../tools'
 import { IAppConfig, IAppConfigDbItem } from '../../types'
-import { ROOMS_DB_NAME } from '../../constants'
+import { ROOMS_DB_NAME, ENV_ENCRYPTION_DETAILS } from '../../constants'
 
 export default disableApiRequestsHere
 
@@ -36,6 +36,7 @@ async function getAppConfig(): Promise<IAppConfig> {
         _id: 0,
         key: 1,
         value: 1,
+        encrypted: 1,
       },
     }
 
@@ -46,7 +47,13 @@ async function getAppConfig(): Promise<IAppConfig> {
     }
 
     await cursor.forEach((item: IAppConfigDbItem) => {
-      appConfig[item.key] = item.value
+      let value = item.value
+
+      if (item.encrypted === true) {
+        value = decryptText(ENV_ENCRYPTION_DETAILS, value)
+      }
+
+      appConfig[item.key] = value
     })
   } catch (err) {
     throw new CError(500, 'Something went wrong while getting app config.')
