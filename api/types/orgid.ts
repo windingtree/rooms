@@ -1,5 +1,6 @@
 interface IOrgPublicKey {
   id: string
+  did: string
   publicKeyPem: string
   type: string
 }

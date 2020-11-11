@@ -21,6 +21,7 @@ function makeGraphqlRequest(apiUrl: string, orgId: string): Promise<IOrgDetails>
         did
         publicKey {
           id
+          did
           publicKeyPem
           type
         }
