@@ -17,6 +17,8 @@ interface IAppConfig extends IObjectHash {
   API_TEST_EMAIL: string
   API_TEST_ONE_TIME_PASSWORD: string
   API_TEST_SESSION_TOKEN: string
+
+  ENABLE_LOGIN_WITHOUT_SENDGRID: string
 }
 
 interface IAppConfigDbItem {

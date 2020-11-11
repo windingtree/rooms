@@ -21,6 +21,8 @@ async function getAppConfig(): Promise<IAppConfig> {
     API_TEST_EMAIL: '',
     API_TEST_ONE_TIME_PASSWORD: '',
     API_TEST_SESSION_TOKEN: '',
+
+    ENABLE_LOGIN_WITHOUT_SENDGRID: '',
   }
 
   try {

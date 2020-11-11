@@ -12,7 +12,6 @@ const useStyles = () => {
       textAlign: 'center',
     },
     loginForm: {
-      height: '16em',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -27,7 +26,8 @@ const useStyles = () => {
     },
     loginButton: {
       margin: '0',
-      height: '4em'
+      height: '4em',
+      marginBottom: '0.3em',
     },
   }
 }
@@ -48,6 +48,9 @@ class LoginForm extends React.Component {
 
       tryingToEmailPass: false,
       tryingToLogin: false,
+
+      sendGridNotWorking: false,
+      secondLoginOption: '',
     }
   }
 
@@ -122,7 +125,12 @@ class LoginForm extends React.Component {
   }
 
   tryToEmailOneTimePass = () => {
-    this.setState({ tryingToEmailPass: true })
+    this.setState({
+      tryingToEmailPass: true,
+
+      sendGridNotWorking: false,
+      secondLoginOption: '',
+    })
 
     const sessionToken = window.localStorage.getItem('session_token')
     window.localStorage.setItem('session_email', this.state.email)
@@ -132,6 +140,13 @@ class LoginForm extends React.Component {
       .then((response) => {
         if (this._isDestroyed) {
           return
+        }
+
+        if (response && response.oneTimePassword && response.oneTimePassword !== 'sent') {
+          this.setState({
+            sendGridNotWorking: true,
+            secondLoginOption: response.oneTimePassword,
+          })
         }
 
         this.setState({ tryingToEmailPass: false })
@@ -239,6 +254,17 @@ class LoginForm extends React.Component {
             </div> :
 
             <div className={classes.loginButton} />
+          }
+
+          {
+            (this.state.sendGridNotWorking === true) ?
+
+            <div>
+              <h3>SendGrid is not working. Use the following OTP:</h3>
+              <h5>{this.state.secondLoginOption}</h5>
+            </div> :
+
+            <div></div>
           }
         </header>
       </div>
