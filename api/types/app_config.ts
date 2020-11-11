@@ -24,6 +24,7 @@ interface IAppConfig extends IObjectHash {
 interface IAppConfigDbItem {
   key: string
   value: string
+  encrypted: boolean
 }
 
 export {
