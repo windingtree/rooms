@@ -22,6 +22,12 @@ import {
   updateProfile,
 } from './mixins/profile'
 
+import {
+  getHotel,
+  setHotel,
+  updateHotel,
+} from './mixins/hotel'
+
 const LOCAL_STORAGE_CACHE_KEY = 'api_cache'
 
 class CApiCache {
@@ -58,6 +64,7 @@ class CApiCache {
       bookings: [],
       roomTypes: [],
       profile: {},
+      hotel: {},
     }
 
     this.saveCache()
@@ -82,6 +89,10 @@ Object.assign(CApiCache.prototype, {
   getProfile,
   setProfile,
   updateProfile,
+
+  getHotel,
+  setHotel,
+  updateHotel,
 })
 
 export {

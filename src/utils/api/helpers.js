@@ -10,7 +10,9 @@ function checkStatus(response) {
 
     if (
       ((error) && (error.status === 'Unauthorized')) ||
-      ((error) && (error.response) && (error.response.status === 401))
+      ((error) && (error.response) && (
+        error.response.status === 401 || error.response.status === 402 || error.response.status === 403
+      ))
     ) {
       if (typeof window.__global_logout_method !== 'undefined') {
         window.__global_logout_method()

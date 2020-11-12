@@ -31,56 +31,58 @@ class Profile extends React.Component {
 
     this._isDestroyed = false
 
+    this.profile = this.apiCache.getProfile()
+
     this.state = {
-      email: '',
-      hotelName: '',
-      hotelAddress: '',
-      position: [0, 0],
-      positionStr: '0, 0',
+      hotelId: '',
+      name: '',
+      address: '',
+      location: [0, 0],
+      locationStr: '0, 0',
 
       apiLoading: true,
     }
   }
 
   componentDidMount() {
-    this.getProfile()
+    this.getHotel()
   }
 
   componentWillUnmount() {
     this._isDestroyed = true
   }
 
-  setStateFromProfile = (profile) => {
-    const lat = ((profile.hotelLocation) && (typeof profile.hotelLocation.lat === 'number')) ?
-      profile.hotelLocation.lat : 48.872788
-    const lng = ((profile.hotelLocation) && (typeof profile.hotelLocation.lng === 'number')) ?
-      profile.hotelLocation.lng : 2.321557
+  setStateFromHotel = (hotel) => {
+    const lat = ((hotel.location) && (typeof hotel.location.lat === 'number')) ?
+      hotel.location.lat : 48.872788
+    const lng = ((hotel.location) && (typeof hotel.location.lng === 'number')) ?
+      hotel.location.lng : 2.321557
 
-    const positionCoords = [lat, lng]
+    const locationCoords = [lat, lng]
 
     this.setState({
-      email: (profile.email) ? profile.email : '',
-      hotelName: (profile.hotelName) ? profile.hotelName : '',
-      hotelAddress: (profile.hotelAddress) ? profile.hotelAddress : '',
-      position: positionCoords,
-      positionStr: this.getPositionStr(positionCoords),
+      hotelId: (hotel.id) ? hotel.id : '',
+      name: (hotel.name) ? hotel.name : '',
+      address: (hotel.address) ? hotel.address : '',
+      location: locationCoords,
+      locationStr: this.getLocationStr(locationCoords),
     })
   }
 
-  getProfile = () => {
-    const profile = this.apiCache.getProfile()
+  getHotel = () => {
+    const hotel = this.apiCache.getHotel()
 
-    this.setStateFromProfile(profile)
+    this.setStateFromHotel(hotel)
     this.setState({
       apiLoading: true,
     })
 
     apiClient
-      .getProfile()
-      .then((profile) => {
+      .getHotel(this.profile.hotelId)
+      .then((hotel) => {
         if (this._isDestroyed) return
 
-        this.setStateFromProfile(profile)
+        this.setStateFromHotel(hotel)
         this.setState({
           apiLoading: false,
         })
@@ -92,9 +94,12 @@ class Profile extends React.Component {
       })
   }
 
-  updateProfile = (property, value) => {
+  updateHotel = (property, value) => {
+    const data = {}
+    data[property] = value
+
     apiClient
-      .updateProfile({ property, value })
+      .updateHotel(this.profile.hotelId, data)
       .catch((error) => {
         if (this._isDestroyed) return
 
@@ -102,35 +107,35 @@ class Profile extends React.Component {
       })
   }
 
-  getPositionStr = (positionCoords) => {
-    return `${positionCoords[0]}, ${positionCoords[1]}`
+  getLocationStr = (locationCoords) => {
+    return `${locationCoords[0]}, ${locationCoords[1]}`
   }
 
-  setPosition = (newPosition) => {
-    const positionCoords = [newPosition.lat, newPosition.lng]
+  setLocation = (newLocation) => {
+    const locationCoords = [newLocation.lat, newLocation.lng]
 
     this.setState({
-      position: positionCoords,
-      positionStr: this.getPositionStr(positionCoords),
+      location: locationCoords,
+      locationStr: this.getLocationStr(locationCoords),
     })
 
-    this.updateProfile('hotelLocation', newPosition)
+    this.updateHotel('location', newLocation)
   }
 
   onHotelNameChange = (newValue) => {
     this.setState({
-      hotelName: newValue,
+      name: newValue,
     })
 
-    this.updateProfile('hotelName', newValue)
+    this.updateHotel('name', newValue)
   }
 
   onHotelAddressChange = (newValue) => {
     this.setState({
-      hotelAddress: newValue,
+      address: newValue,
     })
 
-    this.updateProfile('hotelAddress', newValue)
+    this.updateHotel('address', newValue)
   }
 
   render() {
@@ -145,14 +150,14 @@ class Profile extends React.Component {
         style={{ minHeight: '100%' }}
       >
         {
-          ((!this.state.email) && (this.state.apiLoading === true)) ?
+          ((!this.state.hotelId) && (this.state.apiLoading === true)) ?
             <Spinner info="loading" />:
             <div>
               <div><h1>Profile</h1></div>
               <div>
                 <TextEditInput
-                  label="Owner Email"
-                  value={this.state.email}
+                  label="Hotel ID"
+                  value={this.state.hotelId}
                   inputWidth={400}
                   editable={false}
                 />
@@ -160,7 +165,7 @@ class Profile extends React.Component {
               <div>
                 <TextEditInput
                   label="Hotel Name"
-                  value={this.state.hotelName}
+                  value={this.state.name}
                   onValueChange={this.onHotelNameChange}
                   inputWidth={400}
                 />
@@ -168,7 +173,7 @@ class Profile extends React.Component {
               <div>
                 <TextEditInput
                   label="Hotel Address"
-                  value={this.state.hotelAddress}
+                  value={this.state.address}
                   onValueChange={this.onHotelAddressChange}
                   inputWidth={400}
                 />
@@ -176,7 +181,7 @@ class Profile extends React.Component {
               <div>
                 <TextEditInput
                   label="Hotel Location"
-                  value={this.state.positionStr}
+                  value={this.state.locationStr}
                   inputWidth={400}
                   editable={false}
                 />
@@ -185,18 +190,18 @@ class Profile extends React.Component {
                 Please select on the map where your hotel is located.
               </div>
               <MapContainer
-                center={this.state.position}
+                center={this.state.location}
                 zoom={13}
                 scrollWheelZoom={true}
                 className={classes.mapContainer}
               >
-                <UseMapEventsHook setPosition={this.setPosition} />
+                <UseMapEventsHook setPosition={this.setLocation} />
                 <TileLayer
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={this.state.position}>
-                  <Popup>{(this.state.hotelName) ? this.state.hotelName : 'Hotel'}</Popup>
+                <Marker position={this.state.location}>
+                  <Popup>{(this.state.name) ? this.state.name : 'Hotel'}</Popup>
                 </Marker>
               </MapContainer>
             </div>

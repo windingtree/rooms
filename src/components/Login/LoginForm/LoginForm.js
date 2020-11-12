@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
+import { ApiCache } from '../../../utils/api_cache'
 import { apiClient } from '../../../utils/api'
 
 const useStyles = () => {
@@ -37,6 +38,8 @@ class LoginForm extends React.Component {
     super(props)
 
     this._isDestroyed = false
+
+    this.apiCache = ApiCache.getInstance()
 
     this.state = {
       isEmailValid: false,
@@ -173,6 +176,8 @@ class LoginForm extends React.Component {
         if (this._isDestroyed) {
           return
         }
+
+        this.apiCache.setProfile(response)
 
         this.setState({ tryingToLogin: false })
         this.props.onLogin(response.email, response.oneTimePassword)

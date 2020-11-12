@@ -10,8 +10,8 @@ import {
 
 const apiCache = ApiCache.getInstance()
 
-function getProfile() {
-  return fetch('/api/v1/profile', {
+function getProfile(id) {
+  return fetch(`/api/v1/profile/${id}`, {
     method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
@@ -23,10 +23,10 @@ function getProfile() {
     })
 }
 
-function updateProfile(data) {
+function updateProfile(id, data) {
   apiCache.updateProfile(data)
 
-  return fetch('/api/v1/profile', {
+  return fetch(`/api/v1/profile/${id}`, {
     method: 'PATCH',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),

@@ -1,8 +1,9 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getOneTimePassword } from '../app/rooms'
-import { genericApiMethodHandler, errorHandler, emailOneTimePassword, AppConfig } from '../tools'
-import { checkSendOneTimePass } from '../validators'
+import { getOneTimePassword } from '../_lib/data/rooms_legacy'
+import { genericApiMethodHandler, errorHandler, emailOneTimePassword } from '../_lib/tools'
+import { AppConfig } from '../_lib/infra/config'
+import { checkSendOneTimePass } from '../_lib/validators'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   let appConfig

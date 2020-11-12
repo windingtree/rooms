@@ -1,13 +1,13 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getUserAuthDetails } from '../../tools'
-import { getOrgDetails } from '../../app/marketplace'
-import { genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../tools'
-import { IOrgDetails } from '../../types'
+import { authenticateRequest } from '../../_lib/tools'
+import { getOrgDetails } from '../../_lib/data/marketplace'
+import { genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../_lib/tools'
+import { IOrgDetails } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    await getUserAuthDetails(request)
+    await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

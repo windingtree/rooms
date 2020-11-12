@@ -15,12 +15,12 @@ function setProfile(profile) {
 }
 
 function updateProfile(data) {
-  const property = data.property
-  const value = data.value
+  // const property = data.property
+  // const value = data.value
 
-  const _profile = objClone(this.cache.profile)
+  const _profile = Object.assign({}, objClone(this.cache.profile), objClone(data))
 
-  _profile[property] = value
+  // _profile[property] = value
 
   this.cache.profile = _profile
 

@@ -1,21 +1,21 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createBooking, getBookings } from '../app/rooms'
-import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
-import { checkBooking } from '../validators'
-import { IUserAuthDetails, IBooking, IBookingCollection } from '../types'
+import { createBooking, getBookings } from '../_lib/data/rooms_legacy'
+import { authenticateRequest, genericApiMethodHandler, errorHandler } from '../_lib/tools'
+import { checkBooking } from '../_lib/validators'
+import { IProfile, IBooking, IBookingCollection } from '../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profile: IProfile
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let bookingCollection: IBookingCollection
   try {
-    bookingCollection = await getBookings(userAuthDetails.email)
+    bookingCollection = await getBookings(profile.email)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -24,9 +24,9 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 }
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profile: IProfile
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -46,7 +46,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let booking: IBooking
   try {
-    booking = await createBooking(userAuthDetails.email, {
+    booking = await createBooking(profile.email, {
       checkInDate,
       checkOutDate,
       guestName,
