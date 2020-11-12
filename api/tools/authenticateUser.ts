@@ -1,12 +1,12 @@
-import { getProfileAuth } from '../rooms'
-import { CError, disableApiRequestsHere } from '../../tools'
-import { IProfileAuth } from '../../types'
+import { getProfileAuth } from '../app/rooms'
+import { CError, disableApiRequestsHere } from '../tools'
+import { IProfileAuth } from '../types'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-async function checkIfUserAuthenticated(email: string, oneTimePassword: string, sessionToken: string): Promise<void> {
+async function authenticateUser(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfileAuth> {
   const profileAuth: IProfileAuth = await getProfileAuth(email)
 
   if (profileAuth.oneTimePassword !== oneTimePassword) {
@@ -16,8 +16,10 @@ async function checkIfUserAuthenticated(email: string, oneTimePassword: string, 
   if (profileAuth.sessionToken !== sessionToken) {
     throw new CError(401, 'Session token is not valid.')
   }
+
+  return profileAuth
 }
 
 export {
-  checkIfUserAuthenticated,
+  authenticateUser,
 }

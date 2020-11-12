@@ -3,19 +3,19 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { createBooking, getBookings } from '../app/rooms'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkBooking } from '../validators'
-import { IUserAuthDetails, IBooking, IBookingCollection } from '../types'
+import { IProfileAuth, IBooking, IBookingCollection } from '../types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profileAuth: IProfileAuth
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profileAuth = await getUserAuthDetails(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let bookingCollection: IBookingCollection
   try {
-    bookingCollection = await getBookings(userAuthDetails.email)
+    bookingCollection = await getBookings(profileAuth.email)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -24,9 +24,9 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 }
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profileAuth: IProfileAuth
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profileAuth = await getUserAuthDetails(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -46,7 +46,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let booking: IBooking
   try {
-    booking = await createBooking(userAuthDetails.email, {
+    booking = await createBooking(profileAuth.email, {
       checkInDate,
       checkOutDate,
       guestName,

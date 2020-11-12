@@ -4,32 +4,31 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-interface IHotelLocation {
-  lat: number
-  lng: number
-}
-
-interface IProfileAuth {
+interface IBaseProfile {
   email: string
   oneTimePassword: string
   sessionToken: string
+  role: string
 }
 
-interface IProfileData {
-  email: string
-  hotelName: string
-  hotelAddress: string
-  hotelLocation: IHotelLocation
+interface IProfile extends IBaseProfile {
+  id: string
 }
 
-type IProfileDataCollection = Array<IProfileData>
+type IProfileCollection = Array<IProfile>
 
-interface IExtendedProfile extends IProfileAuth, IProfileData {}
+interface IUpdateProfileData {
+  id: string
+
+  email?: string
+  oneTimePassword?: string
+  sessionToken?: string
+  role?: string
+}
 
 export {
-  IHotelLocation,
-  IProfileAuth,
-  IProfileData,
-  IExtendedProfile,
-  IProfileDataCollection,
+  IBaseProfile
+  IProfile,
+  IProfileCollection,
+  IUpdateProfileData,
 }

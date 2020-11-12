@@ -23,3 +23,7 @@ export {
 export {
   checkProfilePatchData,
 } from './profile'
+
+export {
+  hotelPostValidator,
+} from './hotelPostValidator'

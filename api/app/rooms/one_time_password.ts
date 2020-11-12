@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getProfileAuth, createProfile, patchProfile } from '../rooms'
 import { disableApiRequestsHere } from '../../tools'
 import { IProfileAuth } from '../../types'
+import { USER_ROLE } from '../../constants'
 
 export default disableApiRequestsHere
 
@@ -20,7 +21,12 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
   }
 
   if (profileAuth === null) {
-    await createProfile({ email, oneTimePassword, sessionToken })
+    await createProfile({
+      email,
+      oneTimePassword,
+      sessionToken,
+      role: USER_ROLE.ADMIN,
+    })
   } else {
     await patchProfile(email, 'oneTimePassword', oneTimePassword)
     await patchProfile(email, 'sessionToken', sessionToken)

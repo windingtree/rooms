@@ -3,12 +3,12 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getBooking, updateBooking, deleteBooking } from '../../app/rooms'
 import { getUserAuthDetails, genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../tools'
 import { checkBooking } from '../../validators'
-import { IUserAuthDetails, IBooking } from '../../types'
+import { IProfileAuth, IBooking } from '../../types'
 
 async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profileAuth: IProfileAuth
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profileAuth = await getUserAuthDetails(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -26,7 +26,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  const email: string = userAuthDetails.email
+  const email: string = profileAuth.email
 
   const checkInDate: string = request.body.checkInDate
   const checkOutDate: string = request.body.checkOutDate

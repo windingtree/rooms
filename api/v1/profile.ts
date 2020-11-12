@@ -3,19 +3,19 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getProfile, patchProfile } from '../app/rooms'
 import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
 import { checkProfilePatchData } from '../validators'
-import { IUserAuthDetails, IProfileData } from '../types'
+import { IProfileAuth, IProfileData } from '../types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profileAuth: IProfileAuth
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profileAuth = await getUserAuthDetails(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let profileData: IProfileData
   try {
-    profileData = await getProfile(userAuthDetails.email)
+    profileData = await getProfile(profileAuth.email)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -24,9 +24,9 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 }
 
 async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let userAuthDetails: IUserAuthDetails
+  let profileAuth: IProfileAuth
   try {
-    userAuthDetails = await getUserAuthDetails(request)
+    profileAuth = await getUserAuthDetails(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -41,14 +41,14 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   const value: string = request.body.value
 
   try {
-    await patchProfile(userAuthDetails.email, property, value)
+    await patchProfile(profileAuth.email, property, value)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let profileData: IProfileData
   try {
-    profileData = await getProfile(userAuthDetails.email)
+    profileData = await getProfile(profileAuth.email)
   } catch (err) {
     return errorHandler(response, err)
   }

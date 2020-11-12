@@ -21,3 +21,7 @@ export {
   MONGODB_URL,
   ROOMS_DB_NAME,
 } from './mongo'
+
+export {
+  USER_ROLE,
+} from './user_roles'

@@ -1,25 +1,22 @@
 import { NowRequest } from '@vercel/node'
 
-import { checkIfUserAuthenticated } from '../app/rooms'
-import { decodeToken, disableApiRequestsHere } from '../tools'
-import { IDecodedAuthToken, IUserAuthDetails } from '../types'
+import { decodeToken, disableApiRequestsHere, authenticateUser } from '../tools'
+import { IDecodedAuthToken, IProfileAuth } from '../types'
 
 export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-async function getUserAuthDetails(request: NowRequest): Promise<IUserAuthDetails> {
+async function getUserAuthDetails(request: NowRequest): Promise<IProfileAuth> {
   const decodedToken: IDecodedAuthToken = decodeToken(request)
 
   const email: string = decodedToken.email
   const oneTimePassword: string = decodedToken.oneTimePassword
   const sessionToken: string = decodedToken.sessionToken
 
-  await checkIfUserAuthenticated(email, oneTimePassword, sessionToken)
+  const profileAuth: IProfileAuth = await authenticateUser(email, oneTimePassword, sessionToken)
 
-  return {
-    userIsAuthenticated: true, email, oneTimePassword
-  }
+  return profileAuth
 }
 
 export {

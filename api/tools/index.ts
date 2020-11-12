@@ -53,3 +53,11 @@ export {
   encryptText,
   decryptText,
 } from './crypto'
+
+export {
+  authenticateUser,
+} from './authenticateUser'
+
+export {
+  authorizeUser,
+} from './authorizeUser'

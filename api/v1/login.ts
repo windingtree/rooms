@@ -1,8 +1,8 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { checkIfUserAuthenticated } from '../app/rooms'
-import { genericApiMethodHandler, errorHandler } from '../tools'
+import { genericApiMethodHandler, errorHandler, authenticateUser } from '../tools'
 import { checkLogin } from '../validators'
+import { IProfileAuth } from '../types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
@@ -15,13 +15,14 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   const oneTimePassword: string = request.body.oneTimePassword
   const sessionToken: string = request.body.sessionToken
 
+  let profileAuth: IProfileAuth
   try {
-    await checkIfUserAuthenticated(email, oneTimePassword, sessionToken)
+    profileAuth = await authenticateUser(email, oneTimePassword, sessionToken)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ email, oneTimePassword, sessionToken })
+  response.status(200).json(profileAuth)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

@@ -4,13 +4,12 @@ export default disableApiRequestsHere
 
 /* --------------- internal API methods/structure below --------------- */
 
-interface IDecodedAuthToken {
-  [field: string]: string
-  email: string
-  oneTimePassword: string
-  sessionToken: string
+const USER_ROLE = {
+  SUPER_ADMIN: 'super_admin',
+  ADMIN: 'admin',
+  OBSERVER: 'observer',
 }
 
 export {
-  IDecodedAuthToken,
+  USER_ROLE,
 }

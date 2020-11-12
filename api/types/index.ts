@@ -11,7 +11,6 @@ export {
 
 export {
   IDecodedAuthToken,
-  IUserAuthDetails,
 } from './auth'
 
 export {
@@ -32,11 +31,10 @@ export {
 } from './booking'
 
 export {
-  IHotelLocation,
-  IProfileAuth,
-  IProfileData,
-  IExtendedProfile,
-  IProfileDataCollection,
+  IBaseProfile
+  IProfile,
+  IProfileCollection,
+  IUpdateProfileData,
 } from './profile'
 
 export {
@@ -49,3 +47,19 @@ export {
   IAppConfig,
   IAppConfigDbItem,
 } from './app_config'
+
+export {
+  IHotelLocation,
+  IBaseHotel,
+  IHotel,
+  IHotelCollection,
+  IUpdateHotelData,
+} from './hotels'
+
+export {
+  IHotelPostDataLocation,
+  IHotelPostData,
+  IHotelGetData,
+  IHotelPutData,
+  IHotelDeleteData,
+} from './api_data'

@@ -1,6 +1,7 @@
 import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../rooms'
 import { CError, disableApiRequestsHere, AppConfig } from '../../tools'
-import { IBookingCollection, IRoomTypeCollection, IProfileData } from '../../types'
+import { IBookingCollection, IRoomTypeCollection, IProfileData, IProfilePostData } from '../../types'
+import { USER_ROLE } from '../../constants'
 
 export default disableApiRequestsHere
 
@@ -44,7 +45,14 @@ async function apiTestReset(): Promise<IProfileData> {
   const oneTimePassword: string = appConfig.API_TEST_ONE_TIME_PASSWORD
   const sessionToken: string = appConfig.API_TEST_SESSION_TOKEN
 
-  const profileData: IProfileData = await createProfile({email, oneTimePassword, sessionToken})
+  const profilePostData: IProfilePostData = {
+    email,
+    oneTimePassword,
+    sessionToken,
+    role: USER_ROLE.SUPER_ADMIN,
+  }
+
+  const profileData: IProfileData = await createProfile(profilePostData)
 
   return profileData
 }

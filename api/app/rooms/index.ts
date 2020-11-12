@@ -22,10 +22,6 @@ export {
 } from './booking'
 
 export {
-  checkIfUserAuthenticated,
-} from './authentication'
-
-export {
   getOneTimePassword,
 } from './one_time_password'
 
