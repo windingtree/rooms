@@ -1,61 +1,41 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getProfile, patchProfile } from '../app/rooms'
-import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
-import { checkProfilePatchData } from '../validators'
-import { IProfileAuth, IProfileData } from '../types'
+import { createProfile } from '../_lib/data'
+import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeUser } from '../_lib/tools'
+import { profileDataValidatorCreate } from '../_lib/validators'
+import { IProfile, IBaseProfile } from '../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
+async function POST(request: NowRequest, response: NowResponse): Promise<void> {
+  let profile: IProfile
   try {
-    profileAuth = await getUserAuthDetails(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  let profileData: IProfileData
-  try {
-    profileData = await getProfile(profileAuth.email)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(profileData)
-}
-
-async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
-  try {
-    profileAuth = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await checkProfilePatchData(request)
+    await authorizeUser(profile.role, { method: 'POST', route: 'profile' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  const property: string = request.body.property
-  const value: string = request.body.value
-
+  let data: IBaseProfile
   try {
-    await patchProfile(profileAuth.email, property, value)
+    data = await profileDataValidatorCreate(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let profileData: IProfileData
+  let result: IProfile
   try {
-    profileData = await getProfile(profileAuth.email)
+    result = await createProfile(data)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json(profileData)
+  response.status(200).json(result)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
-  await genericApiMethodHandler(request, response, { GET, PATCH })
+  await genericApiMethodHandler(request, response, { POST })
 }

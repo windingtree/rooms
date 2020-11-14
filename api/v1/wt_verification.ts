@@ -1,6 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler, AppConfig, errorHandler } from '../tools'
+import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
+import { AppConfig } from '../_lib/infra/config'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let appConfig

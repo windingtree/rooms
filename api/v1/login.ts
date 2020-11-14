@@ -1,8 +1,8 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler, errorHandler, authenticateUser } from '../tools'
-import { checkLogin } from '../validators'
-import { IProfileAuth } from '../types'
+import { genericApiMethodHandler, errorHandler, authenticateUser } from '../_lib/tools'
+import { checkLogin } from '../_lib/validators'
+import { IProfile } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
@@ -15,14 +15,14 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   const oneTimePassword: string = request.body.oneTimePassword
   const sessionToken: string = request.body.sessionToken
 
-  let profileAuth: IProfileAuth
+  let profile: IProfile
   try {
-    profileAuth = await authenticateUser(email, oneTimePassword, sessionToken)
+    profile = await authenticateUser(email, oneTimePassword, sessionToken)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json(profileAuth)
+  response.status(200).json(profile)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

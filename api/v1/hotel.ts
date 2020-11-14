@@ -1,39 +1,39 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createHotel } from '../app'
-import { getUserAuthDetails, genericApiMethodHandler, errorHandler, authorizeUser } from '../tools'
-import { hotelPostValidator } from '../validators'
-import { IProfileAuth, IHotel, IHotelPostData } from '../types'
+import { createHotel } from '../_lib/data'
+import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeUser } from '../_lib/tools'
+import { hotelDataValidatorCreate } from '../_lib/validators'
+import { IProfile, IHotel, IBaseHotel } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
+  let profile: IProfile
   try {
-    profileAuth = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeUser(profileAuth, 'POST', 'hotel')
+    await authorizeUser(profile.role, { method: 'POST', route: 'hotel' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let data: IHotelPostData
+  let data: IBaseHotel
   try {
-    data = await hotelPostValidator(request)
+    data = await hotelDataValidatorCreate(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let hotel: IHotel
+  let result: IHotel
   try {
-    hotel = await createHotel(Object.assign({}, { ownerId: profileAuth.id }, data))
+    result = await createHotel(data)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json(hotel)
+  response.status(200).json(result)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

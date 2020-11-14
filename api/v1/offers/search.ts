@@ -1,10 +1,11 @@
+/*
 import { NowRequest, NowResponse } from '@vercel/node'
 import { v4 as uuidv4 } from 'uuid'
 
-import { getAllRoomTypes, getAllProfiles } from '../../app/rooms'
-import { verifyOrgJwt } from '../../app/marketplace'
-import { genericApiMethodHandler, errorHandler, getOrgToken } from '../../tools'
-import { IVerifiedOrgJwtResults, IRoomTypeCollection, IProfileDataCollection } from '../../types'
+import { getAllRoomTypes, getAllProfiles } from '../../_lib/data'
+import { verifyOrgJwt } from '../../_lib/data/marketplace'
+import { genericApiMethodHandler, errorHandler, getOrgToken } from '../../_lib/tools'
+import { IVerifiedOrgJwtResults, IRoomTypeCollection, IProfileCollection } from '../../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   let jwt: string
@@ -28,16 +29,16 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  let allProfiles: IProfileDataCollection
+  let profileCollection: IProfileCollection
   try {
-    allProfiles = await getAllProfiles()
+    profileCollection = await getAllProfiles()
   } catch (err) {
     return errorHandler(response, err)
   }
 
   const roomCollection = roomTypeCollection.map((roomType) => {
     const email = roomType.email
-    const profile = allProfiles.find((el) => {
+    const profile = profileCollection.find((el) => {
       return el.email === email
     })
 
@@ -62,3 +63,4 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
   await genericApiMethodHandler(request, response, { POST })
 }
+*/

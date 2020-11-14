@@ -1,8 +1,8 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { pingDatabase } from '../app/rooms'
-import { genericApiMethodHandler, errorHandler } from '../tools'
-import { APP_VERSION } from '../constants'
+import { pingDatabase } from '../_lib/data/rooms'
+import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
+import { ENV } from '../_lib/infra/env'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
@@ -11,7 +11,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ db: 'up', app_version: APP_VERSION })
+  response.status(200).json({ db: 'up', app_version: ENV.APP_VERSION })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

@@ -1,14 +1,14 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getBooking, updateBooking, deleteBooking } from '../../app/rooms'
-import { getUserAuthDetails, genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../tools'
-import { checkBooking } from '../../validators'
-import { IProfileAuth, IBooking } from '../../types'
+import { getBooking, updateBooking, deleteBooking } from '../../_lib/data/rooms'
+import { authenticateRequest, genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../_lib/tools'
+import { checkBooking } from '../../_lib/validators'
+import { IProfile, IBooking } from '../../_lib/types'
 
 async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
+  let profile: IProfile
   try {
-    profileAuth = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -26,7 +26,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  const email: string = profileAuth.email
+  const email: string = profile.email
 
   const checkInDate: string = request.body.checkInDate
   const checkOutDate: string = request.body.checkOutDate
@@ -54,7 +54,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    await getUserAuthDetails(request)
+    await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -78,7 +78,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
 async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    await getUserAuthDetails(request)
+    await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

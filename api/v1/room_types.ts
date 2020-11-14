@@ -1,21 +1,21 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createRoomType, getRoomTypes } from '../app/rooms'
-import { getUserAuthDetails, genericApiMethodHandler, errorHandler } from '../tools'
-import { checkRoomType } from '../validators'
-import { IProfileAuth, IRoomType, IRoomTypeCollection } from '../types'
+import { createRoomType, getRoomTypes } from '../_lib/data/rooms'
+import { authenticateRequest, genericApiMethodHandler, errorHandler } from '../_lib/tools'
+import { checkRoomType } from '../_lib/validators'
+import { IProfile, IRoomType, IRoomTypeCollection } from '../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
+  let profile: IProfile
   try {
-    profileAuth = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let roomCollection: IRoomTypeCollection
   try {
-    roomCollection = await getRoomTypes(profileAuth.email)
+    roomCollection = await getRoomTypes(profile.email)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -24,9 +24,9 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 }
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let profileAuth: IProfileAuth
+  let profile: IProfile
   try {
-    profileAuth = await getUserAuthDetails(request)
+    profile = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -44,7 +44,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let roomType: IRoomType
   try {
-    roomType = await createRoomType(profileAuth.email, { type, quantity, price, amenities })
+    roomType = await createRoomType(profile.email, { type, quantity, price, amenities })
   } catch (err) {
     return errorHandler(response, err)
   }
