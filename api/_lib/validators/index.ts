@@ -23,9 +23,9 @@ export {
 } from './hotelDataValidatorUpdate'
 
 export {
-  profileDataValidatorCreate,
-} from './profileDataValidatorCreate'
+  postProfilePayloadValidator,
+} from './postProfilePayloadValidator'
 
 export {
-  profileDataValidatorUpdate,
-} from './profileDataValidatorUpdate'
+  patchProfilePayloadValidator,
+} from './patchProfilePayloadValidator'

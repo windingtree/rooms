@@ -14,7 +14,6 @@ export {
 } from './decode_token'
 
 export {
-  methodNotImplemented,
   genericApiMethodHandler,
 } from './generic_api_method_handler'
 
@@ -48,5 +47,5 @@ export {
 } from './authenticateUser'
 
 export {
-  authorizeUser,
-} from './authorizeUser'
+  authorizeRequest,
+} from './authorizeRequest'

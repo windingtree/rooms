@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { apiTestReset } from '../_lib/data/rooms'
+import { apiTestReset } from '../_lib/data/rooms_legacy'
 import { genericApiMethodHandler, errorHandler, CError } from '../_lib/tools'
 import { AppConfig } from '../_lib/infra/config'
 import { IProfile } from '../_lib/types'

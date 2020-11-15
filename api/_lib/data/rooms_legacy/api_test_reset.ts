@@ -44,6 +44,8 @@ async function apiTestReset(): Promise<IProfile> {
 
   const profilePostData: IBaseProfile = {
     email,
+    name: '',
+    phone: '',
     oneTimePassword,
     sessionToken,
     role: CONSTANTS.PROFILE_ROLE.SUPER_ADMIN,

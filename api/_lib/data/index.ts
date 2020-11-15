@@ -38,4 +38,4 @@ export {
   pingDatabase,
 
   apiTestReset,
-} from './rooms'
+} from './rooms_legacy'

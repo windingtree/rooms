@@ -12,7 +12,7 @@ import {
   authenticateRequest,
   genericApiMethodHandler,
   errorHandler,
-  authorizeUser,
+  authorizeRequest,
   getQueryParamValue
 } from '../../_lib/tools'
 import { hotelDataValidatorUpdate } from '../../_lib/validators'
@@ -28,7 +28,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'GET', route: 'hotel/{id}' })
+    await authorizeRequest(profile.role, { method: 'GET', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -63,7 +63,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'PATCH', route: 'hotel/{id}' })
+    await authorizeRequest(profile.role, { method: 'PATCH', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -115,7 +115,7 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'DELETE', route: 'hotel/{id}' })
+    await authorizeRequest(profile.role, { method: 'DELETE', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -1,6 +1,4 @@
-import { IObjectHash } from '../types'
-
-interface IAppConfig extends IObjectHash {
+interface IAppConfig {
   SENDGRID_CALLBACK_URL: string
   SENDGRID_API_KEY: string
 
@@ -17,7 +15,7 @@ interface IAppConfig extends IObjectHash {
 }
 
 interface IAppConfigDbItem {
-  key: string
+  key: keyof IAppConfig
   value: string
   encrypted: boolean
 }

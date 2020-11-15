@@ -18,6 +18,8 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
   if (profile === null) {
     await createProfile({
       email,
+      name: '',
+      phone: '',
       oneTimePassword,
       sessionToken,
       role: CONSTANTS.PROFILE_ROLE.OWNER,

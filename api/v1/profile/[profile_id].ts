@@ -9,13 +9,13 @@ import {
   authenticateRequest,
   genericApiMethodHandler,
   errorHandler,
-  authorizeUser,
+  authorizeRequest,
   getQueryParamValue,
   CError,
 } from '../../_lib/tools'
-import { profileDataValidatorUpdate } from '../../_lib/validators'
+import { patchProfilePayloadValidator } from '../../_lib/validators'
 import { CONSTANTS } from '../../_lib/infra/constants'
-import { IProfile, IUpdateProfileData } from '../../_lib/types'
+import { IProfile, IPatchProfilePayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
@@ -26,7 +26,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'GET', route: 'profile/{id}' })
+    await authorizeRequest(profile.role, { method: 'GET', route: 'profile/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -61,7 +61,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'PATCH', route: 'profile/{id}' })
+    await authorizeRequest(profile.role, { method: 'PATCH', route: 'profile/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -73,9 +73,9 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
     return errorHandler(response, err)
   }
 
-  let data: IUpdateProfileData
+  let payload: IPatchProfilePayload
   try {
-    data = await profileDataValidatorUpdate(request)
+    payload = await patchProfilePayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -85,7 +85,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
       throw new CError(403, `User '${profile.email}' is not authorized to update a profile with id '${profileId}'.`)
     }
 
-    await updateProfile(profileId, data)
+    await updateProfile(profileId, payload)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -109,7 +109,7 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'DELETE', route: 'profile/{id}' })
+    await authorizeRequest(profile.role, { method: 'DELETE', route: 'profile/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -18,6 +18,8 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
       projection: {
         _id: 1,
         email: 1,
+        name: 1,
+        phone: 1,
         oneTimePassword: 1,
         sessionToken: 1,
         role: 1,
@@ -36,6 +38,8 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
   const profile: IProfile = {
     id: result._id,
     email: result.email,
+    name: result.name,
+    phone: result.phone,
     oneTimePassword: result.oneTimePassword,
     sessionToken: result.sessionToken,
     role: result.role,

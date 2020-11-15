@@ -1,16 +1,10 @@
 export {
-  TMethodFunc,
   IMethodHandlerHash,
 } from './api'
 
 export {
   IDecodedAuthToken,
 } from './auth'
-
-export {
-  IAnyObject,
-  IObjectHash,
-} from './base'
 
 export {
   IBaseRoomType,
@@ -28,6 +22,8 @@ export {
   IBaseProfile,
   IProfile,
   IProfileCollection,
+  IPostProfilePayload,
+  IPatchProfilePayload,
   IUpdateProfileData,
 } from './profile'
 

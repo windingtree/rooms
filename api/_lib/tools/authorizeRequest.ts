@@ -54,7 +54,7 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   },
 }
 
-async function authorizeUser(role: string, action: { method: string, route: string }): Promise<boolean> {
+async function authorizeRequest(role: string, action: { method: string, route: string }): Promise<boolean> {
   if (
     typeof AUTHORIZE_RULES[action.route] !== 'undefined' &&
     typeof AUTHORIZE_RULES[action.route][action.method] !== 'undefined' &&
@@ -70,5 +70,5 @@ async function authorizeUser(role: string, action: { method: string, route: stri
 }
 
 export {
-  authorizeUser,
+  authorizeRequest,
 }

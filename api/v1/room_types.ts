@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createRoomType, getRoomTypes } from '../_lib/data/rooms'
+import { createRoomType, getRoomTypes } from '../_lib/data/rooms_legacy'
 import { authenticateRequest, genericApiMethodHandler, errorHandler } from '../_lib/tools'
 import { checkRoomType } from '../_lib/validators'
 import { IProfile, IRoomType, IRoomTypeCollection } from '../_lib/types'

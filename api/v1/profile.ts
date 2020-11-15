@@ -1,34 +1,34 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createProfile } from '../_lib/data'
-import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeUser } from '../_lib/tools'
-import { profileDataValidatorCreate } from '../_lib/validators'
-import { IProfile, IBaseProfile } from '../_lib/types'
+import { createProfile } from '../_lib/app/profile'
+import { genericApiMethodHandler, authenticateRequest, authorizeRequest, errorHandler } from '../_lib/tools'
+import { postProfilePayloadValidator } from '../_lib/validators'
+import { IProfile, IPostProfilePayload } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateRequest(request)
+    requester = await authenticateRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'POST', route: 'profile' })
+    await authorizeRequest(requester.role, { method: 'POST', route: 'profile' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let data: IBaseProfile
+  let payload: IPostProfilePayload
   try {
-    data = await profileDataValidatorCreate(request)
+    payload = await postProfilePayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let result: IProfile
   try {
-    result = await createProfile(data)
+    result = await createProfile(requester, payload)
   } catch (err) {
     return errorHandler(response, err)
   }

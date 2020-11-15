@@ -1,11 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { errorHandler, CError } from '../tools'
-import { IMethodHandlerHash, TMethodFunc } from '../types'
-
-async function methodNotImplemented(request: NowRequest, response: NowResponse): Promise<void> {
-  return errorHandler(response, new CError(501, `Method ${request.method} not implemented.`))
-}
+import { IMethodHandlerHash } from '../types'
 
 async function genericApiMethodHandler(
   request: NowRequest, response: NowResponse,
@@ -15,17 +11,37 @@ async function genericApiMethodHandler(
     return errorHandler(response, new CError(500, 'Must provide request method.'))
   }
 
-  const method = request.method.toUpperCase()
+  const method: string = request.method.toUpperCase()
 
-  if (typeof availMethodHandlers[method] === 'function') {
-    const methodFunc = (availMethodHandlers[method] as TMethodFunc)
-    await methodFunc(request, response)
-  } else {
-    await methodNotImplemented(request, response)
+  const ALLOWED_METHODS: Array<keyof IMethodHandlerHash> = [
+    'GET',
+    'HEAD',
+    'POST',
+    'PUT',
+    'DELETE',
+    'CONNECT',
+    'OPTIONS',
+    'TRACE',
+    'PATCH',
+  ]
+
+  if (!ALLOWED_METHODS.includes(method as keyof IMethodHandlerHash)) {
+    return errorHandler(response, new CError(500, `Method '${method}' is not allowed.`))
   }
+
+  const methodHandler: keyof IMethodHandlerHash = method as keyof IMethodHandlerHash
+  if (typeof availMethodHandlers[methodHandler] !== 'function') {
+    return errorHandler(response, new CError(501, `Method '${method}' is not implemented.`))
+  }
+
+  const methodFunc = availMethodHandlers[methodHandler]
+  if (typeof methodFunc === 'undefined') {
+    return errorHandler(response, new CError(500, `Method handler for '${method}' is not defined.`))
+  }
+
+  await methodFunc(request, response)
 }
 
 export {
-  methodNotImplemented,
   genericApiMethodHandler,
 }

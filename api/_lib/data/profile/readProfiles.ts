@@ -18,6 +18,8 @@ async function readProfiles(): Promise<IProfileCollection> {
       projection: {
         _id: 1,
         email: 1,
+        name: 1,
+        phone: 1,
         oneTimePassword: 1,
         sessionToken: 1,
         role: 1,
@@ -35,6 +37,8 @@ async function readProfiles(): Promise<IProfileCollection> {
       result.push({
         id: item._id,
         email: item.email,
+        name: item.name,
+        phone: item.phone,
         oneTimePassword: item.oneTimePassword,
         sessionToken: item.sessionToken,
         role: item.role,

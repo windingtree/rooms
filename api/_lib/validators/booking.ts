@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { getRoomType } from '../data/rooms'
+import { getRoomType } from '../data/rooms_legacy'
 import { CError } from '../tools'
 
 async function checkBooking(request: NowRequest): Promise<void> {

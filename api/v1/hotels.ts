@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { readHotels, readHotelsByOwnerId } from '../_lib/data'
-import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeUser } from '../_lib/tools'
+import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
 import { IProfile, IHotelCollection } from '../_lib/types'
 import { CONSTANTS } from '../_lib/infra/constants'
 
@@ -14,7 +14,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    await authorizeUser(profile.role, { method: 'GET', route: 'hotels' })
+    await authorizeRequest(profile.role, { method: 'GET', route: 'hotels' })
   } catch (err) {
     return errorHandler(response, err)
   }

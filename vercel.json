@@ -8,11 +8,11 @@
   "functions": {
     "api/*.ts": {
       "memory": 1024,
-      "maxDuration": 60
+      "maxDuration": 15
     },
     "api/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 60
+      "maxDuration": 15
     }
   }
 }

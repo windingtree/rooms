@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken'
 
 import { CError } from '../tools'
 import { ENV } from '../infra/env'
-import { IDecodedAuthToken, IAnyObject } from '../types'
+import { IDecodedAuthToken } from '../types'
 
 function decodeToken(request: NowRequest): IDecodedAuthToken {
   const authHeaderValue = request.headers['authorization']
@@ -16,7 +16,7 @@ function decodeToken(request: NowRequest): IDecodedAuthToken {
     throw new CError(401, 'Authorization request header malformed.')
   }
 
-  let decodedToken: IDecodedAuthToken|IAnyObject
+  let decodedToken: IDecodedAuthToken|unknown
   try {
     decodedToken = jwt.verify(bearerToken, ENV.REACT_APP_JWT_SECRET)
   } catch (err) {
@@ -24,8 +24,8 @@ function decodeToken(request: NowRequest): IDecodedAuthToken {
   }
   const decodedAuthToken: IDecodedAuthToken = (decodedToken as IDecodedAuthToken)
 
-  const requiredFields: Array<string> = ['email', 'oneTimePassword']
-  requiredFields.every((field: string) => {
+  const requiredFields: Array<keyof IDecodedAuthToken> = ['email', 'oneTimePassword']
+  requiredFields.every((field) => {
     if (typeof decodedAuthToken[field] !== 'string' || decodedAuthToken[field].length === 0) {
       throw new CError(401, `Field '${field}' is missing from JWT token.`)
     }

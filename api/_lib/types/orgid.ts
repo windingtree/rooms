@@ -9,7 +9,7 @@ interface IOrgDetails {
   organization: {
     id: string
     did: string
-    publicKey: IOrgPublicKey[]
+    publicKey: Array<IOrgPublicKey>
     owner: string
     isActive: boolean
   }

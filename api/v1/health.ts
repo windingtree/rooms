@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { pingDatabase } from '../_lib/data/rooms'
+import { pingDatabase } from '../_lib/data/rooms_legacy'
 import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
 import { ENV } from '../_lib/infra/env'
 
