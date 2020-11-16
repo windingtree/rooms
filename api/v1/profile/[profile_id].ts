@@ -11,10 +11,10 @@ import {
   errorHandler,
   authorizeRequest,
   getQueryParamValue,
-  CError,
+  // CError,
 } from '../../_lib/tools'
 import { patchProfilePayloadValidator } from '../../_lib/validators'
-import { CONSTANTS } from '../../_lib/infra/constants'
+// import { CONSTANTS } from '../../_lib/infra/constants'
 import { IProfile, IPatchProfilePayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
@@ -40,9 +40,9 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
   let result: IProfile
   try {
-    if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
-      throw new CError(403, `User '${profile.email}' is not authorized to update a profile with id '${profileId}'.`)
-    }
+    // if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
+    //   throw new CError(403, `User '${profile.email}' is not authorized to update a profile with id '${profileId}'.`)
+    // }
 
     result = await readProfile(profileId)
   } catch (err) {
@@ -81,9 +81,9 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   }
 
   try {
-    if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
-      throw new CError(403, `User '${profile.email}' is not authorized to update a profile with id '${profileId}'.`)
-    }
+    // if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
+    //   throw new CError(403, `User '${profile.email}' is not authorized to update a profile with id '${profileId}'.`)
+    // }
 
     await updateProfile(profileId, payload)
   } catch (err) {
@@ -122,9 +122,9 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   }
 
   try {
-    if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
-      throw new CError(403, `User '${profile.email}' is not authorized to delete a profile with id '${profileId}'.`)
-    }
+    // if (profile.role !== CONSTANTS.PROFILE_ROLE.SUPER_ADMIN && profileId !== profile.id) {
+    //   throw new CError(403, `User '${profile.email}' is not authorized to delete a profile with id '${profileId}'.`)
+    // }
 
     await deleteProfile(profileId)
   } catch (err) {

@@ -14,6 +14,10 @@ interface IHotel extends IBaseHotel {
   id: string
 }
 
+interface IHotelDbRecord extends IBaseHotel {
+  _id: string
+}
+
 type IHotelCollection = Array<IHotel>
 
 interface IUpdateHotelData {
@@ -27,6 +31,7 @@ export {
   IHotelLocation,
   IBaseHotel,
   IHotel,
+  IHotelDbRecord,
   IHotelCollection,
   IUpdateHotelData,
 }

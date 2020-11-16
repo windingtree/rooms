@@ -23,6 +23,7 @@ async function readProfiles(): Promise<IProfileCollection> {
         oneTimePassword: 1,
         sessionToken: 1,
         role: 1,
+        hotelId: 1,
       },
     }
 
@@ -42,6 +43,7 @@ async function readProfiles(): Promise<IProfileCollection> {
         oneTimePassword: item.oneTimePassword,
         sessionToken: item.sessionToken,
         role: item.role,
+        hotelId: item.hotelId,
       })
     })
   } catch (err) {

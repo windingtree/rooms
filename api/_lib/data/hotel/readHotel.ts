@@ -2,14 +2,14 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../tools'
-import { IHotel } from '../../types'
+import { IHotel, IHotelDbRecord } from '../../types'
 import { MongoDB } from '../../infra/mongo'
 import { ENV } from '../../infra/env'
 
 async function readHotel(id: string): Promise<IHotel> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result
+  let result: IHotelDbRecord|null
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
@@ -38,9 +38,9 @@ async function readHotel(id: string): Promise<IHotel> {
   const hotel: IHotel = {
     id: result._id,
     ownerId: result.ownerId,
-    name: result.email,
-    address: result.oneTimePassword,
-    location: result.sessionToken,
+    name: result.name,
+    address: result.address,
+    location: result.location,
   }
 
   return hotel

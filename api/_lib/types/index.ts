@@ -42,6 +42,7 @@ export {
   IHotelLocation,
   IBaseHotel,
   IHotel,
+  IHotelDbRecord,
   IHotelCollection,
   IUpdateHotelData,
 } from './hotel'

@@ -23,6 +23,7 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
         oneTimePassword: 1,
         sessionToken: 1,
         role: 1,
+        hotelId: 1,
       },
     }
 
@@ -32,6 +33,7 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
   }
 
   if (!result) {
+    console.log('B')
     throw new CError(404, `A '${ENTITY_NAME}' was not found.`)
   }
 
@@ -43,6 +45,7 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
     oneTimePassword: result.oneTimePassword,
     sessionToken: result.sessionToken,
     role: result.role,
+    hotelId: result.hotelId,
   }
 
   return profile

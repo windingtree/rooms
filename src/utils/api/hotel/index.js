@@ -10,36 +10,36 @@ import {
 
 const apiCache = ApiCache.getInstance()
 
-function getProfile(id) {
-  return fetch(`/api/v1/profile/${id}`, {
+function getHotel(id) {
+  return fetch(`/api/v1/hotel/${id}`, {
     method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
-    .then((profile) => {
-      apiCache.setProfile(profile)
+    .then((hotel) => {
+      apiCache.setHotel(hotel)
 
-      return profile
+      return hotel
     })
 }
 
-function updateProfile(id, data) {
-  apiCache.updateProfile(data)
+function updateHotel(id, data) {
+  apiCache.updateHotel(data)
 
-  return fetch(`/api/v1/profile/${id}`, {
+  return fetch(`/api/v1/hotel/${id}`, {
     method: 'PATCH',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),
   }).then(checkStatus)
     .then(parseJSON)
-    .then((profile) => {
-      apiCache.setProfile(profile)
+    .then((hotel) => {
+      apiCache.setHotel(hotel)
 
-      return profile
+      return hotel
     })
 }
 
 export {
-  getProfile,
-  updateProfile,
+  getHotel,
+  updateHotel,
 }

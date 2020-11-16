@@ -23,6 +23,7 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
       oneTimePassword,
       sessionToken,
       role: CONSTANTS.PROFILE_ROLE.OWNER,
+      hotelId: '',
     })
   } else {
     await updateProfile(profile.id, { oneTimePassword, sessionToken })

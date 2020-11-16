@@ -5,6 +5,7 @@ interface IBaseProfile {
   oneTimePassword: string
   sessionToken: string
   role: string
+  hotelId: string
 }
 
 interface IProfile extends IBaseProfile {
@@ -32,6 +33,7 @@ interface IUpdateProfileData {
   oneTimePassword?: string
   sessionToken?: string
   role?: string
+  hotelId?: string
 }
 
 export {

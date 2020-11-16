@@ -47,7 +47,7 @@ function createRoomType(data) {
     .then(checkStatus)
     .then(parseJSON)
     .then((roomType) => {
-      apiCache.addRoomType(roomType)
+      apiCache.updateRoomType(data.id, roomType)
 
       return roomType
     })

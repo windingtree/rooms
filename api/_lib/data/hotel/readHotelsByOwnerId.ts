@@ -1,6 +1,6 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../tools'
-import { IHotelCollection } from '../../types'
+import { IHotelDbRecord, IHotelCollection } from '../../types'
 import { MongoDB } from '../../infra/mongo'
 import { ENV } from '../../infra/env'
 
@@ -31,13 +31,13 @@ async function readHotelsByOwnerId(ownerId: string): Promise<IHotelCollection> {
     }
 
     result = []
-    await cursor.forEach((item) => {
+    await cursor.forEach((item: IHotelDbRecord) => {
       result.push({
         id: item._id,
         ownerId: item.ownerId,
-        name: item.email,
-        address: item.oneTimePassword,
-        location: item.sessionToken,
+        name: item.name,
+        address: item.address,
+        location: item.location,
       })
     })
   } catch (err) {

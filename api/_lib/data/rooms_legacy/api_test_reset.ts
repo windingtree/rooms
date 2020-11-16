@@ -49,6 +49,7 @@ async function apiTestReset(): Promise<IProfile> {
     oneTimePassword,
     sessionToken,
     role: CONSTANTS.PROFILE_ROLE.SUPER_ADMIN,
+    hotelId: '',
   }
 
   const profile: IProfile = await createProfile(profilePostData)

@@ -5,6 +5,8 @@ import * as jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
 
 import { ApiCache } from '../utils/api_cache'
+import { apiClient } from '../utils/api'
+import { errorLogger } from '../utils/functions'
 import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
@@ -26,6 +28,8 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
+    this._isDestroyed = false
+
     this.apiCache = ApiCache.getInstance()
 
     const isLoggedIn = this.areWeLoggedIn()
@@ -33,8 +37,11 @@ class App extends React.Component {
       this.resetLocalStorage(false)
     }
 
+    const profileId = this.getProfileIdFromCache()
+
     this.state = {
-      isLoggedIn
+      isLoggedIn,
+      profileId,
     }
   }
 
@@ -44,6 +51,8 @@ class App extends React.Component {
         this.handleLogout()
       }
     }
+
+    this.getProfile()
   }
 
   componentWillUnmount = () => {
@@ -51,6 +60,42 @@ class App extends React.Component {
       window.__global_logout_method = undefined
       delete window.__global_logout_method
     }
+
+    this._isDestroyed = true
+  }
+
+  getProfileIdFromCache = () => {
+    let profileId = ''
+
+    const profile = this.apiCache.getProfile()
+
+    if (profile && profile.id) {
+      profileId = profile.id
+    }
+
+    return profileId
+  }
+
+  getProfile = () => {
+    if (typeof this.state.profileId !== 'string' || this.state.profileId.length === 0) {
+      this.handleLogout()
+      return
+    }
+
+    apiClient
+      .getProfile(this.state.profileId)
+      .then((profile) => {
+        if (this._isDestroyed) return
+
+        this.setState({
+          profileId: profile.id,
+        })
+      })
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        errorLogger(error)
+      })
   }
 
   handleOnLogin = (email, oneTimePassword) => {
@@ -58,7 +103,10 @@ class App extends React.Component {
     const token = jwt.sign({ email, oneTimePassword, sessionToken }, JWT_SECRET)
 
     window.localStorage.setItem('jwt_token', token)
-    this.setState({ isLoggedIn: true })
+
+    const profileId = this.getProfileIdFromCache()
+
+    this.setState({ isLoggedIn: true, profileId })
 
     this.props.history.push('/dashboard')
   }

@@ -24,6 +24,11 @@ import {
   updateProfile,
 } from './profile'
 
+import {
+  getHotel,
+  updateHotel,
+} from './hotel'
+
 const apiClient = (function () {
   return {
     login,
@@ -43,6 +48,9 @@ const apiClient = (function () {
 
     getProfile,
     updateProfile,
+
+    getHotel,
+    updateHotel,
   }
 }())
 

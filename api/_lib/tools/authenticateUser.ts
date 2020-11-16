@@ -4,7 +4,13 @@ import { IProfile } from '../types'
 
 
 async function authenticateUser(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfile> {
-  const profile: IProfile = await readProfileByEmail(email)
+  let profile: IProfile
+
+  try {
+    profile = await readProfileByEmail(email)
+  } catch (err) {
+    throw new CError(401, 'Auth profile does not exist.')
+  }
 
   if (profile.oneTimePassword !== oneTimePassword) {
     throw new CError(401, 'One time password is not valid.')

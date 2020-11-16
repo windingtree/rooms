@@ -22,6 +22,7 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     oneTimePassword: '',
     sessionToken: '',
     role: payload.role,
+    hotelId: '',
   }
   const profile: IProfile = await createProfileRecord(data)
 

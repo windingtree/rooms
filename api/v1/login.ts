@@ -1,8 +1,10 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { createHotel } from '../_lib/data/hotel'
+import { updateProfile } from '../_lib/data/profile'
 import { genericApiMethodHandler, errorHandler, authenticateUser } from '../_lib/tools'
 import { checkLogin } from '../_lib/validators'
-import { IProfile } from '../_lib/types'
+import { IProfile, IHotel } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
@@ -20,6 +22,22 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     profile = await authenticateUser(email, oneTimePassword, sessionToken)
   } catch (err) {
     return errorHandler(response, err)
+  }
+
+  if (typeof profile.hotelId !== 'string' || profile.hotelId === '') {
+    let hotel: IHotel
+    try {
+      hotel = await createHotel({ ownerId: profile.id, name: '', address: '', location: { lat: 0, lng: 0 } })
+    } catch (err) {
+      return errorHandler(response, err)
+    }
+
+    profile.hotelId = hotel.id
+    try {
+      updateProfile(profile.id, Object.assign({}, profile, { id: undefined }))
+    } catch (err) {
+      return errorHandler(response, err)
+    }
   }
 
   response.status(200).json(profile)
