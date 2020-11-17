@@ -1,4 +1,5 @@
-import { getBookings, deleteBooking, getRoomTypes, deleteRoomType, createProfile, deleteProfile } from '../../data'
+import { getBookings, deleteBooking, getRoomTypes, deleteRoomType } from '../../data/rooms_legacy'
+import { createProfile, deleteProfile } from '../../data/profile'
 import { CError } from '../../tools'
 import { AppConfig } from '../../infra/config'
 import { IBookingCollection, IRoomTypeCollection, IProfile, IBaseProfile } from '../../types'

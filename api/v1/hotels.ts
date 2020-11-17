@@ -1,14 +1,15 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { readHotels, readHotelsByOwnerId } from '../_lib/data'
-import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
+import { readHotels, readHotelsByOwnerId } from '../_lib/data/hotel'
+import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
 import { IProfile, IHotelCollection } from '../_lib/types'
 import { CONSTANTS } from '../_lib/infra/constants'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

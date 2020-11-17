@@ -29,8 +29,14 @@ interface IVerifiedOrgJwtResults extends IJwtOptions {
   orgDetails: IOrgDetails
 }
 
+interface IDecodedOrgIdToken {
+  orgId: string
+  publicKeyFragment: string
+}
+
 export {
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,
+  IDecodedOrgIdToken,
 }

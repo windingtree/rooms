@@ -1,61 +1,14 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-// import { v4 as uuidv4 } from 'uuid'
 
-import { getAllRoomTypes } from '../../_lib/data'
+import { getAllRoomTypes } from '../../_lib/data/rooms_legacy'
 import { readHotels } from '../../_lib/data/hotel'
-import { verifyOrgJwt } from '../../_lib/data/marketplace'
-import { genericApiMethodHandler, errorHandler, getOrgToken } from '../../_lib/tools'
-import { /* IVerifiedOrgJwtResults, */ IRoomTypeCollection, IHotelCollection } from '../../_lib/types'
-
-interface IAccommodationsRoomType {
-  [key:string]: unknown
-}
-
-interface IAccommodation {
-  [key:string]: unknown
-
-  roomTypes: IAccommodationsRoomType
-}
-
-interface IAccommodations {
-  [key:string]: IAccommodation
-}
-
-interface IPricePlans {
-  [key:string]: unknown
-}
-
-interface IOffers {
-  [key:string]: unknown
-}
-
-interface IPassengers {
-  [key:string]: unknown
-}
-
-interface IOfferSearchResults {
-  accommodations: IAccommodations
-  pricePlans: IPricePlans
-  offers: IOffers
-  passengers: IPassengers
-}
+import { authenticateOrgIdRequest } from '../../_lib/app/auth'
+import { genericApiMethodHandler, errorHandler } from '../../_lib/tools'
+import { IRoomTypeCollection, IHotelCollection, IOfferSearchResults } from '../../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  console.log('API request for offers/search')
-  console.log('BODY =>')
-  console.log(JSON.stringify(request.body))
-
-  let jwt: string
   try {
-    jwt = getOrgToken(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  // let verifiedOrgJwtResults: IVerifiedOrgJwtResults
-  try {
-    // verifiedOrgJwtResults = await verifyOrgJwt(jwt)
-    await verifyOrgJwt(jwt)
+    await authenticateOrgIdRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -73,27 +26,6 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   } catch (err) {
     return errorHandler(response, err)
   }
-
-  // const roomCollection = roomTypeCollection.map((roomType) => {
-  //   const email = roomType.email
-  //   const hotel = profileCollection.find((el) => {
-  //     return el.email === email
-  //   })
-
-  //   if (!profile) {
-  //     return null
-  //   }
-
-  //   return {
-  //     id: uuidv4(),
-  //     type: roomType.type,
-  //     price: roomType.price,
-  //     hotel: profile.hotelName,
-  //     address: profile.hotelAddress,
-  //   }
-  // }).filter((el) => {
-  //   return el !== null
-  // })
 
   const result: IOfferSearchResults = {
     accommodations: {},

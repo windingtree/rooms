@@ -1,0 +1,3 @@
+export {
+  pingMongo,
+} from './pingMongo'

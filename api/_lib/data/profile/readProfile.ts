@@ -35,7 +35,6 @@ async function readProfile(id: string): Promise<IProfile> {
   }
 
   if (!result) {
-    console.log('A')
     throw new CError(404, `A '${ENTITY_NAME}' was not found.`)
   }
 

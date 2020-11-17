@@ -1,14 +1,15 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getBooking, updateBooking, deleteBooking } from '../../_lib/data/rooms_legacy'
-import { authenticateRequest, genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../_lib/tools'
+import { authenticateClientAppRequest } from '../../_lib/app/auth'
+import { genericApiMethodHandler, getQueryParamValue, errorHandler } from '../../_lib/tools'
 import { checkBooking } from '../../_lib/validators'
 import { IProfile, IBooking } from '../../_lib/types'
 
 async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -54,7 +55,7 @@ async function PUT(request: NowRequest, response: NowResponse): Promise<void> {
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    await authenticateRequest(request)
+    await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -78,7 +79,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
 async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    await authenticateRequest(request)
+    await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

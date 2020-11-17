@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { readProfileByEmail, createProfile, updateProfile } from '../../data'
-import { IProfile } from '../../types'
-import { CONSTANTS } from '../../infra/constants'
+import { readProfileByEmail, createProfile, updateProfile } from '../../../data/profile'
+import { IProfile } from '../../../types'
+import { CONSTANTS } from '../../../infra/constants'
 
-async function getOneTimePassword(email: string, sessionToken: string): Promise<string> {
+async function getClientAppOneTimePassword(email: string, sessionToken: string): Promise<string> {
   const oneTimePassword: string = uuidv4()
 
   let profile: IProfile|null
@@ -33,5 +33,5 @@ async function getOneTimePassword(email: string, sessionToken: string): Promise<
 }
 
 export {
-  getOneTimePassword,
+  getClientAppOneTimePassword,
 }

@@ -1,14 +1,15 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createHotel } from '../_lib/data'
-import { authenticateRequest, genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
+import { createHotel } from '../_lib/data/hotel'
+import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
 import { hotelDataValidatorCreate } from '../_lib/validators'
 import { IProfile, IHotel, IBaseHotel } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -1,7 +1,7 @@
 import { CError } from '../../tools'
 import { MongoDB } from '../../infra/mongo'
 
-async function pingDatabase(): Promise<void> {
+async function pingMongo(): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   try {
@@ -12,5 +12,5 @@ async function pingDatabase(): Promise<void> {
 }
 
 export {
-  pingDatabase,
+  pingMongo,
 }

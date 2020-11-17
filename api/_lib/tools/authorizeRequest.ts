@@ -1,17 +1,6 @@
 import { CError } from '../tools'
 import { CONSTANTS } from '../infra/constants'
-
-interface IAuthorizeRulesMethods {
-  [key: string]: boolean
-}
-
-interface IAuthorizeRulesRoutes {
-  [key: string]: IAuthorizeRulesMethods
-}
-
-interface IAuthorizeRules {
-  [key: string]: IAuthorizeRulesRoutes
-}
+import { IAuthorizeRules, IAuthorizeRulesMethods } from '../types'
 
 const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
 const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER

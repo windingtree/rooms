@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { getOneTimePassword } from '../_lib/data/rooms_legacy'
+import { getClientAppOneTimePassword } from '../_lib/app/auth'
 import { genericApiMethodHandler, errorHandler, emailOneTimePassword } from '../_lib/tools'
 import { AppConfig } from '../_lib/infra/config'
 import { checkSendOneTimePass } from '../_lib/validators'
@@ -24,7 +24,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let oneTimePassword: string
   try {
-    oneTimePassword = await getOneTimePassword(email, sessionToken)
+    oneTimePassword = await getClientAppOneTimePassword(email, sessionToken)
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -1,14 +1,15 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { createProfile } from '../_lib/app/profile'
-import { genericApiMethodHandler, authenticateRequest, authorizeRequest, errorHandler } from '../_lib/tools'
+import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { genericApiMethodHandler, authorizeRequest, errorHandler } from '../_lib/tools'
 import { postProfilePayloadValidator } from '../_lib/validators'
 import { IProfile, IPostProfilePayload } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   let requester: IProfile
   try {
-    requester = await authenticateRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

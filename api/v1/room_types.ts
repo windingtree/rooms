@@ -1,14 +1,15 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { createRoomType, getRoomTypes } from '../_lib/data/rooms_legacy'
-import { authenticateRequest, genericApiMethodHandler, errorHandler } from '../_lib/tools'
+import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
 import { checkRoomType } from '../_lib/validators'
 import { IProfile, IRoomType, IRoomTypeCollection } from '../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -26,7 +27,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

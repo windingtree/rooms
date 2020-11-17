@@ -1,15 +1,14 @@
-import { readProfileByEmail } from '../data'
-import { CError } from '../tools'
-import { IProfile } from '../types'
+import { readProfileByEmail } from '../../../data/profile'
+import { CError } from '../../../tools'
+import { IProfile } from '../../../types'
 
-
-async function authenticateUser(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfile> {
+async function authenticateClientAppUser(email: string, oneTimePassword: string, sessionToken: string): Promise<IProfile> {
   let profile: IProfile
 
   try {
     profile = await readProfileByEmail(email)
   } catch (err) {
-    throw new CError(401, 'Auth profile does not exist.')
+    throw new CError(401, 'User profile does not exist.')
   }
 
   if (profile.oneTimePassword !== oneTimePassword) {
@@ -24,5 +23,5 @@ async function authenticateUser(email: string, oneTimePassword: string, sessionT
 }
 
 export {
-  authenticateUser,
+  authenticateClientAppUser,
 }

@@ -3,7 +3,7 @@ export {
 } from './api'
 
 export {
-  IDecodedAuthToken,
+  IDecodedAuthClientAppToken,
 } from './auth'
 
 export {
@@ -31,6 +31,7 @@ export {
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,
+  IDecodedOrgIdToken,
 } from './orgid'
 
 export {
@@ -46,3 +47,13 @@ export {
   IHotelCollection,
   IUpdateHotelData,
 } from './hotel'
+
+export {
+  IAuthorizeRulesMethods,
+  IAuthorizeRulesRoutes,
+  IAuthorizeRules,
+} from './authorization'
+
+export {
+  IOfferSearchResults,
+} from './offer_search_results'

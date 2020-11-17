@@ -4,15 +4,15 @@ import {
   readProfile,
   updateProfile,
   deleteProfile,
-} from '../../_lib/data'
+} from '../../_lib/data/profile'
 import {
-  authenticateRequest,
   genericApiMethodHandler,
   errorHandler,
   authorizeRequest,
   getQueryParamValue,
   // CError,
 } from '../../_lib/tools'
+import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchProfilePayloadValidator } from '../../_lib/validators'
 // import { CONSTANTS } from '../../_lib/infra/constants'
 import { IProfile, IPatchProfilePayload } from '../../_lib/types'
@@ -20,7 +20,7 @@ import { IProfile, IPatchProfilePayload } from '../../_lib/types'
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -55,7 +55,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -103,7 +103,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
 async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
   try {
-    profile = await authenticateRequest(request)
+    profile = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

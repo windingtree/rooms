@@ -2,7 +2,8 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { createHotel } from '../_lib/data/hotel'
 import { updateProfile } from '../_lib/data/profile'
-import { genericApiMethodHandler, errorHandler, authenticateUser } from '../_lib/tools'
+import { authenticateClientAppUser } from '../_lib/app/auth'
+import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
 import { checkLogin } from '../_lib/validators'
 import { IProfile, IHotel } from '../_lib/types'
 
@@ -19,7 +20,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let profile: IProfile
   try {
-    profile = await authenticateUser(email, oneTimePassword, sessionToken)
+    profile = await authenticateClientAppUser(email, oneTimePassword, sessionToken)
   } catch (err) {
     return errorHandler(response, err)
   }

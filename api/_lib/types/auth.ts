@@ -1,9 +1,9 @@
-interface IDecodedAuthToken {
+interface IDecodedAuthClientAppToken {
   email: string
   oneTimePassword: string
   sessionToken: string
 }
 
 export {
-  IDecodedAuthToken,
+  IDecodedAuthClientAppToken,
 }

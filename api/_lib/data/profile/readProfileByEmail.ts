@@ -33,7 +33,6 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
   }
 
   if (!result) {
-    console.log('B')
     throw new CError(404, `A '${ENTITY_NAME}' was not found.`)
   }
 

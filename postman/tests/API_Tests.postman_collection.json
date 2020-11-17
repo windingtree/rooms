@@ -12,17 +12,19 @@
 					"listen": "test",
 					"script": {
 						"id": "f929344a-b7e6-46a4-b155-58e8b017c541",
-						"exec": [
-							"pm.test(\"ping status\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"ping response\", function () {",
-							"    pm.response.to.have.body('OK');",
-							"});",
-							""
-						],
-						"type": "text/javascript"
+            "exec": [
+              "pm.test('ping status', function () {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test('ping response', function () {",
+              "    pm.response.to.have.body('OK')",
+              "})",
+              "",
+              "// postman.setNextRequest('health end point')",
+              ""
+            ],
+            "type": "text/javascript"
 					}
 				}
 			],
@@ -50,18 +52,33 @@
 					"listen": "test",
 					"script": {
 						"id": "29463674-dc0e-48ff-8f15-735bd0ef0869",
-						"exec": [
-							"pm.test(\"health status\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"health response\", function () {",
-							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData.db).to.eql(\"up\");",
-							"});",
-							""
-						],
-						"type": "text/javascript"
+            "exec": [
+              "pm.test('health status', function () {",
+              "  pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test('mongo status', function () {",
+              "  const jsonData = pm.response.json()",
+              "  pm.expect(jsonData.mongo).to.be.a('object')",
+              "  pm.expect(jsonData.mongo.status).to.be.a('string')",
+              "  pm.expect(jsonData.mongo.status).to.equal('up')",
+              "})",
+              "",
+              "pm.test('mongo latency', function () {",
+              "  const jsonData = pm.response.json()",
+              "  pm.expect(jsonData.mongo).to.be.a('object')",
+              "  pm.expect(jsonData.mongo.latency).to.be.a('string')",
+              "})",
+              "",
+              "pm.test('app version', function () {",
+              "  const jsonData = pm.response.json()",
+              "  pm.expect(jsonData.app_version).to.be.a('string')",
+              "})",
+              "",
+              "// postman.setNextRequest('should reset test data')",
+              ""
+            ],
+            "type": "text/javascript"
 					}
 				}
 			],
