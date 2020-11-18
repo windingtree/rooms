@@ -1,35 +1,35 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { createHotel } from '../_lib/data/hotel'
+import { createHotel } from '../_lib/app/hotel'
 import { authenticateClientAppRequest } from '../_lib/app/auth'
 import { genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
-import { hotelDataValidatorCreate } from '../_lib/validators'
-import { IProfile, IHotel, IBaseHotel } from '../_lib/types'
+import { postHotelPayloadValidator } from '../_lib/validators'
+import { IProfile, IHotel, IPostHotelPayload } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateClientAppRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeRequest(profile.role, { method: 'POST', route: 'hotel' })
+    await authorizeRequest(requester.role, { method: 'POST', route: 'hotel' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let data: IBaseHotel
+  let payload: IPostHotelPayload
   try {
-    data = await hotelDataValidatorCreate(request)
+    payload = await postHotelPayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let result: IHotel
   try {
-    result = await createHotel(data)
+    result = await createHotel(requester, payload)
   } catch (err) {
     return errorHandler(response, err)
   }

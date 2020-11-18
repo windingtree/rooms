@@ -15,7 +15,7 @@ import {
   getQueryParamValue
 } from '../../_lib/tools'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { hotelDataValidatorUpdate } from '../../_lib/validators'
+import { patchHotelPayloadValidator } from '../../_lib/validators'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IProfile, IHotel, IUpdateHotelData } from '../../_lib/types'
 
@@ -77,7 +77,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
 
   let data: IUpdateHotelData
   try {
-    data = await hotelDataValidatorUpdate(request)
+    data = await patchHotelPayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }

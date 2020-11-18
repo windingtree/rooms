@@ -1,0 +1,3 @@
+export {
+  getOrgDetails,
+} from './getOrgDetails'

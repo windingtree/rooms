@@ -1,22 +1,22 @@
 export {
   genericApiMethodHandler,
-} from './generic_api_method_handler'
+} from './genericApiMethodHandler'
 
 export {
   getQueryParamValue,
-} from './url'
+} from './getQueryParamValue'
 
 export {
   CError,
-} from './c_error'
+} from './CError'
 
 export {
   errorHandler,
-} from './error_handler'
+} from './errorHandler'
 
 export {
   emailOneTimePassword,
-} from './email'
+} from './emailOneTimePassword'
 
 export {
   getBearerToken,

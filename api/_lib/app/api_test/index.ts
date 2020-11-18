@@ -1,3 +1,3 @@
 export {
-  apiTestReset,
-} from './apiTestReset'
+  apiTestSetup,
+} from './apiTestSetup'

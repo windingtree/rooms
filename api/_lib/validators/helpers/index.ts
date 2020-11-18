@@ -5,3 +5,11 @@ export {
 export {
   validateRequiredString,
 } from './validateRequiredString'
+
+export {
+  validateOptionalLocation,
+} from './validateOptionalLocation'
+
+export {
+  validateRequiredLocation,
+} from './validateRequiredLocation'

@@ -21,3 +21,7 @@ export {
 export {
   deleteProfile,
 } from './deleteProfile'
+
+export {
+  deleteProfileByEmail,
+} from './deleteProfileByEmail'

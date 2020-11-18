@@ -1,12 +1,16 @@
 import { getBookings, deleteBooking, getRoomTypes, deleteRoomType } from '../../data/rooms_legacy'
-import { createProfile, deleteProfile } from '../../data/profile'
+import { createProfile, deleteProfileByEmail } from '../../data/profile'
 import { CError } from '../../tools'
 import { AppConfig } from '../../infra/config'
-import { IBookingCollection, IRoomTypeCollection, IProfile, IBaseProfile } from '../../types'
+import { IBookingCollection, IRoomTypeCollection, IBaseProfile } from '../../types'
 import { CONSTANTS } from '../../infra/constants'
 
-async function apiTestReset(): Promise<IProfile> {
+async function apiTestSetup(profileRole: string): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
+
+  if (appConfig.API_TEST_ENABLED !== 'enabled') {
+    throw new CError(500, 'API test support not enabled for this environment.')
+  }
 
   if (typeof appConfig.API_TEST_EMAIL !== 'string' || appConfig.API_TEST_EMAIL === '') {
     throw new CError(500, 'appConfig.API_TEST_EMAIL config variable is not set.')
@@ -25,7 +29,7 @@ async function apiTestReset(): Promise<IProfile> {
   }
 
   try {
-    await deleteProfile(email)
+    await deleteProfileByEmail(email)
   } catch (err) {
     // Do nothing.
     // We need to make sure the test profile doesn't exist.
@@ -53,11 +57,9 @@ async function apiTestReset(): Promise<IProfile> {
     hotelId: '',
   }
 
-  const profile: IProfile = await createProfile(profilePostData)
-
-  return profile
+  await createProfile(profilePostData)
 }
 
 export {
-  apiTestReset,
+  apiTestSetup,
 }

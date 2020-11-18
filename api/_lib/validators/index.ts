@@ -15,12 +15,12 @@ export {
 } from './send_one_time_pass'
 
 export {
-  hotelDataValidatorCreate,
-} from './hotelDataValidatorCreate'
+  postHotelPayloadValidator,
+} from './postHotelPayloadValidator'
 
 export {
-  hotelDataValidatorUpdate,
-} from './hotelDataValidatorUpdate'
+  patchHotelPayloadValidator,
+} from './patchHotelPayloadValidator'
 
 export {
   postProfilePayloadValidator,

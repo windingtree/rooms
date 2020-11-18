@@ -7,25 +7,25 @@ import { IProfile, IHotelCollection } from '../_lib/types'
 import { CONSTANTS } from '../_lib/infra/constants'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateClientAppRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeRequest(profile.role, { method: 'GET', route: 'hotels' })
+    await authorizeRequest(requester.role, { method: 'GET', route: 'hotels' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
   let result: IHotelCollection
   try {
-    if (profile.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
+    if (requester.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
       result = await readHotels()
     } else {
-      result = await readHotelsByOwnerId(profile.id)
+      result = await readHotelsByOwnerId(requester.id)
     }
   } catch (err) {
     return errorHandler(response, err)

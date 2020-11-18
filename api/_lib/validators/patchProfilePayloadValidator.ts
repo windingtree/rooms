@@ -22,15 +22,13 @@ async function patchProfilePayloadValidator(request: NowRequest): Promise<IPatch
     }
   }
 
-  const name = await validateOptionalString('name', request.body.name)
-  if (typeof name !== 'undefined') {
-    payload.name = name
-  }
+  const name = request.body.name
+  await validateOptionalString('name', name)
+  if (typeof name !== undefined) payload.name = name
 
-  const phone = await validateOptionalString('phone', request.body.phone)
-  if (typeof phone !== 'undefined') {
-    payload.phone = phone
-  }
+  const phone = request.body.phone
+  await validateOptionalString('phone', phone)
+  if (typeof phone !== undefined) payload.phone = phone
 
   return payload
 }

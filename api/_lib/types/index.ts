@@ -43,8 +43,9 @@ export {
   IHotelLocation,
   IBaseHotel,
   IHotel,
-  IHotelDbRecord,
+  IPostHotelPayload,
   IHotelCollection,
+  IHotelDbRecord,
   IUpdateHotelData,
 } from './hotel'
 
@@ -57,3 +58,7 @@ export {
 export {
   IOfferSearchResults,
 } from './offer_search_results'
+
+export {
+  IHttpStatus,
+} from './http_status'

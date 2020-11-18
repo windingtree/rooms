@@ -27,18 +27,21 @@ async function postProfilePayloadValidator(request: NowRequest): Promise<IPostPr
     }
   }
 
-  payload.email = await validateRequiredString('email', request.body.email)
-  payload.role = await validateRequiredString('role', request.body.role)
+  const email = request.body.email
+  await validateRequiredString('email', email)
+  payload.email = email
 
-  const name = await validateOptionalString('name', request.body.name)
-  if (typeof name !== 'undefined') {
-    payload.name = name
-  }
+  const role = request.body.role
+  await validateRequiredString('role', role)
+  payload.role = role
 
-  const phone = await validateOptionalString('phone', request.body.phone)
-  if (typeof phone !== 'undefined') {
-    payload.phone = phone
-  }
+  const name = request.body.name
+  await validateOptionalString('name', name)
+  payload.name = name
+
+  const phone = request.body.phone
+  await validateOptionalString('phone', phone)
+  payload.phone = phone
 
   return payload
 }
