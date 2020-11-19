@@ -5,14 +5,16 @@ interface IOrgPublicKey {
   type: string
 }
 
+interface IOrgDetailsOrganization {
+  id: string
+  did: string
+  publicKey: Array<IOrgPublicKey>
+  owner: string
+  isActive: boolean
+}
+
 interface IOrgDetails {
-  organization: {
-    id: string
-    did: string
-    publicKey: Array<IOrgPublicKey>
-    owner: string
-    isActive: boolean
-  }
+  organization: IOrgDetailsOrganization
 }
 
 interface IJwtOptions {

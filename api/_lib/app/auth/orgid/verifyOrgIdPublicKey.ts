@@ -1,8 +1,11 @@
 import { JWK, JWT } from 'jose'
 
-import { CError } from '../../../tools'
-import { AppConfig } from '../../../infra/config'
-import { IOrgDetails } from '../../../types'
+import { CError } from '../../../../_lib/tools'
+import { AppConfig } from '../../../../_lib/infra/config'
+import { CONSTANTS } from '../../../../_lib/infra/constants'
+import { IOrgDetails } from '../../../../_lib/types'
+
+const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 async function verifyOrgIdPublicKey(
   orgDetails: IOrgDetails, bearerToken: string, publicKeyFragment: string
@@ -16,11 +19,11 @@ async function verifyOrgIdPublicKey(
       p => p.id.match(RegExp(`#${publicKeyFragment}$`, 'g'))
     )[0]
   } catch (err) {
-    throw new CError(401, 'Error while retrieving public key.')
+    throw new CError(UNAUTHORIZED, 'Error while retrieving public key.')
   }
 
   if (!publicKey) {
-    throw new CError(401, 'Public key definition not found in the DID document.')
+    throw new CError(UNAUTHORIZED, 'Public key definition not found in the DID document.')
   }
 
   const pubKeyToVerify = '-----BEGIN PUBLIC KEY-----\n' + publicKey.publicKeyPem + '\n-----END PUBLIC KEY-----'
@@ -36,7 +39,7 @@ async function verifyOrgIdPublicKey(
       }
     )
   } catch (err) {
-    throw new CError(401, 'Could not load the public key as JWK.')
+    throw new CError(UNAUTHORIZED, 'Could not load the public key as JWK.')
   }
 
   const jwtOptions = {
@@ -52,7 +55,7 @@ async function verifyOrgIdPublicKey(
       jwtOptions
     )
   } catch (err) {
-    throw new CError(401, 'Could not verify the public key.')
+    throw new CError(UNAUTHORIZED, 'Could not verify the public key.')
   }
 }
 

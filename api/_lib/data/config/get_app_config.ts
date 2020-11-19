@@ -1,7 +1,10 @@
-import { CError, decryptText } from '../../tools'
-import { IAppConfig, IAppConfigDbItem } from '../../types'
-import { MongoDB } from '../../infra/mongo'
-import { ENV } from '../../infra/env'
+import { CError, decryptText } from '../../../_lib/tools'
+import { IAppConfig, IAppConfigDbItem } from '../../../_lib/types'
+import { MongoDB } from '../../../_lib/infra/mongo'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { ENV } from '../../../_lib/infra/env'
+
+const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 async function getAppConfig(): Promise<IAppConfig> {
   const dbClient = await MongoDB.getInstance().getDbClient()
@@ -53,7 +56,7 @@ async function getAppConfig(): Promise<IAppConfig> {
       appConfig[item.key] = value
     })
   } catch (err) {
-    throw new CError(500, 'Something went wrong while getting app config.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'Something went wrong while getting app config.')
   }
 
   return appConfig

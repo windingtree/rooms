@@ -1,10 +1,13 @@
 import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { CError } from '../../tools'
-import { IUpdateProfileData } from '../../types'
-import { MongoDB } from '../../infra/mongo'
-import { ENV } from '../../infra/env'
+import { CError } from '../../../_lib/tools'
+import { IUpdateProfileData } from '../../../_lib/types'
+import { MongoDB } from '../../../_lib/infra/mongo'
+import { ENV } from '../../../_lib/infra/env'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
 async function updateProfile(id: string, data: IUpdateProfileData): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
@@ -23,11 +26,11 @@ async function updateProfile(id: string, data: IUpdateProfileData): Promise<void
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw new CError(500, `An error occurred while updating a '${ENTITY_NAME}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while updating a '${ENTITY_NAME}'.`)
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(404, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
   }
 }
 

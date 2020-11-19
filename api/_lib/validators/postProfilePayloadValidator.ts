@@ -1,12 +1,15 @@
 import { NowRequest } from '@vercel/node'
 
 import { validateRequiredString, validateOptionalString } from './helpers'
-import { CError } from '../tools'
-import { IPostProfilePayload } from '../types'
+import { CError } from '../../_lib/tools'
+import { CONSTANTS } from '../../_lib/infra/constants'
+import { IPostProfilePayload } from '../../_lib/types'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function postProfilePayloadValidator(request: NowRequest): Promise<IPostProfilePayload> {
   if (!request.body) {
-    throw new CError(500, 'Must provide a valid body with request.')
+    throw new CError(BAD_REQUEST, 'Must provide a valid body with request.')
   }
 
   const payload: IPostProfilePayload = {
@@ -23,7 +26,7 @@ async function postProfilePayloadValidator(request: NowRequest): Promise<IPostPr
 
   for (const [key] of Object.entries(request.body)) {
     if (!ALLOWED_PROPS.includes(key as keyof IPostProfilePayload)) {
-      throw new CError(500, `Property '${key}' on 'profile' is not settable.`)
+      throw new CError(BAD_REQUEST, `Property '${key}' on 'profile' is not settable.`)
     }
   }
 

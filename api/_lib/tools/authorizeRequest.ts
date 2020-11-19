@@ -1,14 +1,12 @@
-import { CError } from '../tools'
-import { CONSTANTS } from '../infra/constants'
-import { IAuthorizeRules, IAuthorizeRulesMethods } from '../types'
+import { CError } from '../../_lib/tools'
+import { CONSTANTS } from '../../_lib/infra/constants'
+import { IAuthorizeRules, IAuthorizeRulesRoles, IAuthorizeRequestAction } from '../../_lib/types'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
-const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER
-const OWNER = CONSTANTS.PROFILE_ROLE.OWNER
-const OBSERVER = CONSTANTS.PROFILE_ROLE.OBSERVER
+const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE
+const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
-function allowRoles(...roles: Array<string>): IAuthorizeRulesMethods {
-  const allowedRoles: IAuthorizeRulesMethods = {}
+function allowRoles(...roles: Array<string>): IAuthorizeRulesRoles {
+  const allowedRoles: IAuthorizeRulesRoles = {}
 
   roles.forEach((role) => {
     allowedRoles[role] = true
@@ -44,10 +42,10 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
 
   'orgid/{id}': {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
-  }
+  },
 }
 
-async function authorizeRequest(role: string, action: { method: string, route: string }): Promise<boolean> {
+async function authorizeRequest(role: string, action: IAuthorizeRequestAction): Promise<boolean> {
   if (
     typeof AUTHORIZE_RULES[action.route] !== 'undefined' &&
     typeof AUTHORIZE_RULES[action.route][action.method] !== 'undefined' &&
@@ -57,7 +55,7 @@ async function authorizeRequest(role: string, action: { method: string, route: s
   }
 
   throw new CError(
-    403,
+    UNAUTHORIZED,
     `User with role '${role}' is not authorized to perform '${action.method}' on '${action.route}'.`
   )
 }

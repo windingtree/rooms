@@ -8,6 +8,12 @@ interface IBaseProfile {
   hotelId: string
 }
 
+interface IProfileAuthData {
+  email: string
+  oneTimePassword: string
+  sessionToken: string
+}
+
 interface IProfile extends IBaseProfile {
   id: string
 }
@@ -36,11 +42,20 @@ interface IUpdateProfileData {
   hotelId?: string
 }
 
+interface IProfileRole {
+  SUPER_ADMIN: string
+  MANAGER: string
+  OWNER: string
+  OBSERVER: string
+}
+
 export {
   IBaseProfile,
+  IProfileAuthData,
   IProfile,
   IProfileCollection,
   IPostProfilePayload,
   IPatchProfilePayload,
   IUpdateProfileData,
+  IProfileRole,
 }

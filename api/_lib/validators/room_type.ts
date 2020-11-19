@@ -1,10 +1,13 @@
 import { NowRequest } from '@vercel/node'
 
-import { CError } from '../tools'
+import { CError } from '../../_lib/tools'
+import { CONSTANTS } from '../../_lib/infra/constants'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function checkRoomType(request: NowRequest): Promise<void> {
   if (!request.body) {
-    throw new CError(500, 'must provide a valid body with request')
+    throw new CError(BAD_REQUEST, 'must provide a valid body with request')
   }
 
   if (
@@ -14,7 +17,7 @@ async function checkRoomType(request: NowRequest): Promise<void> {
       (Number.isNaN(parseInt(request.body.quantity)))
     )
   ) {
-    throw new CError(500, 'must provide a valid quantity value')
+    throw new CError(BAD_REQUEST, 'must provide a valid quantity value')
   }
 
   if (
@@ -24,19 +27,19 @@ async function checkRoomType(request: NowRequest): Promise<void> {
       (Number.isNaN(parseInt(request.body.price)))
     )
   ) {
-    throw new CError(500, 'must provide a valid price value')
+    throw new CError(BAD_REQUEST, 'must provide a valid price value')
   }
 
   if (
     (typeof request.body.type !== 'string')
   ) {
-    throw new CError(500, 'must provide a valid type value')
+    throw new CError(BAD_REQUEST, 'must provide a valid type value')
   }
 
   if (
     (typeof request.body.amenities !== 'string')
   ) {
-    throw new CError(500, 'must provide a valid amenities value')
+    throw new CError(BAD_REQUEST, 'must provide a valid amenities value')
   }
 }
 

@@ -1,8 +1,11 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { CError } from '../../tools'
-import { IHotelDbRecord, IHotelCollection } from '../../types'
-import { MongoDB } from '../../infra/mongo'
-import { ENV } from '../../infra/env'
+import { CError } from '../../../_lib/tools'
+import { IHotelDbRecord, IHotelCollection } from '../../../_lib/types'
+import { MongoDB } from '../../../_lib/infra/mongo'
+import { ENV } from '../../../_lib/infra/env'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+
+const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 async function readHotelsByOwnerId(ownerId: string): Promise<IHotelCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
@@ -41,7 +44,7 @@ async function readHotelsByOwnerId(ownerId: string): Promise<IHotelCollection> {
       })
     })
   } catch (err) {
-    throw new CError(500, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
   }
 
   return result

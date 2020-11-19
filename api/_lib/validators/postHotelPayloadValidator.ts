@@ -1,12 +1,15 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateRequiredString, validateRequiredLocation } from './helpers'
-import { CError } from '../tools'
-import { IPostHotelPayload } from '../types'
+import { validateRequiredString, validateOptionalString, validateOptionalLocation } from './helpers'
+import { CError } from '../../_lib/tools'
+import { CONSTANTS } from '../../_lib/infra/constants'
+import { IPostHotelPayload } from '../../_lib/types'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHotelPayload> {
   if (!request.body) {
-    throw new CError(500, 'Must provide a valid body with request.')
+    throw new CError(BAD_REQUEST, 'Must provide a valid body with request.')
   }
 
   const payload: IPostHotelPayload = {
@@ -28,21 +31,25 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
 
   for (const [key] of Object.entries(request.body)) {
     if (!ALLOWED_PROPS.includes(key)) {
-      throw new CError(500, `Property '${key}' on 'hotel' is not updatable.`)
+      throw new CError(BAD_REQUEST, `Property '${key}' on 'hotel' is not updatable.`)
     }
   }
 
-  await validateRequiredString('ownerId', request.body.ownerId)
-  payload.ownerId = request.body.ownerId
+  const ownerId = request.body.ownerId
+  await validateRequiredString('ownerId', ownerId)
+  payload.ownerId = ownerId
 
-  await validateRequiredString('name', request.body.name)
-  payload.name = request.body.name
+  const name = request.body.name
+  await validateOptionalString('name', name)
+  payload.name = name
 
-  await validateRequiredString('address', request.body.address)
-  payload.address = request.body.address
+  const address = request.body.address
+  await validateOptionalString('address', address)
+  if (typeof address !== 'undefined') payload.address = address
 
-  await validateRequiredLocation('location', request.body.location)
-  payload.location = request.body.location
+  const location = request.body.location
+  await validateOptionalLocation('location', location)
+  if (typeof location !== 'undefined') payload.location = location
 
   return payload
 }

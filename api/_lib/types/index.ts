@@ -3,10 +3,6 @@ export {
 } from './api'
 
 export {
-  IDecodedAuthClientAppToken,
-} from './auth'
-
-export {
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -20,11 +16,13 @@ export {
 
 export {
   IBaseProfile,
+  IProfileAuthData,
   IProfile,
   IProfileCollection,
   IPostProfilePayload,
   IPatchProfilePayload,
   IUpdateProfileData,
+  IProfileRole,
 } from './profile'
 
 export {
@@ -46,13 +44,14 @@ export {
   IPostHotelPayload,
   IHotelCollection,
   IHotelDbRecord,
-  IUpdateHotelData,
+  IPatchHotelPayload,
 } from './hotel'
 
 export {
+  IAuthorizeRulesRoles,
   IAuthorizeRulesMethods,
-  IAuthorizeRulesRoutes,
   IAuthorizeRules,
+  IAuthorizeRequestAction,
 } from './authorization'
 
 export {
@@ -60,5 +59,10 @@ export {
 } from './offer_search_results'
 
 export {
+  IHttpStatusCodes,
   IHttpStatus,
 } from './http_status'
+
+export {
+  IConstants,
+} from './constants'

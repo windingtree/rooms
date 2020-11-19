@@ -1,7 +1,10 @@
 import { NowRequest } from '@vercel/node'
 import * as jwt from 'jsonwebtoken'
 
-import { CError } from '../tools'
+import { CError } from '../../_lib/tools'
+import { CONSTANTS } from '../../_lib/infra/constants'
+
+const { UNAUTHORIZED }  = CONSTANTS.HTTP_STATUS
 
 function jwtParse(token: string): Promise<void> {
   let resolve: () => void
@@ -26,23 +29,23 @@ function jwtParse(token: string): Promise<void> {
 async function getBearerToken(request: NowRequest): Promise<string> {
   const authHeaderValue = request.headers['authorization']
   if (typeof authHeaderValue !== 'string' || authHeaderValue.length === 0) {
-    throw new CError(401, 'Authorization request header missing.')
+    throw new CError(UNAUTHORIZED, 'Authorization request header missing.')
   }
 
   const [bearerKey, bearerToken] = authHeaderValue.split(' ')
 
   if (typeof bearerKey !== 'string' || bearerKey !== 'Bearer') {
-    throw new CError(401, 'Authorization request header malformed.')
+    throw new CError(UNAUTHORIZED, 'Authorization request header malformed.')
   }
 
   if (typeof bearerToken !== 'string' || bearerToken.length === 0) {
-    throw new CError(401, 'Bearer token is missing.')
+    throw new CError(UNAUTHORIZED, 'Bearer token is missing.')
   }
 
   try {
     await jwtParse(bearerToken)
   } catch (err) {
-    throw new CError(401, 'Bearer token is malformed.')
+    throw new CError(UNAUTHORIZED, 'Bearer token is malformed.')
   }
 
   return bearerToken

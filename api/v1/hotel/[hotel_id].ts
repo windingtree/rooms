@@ -17,7 +17,7 @@ import {
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchHotelPayloadValidator } from '../../_lib/validators'
 import { CONSTANTS } from '../../_lib/infra/constants'
-import { IProfile, IHotel, IUpdateHotelData } from '../../_lib/types'
+import { IProfile, IHotel, IPatchHotelPayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let profile: IProfile
@@ -75,7 +75,7 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
     return errorHandler(response, err)
   }
 
-  let data: IUpdateHotelData
+  let data: IPatchHotelPayload
   try {
     data = await patchHotelPayloadValidator(request)
   } catch (err) {

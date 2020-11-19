@@ -1,9 +1,12 @@
 import { ObjectID } from 'mongodb'
 
-import { CError } from '../../tools'
-import { IBooking, IBaseBooking, IBookingCollection } from '../../types'
-import { MongoDB } from '../../infra/mongo'
-import { ENV } from '../../infra/env'
+import { CError } from '../../../_lib/tools'
+import { IBooking, IBaseBooking, IBookingCollection } from '../../../_lib/types'
+import { MongoDB } from '../../../_lib/infra/mongo'
+import { ENV } from '../../../_lib/infra/env'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+
+const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 async function createBooking(email: string, newBooking: IBaseBooking): Promise<IBooking> {
   const dbClient = await MongoDB.getInstance().getDbClient()
@@ -16,11 +19,11 @@ async function createBooking(email: string, newBooking: IBaseBooking): Promise<I
     const doc = Object.assign({ email }, newBooking)
     result = await collection.insertOne(doc)
   } catch (err) {
-    throw new CError(500, 'An error occurred while creating a new booking.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'An error occurred while creating a new booking.')
   }
 
   if (!result) {
-    throw new CError(500, 'Could not create a new booking.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not create a new booking.')
   }
 
   const booking: IBooking = Object.assign({ id: result.insertedId }, newBooking)
@@ -52,11 +55,11 @@ async function getBooking(id: string): Promise<IBooking> {
 
     result = await collection.findOne(query, options)
   } catch (err) {
-    throw new CError(500, 'An error occurred while getting a booking.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'An error occurred while getting a booking.')
   }
 
   if (result === null) {
-    throw new CError(500, `Could not find a booking with ID '${id}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not find a booking with ID '${id}'.`)
   }
 
   return {
@@ -86,11 +89,11 @@ async function updateBooking(id: string, email: string, booking: IBaseBooking): 
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw new CError(500, 'An error occurred while updating a booking.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'An error occurred while updating a booking.')
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(500, `Could not find a booking to update with ID '${id}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not find a booking to update with ID '${id}'.`)
   }
 
   return Object.assign({ id }, booking)
@@ -108,11 +111,11 @@ async function deleteBooking(id: string): Promise<void> {
 
     result = await collection.deleteOne(filter)
   } catch (err) {
-    throw new CError(500, 'An error occurred while deleting a booking.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'An error occurred while deleting a booking.')
   }
 
   if (!result || !result.deletedCount) {
-    throw new CError(500, `Could not find a booking to delete with ID '${id}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not find a booking to delete with ID '${id}'.`)
   }
 }
 
@@ -159,7 +162,7 @@ async function getBookings(email: string): Promise<IBookingCollection> {
       })
     })
   } catch (err) {
-    throw new CError(500, 'An error occurred while getting bookings.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'An error occurred while getting bookings.')
   }
 
   return bookingCollection

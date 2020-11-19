@@ -1,7 +1,10 @@
 import { MongoClient } from 'mongodb'
 
-import { CError } from '../../tools'
-import { ENV } from '../../infra/env'
+import { CError } from '../../../_lib/tools'
+import { ENV } from '../../../_lib/infra/env'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+
+const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
 class MongoDB {
   private static _instance: MongoDB = new MongoDB()
@@ -9,7 +12,7 @@ class MongoDB {
 
   constructor() {
     if (MongoDB._instance) {
-      throw new CError(500, 'MongoDB class instantiation failed. Use MongoDB.getInstance() instead of new operator.')
+      throw new CError(INTERNAL_SERVER_ERROR, 'MongoDB class instantiation failed. Use MongoDB.getInstance() instead of new operator.')
     }
     MongoDB._instance = this
   }
@@ -42,7 +45,7 @@ class MongoDB {
     await MongoDB._instance.createDbConnection()
 
     if (this._dbClient === null) {
-      throw new CError(503, 'Could not connect to the database.')
+      throw new CError(BAD_GATEWAY, 'Could not connect to the database.')
     }
 
     return this._dbClient

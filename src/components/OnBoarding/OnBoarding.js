@@ -7,6 +7,13 @@ const useStyles = () => {
   return {
     container: {
       textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      height: '100%',      
+    },
+    spacer: {
+      flex: 1,
     },
     mainFlow: {
       height: '16em',
@@ -18,11 +25,22 @@ const useStyles = () => {
     },
     questionForm: {
       height: '2em',
-    }
+    },
+    LoginBtn: {
+      width: '5em',
+    },
   }
 }
 
 class OnBoarding extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showOnBoarding: false,
+    }
+  }
+
   loginClickHandler = () => {
     this.props.history.push('/login')
   }
@@ -32,15 +50,20 @@ class OnBoarding extends React.Component {
 
     return (
       <div className={classes.container}>
-        <header className={classes.mainFlow}>
-          <div className={classes.questionForm}>Pick up in mind any room in your hotel</div>
-          <Button variant="contained" color="primary">
-            OK
-          </Button>
-        </header>
-        <Button variant="contained" color="secondary" onClick={this.loginClickHandler}>
+        { this.state.showOnBoarding ?
+          <header className={classes.mainFlow}>
+            <div className={classes.questionForm}>Pick up in mind any room in your hotel</div>
+            <Button variant="contained" color="primary">
+              OK
+            </Button>
+          </header> :
+          <div />
+        }
+        <div className={classes.spacer} />
+        <Button className={classes.LoginBtn} variant="contained" color="secondary" onClick={this.loginClickHandler}>
           Login
         </Button>
+        <div className={classes.spacer} />
       </div>
     )
   }

@@ -1,8 +1,10 @@
+import { IHttpStatusCodes } from '../../_lib/types'
+
 class CError {
-  code: number
+  code: keyof IHttpStatusCodes
   msg: string
 
-  constructor(code: number, msg: string) {
+  constructor(code: keyof IHttpStatusCodes, msg: string) {
     this.code = code
     this.msg = msg
   }

@@ -1,8 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { readProfileByEmail, createProfile, updateProfile } from '../../../data/profile'
-import { IProfile } from '../../../types'
-import { CONSTANTS } from '../../../infra/constants'
+import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
+import { createHotel } from '../../../../_lib/data/hotel'
+import { CONSTANTS } from '../../../../_lib/infra/constants'
+import { IProfile, IBaseHotel } from '../../../../_lib/types'
+
+const { OWNER } = CONSTANTS.PROFILE_ROLE
 
 async function getClientAppOneTimePassword(email: string, sessionToken: string): Promise<string> {
   const oneTimePassword: string = uuidv4()
@@ -16,15 +19,25 @@ async function getClientAppOneTimePassword(email: string, sessionToken: string):
   }
 
   if (profile === null) {
-    await createProfile({
+    const profileId: string = await createProfile({
       email,
       name: '',
       phone: '',
       oneTimePassword,
       sessionToken,
-      role: CONSTANTS.PROFILE_ROLE.OWNER,
+      role: OWNER,
       hotelId: '',
     })
+
+    const hotel: IBaseHotel = {
+      ownerId: profileId,
+      name: '',
+      address: '',
+      location: { lat: 0, lng: 0 },
+    }
+    const hotelId: string = await createHotel(hotel)    
+
+    updateProfile(profileId, { hotelId })
   } else {
     await updateProfile(profile.id, { oneTimePassword, sessionToken })
   }

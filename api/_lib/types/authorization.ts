@@ -1,17 +1,23 @@
-interface IAuthorizeRulesMethods {
+interface IAuthorizeRulesRoles {
   [key: string]: boolean
 }
 
-interface IAuthorizeRulesRoutes {
-  [key: string]: IAuthorizeRulesMethods
+interface IAuthorizeRulesMethods {
+  [key: string]: IAuthorizeRulesRoles
 }
 
 interface IAuthorizeRules {
-  [key: string]: IAuthorizeRulesRoutes
+  [key: string]: IAuthorizeRulesMethods
+}
+
+interface IAuthorizeRequestAction {
+  method: string
+  route: string
 }
 
 export {
+  IAuthorizeRulesRoles,
   IAuthorizeRulesMethods,
-  IAuthorizeRulesRoutes,
   IAuthorizeRules,
+  IAuthorizeRequestAction,
 }

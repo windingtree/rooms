@@ -1,12 +1,15 @@
 import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { CError } from '../../tools'
-import { IUpdateHotelData } from '../../types'
-import { MongoDB } from '../../infra/mongo'
-import { ENV } from '../../infra/env'
+import { CError } from '../../../_lib/tools'
+import { IPatchHotelPayload } from '../../../_lib/types'
+import { MongoDB } from '../../../_lib/infra/mongo'
+import { ENV } from '../../../_lib/infra/env'
+import { CONSTANTS } from '../../../_lib/infra/constants'
 
-async function updateHotelByOwnerId(id: string, ownerId: string, data: IUpdateHotelData): Promise<void> {
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
+
+async function updateHotelByOwnerId(hotelId: string, ownerId: string, data: IPatchHotelPayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
@@ -14,7 +17,7 @@ async function updateHotelByOwnerId(id: string, ownerId: string, data: IUpdateHo
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const filter = { _id: new ObjectID(id), ownerId }
+    const filter = { _id: new ObjectID(hotelId), ownerId: new ObjectID(ownerId) }
     const options = { upsert: false }
 
     const updateDoc = {
@@ -23,11 +26,11 @@ async function updateHotelByOwnerId(id: string, ownerId: string, data: IUpdateHo
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
-    throw new CError(500, `An error occurred while updating a '${ENTITY_NAME}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while updating a '${ENTITY_NAME}'.`)
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(404, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
   }
 }
 

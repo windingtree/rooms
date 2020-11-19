@@ -1,8 +1,8 @@
-import { createHotel as createHotelRecord } from '../../data/hotel'
-import { readProfile as readProfileRecord } from '../../data/profile'
-import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../types'
-import { CONSTANTS } from '../../infra/constants'
-import { CError } from '../../tools'
+import { createHotel as createHotelRecord } from '../../../_lib/data/hotel'
+import { readProfile as readProfileRecord } from '../../../_lib/data/profile'
+import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { CError } from '../../../_lib/tools'
 
 const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
 const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER
@@ -46,11 +46,12 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
 
   const data: IBaseHotel = {
     ownerId: payload.ownerId,
-    name: (payload.name) ? payload.name : '',
-    address: (payload.address) ? payload.address : '',
-    location: (payload.location) ? payload.location : { lat: 0, lng: 0 },
+    name: (typeof payload.name !== 'undefined') ? payload.name : '',
+    address: (typeof payload.address !== 'undefined') ? payload.address : '',
+    location: (typeof payload.location !== 'undefined') ? payload.location : { lat: 0, lng: 0 },
   }
-  const hotel: IHotel = await createHotelRecord(data)
+  const hotelId: string = await createHotelRecord(data)
+  const hotel: IHotel = Object.assign({}, data, { id: hotelId })
 
   return hotel
 }

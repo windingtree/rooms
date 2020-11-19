@@ -1,5 +1,8 @@
-import { CError } from '../../tools'
-import { IHotelLocation } from '../../types'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IHotelLocation } from '../../../_lib/types'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function validateOptionalLocation(propName: string, _value: unknown): Promise<IHotelLocation|undefined> {
   let value: IHotelLocation|undefined = undefined
@@ -11,7 +14,7 @@ async function validateOptionalLocation(propName: string, _value: unknown): Prom
       value.lat = (_value as IHotelLocation).lat
     } else {
       throw new CError(
-        500,
+        BAD_REQUEST,
         `Property '${propName}.lat' is required. It must have a value of type 'number'.`
       )
     }
@@ -20,12 +23,12 @@ async function validateOptionalLocation(propName: string, _value: unknown): Prom
       value.lng = (_value as IHotelLocation).lng
     } else {
       throw new CError(
-        500,
+        BAD_REQUEST,
         `Property '${propName}.lng' is required. It must have a value of type 'number'.`
       )
     }
   } else if (typeof _value !== 'undefined') {
-    throw new CError(500, `Property '${propName}' is optional. If provided, it must have a value of type 'object'.`)
+    throw new CError(BAD_REQUEST, `Property '${propName}' is optional. If provided, it must have a value of type 'object'.`)
   }
 
   return value

@@ -1,6 +1,9 @@
-import { getAppConfig } from '../../data/config'
-import { CError } from '../../tools'
-import { IAppConfig } from '../../types'
+import { getAppConfig } from '../../../_lib/data/config'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IAppConfig } from '../../../_lib/types'
+
+const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
 class AppConfig {
   private static _instance: AppConfig = new AppConfig()
@@ -8,7 +11,10 @@ class AppConfig {
 
   constructor() {
     if (AppConfig._instance) {
-      throw new CError(500, 'AppConfig class instantiation failed. Use AppConfig.getInstance() instead of new operator.')
+      throw new CError(
+        INTERNAL_SERVER_ERROR,
+        'AppConfig class instantiation failed. Use AppConfig.getInstance() instead of new operator.'
+      )
     }
     AppConfig._instance = this
   }
@@ -34,7 +40,7 @@ class AppConfig {
     await AppConfig._instance.createConfig()
 
     if (this._config === null) {
-      throw new CError(503, 'Could not connect to the database.')
+      throw new CError(BAD_GATEWAY, 'Could not connect to the database.')
     }
 
     return this._config

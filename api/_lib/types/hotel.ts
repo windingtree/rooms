@@ -18,20 +18,20 @@ interface IPostHotelPayload {
   ownerId: string
   name?: string
   address?: string
-  location: IHotelLocation
+  location?: IHotelLocation
+}
+
+interface IPatchHotelPayload {
+  ownerId?: string
+  name?: string
+  address?: string
+  location?: IHotelLocation
 }
 
 type IHotelCollection = Array<IHotel>
 
 interface IHotelDbRecord extends IBaseHotel {
   _id: string
-}
-
-interface IUpdateHotelData {
-  ownerId?: string
-  name?: string
-  address?: string
-  location?: IHotelLocation
 }
 
 export {
@@ -41,5 +41,5 @@ export {
   IPostHotelPayload,
   IHotelCollection,
   IHotelDbRecord,
-  IUpdateHotelData,
+  IPatchHotelPayload,
 }

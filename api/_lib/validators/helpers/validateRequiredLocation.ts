@@ -1,5 +1,8 @@
-import { CError } from '../../tools'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
 import { IHotelLocation } from '../../types'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function validateRequiredLocation(propName: string, _value: unknown): Promise<IHotelLocation> {
   let value: IHotelLocation
@@ -11,7 +14,7 @@ async function validateRequiredLocation(propName: string, _value: unknown): Prom
       value.lat = (_value as IHotelLocation).lat
     } else {
       throw new CError(
-        500,
+        BAD_REQUEST,
         `Property '${propName}.lat' is required. It must have a value of type 'number'.`
       )
     }
@@ -20,12 +23,12 @@ async function validateRequiredLocation(propName: string, _value: unknown): Prom
       value.lng = (_value as IHotelLocation).lng
     } else {
       throw new CError(
-        500,
+        BAD_REQUEST,
         `Property '${propName}.lng' is required. It must have a value of type 'number'.`
       )
     }
   } else {
-    throw new CError(500, `Property '${propName}' is required. It must have a value of type 'object'.`)
+    throw new CError(BAD_REQUEST, `Property '${propName}' is required. It must have a value of type 'object'.`)
   }
 
   return value

@@ -1,7 +1,10 @@
 import sgMail from '@sendgrid/mail'
 
-import { CError } from '../tools'
-import { AppConfig } from '../infra/config'
+import { CError } from '../../_lib/tools'
+import { AppConfig } from '../../_lib/infra/config'
+import { CONSTANTS } from '../../_lib/infra/constants'
+
+const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
 async function emailOneTimePassword(email: string, oneTimePassword: string): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
@@ -9,7 +12,7 @@ async function emailOneTimePassword(email: string, oneTimePassword: string): Pro
   try {
     sgMail.setApiKey(appConfig.SENDGRID_API_KEY)
   } catch (err) {
-    throw new CError(500, `Could not set Send Grid API key '${appConfig.SENDGRID_API_KEY}'.`)
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not set Send Grid API key '${appConfig.SENDGRID_API_KEY}'.`)
   }
 
   const link = `${appConfig.SENDGRID_CALLBACK_URL}/${oneTimePassword}`
@@ -31,7 +34,7 @@ async function emailOneTimePassword(email: string, oneTimePassword: string): Pro
   try {
     await sgMail.send(msg)
   } catch (err) {
-    throw new CError(502, `Could not send one time password to ${email}.`)
+    throw new CError(BAD_GATEWAY, `Could not send one time password to ${email}.`)
   }
 }
 

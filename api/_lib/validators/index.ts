@@ -29,3 +29,7 @@ export {
 export {
   patchProfilePayloadValidator,
 } from './patchProfilePayloadValidator'
+
+export {
+  postLoginPayloadValidator,
+} from './postLoginPayloadValidator'
