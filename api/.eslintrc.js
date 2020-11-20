@@ -18,5 +18,17 @@ module.exports = {
     "no-throw-literal": "off",
     "@typescript-eslint/no-throw-literal": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "no-trailing-spaces": [
+      "error", {
+        "skipBlankLines": false,
+        "ignoreComments": false
+      }
+    ],
+    "no-tabs": [
+      "error", {
+        allowIndentationTabs: false
+      }
+    ],
+    "eol-last": ["error", "always"]
   },
 };

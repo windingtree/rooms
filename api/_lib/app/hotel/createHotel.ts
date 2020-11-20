@@ -6,7 +6,6 @@ import { CError } from '../../../_lib/tools'
 
 const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
 const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER
-const OWNER = CONSTANTS.PROFILE_ROLE.OWNER
 const OBSERVER = CONSTANTS.PROFILE_ROLE.OBSERVER
 
 const BAD_REQUEST = CONSTANTS.HTTP_STATUS.BAD_REQUEST
@@ -38,10 +37,6 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
         }
         break
     }
-  }
-
-  if (ownerProfile.role === OWNER) {
-    generalErrorForHotelCreation(requester, ownerProfile)
   }
 
   const data: IBaseHotel = {

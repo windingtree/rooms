@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
 import { createHotel } from '../../../../_lib/data/hotel'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IProfile, IBaseHotel } from '../../../../_lib/types'
+import { IProfile } from '../../../../_lib/types'
 
 const { OWNER } = CONSTANTS.PROFILE_ROLE
 
@@ -29,13 +29,12 @@ async function getClientAppOneTimePassword(email: string, sessionToken: string):
       hotelId: '',
     })
 
-    const hotel: IBaseHotel = {
+    const hotelId: string = await createHotel({
       ownerId: profileId,
       name: '',
       address: '',
       location: { lat: 0, lng: 0 },
-    }
-    const hotelId: string = await createHotel(hotel)    
+    })
 
     updateProfile(profileId, { hotelId })
   } else {

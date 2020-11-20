@@ -7,6 +7,10 @@ export {
 } from './readProfile'
 
 export {
+  readProfileByOwnerId,
+} from './readProfileByOwnerId'
+
+export {
   readProfileByEmail,
 } from './readProfileByEmail'
 

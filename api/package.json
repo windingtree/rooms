@@ -13,6 +13,7 @@
     "build": "tsc --outDir ./dist",
     "build:watch": "tsc --watch --outDir ./dist",
     "lint": "eslint -c ./.eslintrc.js --resolve-plugins-relative-to ./ './**/*.ts'",
+    "lint:fix": "eslint --fix -c ./.eslintrc.js --resolve-plugins-relative-to ./ './**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

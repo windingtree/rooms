@@ -17,13 +17,13 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
-  }  
+  }
 
   try {
     await apiTestTearDown(requester)
   } catch (err) {
     return errorHandler(response, err)
-  }  
+  }
 
   response.status(200).json({ tear_down: 'OK' })
 }

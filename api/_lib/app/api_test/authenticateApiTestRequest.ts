@@ -13,7 +13,7 @@ async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
   checkRequiredAppConfigProps(appConfig)
-  
+
   if (appConfig.API_TEST_ENABLED !== 'enabled') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')
   }
@@ -28,7 +28,7 @@ async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
     (appConfig.API_TEST_SESSION_TOKEN !== sessionToken)
   ) {
     throw new CError(FORBIDDEN, 'API Test user contains wrong auth data.')
-  }  
+  }
 }
 
 export {

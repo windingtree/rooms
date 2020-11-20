@@ -9,7 +9,7 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readProfile(profileId: string): Promise<IProfile> {
+async function readProfileByOwnerId(profileId: string, ownerId: string): Promise<IProfile> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
@@ -17,7 +17,7 @@ async function readProfile(profileId: string): Promise<IProfile> {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const query = { _id: new ObjectID(profileId) }
+    const query = { _id: new ObjectID(profileId), ownerId: new ObjectID(ownerId) }
 
     const options = {
       projection: {
@@ -56,5 +56,5 @@ async function readProfile(profileId: string): Promise<IProfile> {
 }
 
 export {
-  readProfile,
+  readProfileByOwnerId,
 }
