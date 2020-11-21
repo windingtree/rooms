@@ -1,5 +1,7 @@
-interface IAuthorizeRulesRoles {
-  [key: string]: boolean
+import { IProfileRoleEnum } from '../../_lib/types'
+
+type IAuthorizeRulesRoles = {
+  [key in IProfileRoleEnum]?: boolean
 }
 
 interface IAuthorizeRulesMethods {

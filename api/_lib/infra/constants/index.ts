@@ -13,6 +13,7 @@ import {
 
 const CONSTANTS: IConstants = {
   PROFILE_ROLE,
+
   HTTP_STATUS_CODES,
   HTTP_STATUS,
 }

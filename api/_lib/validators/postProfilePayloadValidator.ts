@@ -5,6 +5,7 @@ import { CError } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IPostProfilePayload } from '../../_lib/types'
 
+const { OBSERVER } = CONSTANTS.PROFILE_ROLE
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function postProfilePayloadValidator(request: NowRequest): Promise<IPostProfilePayload> {
@@ -14,7 +15,7 @@ async function postProfilePayloadValidator(request: NowRequest): Promise<IPostPr
 
   const payload: IPostProfilePayload = {
     email: '',
-    role: '',
+    role: OBSERVER,
   }
 
   const ALLOWED_PROPS: Array<keyof IPostProfilePayload> = [

@@ -1,11 +1,11 @@
 import { CError } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
-import { IAuthorizeRules, IAuthorizeRulesRoles, IAuthorizeRequestAction } from '../../_lib/types'
+import { IAuthorizeRules, IAuthorizeRulesRoles, IAuthorizeRequestAction, IProfileRole } from '../../_lib/types'
 
 const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
-function allowRoles(...roles: Array<string>): IAuthorizeRulesRoles {
+function allowRoles(...roles: Array<keyof IProfileRole>): IAuthorizeRulesRoles {
   const allowedRoles: IAuthorizeRulesRoles = {}
 
   roles.forEach((role) => {
@@ -45,7 +45,7 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   },
 }
 
-async function authorizeRequest(role: string, action: IAuthorizeRequestAction): Promise<boolean> {
+async function authorizeRequest(role: keyof IProfileRole, action: IAuthorizeRequestAction): Promise<boolean> {
   if (
     typeof AUTHORIZE_RULES[action.route] !== 'undefined' &&
     typeof AUTHORIZE_RULES[action.route][action.method] !== 'undefined' &&

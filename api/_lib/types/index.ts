@@ -22,6 +22,7 @@ export {
   IPostProfilePayload,
   IPatchProfilePayload,
   IUpdateProfileData,
+  IProfileRoleEnum,
   IProfileRole,
 } from './profile'
 

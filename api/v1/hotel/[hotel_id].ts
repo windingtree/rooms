@@ -20,15 +20,15 @@ import { CONSTANTS } from '../../_lib/infra/constants'
 import { IProfile, IHotel, IPatchHotelPayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateClientAppRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeRequest(profile.role, { method: 'GET', route: 'hotel/{id}' })
+    await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -42,10 +42,10 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
   let result: IHotel
   try {
-    if (profile.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
+    if (requester.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
       result = await readHotel(hotelId)
     } else {
-      result = await readHotelByOwnerId(hotelId, profile.id)
+      result = await readHotelByOwnerId(hotelId, requester.id)
     }
   } catch (err) {
     return errorHandler(response, err)

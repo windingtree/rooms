@@ -1,8 +1,10 @@
-const PROFILE_ROLE = {
-  SUPER_ADMIN: 'super_admin',
-  MANAGER: 'manager',
-  OWNER: 'owner',
-  OBSERVER: 'observer',
+import { IProfileRole } from '../../../_lib/types'
+
+const PROFILE_ROLE: IProfileRole = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  MANAGER: 'MANAGER',
+  OWNER: 'OWNER',
+  OBSERVER: 'OBSERVER',
 }
 
 export {

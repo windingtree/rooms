@@ -1,10 +1,24 @@
+enum IProfileRoleEnum {
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  MANAGER = 'MANAGER',
+  OWNER = 'OWNER',
+  OBSERVER = 'OBSERVER',
+}
+
+interface IProfileRole {
+  SUPER_ADMIN: 'SUPER_ADMIN'
+  MANAGER: 'MANAGER'
+  OWNER: 'OWNER'
+  OBSERVER: 'OBSERVER'
+}
+
 interface IBaseProfile {
   email: string
   name: string
   phone: string
   oneTimePassword: string
   sessionToken: string
-  role: string
+  role: keyof IProfileRole
   hotelId: string
 }
 
@@ -24,7 +38,7 @@ interface IPostProfilePayload {
   email: string
   name?: string
   phone?: string
-  role: string
+  role: keyof IProfileRole
 }
 
 interface IPatchProfilePayload {
@@ -42,13 +56,6 @@ interface IUpdateProfileData {
   hotelId?: string
 }
 
-interface IProfileRole {
-  SUPER_ADMIN: string
-  MANAGER: string
-  OWNER: string
-  OBSERVER: string
-}
-
 export {
   IBaseProfile,
   IProfileAuthData,
@@ -57,5 +64,6 @@ export {
   IPostProfilePayload,
   IPatchProfilePayload,
   IUpdateProfileData,
+  IProfileRoleEnum,
   IProfileRole,
 }
