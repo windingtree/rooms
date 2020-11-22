@@ -1,13 +1,13 @@
 #!/bin/bash
 
-API_FOLDER="./public/api-local"
+API_FOLDER="./public/api"
 
 rm -rf $API_FOLDER/doc*
 mkdir -p $API_FOLDER/doc
 cp ./swagger/src/* $API_FOLDER/doc
 cp -r ./swagger/api/v1 $API_FOLDER
 
-API_DOC_URL="http://localhost:3000/api-local"
+API_DOC_URL="http://localhost:3000/api"
 API_HOST_URL="http://localhost:3000/api"
 
 API_DOC_URL_ESC=$(printf '%s\n' "$API_DOC_URL" | sed -e 's/[]\/$*.^[]/\\&/g')

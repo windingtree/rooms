@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "./build-swagger.sh && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postman-local": "newman run ./postman/tests/API_Tests.postman_collection.json --environment ./postman/environments/local.postman_environment.json",

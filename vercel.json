@@ -1,18 +1,135 @@
 {
   "version": 2,
-  "routes": [
+  "builds": [
     {
-      "handle": "filesystem"
+      "src": "api/v1/**/*.ts",
+      "use": "@now/node",
+      "config": {
+        "memory": 1024,
+        "maxDuration": 15
+      }
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "public/**",
+      "use": "@now/static"
     }
   ],
-  "functions": {
-    "api/*.ts": {
-      "memory": 1024,
-      "maxDuration": 15
+  "rewrites": [
+    {
+      "source": "/api/v1/ping",
+      "destination": "/api/v1/ping.ts"
     },
-    "api/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 15
+    {
+      "source": "/api/v1/health",
+      "destination": "/api/v1/health.ts"
+    },
+
+    {
+      "source": "/api/v1/send_one_time_pass",
+      "destination": "/api/v1/send_one_time_pass.ts"
+    },
+
+    {
+      "source": "/api/v1/login",
+      "destination": "/api/v1/login.ts"
+    },
+
+    {
+      "source": "/api/v1/bookings",
+      "destination": "/api/v1/bookings.ts"
+    },
+    {
+      "source": "/api/v1/bookings/(.*)",
+      "destination": "/api/v1/bookings/[booking_id].ts?booking_id=$1"
+    },
+
+    {
+      "source": "/api/v1/room_types",
+      "destination": "/api/v1/room_types.ts"
+    },
+    {
+      "source": "/api/v1/room_types/(.*)",
+      "destination": "/api/v1/room_types/[room_type_id].ts?room_type_id=$1"
+    },
+
+    {
+      "source": "/api/v1/profile",
+      "destination": "/api/v1/profile.ts"
+    },
+    {
+      "source": "/api/v1/profiles",
+      "destination": "/api/v1/profiles.ts"
+    },
+    {
+      "source": "/api/v1/profile/(.*)",
+      "destination": "/api/v1/profile/[profile_id].ts?profile_id=$1"
+    },
+
+    {
+      "source": "/api/v1/hotel",
+      "destination": "/api/v1/hotel.ts"
+    },
+    {
+      "source": "/api/v1/hotels",
+      "destination": "/api/v1/hotels.ts"
+    },
+    {
+      "source": "/api/v1/hotel/(.*)",
+      "destination": "/api/v1/hotel/[hotel_id].ts?hotel_id=$1"
+    },
+
+    {
+      "source": "/api/v1/send_one_time_pass",
+      "destination": "/api/v1/send_one_time_pass.ts"
+    },
+
+    {
+      "source": "/api/v1/wt_verification",
+      "destination": "/api/v1/wt_verification.ts"
+    },
+
+    {
+      "source": "/api/doc/(.*)",
+      "destination": "/public/api/doc/$1"
+    },
+
+    {
+      "source": "/dashboard/(.*)",
+      "destination": "/"
+    },
+
+    {
+      "source": "/login/(.*)",
+      "destination": "/"
     }
-  }
+  ],
+  "redirects": [
+    {
+      "source": "/api",
+      "destination": "/api/doc/"
+    },
+    {
+      "source": "/api/",
+      "destination": "/api/doc/"
+    },
+    {
+      "source": "/api/doc",
+      "destination": "/api/doc/"
+    },
+    {
+      "source": "/api/v1",
+      "destination": "/api/doc/"
+    },
+    {
+      "source": "/api/v1/",
+      "destination": "/api/doc/"
+    }
+  ]
 }
