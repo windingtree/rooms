@@ -1,4 +1,5 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
+import { buildProjection } from './_projection'
 import { CError } from '../../../_lib/tools'
 import { IProfile } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
@@ -18,16 +19,7 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
     const query = { email }
 
     const options = {
-      projection: {
-        _id: 1,
-        email: 1,
-        name: 1,
-        phone: 1,
-        oneTimePassword: 1,
-        sessionToken: 1,
-        role: 1,
-        hotelId: 1,
-      },
+      projection: buildProjection(),
     }
 
     result = await collection.findOne(query, options)

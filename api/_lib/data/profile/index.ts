@@ -1,4 +1,9 @@
 export {
+  profileMapper,
+  profileCollectionMapper,
+} from './_mapper'
+
+export {
   createProfile,
 } from './createProfile'
 
@@ -17,6 +22,10 @@ export {
 export {
   readProfiles,
 } from './readProfiles'
+
+export {
+  readProfilesByOwnerId,
+} from './readProfilesByOwnerId'
 
 export {
   updateProfile,

@@ -38,23 +38,27 @@ interface IPostProfilePayload {
   email: string
   name?: string
   phone?: string
+  oneTimePassword?: string
+  sessionToken?: string
   role: keyof IProfileRole
+  hotelId?: string
 }
 
 interface IPatchProfilePayload {
-  name?: string
-  phone?: string
-}
-
-interface IUpdateProfileData {
   email?: string
   name?: string
   phone?: string
   oneTimePassword?: string
   sessionToken?: string
-  role?: string
+  role?: keyof IProfileRole
   hotelId?: string
 }
+
+interface IProfileDbRecord extends IBaseProfile {
+  _id: string
+}
+
+type IProfileDbRecordCollection = Array<IProfileDbRecord>
 
 export {
   IBaseProfile,
@@ -63,7 +67,8 @@ export {
   IProfileCollection,
   IPostProfilePayload,
   IPatchProfilePayload,
-  IUpdateProfileData,
   IProfileRoleEnum,
   IProfileRole,
+  IProfileDbRecord,
+  IProfileDbRecordCollection,
 }

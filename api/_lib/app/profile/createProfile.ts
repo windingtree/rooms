@@ -1,4 +1,5 @@
 import { createProfile as createProfileRecord } from '../../../_lib/data/profile'
+import { readHotel } from '../../../_lib/data/hotel'
 import { IBaseProfile, IProfile, IPostProfilePayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
@@ -18,14 +19,25 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     )
   }
 
+  if ((payload.oneTimePassword || payload.sessionToken) && (requester.role !== SUPER_ADMIN)) {
+    throw new CError(
+      FORBIDDEN,
+      `User with role '${requester.role}' is not allowed to manually set auth data.`
+    )
+  }
+
+  if (payload.hotelId) {
+    await readHotel(payload.hotelId)
+  }
+
   const data: IBaseProfile = {
     email: payload.email,
     name: (payload.name) ? payload.name : '',
     phone: (payload.phone) ? payload.phone : '',
-    oneTimePassword: '',
-    sessionToken: '',
+    oneTimePassword: (payload.oneTimePassword) ? payload.oneTimePassword : '',
+    sessionToken: (payload.sessionToken) ? payload.sessionToken : '',
     role: payload.role,
-    hotelId: '',
+    hotelId: (payload.hotelId) ? payload.hotelId : '',
   }
   const profileId: string = await createProfileRecord(data)
   const profile: IProfile = Object.assign({}, data, { id: profileId })

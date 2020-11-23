@@ -2,14 +2,14 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
-import { IUpdateProfileData } from '../../../_lib/types'
+import { IPatchProfilePayload } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function updateProfile(id: string, data: IUpdateProfileData): Promise<void> {
+async function updateProfile(profileId: string, data: IPatchProfilePayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
@@ -17,7 +17,7 @@ async function updateProfile(id: string, data: IUpdateProfileData): Promise<void
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const filter = { _id: new ObjectID(id) }
+    const filter = { _id: new ObjectID(profileId) }
     const options = { upsert: false }
 
     const updateDoc = {
@@ -30,7 +30,7 @@ async function updateProfile(id: string, data: IUpdateProfileData): Promise<void
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `Could not update a '${ENTITY_NAME}'.`)
   }
 }
 

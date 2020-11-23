@@ -25,9 +25,10 @@ export {
   IProfileCollection,
   IPostProfilePayload,
   IPatchProfilePayload,
-  IUpdateProfileData,
   IProfileRoleEnum,
   IProfileRole,
+  IProfileDbRecord,
+  IProfileDbRecordCollection,
 } from './profile'
 
 export {
