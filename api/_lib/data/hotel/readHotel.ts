@@ -2,14 +2,14 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
-import { IHotel, IHotelDbRecord } from '../../../_lib/types'
+import { IHotelDbRecord } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readHotel(id: string): Promise<IHotel> {
+async function readHotel(hotelId: string): Promise<IHotelDbRecord> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IHotelDbRecord|null
@@ -17,7 +17,7 @@ async function readHotel(id: string): Promise<IHotel> {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const query = { _id: new ObjectID(id) }
+    const query = { _id: new ObjectID(hotelId) }
 
     const options = {
       projection: {
@@ -35,18 +35,10 @@ async function readHotel(id: string): Promise<IHotel> {
   }
 
   if (!result) {
-    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `Could not retrieve a '${ENTITY_NAME}'.`)
   }
 
-  const hotel: IHotel = {
-    id: result._id,
-    ownerId: result.ownerId,
-    name: result.name,
-    address: result.address,
-    location: result.location,
-  }
-
-  return hotel
+  return result
 }
 
 export {

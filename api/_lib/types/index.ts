@@ -6,6 +6,10 @@ export {
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
+  IPostRoomTypePayload,
+  IPatchRoomTypePayload,
+  IRoomTypeDbRecord,
+  IRoomTypeDbRecordCollection,
 } from './room_type'
 
 export {
@@ -43,9 +47,10 @@ export {
   IBaseHotel,
   IHotel,
   IPostHotelPayload,
+  IPatchHotelPayload,
   IHotelCollection,
   IHotelDbRecord,
-  IPatchHotelPayload,
+  IHotelDbRecordCollection,
 } from './hotel'
 
 export {

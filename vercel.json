@@ -23,12 +23,31 @@
   ],
   "rewrites": [
     {
+      "source": "/api/v1/api_test/teardown",
+      "destination": "/api/v1/api_test/teardown.ts"
+    },
+    {
+      "source": "/api/v1/api_test/setup",
+      "destination": "/api/v1/api_test/setup.ts"
+    },
+
+    {
       "source": "/api/v1/ping",
       "destination": "/api/v1/ping.ts"
     },
     {
       "source": "/api/v1/health",
       "destination": "/api/v1/health.ts"
+    },
+
+    {
+      "source": "/api/v1/orgid/(.*)",
+      "destination": "/api/v1/orgid/[org_id].ts?org_id=$1"
+    },
+
+    {
+      "source": "/api/v1/offers/search",
+      "destination": "/api/v1/offers/search.ts"
     },
 
     {
@@ -42,21 +61,29 @@
     },
 
     {
+      "source": "/api/v1/booking",
+      "destination": "/api/v1/booking.ts"
+    },
+    {
       "source": "/api/v1/bookings",
       "destination": "/api/v1/bookings.ts"
     },
     {
-      "source": "/api/v1/bookings/(.*)",
-      "destination": "/api/v1/bookings/[booking_id].ts?booking_id=$1"
+      "source": "/api/v1/booking/(.*)",
+      "destination": "/api/v1/booking/[booking_id].ts?booking_id=$1"
     },
 
+    {
+      "source": "/api/v1/room_type",
+      "destination": "/api/v1/room_type.ts"
+    },
     {
       "source": "/api/v1/room_types",
       "destination": "/api/v1/room_types.ts"
     },
     {
-      "source": "/api/v1/room_types/(.*)",
-      "destination": "/api/v1/room_types/[room_type_id].ts?room_type_id=$1"
+      "source": "/api/v1/room_type/(.*)",
+      "destination": "/api/v1/room_type/[room_type_id].ts?room_type_id=$1"
     },
 
     {

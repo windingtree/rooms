@@ -33,3 +33,11 @@ export {
 export {
   postLoginPayloadValidator,
 } from './postLoginPayloadValidator'
+
+export {
+  patchRoomTypePayloadValidator,
+} from './patchRoomTypePayloadValidator'
+
+export {
+  postRoomTypePayloadValidator,
+} from './postRoomTypePayloadValidator'

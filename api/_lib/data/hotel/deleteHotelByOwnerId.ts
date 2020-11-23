@@ -8,7 +8,7 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function deleteHotelByOwnerId(id: string, ownerId: string): Promise<void> {
+async function deleteHotelByOwnerId(hotelId: string, ownerId: string): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
@@ -16,7 +16,7 @@ async function deleteHotelByOwnerId(id: string, ownerId: string): Promise<void> 
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const filter = { _id: new ObjectID(id), ownerId }
+    const filter = { _id: new ObjectID(hotelId), ownerId: new ObjectID(ownerId) }
 
     result = await collection.deleteOne(filter)
   } catch (err) {
@@ -24,7 +24,7 @@ async function deleteHotelByOwnerId(id: string, ownerId: string): Promise<void> 
   }
 
   if (!result || !result.deletedCount) {
-    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `Could not delete a '${ENTITY_NAME}'.`)
   }
 }
 

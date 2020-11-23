@@ -2,14 +2,14 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
-import { IPatchHotelPayload } from '../../../_lib/types'
+import { IPatchRoomTypePayload } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function updateHotel(hotelId: string, data: IPatchHotelPayload): Promise<void> {
+async function updateRoomType(roomTypeId: string, data: IPatchRoomTypePayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
@@ -17,7 +17,7 @@ async function updateHotel(hotelId: string, data: IPatchHotelPayload): Promise<v
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const filter = { _id: new ObjectID(hotelId) }
+    const filter = { _id: new ObjectID(roomTypeId) }
     const options = { upsert: false }
 
     const updateDoc = {
@@ -35,5 +35,5 @@ async function updateHotel(hotelId: string, data: IPatchHotelPayload): Promise<v
 }
 
 export {
-  updateHotel,
+  updateRoomType,
 }

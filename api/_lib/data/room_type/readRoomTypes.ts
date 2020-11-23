@@ -1,16 +1,16 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
-import { IHotelDbRecord, IHotelDbRecordCollection } from '../../../_lib/types'
+import { IRoomTypeDbRecord, IRoomTypeDbRecordCollection } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
-async function readHotels(): Promise<IHotelDbRecordCollection> {
+async function readRoomTypes(): Promise<IRoomTypeDbRecordCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result: IHotelDbRecordCollection
+  let result: IRoomTypeDbRecordCollection
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
@@ -34,7 +34,7 @@ async function readHotels(): Promise<IHotelDbRecordCollection> {
     }
 
     result = []
-    await cursor.forEach((item: IHotelDbRecord) => {
+    await cursor.forEach((item: IRoomTypeDbRecord) => {
       result.push(item)
     })
   } catch (err) {
@@ -45,5 +45,5 @@ async function readHotels(): Promise<IHotelDbRecordCollection> {
 }
 
 export {
-  readHotels,
+  readRoomTypes,
 }

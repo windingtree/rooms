@@ -2,22 +2,22 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
-import { IHotelDbRecord } from '../../../_lib/types'
+import { IRoomTypeDbRecord } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readHotelByOwnerId(hotelId: string, ownerId: string): Promise<IHotelDbRecord> {
+async function readRoomType(roomTypeId: string): Promise<IRoomTypeDbRecord> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result: IHotelDbRecord|null
+  let result: IRoomTypeDbRecord|null
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
 
-    const query = { _id: new ObjectID(hotelId), ownerId: new ObjectID(ownerId) }
+    const query = { _id: new ObjectID(roomTypeId) }
 
     const options = {
       projection: {
@@ -42,5 +42,5 @@ async function readHotelByOwnerId(hotelId: string, ownerId: string): Promise<IHo
 }
 
 export {
-  readHotelByOwnerId,
+  readRoomType,
 }

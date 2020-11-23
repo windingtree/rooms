@@ -1,22 +1,9 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import {
-  readHotel,
-  readHotelByOwnerId,
-  updateHotel,
-  updateHotelByOwnerId,
-  deleteHotel,
-  deleteHotelByOwnerId,
-} from '../../_lib/data/hotel'
-import {
-  genericApiMethodHandler,
-  errorHandler,
-  authorizeRequest,
-  getQueryParamValue
-} from '../../_lib/tools'
+import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
+import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchHotelPayloadValidator } from '../../_lib/validators'
-import { CONSTANTS } from '../../_lib/infra/constants'
 import { IProfile, IHotel, IPatchHotelPayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
@@ -42,11 +29,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 
   let result: IHotel
   try {
-    if (requester.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
-      result = await readHotel(hotelId)
-    } else {
-      result = await readHotelByOwnerId(hotelId, requester.id)
-    }
+    result = await getHotel(requester, hotelId)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -55,15 +38,15 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
 }
 
 async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateClientAppRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeRequest(profile.role, { method: 'PATCH', route: 'hotel/{id}' })
+    await authorizeRequest(requester.role, { method: 'PATCH', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -82,23 +65,9 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
     return errorHandler(response, err)
   }
 
-  try {
-    if (profile.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
-      await updateHotel(hotelId, data)
-    } else {
-      await updateHotelByOwnerId(hotelId, profile.id, data)
-    }
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
   let result: IHotel
   try {
-    if (profile.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
-      result = await readHotel(hotelId)
-    } else {
-      result = await readHotelByOwnerId(hotelId, profile.id)
-    }
+    result = await updateHotel(requester, hotelId, data)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -107,15 +76,15 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
 }
 
 async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
-  let profile: IProfile
+  let requester: IProfile
   try {
-    profile = await authenticateClientAppRequest(request)
+    requester = await authenticateClientAppRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await authorizeRequest(profile.role, { method: 'DELETE', route: 'hotel/{id}' })
+    await authorizeRequest(requester.role, { method: 'DELETE', route: 'hotel/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -128,16 +97,12 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   }
 
   try {
-    if (profile.role === CONSTANTS.PROFILE_ROLE.SUPER_ADMIN) {
-      await deleteHotel(hotelId)
-    } else {
-      await deleteHotelByOwnerId(hotelId, profile.id)
-    }
+    await deleteHotel(requester, hotelId)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ deleted: 1 })
+  response.status(200).json({ deletedCount: 1 })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

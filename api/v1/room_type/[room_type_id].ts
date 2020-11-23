@@ -1,19 +1,10 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import {
-  readProfile,
-  updateProfile,
-  deleteProfile,
-} from '../../_lib/data/profile'
-import {
-  genericApiMethodHandler,
-  errorHandler,
-  authorizeRequest,
-  getQueryParamValue,
-} from '../../_lib/tools'
+import { getRoomType, updateRoomType, deleteRoomType } from '../../_lib/app/room_type'
+import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { patchProfilePayloadValidator } from '../../_lib/validators'
-import { IProfile, IPatchProfilePayload } from '../../_lib/types'
+import { patchRoomTypePayloadValidator } from '../../_lib/validators'
+import { IProfile, IRoomType, IPatchRoomTypePayload } from '../../_lib/types'
 
 async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   let requester: IProfile
@@ -24,21 +15,21 @@ async function GET(request: NowRequest, response: NowResponse): Promise<void> {
   }
 
   try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'profile/{id}' })
+    await authorizeRequest(requester.role, { method: 'GET', route: 'room_type/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let profileId: string
+  let roomTypeId: string
   try {
-    profileId = getQueryParamValue(request, 'profile_id')
+    roomTypeId = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let result: IProfile
+  let result: IRoomType
   try {
-    result = await readProfile(profileId)
+    result = await getRoomType(requester, roomTypeId)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -55,34 +46,28 @@ async function PATCH(request: NowRequest, response: NowResponse): Promise<void> 
   }
 
   try {
-    await authorizeRequest(requester.role, { method: 'PATCH', route: 'profile/{id}' })
+    await authorizeRequest(requester.role, { method: 'PATCH', route: 'room_type/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let profileId: string
+  let roomTypeId: string
   try {
-    profileId = getQueryParamValue(request, 'profile_id')
+    roomTypeId = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let payload: IPatchProfilePayload
+  let data: IPatchRoomTypePayload
   try {
-    payload = await patchProfilePayloadValidator(request)
+    data = await patchRoomTypePayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }
 
+  let result: IRoomType
   try {
-    await updateProfile(profileId, payload)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  let result: IProfile
-  try {
-    result = await readProfile(profileId)
+    result = await updateRoomType(requester, roomTypeId, data)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -99,25 +84,25 @@ async function DELETE(request: NowRequest, response: NowResponse): Promise<void>
   }
 
   try {
-    await authorizeRequest(requester.role, { method: 'DELETE', route: 'profile/{id}' })
+    await authorizeRequest(requester.role, { method: 'DELETE', route: 'room_type/{id}' })
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  let profileId: string
+  let roomTypeId: string
   try {
-    profileId = getQueryParamValue(request, 'profile_id')
+    roomTypeId = getQueryParamValue(request, 'room_type_id')
   } catch (err) {
     return errorHandler(response, err)
   }
 
   try {
-    await deleteProfile(profileId)
+    await deleteRoomType(requester, roomTypeId)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ deleted: 1 })
+  response.status(200).json({ deletedCount: 1 })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

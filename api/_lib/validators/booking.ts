@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { getRoomType } from '../../_lib/data/rooms_legacy'
+// import { getRoomType } from '../../_lib/data/rooms_legacy'
 import { CError } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 
@@ -47,13 +47,13 @@ async function checkBooking(request: NowRequest): Promise<void> {
     throw new CError(BAD_REQUEST, 'must provide a valid roomType value')
   }
 
-  if (request.body.roomType !== '') {
-    try {
-      await getRoomType(request.body.roomType)
-    } catch (err) {
-      throw new CError(BAD_REQUEST, 'specified roomType does not exist')
-    }
-  }
+  // if (request.body.roomType !== '') {
+  //   try {
+  //     await getRoomType(request.body.roomType)
+  //   } catch (err) {
+  //     throw new CError(BAD_REQUEST, 'specified roomType does not exist')
+  //   }
+  // }
 }
 
 export {

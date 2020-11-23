@@ -30,7 +30,7 @@ async function updateHotelByOwnerId(hotelId: string, ownerId: string, data: IPat
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `Could not update a '${ENTITY_NAME}'.`)
   }
 }
 

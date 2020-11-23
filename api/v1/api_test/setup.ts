@@ -7,7 +7,7 @@ import { IProfile } from '../../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    authenticateApiTestRequest(request)
+    await authenticateApiTestRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }

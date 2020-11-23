@@ -1,6 +1,20 @@
+
+export {
+  hotelMapper,
+  hotelCollectionMapper,
+} from './_mapper'
+
 export {
   createHotel,
 } from './createHotel'
+
+export {
+  deleteHotel,
+} from './deleteHotel'
+
+export {
+  deleteHotelByOwnerId,
+} from './deleteHotelByOwnerId'
 
 export {
   readHotel,
@@ -25,11 +39,3 @@ export {
 export {
   updateHotelByOwnerId,
 } from './updateHotelByOwnerId'
-
-export {
-  deleteHotel,
-} from './deleteHotel'
-
-export {
-  deleteHotelByOwnerId,
-} from './deleteHotelByOwnerId'

@@ -40,6 +40,18 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
     GET: allowRoles(SUPER_ADMIN, MANAGER),
   },
 
+  'room_type': {
+    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'room_type/{id}': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    DELETE: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'room_types': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+  },
+
   'orgid/{id}': {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
   },

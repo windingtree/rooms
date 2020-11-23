@@ -7,7 +7,7 @@ import { IProfile } from '../../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
   try {
-    authenticateApiTestRequest(request)
+    await authenticateApiTestRequest(request)
   } catch (err) {
     return errorHandler(response, err)
   }
@@ -25,7 +25,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
     return errorHandler(response, err)
   }
 
-  response.status(200).json({ tear_down: 'OK' })
+  response.status(200).json({ teardown: 'OK' })
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

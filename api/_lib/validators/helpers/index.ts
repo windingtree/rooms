@@ -13,3 +13,7 @@ export {
 export {
   validateRequiredLocation,
 } from './validateRequiredLocation'
+
+export {
+  validateOptionalNumber,
+} from './validateOptionalNumber'
