@@ -34,6 +34,7 @@ api/db_migrations
 
 # Sensitive environment variables
 .env
+*.env
 
 # Generated build stuff, Node modules, etc.
 build

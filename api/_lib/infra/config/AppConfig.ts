@@ -40,7 +40,7 @@ class AppConfig {
     await AppConfig._instance.createConfig()
 
     if (this._config === null) {
-      throw new CError(BAD_GATEWAY, 'Could not connect to the database.')
+      throw new CError(BAD_GATEWAY, 'Could not get AppConfig from the database.')
     }
 
     return this._config

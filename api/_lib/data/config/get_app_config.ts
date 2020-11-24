@@ -25,6 +25,8 @@ async function getAppConfig(): Promise<IAppConfig> {
     ENABLE_LOGIN_WITHOUT_SENDGRID: '',
   }
 
+  let decryptOk = true
+
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection('app_config')
@@ -49,14 +51,22 @@ async function getAppConfig(): Promise<IAppConfig> {
     await cursor.forEach((item: IAppConfigDbItem) => {
       let value = item.value
 
-      if (item.encrypted === true) {
-        value = decryptText(ENV.APP_ENV_ENCRYPTION_DETAILS, value)
+      try {
+        if (item.encrypted === true) {
+          value = decryptText(ENV.APP_ENV_ENCRYPTION_DETAILS, value)
+        }
+      } catch (err) {
+        decryptOk = false
       }
 
       appConfig[item.key] = value
     })
   } catch (err) {
     throw new CError(INTERNAL_SERVER_ERROR, 'Something went wrong while getting app config.')
+  }
+
+  if (!decryptOk) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not decrypt AppConfig items.')
   }
 
   return appConfig
