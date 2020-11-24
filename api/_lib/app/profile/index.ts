@@ -9,3 +9,11 @@ export {
 export {
   getProfile,
 } from './getProfile'
+
+export {
+  updateProfile,
+} from './updateProfile'
+
+export {
+  deleteProfile,
+} from './deleteProfile'

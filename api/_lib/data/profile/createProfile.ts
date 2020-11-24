@@ -5,7 +5,7 @@ import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
-const INTERNAL_SERVER_ERROR = CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR
+const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 async function createProfile(data: IBaseProfile): Promise<string> {
   const dbClient = await MongoDB.getInstance().getDbClient()

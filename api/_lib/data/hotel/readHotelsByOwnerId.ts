@@ -25,7 +25,6 @@ async function readHotelsByOwnerId(ownerId: string): Promise<IHotelDbRecordColle
     if ((await cursor.count()) === 0) {
       return []
     }
-
     result = []
     await cursor.forEach((item: IHotelDbRecord) => {
       result.push(item)

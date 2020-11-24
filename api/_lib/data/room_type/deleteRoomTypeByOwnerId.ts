@@ -15,7 +15,6 @@ async function deleteRoomTypeByOwnerId(roomTypeId: string, ownerId: string): Pro
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-
     const filter = { _id: new ObjectID(roomTypeId), ownerId: new ObjectID(ownerId) }
 
     result = await collection.deleteOne(filter)

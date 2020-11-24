@@ -25,7 +25,6 @@ async function readRoomTypesByOwnerId(ownerId: string): Promise<IRoomTypeDbRecor
     if ((await cursor.count()) === 0) {
       return []
     }
-
     result = []
     await cursor.forEach((item: IRoomTypeDbRecord) => {
       result.push(item)

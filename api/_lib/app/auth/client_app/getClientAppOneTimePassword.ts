@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
+import { profileMapper, readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
 import { createHotel } from '../../../../_lib/data/hotel'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IProfile } from '../../../../_lib/types'
+import { IProfile, IProfileDbRecord } from '../../../../_lib/types'
 
 const { OWNER } = CONSTANTS.PROFILE_ROLE
 
@@ -12,7 +12,8 @@ async function getClientAppOneTimePassword(email: string, sessionToken: string):
 
   let profile: IProfile|null
   try {
-    profile = await readProfileByEmail(email)
+    const profileDbRecord: IProfileDbRecord = await readProfileByEmail(email)
+    profile = profileMapper(profileDbRecord)
   } catch (err) {
     // Maybe a profile for the given email does not exist? We will try to create a new one below.
     profile = null

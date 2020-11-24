@@ -15,19 +15,14 @@ async function readProfiles(): Promise<IProfileDbRecordCollection> {
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-
     const query = {}
-
-    const options = {
-      projection: buildProjection(),
-    }
+    const options = { projection: buildProjection() }
 
     const cursor = collection.find(query, options)
 
     if ((await cursor.count()) === 0) {
       return []
     }
-
     result = []
     await cursor.forEach((item: IProfileDbRecord) => {
       result.push(item)

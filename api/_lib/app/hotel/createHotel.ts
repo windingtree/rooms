@@ -1,6 +1,6 @@
 import { createHotel as createHotelRecord } from '../../../_lib/data/hotel'
-import { readProfile as readProfileRecord } from '../../../_lib/data/profile'
-import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
+import { profileMapper, readProfile as readProfileRecord } from '../../../_lib/data/profile'
+import { IProfile, IProfileDbRecord, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
@@ -18,7 +18,8 @@ function generalErrorForHotelCreation(requester: IProfile, ownerProfile: IProfil
 }
 
 async function createHotel(requester: IProfile, payload: IPostHotelPayload): Promise<IHotel> {
-  const ownerProfile: IProfile = await readProfileRecord(payload.ownerId)
+  const profileDbRecord: IProfileDbRecord = await readProfileRecord(payload.ownerId)
+  const ownerProfile: IProfile = profileMapper(profileDbRecord)
 
   if (ownerProfile.role === OBSERVER) {
     generalErrorForHotelCreation(requester, ownerProfile)

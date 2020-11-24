@@ -23,7 +23,6 @@ async function readHotels(): Promise<IHotelDbRecordCollection> {
     if ((await cursor.count()) === 0) {
       return []
     }
-
     result = []
     await cursor.forEach((item: IHotelDbRecord) => {
       result.push(item)

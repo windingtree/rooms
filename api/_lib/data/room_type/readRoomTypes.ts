@@ -23,7 +23,6 @@ async function readRoomTypes(): Promise<IRoomTypeDbRecordCollection> {
     if ((await cursor.count()) === 0) {
       return []
     }
-
     result = []
     await cursor.forEach((item: IRoomTypeDbRecord) => {
       result.push(item)

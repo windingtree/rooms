@@ -12,10 +12,6 @@ export {
 } from './readProfile'
 
 export {
-  readProfileByOwnerId,
-} from './readProfileByOwnerId'
-
-export {
   readProfileByEmail,
 } from './readProfileByEmail'
 
@@ -24,17 +20,9 @@ export {
 } from './readProfiles'
 
 export {
-  readProfilesByOwnerId,
-} from './readProfilesByOwnerId'
-
-export {
   updateProfile,
 } from './updateProfile'
 
 export {
   deleteProfile,
 } from './deleteProfile'
-
-export {
-  deleteProfileByEmail,
-} from './deleteProfileByEmail'

@@ -1,26 +1,22 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
 import { CError } from '../../../_lib/tools'
-import { IProfile } from '../../../_lib/types'
+import { IProfileDbRecord } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readProfileByEmail(email: string): Promise<IProfile> {
+async function readProfileByEmail(email: string): Promise<IProfileDbRecord> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result
+  let result: IProfileDbRecord|null
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-
     const query = { email }
-
-    const options = {
-      projection: buildProjection(),
-    }
+    const options = { projection: buildProjection() }
 
     result = await collection.findOne(query, options)
   } catch (err) {
@@ -28,21 +24,10 @@ async function readProfileByEmail(email: string): Promise<IProfile> {
   }
 
   if (!result) {
-    throw new CError(NOT_FOUND, `A '${ENTITY_NAME}' was not found.`)
+    throw new CError(NOT_FOUND, `Could not retrieve a '${ENTITY_NAME}'.`)
   }
 
-  const profile: IProfile = {
-    id: result._id,
-    email: result.email,
-    name: result.name,
-    phone: result.phone,
-    oneTimePassword: result.oneTimePassword,
-    sessionToken: result.sessionToken,
-    role: result.role,
-    hotelId: result.hotelId,
-  }
-
-  return profile
+  return result
 }
 
 export {

@@ -1,6 +1,6 @@
 import { createRoomType as createRoomTypeRecord } from '../../../_lib/data/room_type'
-import { readProfile as readProfileRecord } from '../../../_lib/data/profile'
-import { IProfile, IBaseRoomType, IRoomType, IPostRoomTypePayload } from '../../../_lib/types'
+import { profileMapper, readProfile as readProfileRecord } from '../../../_lib/data/profile'
+import { IProfile, IProfileDbRecord, IBaseRoomType, IRoomType, IPostRoomTypePayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
@@ -18,7 +18,8 @@ function generalErrorForRoomTypeCreation(requester: IProfile, ownerProfile: IPro
 }
 
 async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload): Promise<IRoomType> {
-  const ownerProfile: IProfile = await readProfileRecord(payload.ownerId)
+  const profileDbRecord: IProfileDbRecord = await readProfileRecord(payload.ownerId)
+  const ownerProfile: IProfile = profileMapper(profileDbRecord)
 
   if (ownerProfile.role === OBSERVER) {
     generalErrorForRoomTypeCreation(requester, ownerProfile)

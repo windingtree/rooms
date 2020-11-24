@@ -16,13 +16,9 @@ async function updateRoomType(roomTypeId: string, data: IPatchRoomTypePayload): 
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-
     const filter = { _id: new ObjectID(roomTypeId) }
     const options = { upsert: false }
-
-    const updateDoc = {
-      $set: data
-    }
+    const updateDoc = { $set: data }
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {
