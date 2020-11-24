@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
-import OnBoarding from './OnBoarding'
+import LoginForm from './LoginForm'
 
-test('renders learn react link', () => {
+test('renders "Log in to Rooms" message', () => {
   const { getByText } = render(
     <BrowserRouter>
-      <OnBoarding />
+      <LoginForm />
     </BrowserRouter>
   )
-  const linkElement = getByText(/Login/i)
+  const linkElement = getByText(/Log in to Rooms/i)
   expect(linkElement).toBeInTheDocument()
 })

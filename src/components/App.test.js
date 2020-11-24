@@ -3,12 +3,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
 import App from './App'
 
-test('renders home link', () => {
+test('renders "Login" link', () => {
   const { getByText } = render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
   )
-  const linkElement = getByText(/Pick up in mind any room in your hotel/)
+  const linkElement = getByText(/Login/)
   expect(linkElement).toBeInTheDocument()
 })
