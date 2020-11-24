@@ -22,11 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Don't include auto-generated swagger.json file in Git commits.
-public/api/v1/swagger.json
-
+# Vercel project configuration
 .vercel
-.env
 
 # Swagger generated output
 public/api
@@ -34,3 +31,11 @@ public/api-local
 
 # Sensitive stuff in api migrations folder
 api/db_migrations
+
+# Sensitive environment variables
+.env
+
+# Generated build stuff, Node modules, etc.
+build
+dist
+node_modules

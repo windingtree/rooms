@@ -1,6 +1,7 @@
 import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
+import { buildProjection } from './_projection'
 import { CError } from '../../../_lib/tools'
 import { IProfileDbRecord, IProfileDbRecordCollection } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
@@ -20,13 +21,7 @@ async function readProfilesByOwnerId(ownerId: string): Promise<IProfileDbRecordC
     const query = { ownerId: new ObjectID(ownerId) }
 
     const options = {
-      projection: {
-        _id: 1,
-        ownerId: 1,
-        name: 1,
-        address: 1,
-        location: 1,
-      },
+      projection: buildProjection()
     }
 
     const cursor = collection.find(query, options)

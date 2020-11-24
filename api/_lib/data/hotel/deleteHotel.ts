@@ -15,7 +15,6 @@ async function deleteHotel(hotelId: string): Promise<void> {
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-
     const filter = { _id: new ObjectID(hotelId) }
 
     result = await collection.deleteOne(filter)
