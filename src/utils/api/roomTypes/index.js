@@ -24,7 +24,7 @@ function getRoomTypes() {
 }
 
 function getRoomType(id) {
-  return fetch(`/api/v1/room_types/${id}`, {
+  return fetch(`/api/v1/room_type/${id}`, {
     method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
@@ -54,7 +54,7 @@ function createRoomType(data) {
 function updateRoomType(id, data) {
   apiCache.updateRoomType(id, data)
 
-  return fetch(`/api/v1/room_types/${id}`, {
+  return fetch(`/api/v1/room_type/${id}`, {
     method: 'PATCH',
     headers: makeAuthHeaders(),
     body: JSON.stringify(data),

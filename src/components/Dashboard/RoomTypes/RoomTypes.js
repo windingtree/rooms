@@ -56,9 +56,11 @@ class RoomTypes extends React.Component {
     if (roomTypeToUpdate[propName] === newValue) {
       return
     }
-    roomTypeToUpdate[propName] = newValue
 
-    this.updateRoomType(roomTypeToUpdate)
+    const data = {}
+    data[propName] = newValue
+
+    this.updateRoomType(id, data)
   }
 
   getRoomTypes = () => {
@@ -136,19 +138,14 @@ class RoomTypes extends React.Component {
       })
   }
 
-  updateRoomType = (attrs) => {
+  updateRoomType = (id, data) => {
     this.setState({
       roomTypes: this.state.roomTypes.map((roomType) => {
-        if (roomType.id === attrs.id) {
+        if (roomType.id === id) {
           const _roomType = Object.assign(
             {},
             objClone(roomType),
-            {
-              quantity: attrs.quantity,
-              type: attrs.type,
-              price: attrs.price,
-              amenities: attrs.amenities,
-            }
+            data
           )
 
           return _roomType
@@ -159,7 +156,7 @@ class RoomTypes extends React.Component {
     })
 
     apiClient
-      .updateRoomType(attrs)
+      .updateRoomType(id, data)
       .catch((error) => {
         if (this._isDestroyed) return
 

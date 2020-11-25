@@ -60,11 +60,11 @@ class RoomType extends React.Component {
   }
 
   handleQuantityChange = (e) => {
-    this.props.onPropValueChange(this.props.id, 'quantity', e)
+    this.props.onPropValueChange(this.props.id, 'quantity', Number.parseInt(e, 10))
   }
 
   handlePriceChange = (e) => {
-    this.props.onPropValueChange(this.props.id, 'price', e)
+    this.props.onPropValueChange(this.props.id, 'price', Number.parseFloat(e, 10))
   }
 
   handleAmenitiesChange = (e) => {
