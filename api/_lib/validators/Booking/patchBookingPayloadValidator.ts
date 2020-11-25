@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateOptionalString } from '../_helpers'
+import { validateOptionalString, validateMongoObjectId } from '../_helpers'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { IPatchBookingPayload } from '../../../_lib/types'
@@ -31,32 +31,33 @@ async function patchBookingPayloadValidator(request: NowRequest): Promise<IPatch
   }
 
   const hotelId = request.body.hotelId
+  await validateMongoObjectId('hotelId', hotelId)
   await validateOptionalString('hotelId', hotelId)
-  payload.hotelId = hotelId
+  if (typeof hotelId !== 'undefined') payload.hotelId = hotelId
 
   const checkInDate = request.body.checkInDate
   await validateOptionalString('checkInDate', checkInDate)
-  payload.checkInDate = checkInDate
+  if (typeof checkInDate !== 'undefined') payload.checkInDate = checkInDate
 
   const checkOutDate = request.body.checkOutDate
   await validateOptionalString('checkOutDate', checkOutDate)
-  payload.checkOutDate = checkOutDate
+  if (typeof checkOutDate !== 'undefined') payload.checkOutDate = checkOutDate
 
   const guestName = request.body.guestName
   await validateOptionalString('guestName', guestName)
-  payload.guestName = guestName
+  if (typeof guestName !== 'undefined') payload.guestName = guestName
 
   const guestEmail = request.body.guestEmail
   await validateOptionalString('guestEmail', guestEmail)
-  payload.guestEmail = guestEmail
+  if (typeof guestEmail !== 'undefined') payload.guestEmail = guestEmail
 
   const phoneNumber = request.body.phoneNumber
   await validateOptionalString('phoneNumber', phoneNumber)
-  payload.phoneNumber = phoneNumber
+  if (typeof phoneNumber !== 'undefined') payload.phoneNumber = phoneNumber
 
   const roomTypeId = request.body.roomTypeId
   await validateOptionalString('roomTypeId', roomTypeId)
-  payload.roomTypeId = roomTypeId
+  if (typeof roomTypeId !== 'undefined') payload.roomTypeId = roomTypeId
 
   return payload
 }

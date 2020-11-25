@@ -47,7 +47,12 @@ class BookingEdit extends React.Component {
     }
     booking[propName] = newValue
 
-    this.updateBooking(booking)
+    this.setState({ booking })
+
+    const data = {}
+    data[propName] = newValue
+
+    this.updateBooking(id, data)
   }
 
   getRoomTypes = () => {
@@ -91,11 +96,9 @@ class BookingEdit extends React.Component {
       })
   }
 
-  updateBooking = (booking) => {
-    this.setState({ booking })
-
+  updateBooking = (id, data) => {
     apiClient
-      .updateBooking(booking)
+      .updateBooking(id, data)
       .catch((error) => {
         if (this._isDestroyed) return
 

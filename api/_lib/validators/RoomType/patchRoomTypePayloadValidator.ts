@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateOptionalString, validateOptionalNumber } from '../_helpers'
+import { validateOptionalString, validateOptionalNumber, validateMongoObjectId } from '../_helpers'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { IPatchRoomTypePayload } from '../../../_lib/types'
@@ -30,10 +30,12 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   }
 
   const ownerId = request.body.ownerId
+  await validateMongoObjectId('ownerId', ownerId)
   await validateOptionalString('ownerId', ownerId)
   if (typeof ownerId !== 'undefined') payload.ownerId = ownerId
 
   const hotelId = request.body.hotelId
+  await validateMongoObjectId('hotelId', hotelId)
   await validateOptionalString('hotelId', hotelId)
   if (typeof hotelId !== 'undefined') payload.hotelId = hotelId
 

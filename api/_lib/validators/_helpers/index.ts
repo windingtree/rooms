@@ -17,3 +17,7 @@ export {
 export {
   validateOptionalNumber,
 } from './validateOptionalNumber'
+
+export {
+  validateMongoObjectId,
+} from './validateMongoObjectId'

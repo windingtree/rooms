@@ -59,7 +59,10 @@ class Bookings extends React.Component {
     }
     bookingToUpdate[propName] = newValue
 
-    this.updateBooking(bookingToUpdate)
+    const data = {}
+    data[propName] = newValue
+
+    this.updateBooking(id, data)
   }
 
   getBookings = () => {
@@ -140,21 +143,14 @@ class Bookings extends React.Component {
       })
   }
 
-  updateBooking = (attrs) => {
+  updateBooking = (id, data) => {
     this.setState({
       bookings: this.state.bookings.map((booking) => {
-        if (booking.id === attrs.id) {
+        if (booking.id === id) {
           const _booking = Object.assign(
             {},
             objClone(booking),
-            {
-              checkInDate: attrs.checkInDate,
-              checkOutDate: attrs.checkOutDate,
-              guestName: attrs.guestName,
-              guestEmail: attrs.guestEmail,
-              phoneNumber: attrs.phoneNumber,
-              roomType: attrs.roomType,
-            }
+            data
           )
 
           return _booking
@@ -165,7 +161,7 @@ class Bookings extends React.Component {
     })
 
     apiClient
-      .updateBooking(attrs)
+      .updateBooking(id, data)
       .catch((error) => {
         if (this._isDestroyed) return
 
