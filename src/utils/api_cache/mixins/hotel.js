@@ -15,12 +15,7 @@ function setHotel(hotel) {
 }
 
 function updateHotel(data) {
-  // const property = data.property
-  // const value = data.value
-
   const _hotel = Object.assign({}, objClone(this.cache.hotel), objClone(data))
-
-  // _hotel[property] = value
 
   this.cache.hotel = _hotel
 

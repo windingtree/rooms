@@ -33,17 +33,21 @@ class App extends React.Component {
 
     this.apiCache = ApiCache.getInstance()
 
-    const isLoggedIn = this.areWeLoggedIn()
-    if (!isLoggedIn) {
-      this.resetLocalStorage(false)
+    let profile = this.apiCache.getProfile()
+    let profileId
+
+    if (profile && profile.id) {
+      profileId = profile.id
+    } else {
+      profile = null
+      profileId = null
     }
 
-    const profileId = this.getProfileIdFromCache()
-
     this.state = {
-      isLoggedIn,
+      isLoggedIn: false,
+      loadingProfile: true,
+      profile,
       profileId,
-      profile: null,
     }
   }
 
@@ -66,21 +70,14 @@ class App extends React.Component {
     this._isDestroyed = true
   }
 
-  getProfileIdFromCache = () => {
-    let profileId = ''
-
-    const profile = this.apiCache.getProfile()
-
-    if (profile && profile.id) {
-      profileId = profile.id
-    }
-
-    return profileId
-  }
-
   getProfile = () => {
     if (typeof this.state.profileId !== 'string' || this.state.profileId.length === 0) {
-      this.handleLogout()
+      this.setState({
+        loadingProfile: false,
+        profile: null,
+        profileId: null,
+      })
+
       return
     }
 
@@ -90,7 +87,10 @@ class App extends React.Component {
         if (this._isDestroyed) return
 
         this.setState({
+          isLoggedIn: true,
+          loadingProfile: false,
           profile,
+          profileId: profile.id,
         })
       })
       .catch((error) => {
@@ -100,65 +100,34 @@ class App extends React.Component {
       })
   }
 
-  handleOnLogin = (email, oneTimePassword) => {
+  handleOnLogin = (profile) => {
     const sessionToken = window.localStorage.getItem('session_token')
-    const token = jwt.sign({ email, oneTimePassword, sessionToken }, JWT_SECRET)
+    const token = jwt.sign({ email: profile.email, oneTimePassword: profile.oneTimePassword, sessionToken }, JWT_SECRET)
 
     window.localStorage.setItem('jwt_token', token)
 
-    const profileId = this.getProfileIdFromCache()
-
-    this.setState({ isLoggedIn: true, profileId })
-    this.getProfile()
+    this.setState({
+      isLoggedIn: true,
+      profileId: profile.id,
+      profile,
+    })
 
     this.props.history.push('/dashboard')
-  }
-
-  areWeLoggedIn = () => {
-    let isLoggedIn = false
-    let decodedToken = {}
-
-    const jwtToken = window.localStorage.getItem('jwt_token')
-    const sessionToken = window.localStorage.getItem('session_token')
-
-    try {
-      decodedToken = jwt.verify(jwtToken, JWT_SECRET)
-    } catch (err) {
-      decodedToken = {}
-    }
-
-    if (
-      (typeof decodedToken.email !== 'string' || decodedToken.email.length === 0) ||
-      (typeof decodedToken.oneTimePassword !== 'string' || decodedToken.oneTimePassword.length === 0) ||
-      (typeof decodedToken.sessionToken !== 'string' || decodedToken.sessionToken.length === 0) ||
-      (typeof sessionToken !== 'string' || sessionToken.length === 0) ||
-      (sessionToken !== decodedToken.sessionToken)
-    ) {
-      isLoggedIn = false
-    } else {
-      isLoggedIn = true
-    }
-
-    return isLoggedIn
   }
 
   resetLocalStorage = (refreshSessionToken) => {
     this.apiCache.clearCache()
     window.localStorage.setItem('jwt_token', '')
-
-    const sessionToken = window.localStorage.getItem('session_token')
-    if (
-      (typeof sessionToken !== 'string') ||
-      (sessionToken.length === 0) ||
-      (refreshSessionToken === true)
-    ) {
-      window.localStorage.setItem('session_token', uuidv4())
-    }
+    window.localStorage.setItem('session_token', uuidv4())
   }
 
   handleLogout = () => {
-    this.resetLocalStorage(true)
-    this.setState({ isLoggedIn: false })
+    this.resetLocalStorage()
+    this.setState({
+      isLoggedIn: false,
+      profile: null,
+      profileId: null,
+    })
   }
 
   render() {
@@ -168,7 +137,7 @@ class App extends React.Component {
       <Router history={history}>
         <main className={classes.container}>
           {
-            (this.state.isLoggedIn && !this.state.profile) ?
+            (this.state.loadingProfile) ?
               <Spinner info="loading" /> :
               <Switch>
                 <Route exact path="/">

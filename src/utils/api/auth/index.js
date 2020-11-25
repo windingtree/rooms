@@ -4,6 +4,12 @@ import {
   parseJSON,
 } from '../helpers'
 
+import {
+  ApiCache,
+} from '../../api_cache'
+
+const apiCache = ApiCache.getInstance()
+
 function login(data) {
   return fetch('/api/v1/login', {
     method: 'POST',
@@ -11,6 +17,11 @@ function login(data) {
     body: JSON.stringify(data),
   }).then(checkStatus)
     .then(parseJSON)
+    .then((profile) => {
+      apiCache.setProfile(profile)
+
+      return profile
+    })
 }
 
 function emailOneTimePassword(data) {

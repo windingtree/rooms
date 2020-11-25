@@ -39,7 +39,7 @@ class SendGridRedirect extends React.Component {
           return
         }
 
-        this.props.onLogin(response.email, response.oneTimePassword)
+        this.props.onLogin(response)
       })
       .catch((error) => {
         if (this._isDestroyed) {
