@@ -11,6 +11,7 @@ import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
+import Spinner from './base/Spinner/Spinner'
 
 const JWT_SECRET = process.env.REACT_APP_JWT_SECRET
 
@@ -42,6 +43,7 @@ class App extends React.Component {
     this.state = {
       isLoggedIn,
       profileId,
+      profile: null,
     }
   }
 
@@ -88,7 +90,7 @@ class App extends React.Component {
         if (this._isDestroyed) return
 
         this.setState({
-          profileId: profile.id,
+          profile,
         })
       })
       .catch((error) => {
@@ -164,30 +166,34 @@ class App extends React.Component {
     return (
       <Router history={history}>
         <main className={classes.container}>
-          <Switch>
-            <Route exact path="/">
-              { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
-            </Route>
-            <Route exact path="/login">
-              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
-            </Route>
-            <Route exact path="/login/:oneTimePassword">
-              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
-            </Route>
-            <Route exact path="/dashboard">
-              { this.state.isLoggedIn ?
-                <Dashboard handleLogout={this.handleLogout} /> :
-                <Redirect to="/" />
-              }
-            </Route>
-            <Route path={`/dashboard/:dashboardSectionId`}>
-              { this.state.isLoggedIn ?
-                <Dashboard handleLogout={this.handleLogout} /> :
-                <Redirect to="/" />
-              }
-            </Route>
-            <Route render={() => <h1>404: page not found</h1>} />
-          </Switch>
+          {
+            (!this.state.profile) ?
+              <Spinner info="loading" /> :
+              <Switch>
+                <Route exact path="/">
+                  { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
+                </Route>
+                <Route exact path="/login">
+                  <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
+                </Route>
+                <Route exact path="/login/:oneTimePassword">
+                  <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
+                </Route>
+                <Route exact path="/dashboard">
+                  { this.state.isLoggedIn ?
+                    <Dashboard userProfile={this.state.profile} handleLogout={this.handleLogout} /> :
+                    <Redirect to="/" />
+                  }
+                </Route>
+                <Route path={`/dashboard/:dashboardSectionId`}>
+                  { this.state.isLoggedIn ?
+                    <Dashboard userProfile={this.state.profile} handleLogout={this.handleLogout} /> :
+                    <Redirect to="/" />
+                  }
+                </Route>
+                <Route render={() => <h1>404: page not found</h1>} />
+              </Switch>
+          }
         </main>
       </Router>
     )

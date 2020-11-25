@@ -3,7 +3,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { getClientAppOneTimePassword } from '../_lib/app/auth'
 import { genericApiMethodHandler, errorHandler, emailOneTimePassword } from '../_lib/tools'
 import { AppConfig } from '../_lib/infra/config'
-import { postLoginPayloadValidator } from '../_lib/validators'
+import { postOneTimePasswordPayloadValidator } from '../_lib/validators'
 import { IOneTimePasswordPayload } from '../_lib/types'
 
 async function POST(request: NowRequest, response: NowResponse): Promise<void> {
@@ -16,7 +16,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let payload: IOneTimePasswordPayload
   try {
-    payload = await postLoginPayloadValidator(request)
+    payload = await postOneTimePasswordPayloadValidator(request)
   } catch (err) {
     return errorHandler(response, err)
   }

@@ -52,6 +52,18 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
   },
 
+  'booking': {
+    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'booking/{id}': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    DELETE: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'bookings': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+  },
+
   'orgid/{id}': {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
   },

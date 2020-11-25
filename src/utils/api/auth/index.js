@@ -14,7 +14,7 @@ function login(data) {
 }
 
 function emailOneTimePassword(data) {
-  return fetch('/api/v1/send_one_time_pass', {
+  return fetch('/api/v1/one_time_password', {
     method: 'POST',
     headers: makeHeaders(),
     body: JSON.stringify(data),

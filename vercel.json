@@ -23,12 +23,12 @@
   ],
   "rewrites": [
     {
-      "source": "/api/v1/api_test/teardown",
-      "destination": "/api/v1/api_test/teardown.ts"
-    },
-    {
       "source": "/api/v1/api_test/setup",
       "destination": "/api/v1/api_test/setup.ts"
+    },
+    {
+      "source": "/api/v1/api_test/teardown",
+      "destination": "/api/v1/api_test/teardown.ts"
     },
 
     {
@@ -51,8 +51,8 @@
     },
 
     {
-      "source": "/api/v1/send_one_time_pass",
-      "destination": "/api/v1/send_one_time_pass.ts"
+      "source": "/api/v1/one_time_password",
+      "destination": "/api/v1/one_time_password.ts"
     },
 
     {
@@ -110,11 +110,6 @@
     {
       "source": "/api/v1/hotel/(.*)",
       "destination": "/api/v1/hotel/[hotel_id].ts?hotel_id=$1"
-    },
-
-    {
-      "source": "/api/v1/send_one_time_pass",
-      "destination": "/api/v1/send_one_time_pass.ts"
     },
 
     {

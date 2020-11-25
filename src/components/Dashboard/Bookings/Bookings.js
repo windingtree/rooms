@@ -12,22 +12,6 @@ import { ApiCache } from '../../../utils/api_cache'
 import BookingList from './BookingList/BookingList'
 import Spinner from '../../base/Spinner/Spinner'
 
-function initBookingObj() {
-  const now = new Date()
-  const bookingObj = {
-    id: uuidv4(),
-
-    checkInDate: moment(now).format(),
-    checkOutDate: moment(now).add(1, 'days').format(),
-    guestName: '',
-    guestEmail: '',
-    phoneNumber: '',
-    roomType: '',
-  }
-
-  return bookingObj
-}
-
 class Bookings extends React.Component {
   constructor(props) {
     super(props)
@@ -101,14 +85,35 @@ class Bookings extends React.Component {
       })
   }
 
+  initBookingObj = () => {
+    const now = new Date()
+
+    debugger
+
+    const bookingObj = {
+      id: uuidv4(),
+
+      hotelId: this.props.userProfile.hotelId,
+      roomTypeId: '',
+
+      checkInDate: moment(now).format(),
+      checkOutDate: moment(now).add(1, 'days').format(),
+      guestName: '',
+      guestEmail: '',
+      phoneNumber: '',
+    }
+
+    return bookingObj
+  }
+
   createBooking = () => {
-    const newBooking = initBookingObj()
+    const newBooking = this.initBookingObj()
 
     this.setState({
       bookings: this.state.bookings.concat(newBooking),
     })
 
-    apiClient.createBooking(newBooking)
+    apiClient.createBooking(Object.assign({}, newBooking, { id: undefined }))
       .then((attrs) => {
         if (this._isDestroyed) return
 
