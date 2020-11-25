@@ -1,5 +1,5 @@
-import { createBooking as createBookingRecord } from '../../../_lib/data/booking'
-import { IProfile, IBaseBooking, IBooking, IPostBookingPayload } from '../../../_lib/types'
+import { bookingMapper, createBooking as createBookingRecord, readBooking as readBookingDbFunc } from '../../../_lib/data/booking'
+import { IProfile, IBaseBooking, IBooking, IBookingDbRecord, IPostBookingPayload } from '../../../_lib/types'
 
 async function createBooking(requester: IProfile, payload: IPostBookingPayload): Promise<IBooking> {
   // TODO: Need to verify things in `payload`, and also implement logic based on roles.
@@ -14,7 +14,9 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
     roomTypeId: (typeof payload.roomTypeId !== 'undefined') ? payload.roomTypeId : '',
   }
   const bookingId: string = await createBookingRecord(data)
-  const booking: IBooking = Object.assign({}, data, { id: bookingId })
+
+  const bookingDbRecord: IBookingDbRecord = await readBookingDbFunc(bookingId)
+  const booking: IBooking = bookingMapper(bookingDbRecord)
 
   return booking
 }

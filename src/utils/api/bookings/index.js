@@ -37,8 +37,6 @@ function getBooking(id) {
 }
 
 function createBooking(data) {
-  // apiCache.addBooking(data)
-
   return fetch('/api/v1/booking', {
     method: 'POST',
     headers: makeAuthHeaders(),
@@ -47,7 +45,6 @@ function createBooking(data) {
     .then(checkStatus)
     .then(parseJSON)
     .then((booking) => {
-      // apiCache.updateBooking(data.id, booking)
       apiCache.addBooking(booking)
 
       return booking

@@ -59,7 +59,7 @@ function addRoomType(roomType) {
   this.saveCache()
 }
 
-function updateRoomType(roomTypeId, newRoomType) {
+function updateRoomType(roomTypeId, data) {
   const _roomTypes = []
 
   if (!this.cache.roomTypes) {
@@ -68,7 +68,7 @@ function updateRoomType(roomTypeId, newRoomType) {
 
   this.cache.roomTypes.forEach((roomType) => {
     if (roomType.id === roomTypeId) {
-      _roomTypes.push(objClone(newRoomType))
+      _roomTypes.push(Object.assign({}, objClone(roomType), objClone(data)))
     } else {
       _roomTypes.push(objClone(roomType))
     }

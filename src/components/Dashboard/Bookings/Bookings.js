@@ -88,8 +88,6 @@ class Bookings extends React.Component {
   initBookingObj = () => {
     const now = new Date()
 
-    debugger
-
     const bookingObj = {
       id: uuidv4(),
 

@@ -16,7 +16,7 @@ type IRoomTypeCollection = Array<IRoomType>
 interface IPostRoomTypePayload {
   ownerId: string
   hotelId: string
-  type: string
+  type?: string
   quantity?: number
   price?: number
   amenities?: string

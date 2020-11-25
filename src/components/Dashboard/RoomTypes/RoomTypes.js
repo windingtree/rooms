@@ -11,19 +11,6 @@ import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
 
-function initRoomTypeObj() {
-  const roomTypeObj = {
-    id: uuidv4(),
-
-    type: '',
-    quantity: 0,
-    price: 0,
-    amenities: '',
-  }
-
-  return roomTypeObj
-}
-
 class RoomTypes extends React.Component {
   constructor(props) {
     super(props)
@@ -97,14 +84,30 @@ class RoomTypes extends React.Component {
       })
   }
 
+  initRoomTypeObj = () => {
+    const roomTypeObj = {
+      id: uuidv4(),
+
+      ownerId: this.props.userProfile.id,
+      hotelId: this.props.userProfile.hotelId,
+
+      type: '',
+      quantity: 0,
+      price: 0,
+      amenities: '',
+    }
+
+    return roomTypeObj
+  }
+
   createRoomType = () => {
-    const newRoomType = initRoomTypeObj()
+    const newRoomType = this.initRoomTypeObj()
 
     this.setState({
       roomTypes: this.state.roomTypes.concat(newRoomType),
     })
 
-    apiClient.createRoomType(newRoomType)
+    apiClient.createRoomType(Object.assign({}, newRoomType, { id: undefined }))
       .then((attrs) => {
         if (this._isDestroyed) return
 

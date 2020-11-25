@@ -1,6 +1,6 @@
-import { createHotel as createHotelRecord } from '../../../_lib/data/hotel'
+import { hotelMapper, createHotel as createHotelRecord, readHotel as readHotelDbFunc } from '../../../_lib/data/hotel'
 import { profileMapper, readProfile as readProfileRecord } from '../../../_lib/data/profile'
-import { IProfile, IProfileDbRecord, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
+import { IProfile, IProfileDbRecord, IBaseHotel, IHotel, IHotelDbRecord, IPostHotelPayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
@@ -47,7 +47,9 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
     location: (typeof payload.location !== 'undefined') ? payload.location : { lat: 0, lng: 0 },
   }
   const hotelId: string = await createHotelRecord(data)
-  const hotel: IHotel = Object.assign({}, data, { id: hotelId })
+
+  const hotelDbRecord: IHotelDbRecord = await readHotelDbFunc(hotelId)
+  const hotel: IHotel = hotelMapper(hotelDbRecord)
 
   return hotel
 }

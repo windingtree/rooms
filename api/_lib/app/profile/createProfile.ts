@@ -1,6 +1,6 @@
-import { createProfile as createProfileRecord } from '../../../_lib/data/profile'
+import { profileMapper, createProfile as createProfileRecord, readProfile as readProfileDbFunc } from '../../../_lib/data/profile'
 import { readHotel } from '../../../_lib/data/hotel'
-import { IBaseProfile, IProfile, IPostProfilePayload } from '../../../_lib/types'
+import { IBaseProfile, IProfile, IProfileDbRecord, IPostProfilePayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
@@ -40,7 +40,9 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     hotelId: (payload.hotelId) ? payload.hotelId : '',
   }
   const profileId: string = await createProfileRecord(data)
-  const profile: IProfile = Object.assign({}, data, { id: profileId })
+
+  const profileDbRecord: IProfileDbRecord = await readProfileDbFunc(profileId)
+  const profile: IProfile = profileMapper(profileDbRecord)
 
   return profile
 }
