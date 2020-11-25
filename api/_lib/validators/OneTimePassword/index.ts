@@ -1,0 +1,3 @@
+export {
+  postOneTimePasswordPayloadValidator,
+} from './postOneTimePasswordPayloadValidator'

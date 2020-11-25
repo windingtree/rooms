@@ -1,9 +1,9 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateOptionalString } from './helpers'
-import { CError } from '../../_lib/tools'
-import { CONSTANTS } from '../../_lib/infra/constants'
-import { IPatchProfilePayload } from '../../_lib/types'
+import { validateOptionalString } from '../_helpers'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IPatchProfilePayload } from '../../../_lib/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 

@@ -28,6 +28,11 @@ interface IProfileAuthData {
   sessionToken: string
 }
 
+interface IOneTimePasswordPayload {
+  email: string
+  sessionToken: string
+}
+
 interface IProfile extends IBaseProfile {
   id: string
 }
@@ -63,6 +68,7 @@ type IProfileDbRecordCollection = Array<IProfileDbRecord>
 export {
   IBaseProfile,
   IProfileAuthData,
+  IOneTimePasswordPayload,
   IProfile,
   IProfileCollection,
   IPostProfilePayload,

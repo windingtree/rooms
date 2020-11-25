@@ -1,31 +1,29 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateRequiredString } from './helpers'
-import { CError } from '../../_lib/tools'
-import { CONSTANTS } from '../../_lib/infra/constants'
-import { IProfileAuthData } from '../../_lib/types'
+import { validateRequiredString } from '../_helpers'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IOneTimePasswordPayload } from '../../../_lib/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
-async function postLoginPayloadValidator(request: NowRequest): Promise<IProfileAuthData> {
+async function postOneTimePasswordPayloadValidator(request: NowRequest): Promise<IOneTimePasswordPayload> {
   if (!request.body) {
     throw new CError(BAD_REQUEST, 'Must provide a valid body with request.')
   }
 
-  const payload: IProfileAuthData = {
+  const payload: IOneTimePasswordPayload = {
     email: '',
-    oneTimePassword: '',
     sessionToken: '',
   }
 
-  const ALLOWED_PROPS: Array<keyof IProfileAuthData> = [
+  const ALLOWED_PROPS: Array<keyof IOneTimePasswordPayload> = [
     'email',
-    'oneTimePassword',
     'sessionToken',
   ]
 
   for (const [key] of Object.entries(request.body)) {
-    if (!ALLOWED_PROPS.includes(key as keyof IProfileAuthData)) {
+    if (!ALLOWED_PROPS.includes(key as keyof IOneTimePasswordPayload)) {
       throw new CError(BAD_REQUEST, `Property '${key}' in POST 'login' request is unexpected.`)
     }
   }
@@ -33,10 +31,6 @@ async function postLoginPayloadValidator(request: NowRequest): Promise<IProfileA
   const email = request.body.email
   await validateRequiredString('email', email)
   payload.email = email
-
-  const oneTimePassword = request.body.oneTimePassword
-  await validateRequiredString('oneTimePassword', oneTimePassword)
-  payload.oneTimePassword = oneTimePassword
 
   const sessionToken = request.body.sessionToken
   await validateRequiredString('sessionToken', sessionToken)
@@ -46,5 +40,5 @@ async function postLoginPayloadValidator(request: NowRequest): Promise<IProfileA
 }
 
 export {
-  postLoginPayloadValidator,
+  postOneTimePasswordPayloadValidator,
 }

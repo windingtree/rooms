@@ -1,9 +1,9 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateRequiredString, validateOptionalString } from './helpers'
-import { CError } from '../../_lib/tools'
-import { CONSTANTS } from '../../_lib/infra/constants'
-import { IPostProfilePayload } from '../../_lib/types'
+import { validateRequiredString, validateOptionalString } from '../_helpers'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IPostProfilePayload } from '../../../_lib/types'
 
 const { OBSERVER } = CONSTANTS.PROFILE_ROLE
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS

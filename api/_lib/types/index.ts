@@ -16,11 +16,16 @@ export {
   IBaseBooking,
   IBooking,
   IBookingCollection,
+  IPostBookingPayload,
+  IPatchBookingPayload,
+  IBookingDbRecord,
+  IBookingDbRecordCollection,
 } from './booking'
 
 export {
   IBaseProfile,
   IProfileAuthData,
+  IOneTimePasswordPayload,
   IProfile,
   IProfileCollection,
   IPostProfilePayload,

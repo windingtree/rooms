@@ -1,9 +1,9 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateOptionalString, validateOptionalLocation } from './helpers'
-import { CError } from '../../_lib/tools'
-import { CONSTANTS } from '../../_lib/infra/constants'
-import { IPatchHotelPayload } from '../../_lib/types'
+import { validateOptionalString, validateOptionalLocation } from '../_helpers'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+import { IPatchHotelPayload } from '../../../_lib/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
@@ -14,7 +14,7 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
 
   const payload: IPatchHotelPayload = {}
 
-  const ALLOWED_PROPS = [
+  const ALLOWED_PROPS: Array<keyof IPatchHotelPayload> = [
     'ownerId',
     'name',
     'address',
@@ -22,7 +22,7 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
   ]
 
   for (const [key] of Object.entries(request.body)) {
-    if (!ALLOWED_PROPS.includes(key)) {
+    if (!ALLOWED_PROPS.includes(key as keyof IPatchHotelPayload)) {
       throw new CError(BAD_REQUEST, `Property '${key}' on 'hotel' is not updatable.`)
     }
   }

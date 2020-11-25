@@ -1,43 +1,27 @@
 export {
-  checkRoomType,
-} from './room_type'
-
-export {
-  checkBooking,
-} from './booking'
-
-export {
-  checkLogin,
-} from './login'
-
-export {
-  checkSendOneTimePass,
-} from './send_one_time_pass'
+  postProfilePayloadValidator,
+  patchProfilePayloadValidator,
+} from './Profile'
 
 export {
   postHotelPayloadValidator,
-} from './postHotelPayloadValidator'
-
-export {
   patchHotelPayloadValidator,
-} from './patchHotelPayloadValidator'
-
-export {
-  postProfilePayloadValidator,
-} from './postProfilePayloadValidator'
-
-export {
-  patchProfilePayloadValidator,
-} from './patchProfilePayloadValidator'
-
-export {
-  postLoginPayloadValidator,
-} from './postLoginPayloadValidator'
+} from './Hotel'
 
 export {
   patchRoomTypePayloadValidator,
-} from './patchRoomTypePayloadValidator'
+  postRoomTypePayloadValidator,
+} from './RoomType'
 
 export {
-  postRoomTypePayloadValidator,
-} from './postRoomTypePayloadValidator'
+  patchBookingPayloadValidator,
+  postBookingPayloadValidator,
+} from './Booking'
+
+export {
+  postLoginPayloadValidator,
+} from './Login'
+
+export {
+  postOneTimePasswordPayloadValidator,
+} from './OneTimePassword'
