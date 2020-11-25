@@ -109,6 +109,7 @@ class App extends React.Component {
     const profileId = this.getProfileIdFromCache()
 
     this.setState({ isLoggedIn: true, profileId })
+    this.getProfile()
 
     this.props.history.push('/dashboard')
   }
@@ -167,7 +168,7 @@ class App extends React.Component {
       <Router history={history}>
         <main className={classes.container}>
           {
-            (!this.state.profile) ?
+            (this.state.isLoggedIn && !this.state.profile) ?
               <Spinner info="loading" /> :
               <Switch>
                 <Route exact path="/">
