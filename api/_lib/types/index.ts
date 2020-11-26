@@ -84,3 +84,7 @@ export {
 export {
   IConstants,
 } from './constants'
+
+export {
+  ILocationRectangle,
+} from './geo'

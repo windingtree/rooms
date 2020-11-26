@@ -5,6 +5,11 @@ interface IHotelLocation {
   lng: number
 }
 
+interface IHotelDbLocation {
+  type: string
+  coordinates: Array<number>
+}
+
 interface IBaseHotel {
   ownerId: string
   name: string
@@ -39,7 +44,7 @@ interface IBaseHotelDbRecord {
   ownerId: ObjectID|null
   name: string
   address: string
-  location: IHotelLocation
+  location: IHotelDbLocation
   imageUrl: string
 }
 
@@ -51,7 +56,7 @@ interface IPatchHotelPayloadDbData {
   ownerId?: ObjectID|null
   name?: string
   address?: string
-  location?: IHotelLocation
+  location?: IHotelDbLocation
   imageUrl?: string
 }
 

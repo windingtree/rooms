@@ -1,19 +1,35 @@
 import { NowRequest } from '@vercel/node'
 
-import { readHotels as readHotelsDbFunc } from '../../../_lib/data/hotel'
+import { readHotelsByLocationRectangle as readHotelsByLocationRectangleDbFunc } from '../../../_lib/data/hotel'
 import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
+import { CError } from '../../../_lib/tools'
+import { CONSTANTS } from '../../../_lib/infra/constants'
 import {
   IHotelCollection,
   IRoomTypeCollection,
   IOfferSearchResults
 } from '../../../_lib/types'
 
-async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
-  console.log('request.body = ')
-  console.log(JSON.stringify(request.body))
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
+async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
+  console.log('request.body')
+  console.log(JSON.stringify(request.body))
+  console.log('')
+
+  let searchLocation
+  if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
+    searchLocation = request.body.accommodation.location
+  } else {
+    throw new CError(BAD_REQUEST, 'Property "request.body.accommodation.location" is not defined.')
+  }
+
+  if (!searchLocation || !searchLocation.rectangle) {
+    throw new CError(BAD_REQUEST, 'The search API supports only "location.rectangle" at this time.')
+  }
+
+  const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(searchLocation.rectangle)
   const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
-  const hotels: IHotelCollection = await readHotelsDbFunc()
 
   const result: IOfferSearchResults = {
     accommodations: {},

@@ -12,6 +12,8 @@ import {
   IHotel,
   IHotelCollection,
   IPatchHotelPayload,
+
+  IHotelLocation,
 } from '../../../_lib/types'
 
 function baseHotelDbRecordMapper(baseHotel: IBaseHotel): IBaseHotelDbRecord {
@@ -19,7 +21,13 @@ function baseHotelDbRecordMapper(baseHotel: IBaseHotel): IBaseHotelDbRecord {
     ownerId: getObjectId(baseHotel.ownerId),
     name: baseHotel.name,
     address: baseHotel.address,
-    location: baseHotel.location,
+    location: {
+      type: 'Point',
+      coordinates: [
+        (baseHotel.location as IHotelLocation).lat,
+        (baseHotel.location as IHotelLocation).lng,
+      ]
+    },
     imageUrl: baseHotel.imageUrl,
   }
 
@@ -47,7 +55,13 @@ function patchHotelPayloadDbDataMapper(patchHotelPayload: IPatchHotelPayload): I
 
   prop = 'location'
   if (typeof patchHotelPayload[prop] !== 'undefined') {
-    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+    patchHotelPayloadDbData[prop] = {
+      type: 'Point',
+      coordinates: [
+        (patchHotelPayload[prop] as IHotelLocation).lat,
+        (patchHotelPayload[prop] as IHotelLocation).lng,
+      ]
+    }
   }
 
   prop = 'imageUrl'
@@ -64,7 +78,10 @@ function hotelMapper(hotelDbRecord: IHotelDbRecord): IHotel {
     ownerId: getObjectIdString(hotelDbRecord.ownerId),
     name: hotelDbRecord.name,
     address: hotelDbRecord.address,
-    location: hotelDbRecord.location,
+    location: {
+      lat: hotelDbRecord.location.coordinates[0],
+      lng: hotelDbRecord.location.coordinates[1],
+    },
     imageUrl: hotelDbRecord.imageUrl,
   }
 

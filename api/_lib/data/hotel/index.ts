@@ -27,6 +27,10 @@ export {
 } from './readHotelsByOwnerId'
 
 export {
+  readHotelsByLocationRectangle,
+} from './readHotelsByLocationRectangle'
+
+export {
   updateHotel,
 } from './updateHotel'
 
