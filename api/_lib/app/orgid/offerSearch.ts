@@ -1,4 +1,5 @@
 import { NowRequest } from '@vercel/node'
+import { v4 as uuidv4 } from 'uuid'
 
 import { readHotelsByLocationRectangle as readHotelsByLocationRectangleDbFunc } from '../../../_lib/data/hotel'
 import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
@@ -142,7 +143,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
         return
       }
 
-      result.offers[`${hotel.id}-${roomType.id}`] = {
+      result.offers[`${hotel.id}-${roomType.id}-${uuidv4()}`] = {
         pricePlansReferences: {
           BAR: {
             accommodation: hotel.id,
