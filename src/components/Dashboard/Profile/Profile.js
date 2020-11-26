@@ -37,6 +37,7 @@ class Profile extends React.Component {
       hotelId: '',
       name: '',
       address: '',
+      imageUrl: '',
       location: [0, 0],
       locationStr: '0, 0',
 
@@ -64,6 +65,7 @@ class Profile extends React.Component {
       hotelId: (hotel.id) ? hotel.id : '',
       name: (hotel.name) ? hotel.name : '',
       address: (hotel.address) ? hotel.address : '',
+      imageUrl: (hotel.imageUrl) ? hotel.imageUrl : '',
       location: locationCoords,
       locationStr: this.getLocationStr(locationCoords),
     })
@@ -138,6 +140,14 @@ class Profile extends React.Component {
     this.updateHotel('address', newValue)
   }
 
+  onHotelImageUrlChange = (newValue) => {
+    this.setState({
+      imageUrl: newValue,
+    })
+
+    this.updateHotel('imageUrl', newValue)
+  }
+
   render() {
     const { classes } = this.props
 
@@ -153,7 +163,7 @@ class Profile extends React.Component {
           ((!this.state.hotelId) && (this.state.apiLoading === true)) ?
             <Spinner info="loading" />:
             <div>
-              <div><h1>Profile</h1></div>
+              <div><h1>Hotel Info</h1></div>
               <div>
                 <TextEditInput
                   label="Hotel ID"
@@ -175,6 +185,14 @@ class Profile extends React.Component {
                   label="Hotel Address"
                   value={this.state.address}
                   onValueChange={this.onHotelAddressChange}
+                  inputWidth={400}
+                />
+              </div>
+              <div>
+                <TextEditInput
+                  label="Image URL"
+                  value={this.state.imageUrl}
+                  onValueChange={this.onHotelImageUrlChange}
                   inputWidth={400}
                 />
               </div>

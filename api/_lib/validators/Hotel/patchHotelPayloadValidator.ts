@@ -19,6 +19,7 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
     'name',
     'address',
     'location',
+    'imageUrl',
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -42,6 +43,10 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
   const location = request.body.location
   await validateOptionalLocation('location', location)
   if (typeof location !== 'undefined') payload.location = location
+
+  const imageUrl = request.body.imageUrl
+  await validateOptionalString('imageUrl', imageUrl)
+  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
 
   return payload
 }

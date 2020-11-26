@@ -20,6 +20,7 @@ function baseHotelDbRecordMapper(baseHotel: IBaseHotel): IBaseHotelDbRecord {
     name: baseHotel.name,
     address: baseHotel.address,
     location: baseHotel.location,
+    imageUrl: baseHotel.imageUrl,
   }
 
   return baseHotelDbRecord
@@ -49,6 +50,11 @@ function patchHotelPayloadDbDataMapper(patchHotelPayload: IPatchHotelPayload): I
     patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
   }
 
+  prop = 'imageUrl'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+  }
+
   return patchHotelPayloadDbData
 }
 
@@ -59,6 +65,7 @@ function hotelMapper(hotelDbRecord: IHotelDbRecord): IHotel {
     name: hotelDbRecord.name,
     address: hotelDbRecord.address,
     location: hotelDbRecord.location,
+    imageUrl: hotelDbRecord.imageUrl,
   }
 
   return hotel

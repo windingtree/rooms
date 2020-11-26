@@ -10,6 +10,7 @@ interface IBaseHotel {
   name: string
   address: string
   location: IHotelLocation
+  imageUrl: string
 }
 
 interface IHotel extends IBaseHotel {
@@ -23,6 +24,7 @@ interface IPostHotelPayload {
   name?: string
   address?: string
   location?: IHotelLocation
+  imageUrl?: string
 }
 
 interface IPatchHotelPayload {
@@ -30,6 +32,7 @@ interface IPatchHotelPayload {
   name?: string
   address?: string
   location?: IHotelLocation
+  imageUrl?: string
 }
 
 interface IBaseHotelDbRecord {
@@ -37,6 +40,7 @@ interface IBaseHotelDbRecord {
   name: string
   address: string
   location: IHotelLocation
+  imageUrl: string
 }
 
 interface IHotelDbRecord extends IBaseHotelDbRecord {
@@ -48,6 +52,7 @@ interface IPatchHotelPayloadDbData {
   name?: string
   address?: string
   location?: IHotelLocation
+  imageUrl?: string
 }
 
 type IHotelDbRecordCollection = Array<IHotelDbRecord>

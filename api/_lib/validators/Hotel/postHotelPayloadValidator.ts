@@ -20,6 +20,7 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
       lat: 0,
       lng: 0,
     },
+    imageUrl: '',
   }
 
   const ALLOWED_PROPS: Array <keyof IPostHotelPayload> = [
@@ -27,6 +28,7 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
     'name',
     'address',
     'location',
+    'imageUrl',
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -50,6 +52,10 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
   const location = request.body.location
   await validateOptionalLocation('location', location)
   if (typeof location !== 'undefined') payload.location = location
+
+  const imageUrl = request.body.imageUrl
+  await validateOptionalString('imageUrl', imageUrl)
+  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
 
   return payload
 }

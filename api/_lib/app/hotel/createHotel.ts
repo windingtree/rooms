@@ -48,6 +48,7 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
     name: (typeof payload.name !== 'undefined') ? payload.name : '',
     address: (typeof payload.address !== 'undefined') ? payload.address : '',
     location: (typeof payload.location !== 'undefined') ? payload.location : { lat: 0, lng: 0 },
+    imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
   }
   const hotelId: string = await createHotelDbFunc(data)
   const hotel: IHotel = await readHotelDbFunc(hotelId)

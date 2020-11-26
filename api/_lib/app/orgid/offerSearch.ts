@@ -45,6 +45,14 @@ async function offerSearch(): Promise<IOfferSearchResults> {
       return
     }
 
+    let hotelMedia: Array<{ type: string, url: string }> = []
+    if (typeof hotel.imageUrl === 'string' && hotel.imageUrl.length > 0) {
+      hotelMedia = [{
+        "type": "photo",
+        "url": hotel.imageUrl,
+      }]
+    }
+
     result.accommodations[hotel.id] = {
       name: hotel.name,
       type: 'hotel',
@@ -72,13 +80,21 @@ async function offerSearch(): Promise<IOfferSearchResults> {
         checkoutTime: "24:00",
       },
       otherPolicies: {},
-      media: [],
+      media: hotelMedia,
       roomTypes: {},
     }
 
     roomTypes.forEach((roomType) => {
       if (roomType.hotelId !== hotel.id) {
         return
+      }
+
+      let roomTypeMedia: Array<{ type: string, url: string }> = []
+      if (typeof roomType.imageUrl === 'string' && roomType.imageUrl.length > 0) {
+        roomTypeMedia = [{
+          "type": "photo",
+          "url": roomType.imageUrl,
+        }]
       }
 
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
@@ -93,10 +109,7 @@ async function offerSearch(): Promise<IOfferSearchResults> {
           "adults": "2",
           "childs": "1"
         },
-        "media": [{
-          "type": "photo",
-          "url": roomType.imageUrl,
-        }],
+        "media": roomTypeMedia,
         "policies": {}
       }
     })
