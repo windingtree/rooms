@@ -31,6 +31,20 @@ async function offerSearch(): Promise<IOfferSearchResults> {
   }
 
   hotels.forEach((hotel) => {
+    let numAvailRoomTypes = 0
+
+    roomTypes.forEach((roomType) => {
+      if (roomType.hotelId !== hotel.id) {
+        return
+      }
+
+      numAvailRoomTypes += 1
+    })
+
+    if (numAvailRoomTypes === 0) {
+      return
+    }
+
     result.accommodations[hotel.id] = {
       name: hotel.name,
       type: 'hotel',
