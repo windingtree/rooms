@@ -1,5 +1,4 @@
 import {
-  roomTypeMapper,
   createRoomType as createRoomTypeRecord,
   readRoomType as readRoomTypeDbFunc,
 } from '../../../_lib/data/room_type'
@@ -13,7 +12,6 @@ import {
   IProfile,
   IRoomType,
   IBaseRoomType,
-  IRoomTypeDbRecord,
   IPostRoomTypePayload,
 } from '../../../_lib/types'
 
@@ -41,9 +39,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
   }
   const roomTypeId: string = await createRoomTypeRecord(data)
-
-  const roomTypeDbRecord: IRoomTypeDbRecord = await readRoomTypeDbFunc(roomTypeId)
-  const roomType: IRoomType = roomTypeMapper(roomTypeDbRecord)
+  const roomType: IRoomType = await readRoomTypeDbFunc(roomTypeId)
 
   return roomType
 }

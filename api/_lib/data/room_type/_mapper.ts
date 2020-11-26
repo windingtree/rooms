@@ -1,5 +1,62 @@
-import { getObjectIdString } from '../../../_lib/tools'
-import { IRoomTypeDbRecord, IRoomType, IRoomTypeDbRecordCollection, IRoomTypeCollection } from '../../../_lib/types'
+import {
+  getObjectId,
+  getObjectIdString,
+} from '../../../_lib/tools'
+import {
+  IBaseRoomTypeDbRecord,
+  IRoomTypeDbRecord,
+  IRoomTypeDbRecordCollection,
+  IPatchRoomTypePayloadDbData,
+
+  IBaseRoomType,
+  IRoomType,
+  IRoomTypeCollection,
+  IPatchRoomTypePayload,
+} from '../../../_lib/types'
+
+function baseRoomTypeDbRecordMapper(baseRoomType: IBaseRoomType): IBaseRoomTypeDbRecord {
+  const baseRoomTypeDbRecord: IBaseRoomTypeDbRecord = {
+    hotelId: getObjectId(baseRoomType.hotelId),
+    type: baseRoomType.type,
+    quantity: baseRoomType.quantity,
+    price: baseRoomType.price,
+    amenities: baseRoomType.amenities,
+  }
+
+  return baseRoomTypeDbRecord
+}
+
+function patchRoomTypePayloadDbDataMapper(patchRoomTypePayload: IPatchRoomTypePayload): IPatchRoomTypePayloadDbData {
+  const patchRoomTypePayloadDbData: IPatchRoomTypePayloadDbData = {}
+  let prop: keyof IPatchRoomTypePayload
+
+  prop = 'hotelId'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = getObjectId(patchRoomTypePayload[prop])
+  }
+
+  prop = 'type'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
+  prop = 'quantity'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
+  prop = 'price'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
+  prop = 'amenities'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
+  return patchRoomTypePayloadDbData
+}
 
 function roomTypeMapper(roomTypeDbRecord: IRoomTypeDbRecord): IRoomType {
   const roomType: IRoomType = {
@@ -24,6 +81,8 @@ function roomTypeCollectionMapper(roomTypeDbRecordCollection: IRoomTypeDbRecordC
 }
 
 export {
+  baseRoomTypeDbRecordMapper,
+  patchRoomTypePayloadDbDataMapper,
   roomTypeMapper,
   roomTypeCollectionMapper,
 }

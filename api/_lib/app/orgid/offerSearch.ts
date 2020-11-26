@@ -1,14 +1,13 @@
 import { readHotels as readHotelsDbFunc } from '../../../_lib/data/hotel'
-import { roomTypeCollectionMapper, readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
+import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
 import {
   IHotelCollection,
-  IRoomTypeCollection, IRoomTypeDbRecordCollection,
+  IRoomTypeCollection,
   IOfferSearchResults
 } from '../../../_lib/types'
 
 async function offerSearch(): Promise<IOfferSearchResults> {
-  const roomTypeDbRecordCollection: IRoomTypeDbRecordCollection = await readRoomTypesDbFunc()
-  const roomTypes: IRoomTypeCollection = roomTypeCollectionMapper(roomTypeDbRecordCollection)
+  const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
 
   const hotels: IHotelCollection = await readHotelsDbFunc()
 

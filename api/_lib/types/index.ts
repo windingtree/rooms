@@ -8,7 +8,9 @@ export {
   IRoomTypeCollection,
   IPostRoomTypePayload,
   IPatchRoomTypePayload,
+  IBaseRoomTypeDbRecord,
   IRoomTypeDbRecord,
+  IPatchRoomTypePayloadDbData,
   IRoomTypeDbRecordCollection,
 } from './room_type'
 

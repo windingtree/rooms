@@ -30,13 +30,24 @@ interface IPatchRoomTypePayload {
   amenities?: string
 }
 
-interface IRoomTypeDbRecord {
-  _id: ObjectID
-  hotelId: ObjectID
+interface IBaseRoomTypeDbRecord {
+  hotelId: ObjectID|null
   type: string
   quantity: number
   price: number
   amenities: string
+}
+
+interface IRoomTypeDbRecord extends IBaseRoomTypeDbRecord {
+  _id: ObjectID|null
+}
+
+interface IPatchRoomTypePayloadDbData {
+  hotelId?: ObjectID|null
+  type?: string
+  quantity?: number
+  price?: number
+  amenities?: string
 }
 
 type IRoomTypeDbRecordCollection = Array<IRoomTypeDbRecord>
@@ -47,6 +58,8 @@ export {
   IRoomTypeCollection,
   IPostRoomTypePayload,
   IPatchRoomTypePayload,
+  IBaseRoomTypeDbRecord,
   IRoomTypeDbRecord,
+  IPatchRoomTypePayloadDbData,
   IRoomTypeDbRecordCollection,
 }

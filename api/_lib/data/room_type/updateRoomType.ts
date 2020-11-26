@@ -1,8 +1,9 @@
 import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
+import { patchRoomTypePayloadDbDataMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IPatchRoomTypePayload } from '../../../_lib/types'
+import { IPatchRoomTypePayloadDbData, IPatchRoomTypePayload } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
@@ -12,13 +13,15 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 async function updateRoomType(roomTypeId: string, data: IPatchRoomTypePayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
+  const dbData: IPatchRoomTypePayloadDbData = patchRoomTypePayloadDbDataMapper(data)
+
   let result
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
     const filter = { _id: new ObjectID(roomTypeId) }
     const options = { upsert: false }
-    const updateDoc = { $set: data }
+    const updateDoc = { $set: dbData }
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err) {

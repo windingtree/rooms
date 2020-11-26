@@ -1,9 +1,3 @@
-
-export {
-  roomTypeMapper,
-  roomTypeCollectionMapper,
-} from './_mapper'
-
 export {
   createRoomType,
 } from './createRoomType'

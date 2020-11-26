@@ -2,15 +2,16 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
+import { roomTypeMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IRoomTypeDbRecord } from '../../../_lib/types'
+import { IRoomTypeDbRecord, IRoomType } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readRoomType(roomTypeId: string): Promise<IRoomTypeDbRecord> {
+async function readRoomType(roomTypeId: string): Promise<IRoomType> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IRoomTypeDbRecord|null
@@ -29,7 +30,7 @@ async function readRoomType(roomTypeId: string): Promise<IRoomTypeDbRecord> {
     throw new CError(NOT_FOUND, `Could not retrieve a '${ENTITY_NAME}'.`)
   }
 
-  return result
+  return roomTypeMapper(result)
 }
 
 export {
