@@ -117,6 +117,7 @@ class RoomTypeEdit extends React.Component {
               type={this.state.roomType.type}
               price={this.state.roomType.price}
               amenities={this.state.roomType.amenities}
+              imageUrl={this.state.roomType.imageUrl}
               onDoneClick={this.handleDoneClick}
               onTrashClick={this.handleTrashClick}
               onPropValueChange={this.handlePropValueChange}

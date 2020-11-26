@@ -93,7 +93,10 @@ async function offerSearch(): Promise<IOfferSearchResults> {
           "adults": "2",
           "childs": "1"
         },
-        "media": [],
+        "media": [{
+          "type": "photo",
+          "url": roomType.imageUrl,
+        }],
         "policies": {}
       }
     })

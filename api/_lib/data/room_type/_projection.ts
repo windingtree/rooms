@@ -8,6 +8,7 @@ function buildProjection(): { [key: string]: 1 } {
     'quantity',
     'price',
     'amenities',
+    'imageUrl',
   ]
 
   const projection: { [key: string]: 1 } = {}

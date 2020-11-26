@@ -71,6 +71,10 @@ class RoomType extends React.Component {
     this.props.onPropValueChange(this.props.id, 'amenities', e)
   }
 
+  handleImageUrlChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'imageUrl', e)
+  }
+
   render() {
     const { classes } = this.props
 
@@ -106,6 +110,14 @@ class RoomType extends React.Component {
                 inputWidth={90}
               />
               <div className={classes.price_currency}>USD</div>
+            </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.imageUrl}
+                label="Image URL"
+                onValueChange={this.handleImageUrlChange}
+                inputWidth={300}
+              />
             </Grid>
             <Grid item>
               <MultiAutocomplete

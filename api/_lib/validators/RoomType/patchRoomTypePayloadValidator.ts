@@ -20,6 +20,7 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
     'quantity',
     'price',
     'amenities',
+    'imageUrl',
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -48,6 +49,10 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const amenities = request.body.amenities
   await validateOptionalString('amenities', amenities)
   if (typeof amenities !== 'undefined') payload.amenities = amenities
+
+  const imageUrl = request.body.imageUrl
+  await validateOptionalString('imageUrl', imageUrl)
+  payload.imageUrl = imageUrl
 
   return payload
 }

@@ -6,6 +6,7 @@ interface IBaseRoomType {
   quantity: number
   price: number
   amenities: string
+  imageUrl: string
 }
 
 interface IRoomType extends IBaseRoomType {
@@ -20,6 +21,7 @@ interface IPostRoomTypePayload {
   quantity?: number
   price?: number
   amenities?: string
+  imageUrl?: string
 }
 
 interface IPatchRoomTypePayload {
@@ -28,6 +30,7 @@ interface IPatchRoomTypePayload {
   quantity?: number
   price?: number
   amenities?: string
+  imageUrl?: string
 }
 
 interface IBaseRoomTypeDbRecord {
@@ -36,6 +39,7 @@ interface IBaseRoomTypeDbRecord {
   quantity: number
   price: number
   amenities: string
+  imageUrl: string
 }
 
 interface IRoomTypeDbRecord extends IBaseRoomTypeDbRecord {
@@ -48,6 +52,7 @@ interface IPatchRoomTypePayloadDbData {
   quantity?: number
   price?: number
   amenities?: string
+  imageUrl?: string
 }
 
 type IRoomTypeDbRecordCollection = Array<IRoomTypeDbRecord>

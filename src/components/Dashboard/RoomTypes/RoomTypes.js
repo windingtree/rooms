@@ -96,6 +96,7 @@ class RoomTypes extends React.Component {
       quantity: 0,
       price: 0,
       amenities: '',
+      imageUrl: '',
     }
 
     return roomTypeObj

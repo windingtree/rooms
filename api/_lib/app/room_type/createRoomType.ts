@@ -37,6 +37,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     quantity: (typeof payload.quantity !== 'undefined') ? payload.quantity : 0,
     price: (typeof payload.price !== 'undefined') ? payload.price : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
+    imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
   }
   const roomTypeId: string = await createRoomTypeRecord(data)
   const roomType: IRoomType = await readRoomTypeDbFunc(roomTypeId)

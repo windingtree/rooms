@@ -23,6 +23,7 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
     'quantity',
     'price',
     'amenities',
+    'imageUrl',
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -50,6 +51,10 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   const amenities = request.body.amenities
   await validateOptionalString('amenities', amenities)
   payload.amenities = amenities
+
+  const imageUrl = request.body.imageUrl
+  await validateOptionalString('imageUrl', imageUrl)
+  payload.imageUrl = imageUrl
 
   return payload
 }
