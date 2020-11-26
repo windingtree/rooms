@@ -8,7 +8,6 @@ import {
 
 async function offerSearch(): Promise<IOfferSearchResults> {
   const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
-
   const hotels: IHotelCollection = await readHotelsDbFunc()
 
   const result: IOfferSearchResults = {
@@ -64,6 +63,10 @@ async function offerSearch(): Promise<IOfferSearchResults> {
     }
 
     roomTypes.forEach((roomType) => {
+      if (roomType.hotelId !== hotel.id) {
+        return
+      }
+
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
         "name": roomType.type,
         "description": 'Room provided by Rooms project.',
@@ -85,11 +88,11 @@ async function offerSearch(): Promise<IOfferSearchResults> {
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
 
-      result.offers[`${roomType.id}-${hotel.id}`] = {
+      result.offers[`${hotel.id}-${roomType.id}`] = {
         pricePlansReferences: {
           BAR: {
             accommodation: hotel.id,
-            roomType: roomType.type,
+            roomType: roomType.id,
           },
         },
         price: {
