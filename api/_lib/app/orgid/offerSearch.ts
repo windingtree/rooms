@@ -147,7 +147,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
           },
         },
         price: {
-          currency: 'EUR',
+          currency: 'USD',
           public: roomType.price,
           taxes: 0,
         },
