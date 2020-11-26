@@ -1,3 +1,5 @@
+import { NowRequest } from '@vercel/node'
+
 import { readHotels as readHotelsDbFunc } from '../../../_lib/data/hotel'
 import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
 import {
@@ -6,7 +8,10 @@ import {
   IOfferSearchResults
 } from '../../../_lib/types'
 
-async function offerSearch(): Promise<IOfferSearchResults> {
+async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
+  console.log('request.body = ')
+  console.log(JSON.stringify(request.body))
+
   const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
   const hotels: IHotelCollection = await readHotelsDbFunc()
 

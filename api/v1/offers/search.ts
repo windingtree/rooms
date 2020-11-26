@@ -15,7 +15,7 @@ async function POST(request: NowRequest, response: NowResponse): Promise<void> {
 
   let result: IOfferSearchResults
   try {
-    result = await offerSearch()
+    result = await offerSearch(request)
   } catch (err) {
     return errorHandler(response, err)
   }
