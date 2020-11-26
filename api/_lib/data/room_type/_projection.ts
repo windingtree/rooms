@@ -3,7 +3,6 @@ import { IRoomTypeDbRecord } from '../../../_lib/types'
 function buildProjection(): { [key: string]: 1 } {
   const allowedFields: Array<keyof IRoomTypeDbRecord> = [
     '_id',
-    'ownerId',
     'hotelId',
     'type',
     'quantity',

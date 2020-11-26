@@ -2,15 +2,16 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
+import { hotelCollectionMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IHotelDbRecord, IHotelDbRecordCollection } from '../../../_lib/types'
+import { IHotelDbRecord, IHotelDbRecordCollection, IHotelCollection } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
-async function readHotelsByOwnerId(ownerId: string): Promise<IHotelDbRecordCollection> {
+async function readHotelsByOwnerId(ownerId: string): Promise<IHotelCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IHotelDbRecordCollection
@@ -33,7 +34,7 @@ async function readHotelsByOwnerId(ownerId: string): Promise<IHotelDbRecordColle
     throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
   }
 
-  return result
+  return hotelCollectionMapper(result)
 }
 
 export {

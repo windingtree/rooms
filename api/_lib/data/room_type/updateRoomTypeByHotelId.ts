@@ -9,14 +9,14 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function updateRoomTypeByOwnerId(roomTypeId: string, ownerId: string, data: IPatchRoomTypePayload): Promise<void> {
+async function updateRoomTypeByHotelId(roomTypeId: string, hotelId: string, data: IPatchRoomTypePayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-    const filter = { _id: new ObjectID(roomTypeId), ownerId: new ObjectID(ownerId) }
+    const filter = { _id: new ObjectID(roomTypeId), hotelId: new ObjectID(hotelId) }
     const options = { upsert: false }
     const updateDoc = { $set: data }
 
@@ -31,5 +31,5 @@ async function updateRoomTypeByOwnerId(roomTypeId: string, ownerId: string, data
 }
 
 export {
-  updateRoomTypeByOwnerId,
+  updateRoomTypeByHotelId,
 }

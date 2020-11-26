@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 interface IHotelLocation {
   lat: number
   lng: number
@@ -30,8 +32,22 @@ interface IPatchHotelPayload {
   location?: IHotelLocation
 }
 
-interface IHotelDbRecord extends IBaseHotel {
-  _id: string
+interface IBaseHotelDbRecord {
+  ownerId: ObjectID|null
+  name: string
+  address: string
+  location: IHotelLocation
+}
+
+interface IHotelDbRecord extends IBaseHotelDbRecord {
+  _id: ObjectID|null
+}
+
+interface IPatchHotelPayloadDbData {
+  ownerId?: ObjectID|null
+  name?: string
+  address?: string
+  location?: IHotelLocation
 }
 
 type IHotelDbRecordCollection = Array<IHotelDbRecord>
@@ -43,6 +59,8 @@ export {
   IHotelCollection,
   IPostHotelPayload,
   IPatchHotelPayload,
+  IBaseHotelDbRecord,
   IHotelDbRecord,
+  IPatchHotelPayloadDbData,
   IHotelDbRecordCollection,
 }

@@ -90,7 +90,6 @@ class RoomTypes extends React.Component {
     const roomTypeObj = {
       id: uuidv4(),
 
-      ownerId: this.props.userProfile.id,
       hotelId: this.props.userProfile.hotelId,
 
       type: '',

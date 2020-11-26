@@ -15,7 +15,6 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const payload: IPatchRoomTypePayload = {}
 
   const ALLOWED_PROPS: Array<keyof IPatchRoomTypePayload> = [
-    'ownerId',
     'hotelId',
     'type',
     'quantity',
@@ -28,11 +27,6 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
       throw new CError(BAD_REQUEST, `Property '${key}' on 'roomType' is not updatable.`)
     }
   }
-
-  const ownerId = request.body.ownerId
-  await validateMongoObjectId('ownerId', ownerId)
-  await validateOptionalString('ownerId', ownerId)
-  if (typeof ownerId !== 'undefined') payload.ownerId = ownerId
 
   const hotelId = request.body.hotelId
   await validateMongoObjectId('hotelId', hotelId)

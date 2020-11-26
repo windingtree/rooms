@@ -1,9 +1,3 @@
-
-export {
-  hotelMapper,
-  hotelCollectionMapper,
-} from './_mapper'
-
 export {
   createHotel,
 } from './createHotel'

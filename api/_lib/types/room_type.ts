@@ -1,5 +1,6 @@
+import { ObjectID } from 'mongodb'
+
 interface IBaseRoomType {
-  ownerId: string
   hotelId: string
   type: string
   quantity: number
@@ -14,7 +15,6 @@ interface IRoomType extends IBaseRoomType {
 type IRoomTypeCollection = Array<IRoomType>
 
 interface IPostRoomTypePayload {
-  ownerId: string
   hotelId: string
   type?: string
   quantity?: number
@@ -23,7 +23,6 @@ interface IPostRoomTypePayload {
 }
 
 interface IPatchRoomTypePayload {
-  ownerId?: string
   hotelId?: string
   type?: string
   quantity?: number
@@ -31,8 +30,13 @@ interface IPatchRoomTypePayload {
   amenities?: string
 }
 
-interface IRoomTypeDbRecord extends IBaseRoomType {
-  _id: string
+interface IRoomTypeDbRecord {
+  _id: ObjectID
+  hotelId: ObjectID
+  type: string
+  quantity: number
+  price: number
+  amenities: string
 }
 
 type IRoomTypeDbRecordCollection = Array<IRoomTypeDbRecord>

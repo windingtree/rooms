@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 interface IBaseBooking {
   hotelId: string
   checkInDate: string
@@ -34,8 +36,28 @@ interface IPatchBookingPayload {
   roomTypeId?: string
 }
 
-interface IBookingDbRecord extends IBaseBooking {
-  _id: string
+interface IBaseBookingDbRecord {
+  hotelId: ObjectID|null
+  checkInDate: string
+  checkOutDate: string
+  guestName: string
+  guestEmail: string
+  phoneNumber: string
+  roomTypeId: ObjectID|null
+}
+
+interface IBookingDbRecord extends IBaseBookingDbRecord {
+  _id: ObjectID|null
+}
+
+interface IPatchBookingPayloadDbData {
+  hotelId?: ObjectID|null
+  checkInDate?: string
+  checkOutDate?: string
+  guestName?: string
+  guestEmail?: string
+  phoneNumber?: string
+  roomTypeId?: ObjectID|null
 }
 
 type IBookingDbRecordCollection = Array<IBookingDbRecord>
@@ -46,6 +68,8 @@ export {
   IBookingCollection,
   IPostBookingPayload,
   IPatchBookingPayload,
+  IBaseBookingDbRecord,
   IBookingDbRecord,
+  IPatchBookingPayloadDbData,
   IBookingDbRecordCollection,
 }

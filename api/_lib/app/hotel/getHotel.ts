@@ -1,19 +1,19 @@
-import { hotelMapper, readHotel, readHotelByOwnerId } from '../../../_lib/data/hotel'
-import { IProfile, IHotel, IHotelDbRecord } from '../../../_lib/types'
+import { readHotel, readHotelByOwnerId } from '../../../_lib/data/hotel'
+import { IProfile, IHotel } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
 
 async function getHotel(requester: IProfile, hotelId: string): Promise<IHotel> {
-  let hotelDbRecord: IHotelDbRecord
+  let hotel: IHotel
 
   if (requester.role === SUPER_ADMIN) {
-    hotelDbRecord = await readHotel(hotelId)
+    hotel = await readHotel(hotelId)
   } else {
-    hotelDbRecord = await readHotelByOwnerId(hotelId, requester.id)
+    hotel = await readHotelByOwnerId(hotelId, requester.id)
   }
 
-  return hotelMapper(hotelDbRecord)
+  return hotel
 }
 
 export {

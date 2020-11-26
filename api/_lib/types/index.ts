@@ -18,7 +18,9 @@ export {
   IBookingCollection,
   IPostBookingPayload,
   IPatchBookingPayload,
+  IBaseBookingDbRecord,
   IBookingDbRecord,
+  IPatchBookingPayloadDbData,
   IBookingDbRecordCollection,
 } from './booking'
 
@@ -52,10 +54,12 @@ export {
   IHotelLocation,
   IBaseHotel,
   IHotel,
+  IHotelCollection,
   IPostHotelPayload,
   IPatchHotelPayload,
-  IHotelCollection,
+  IBaseHotelDbRecord,
   IHotelDbRecord,
+  IPatchHotelPayloadDbData,
   IHotelDbRecordCollection,
 } from './hotel'
 

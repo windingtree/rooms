@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 enum IProfileRoleEnum {
   SUPER_ADMIN = 'SUPER_ADMIN',
   MANAGER = 'MANAGER',
@@ -59,8 +61,15 @@ interface IPatchProfilePayload {
   hotelId?: string
 }
 
-interface IProfileDbRecord extends IBaseProfile {
-  _id: string
+interface IProfileDbRecord {
+  _id: ObjectID
+  email: string
+  name: string
+  phone: string
+  oneTimePassword: string
+  sessionToken: string
+  role: keyof IProfileRole
+  hotelId: ObjectID|null
 }
 
 type IProfileDbRecordCollection = Array<IProfileDbRecord>

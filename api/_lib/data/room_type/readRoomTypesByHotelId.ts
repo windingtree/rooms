@@ -10,14 +10,14 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
-async function readRoomTypesByOwnerId(ownerId: string): Promise<IRoomTypeDbRecordCollection> {
+async function readRoomTypesByHotelId(hotelId: string): Promise<IRoomTypeDbRecordCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IRoomTypeDbRecordCollection
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-    const query = { ownerId: new ObjectID(ownerId) }
+    const query = { hotelId: new ObjectID(hotelId) }
     const options = { projection: buildProjection() }
 
     const cursor = collection.find(query, options)
@@ -37,5 +37,5 @@ async function readRoomTypesByOwnerId(ownerId: string): Promise<IRoomTypeDbRecor
 }
 
 export {
-  readRoomTypesByOwnerId,
+  readRoomTypesByHotelId,
 }

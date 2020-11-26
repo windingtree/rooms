@@ -13,13 +13,11 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   }
 
   const payload: IPostRoomTypePayload = {
-    ownerId: '',
     hotelId: '',
     type: '',
   }
 
   const ALLOWED_PROPS: Array<keyof IPostRoomTypePayload> = [
-    'ownerId',
     'hotelId',
     'type',
     'quantity',
@@ -32,10 +30,6 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
       throw new CError(BAD_REQUEST, `Property '${key}' on 'roomType' is not settable.`)
     }
   }
-
-  const ownerId = request.body.ownerId
-  await validateRequiredString('ownerId', ownerId)
-  payload.ownerId = ownerId
 
   const hotelId = request.body.hotelId
   await validateRequiredString('hotelId', hotelId)

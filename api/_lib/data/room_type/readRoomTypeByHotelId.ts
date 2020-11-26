@@ -3,21 +3,21 @@ import { ObjectID } from 'mongodb'
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
 import { CError } from '../../../_lib/tools'
-import { IBookingDbRecord } from '../../../_lib/types'
+import { IRoomTypeDbRecord } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readBookingByOwnerId(bookingId: string, ownerId: string): Promise<IBookingDbRecord> {
+async function readRoomTypeByHotelId(roomTypeId: string, hotelId: string): Promise<IRoomTypeDbRecord> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result: IBookingDbRecord|null
+  let result: IRoomTypeDbRecord|null
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-    const query = { _id: new ObjectID(bookingId), ownerId: new ObjectID(ownerId) }
+    const query = { _id: new ObjectID(roomTypeId), hotelId: new ObjectID(hotelId) }
     const options = { projection: buildProjection() }
 
     result = await collection.findOne(query, options)
@@ -33,5 +33,5 @@ async function readBookingByOwnerId(bookingId: string, ownerId: string): Promise
 }
 
 export {
-  readBookingByOwnerId,
+  readRoomTypeByHotelId,
 }

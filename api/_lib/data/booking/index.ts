@@ -1,9 +1,3 @@
-
-export {
-  bookingMapper,
-  bookingCollectionMapper,
-} from './_mapper'
-
 export {
   createBooking,
 } from './createBooking'
@@ -13,29 +7,29 @@ export {
 } from './deleteBooking'
 
 export {
-  deleteBookingByOwnerId,
-} from './deleteBookingByOwnerId'
+  deleteBookingByHotelId,
+} from './deleteBookingByHotelId'
 
 export {
   readBooking,
 } from './readBooking'
 
 export {
-  readBookingByOwnerId,
-} from './readBookingByOwnerId'
+  readBookingByHotelId,
+} from './readBookingByHotelId'
 
 export {
   readBookings,
 } from './readBookings'
 
 export {
-  readBookingsByOwnerId,
-} from './readBookingsByOwnerId'
+  readBookingsByHotelId,
+} from './readBookingsByHotelId'
 
 export {
   updateBooking,
 } from './updateBooking'
 
 export {
-  updateBookingByOwnerId,
-} from './updateBookingByOwnerId'
+  updateBookingByHotelId,
+} from './updateBookingByHotelId'

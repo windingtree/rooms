@@ -1,10 +1,10 @@
 import { checkRequiredAppConfigProps } from './checkRequiredAppConfigProps'
-import { bookingCollectionMapper, readBookingsByOwnerId, deleteBooking } from '../../../_lib/data/booking'
+import { readBookingsByHotelId, deleteBooking } from '../../../_lib/data/booking'
 import { profileMapper, deleteProfile, readProfileByEmail } from '../../../_lib/data/profile'
 import {
   roomTypeCollectionMapper,
   readRoomTypes,
-  deleteRoomType
+  deleteRoomType,
 } from '../././../../_lib/data/room_type'
 import { CError } from '../../../_lib/tools'
 import { AppConfig } from '../../../_lib/infra/config'
@@ -14,7 +14,6 @@ import {
   IProfile,
   IProfileDbRecord,
   IBookingCollection,
-  IBookingDbRecordCollection,
 } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
@@ -32,8 +31,7 @@ async function apiTestTearDown(requester: IProfile): Promise<void> {
   const profileDbRecord: IProfileDbRecord = await readProfileByEmail(appConfig.API_TEST_EMAIL)
   const profile: IProfile = profileMapper(profileDbRecord)
 
-  const bookingDbRecordCollection: IBookingDbRecordCollection = await readBookingsByOwnerId(profile.id)
-  const bookings: IBookingCollection = bookingCollectionMapper(bookingDbRecordCollection)
+  const bookings: IBookingCollection = await readBookingsByHotelId(profile.hotelId)
   for (let c1 = 0; c1 < bookings.length; c1 += 1) {
     await deleteBooking(bookings[c1].id)
   }

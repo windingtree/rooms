@@ -20,10 +20,6 @@ async function validateMongoObjectId(propName: string, _value: unknown): Promise
     const id: string = objectId.toHexString()
 
     if (id !== _value) {
-      console.log(`propName = ${propName}`)
-      console.log(`_value = ${_value}`)
-      console.log(`id = ${id}`)
-
       throw new Error()
     }
   } catch (err) {

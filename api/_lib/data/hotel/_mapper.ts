@@ -1,9 +1,61 @@
-import { IHotelDbRecord, IHotel, IHotelDbRecordCollection, IHotelCollection } from '../../../_lib/types'
+import {
+  getObjectId,
+  getObjectIdString,
+} from '../../../_lib/tools'
+import {
+  IBaseHotelDbRecord,
+  IHotelDbRecord,
+  IHotelDbRecordCollection,
+  IPatchHotelPayloadDbData,
+
+  IBaseHotel,
+  IHotel,
+  IHotelCollection,
+  IPatchHotelPayload,
+} from '../../../_lib/types'
+
+function baseHotelDbRecordMapper(baseHotel: IBaseHotel): IBaseHotelDbRecord {
+  const baseHotelDbRecord: IBaseHotelDbRecord = {
+    ownerId: getObjectId(baseHotel.ownerId),
+    name: baseHotel.name,
+    address: baseHotel.address,
+    location: baseHotel.location,
+  }
+
+  return baseHotelDbRecord
+}
+
+function patchHotelPayloadDbDataMapper(patchHotelPayload: IPatchHotelPayload): IPatchHotelPayloadDbData {
+  const patchHotelPayloadDbData: IPatchHotelPayloadDbData = {}
+  let prop: keyof IPatchHotelPayload
+
+  prop = 'ownerId'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = getObjectId(patchHotelPayload[prop])
+  }
+
+  prop = 'name'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+  }
+
+  prop = 'address'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+  }
+
+  prop = 'location'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+  }
+
+  return patchHotelPayloadDbData
+}
 
 function hotelMapper(hotelDbRecord: IHotelDbRecord): IHotel {
   const hotel: IHotel = {
-    id: hotelDbRecord._id,
-    ownerId: hotelDbRecord.ownerId,
+    id: getObjectIdString(hotelDbRecord._id),
+    ownerId: getObjectIdString(hotelDbRecord.ownerId),
     name: hotelDbRecord.name,
     address: hotelDbRecord.address,
     location: hotelDbRecord.location,
@@ -22,6 +74,8 @@ function hotelCollectionMapper(hotelDbRecordCollection: IHotelDbRecordCollection
 }
 
 export {
+  baseHotelDbRecordMapper,
+  patchHotelPayloadDbDataMapper,
   hotelMapper,
   hotelCollectionMapper,
 }

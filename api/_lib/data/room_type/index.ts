@@ -13,29 +13,29 @@ export {
 } from './deleteRoomType'
 
 export {
-  deleteRoomTypeByOwnerId,
-} from './deleteRoomTypeByOwnerId'
+  deleteRoomTypeByHotelId,
+} from './deleteRoomTypeByHotelId'
 
 export {
   readRoomType,
 } from './readRoomType'
 
 export {
-  readRoomTypeByOwnerId,
-} from './readRoomTypeByOwnerId'
+  readRoomTypeByHotelId,
+} from './readRoomTypeByHotelId'
 
 export {
   readRoomTypes,
 } from './readRoomTypes'
 
 export {
-  readRoomTypesByOwnerId,
-} from './readRoomTypesByOwnerId'
+  readRoomTypesByHotelId,
+} from './readRoomTypesByHotelId'
 
 export {
   updateRoomType,
 } from './updateRoomType'
 
 export {
-  updateRoomTypeByOwnerId,
-} from './updateRoomTypeByOwnerId'
+  updateRoomTypeByHotelId,
+} from './updateRoomTypeByHotelId'

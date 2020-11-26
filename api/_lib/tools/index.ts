@@ -30,3 +30,9 @@ export {
 export {
   authorizeRequest,
 } from './authorizeRequest'
+
+export {
+  isFunction,
+  getObjectId,
+  getObjectIdString,
+} from './funcs'

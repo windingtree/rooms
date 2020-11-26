@@ -2,15 +2,16 @@ import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
+import { bookingMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IBookingDbRecord } from '../../../_lib/types'
+import { IBookingDbRecord, IBooking } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function readBooking(bookingId: string): Promise<IBookingDbRecord> {
+async function readBooking(bookingId: string): Promise<IBooking> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IBookingDbRecord|null
@@ -29,7 +30,7 @@ async function readBooking(bookingId: string): Promise<IBookingDbRecord> {
     throw new CError(NOT_FOUND, `Could not retrieve a '${ENTITY_NAME}'.`)
   }
 
-  return result
+  return bookingMapper(result)
 }
 
 export {

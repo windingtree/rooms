@@ -8,14 +8,14 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
-async function deleteBookingByOwnerId(bookingId: string, ownerId: string): Promise<void> {
+async function deleteRoomTypeByHotelId(roomTypeId: string, hotelId: string): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
-    const filter = { _id: new ObjectID(bookingId), ownerId: new ObjectID(ownerId) }
+    const filter = { _id: new ObjectID(roomTypeId), hotelId: new ObjectID(hotelId) }
 
     result = await collection.deleteOne(filter)
   } catch (err) {
@@ -28,5 +28,5 @@ async function deleteBookingByOwnerId(bookingId: string, ownerId: string): Promi
 }
 
 export {
-  deleteBookingByOwnerId,
+  deleteRoomTypeByHotelId,
 }
