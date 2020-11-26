@@ -142,7 +142,7 @@ class BookingEdit extends React.Component {
               guestName={this.state.booking.guestName}
               guestEmail={this.state.booking.guestEmail}
               phoneNumber={this.state.booking.phoneNumber}
-              roomType={this.state.booking.roomType}
+              roomTypeId={this.state.booking.roomTypeId}
 
               roomTypes={this.state.roomTypes}
 

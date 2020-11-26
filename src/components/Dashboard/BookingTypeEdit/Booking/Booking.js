@@ -170,8 +170,8 @@ class Booking extends React.Component {
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-outlined-label"
-                  value={this.props.roomType}
-                  onChange={(e, j) => { this.handlePropChange(j.props.value, 'roomType') }}
+                  value={this.props.roomTypeId}
+                  onChange={(e, j) => { this.handlePropChange(j.props.value, 'roomTypeId') }}
                   label="Room Type"
                 >
                   <MenuItem value="">
