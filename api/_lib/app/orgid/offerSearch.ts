@@ -138,6 +138,9 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
 
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
+      if (roomType.hotelId !== hotel.id) {
+        return
+      }
 
       result.offers[`${hotel.id}-${roomType.id}`] = {
         pricePlansReferences: {
