@@ -5,8 +5,14 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
 import { localStorageFallback } from '../../../utils/storage_factory'
+import { CONSTANTS } from '../../../utils/constants'
 import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
+
+const {
+  LOCAL_STORAGE_SESSION_EMAIL_KEY,
+  LOCAL_STORAGE_SESSION_TOKEN_KEY,
+} = CONSTANTS
 
 const useStyles = () => {
   return {
@@ -134,8 +140,8 @@ class LoginForm extends React.Component {
       secondLoginOption: '',
     })
 
-    const sessionToken = localStorageFallback.getItem('session_token')
-    localStorageFallback.setItem('session_email', this.state.email)
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_EMAIL_KEY, this.state.email)
 
     apiClient
       .emailOneTimePassword({ email: this.state.email, sessionToken })
@@ -163,7 +169,7 @@ class LoginForm extends React.Component {
   tryToLogin = () => {
     this.setState({ tryingToLogin: true })
 
-    const sessionToken = localStorageFallback.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
 
     apiClient
       .login({
