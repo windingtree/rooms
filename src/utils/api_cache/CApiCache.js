@@ -1,4 +1,5 @@
 import { localStorageFallback } from '../storage_factory'
+import { CONSTANTS } from '../constants'
 
 import {
   getBookings,
@@ -30,7 +31,7 @@ import {
   updateHotel,
 } from './mixins/hotel'
 
-const LOCAL_STORAGE_CACHE_KEY = 'api_cache'
+const { LOCAL_STORAGE_CACHE_KEY } = CONSTANTS
 
 class CApiCache {
   constructor() {

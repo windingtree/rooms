@@ -1,4 +1,7 @@
 import { localStorageFallback } from '../storage_factory'
+import { CONSTANTS } from '../constants'
+
+const { LOCAL_STORAGE_JWT_TOKEN_KEY } = CONSTANTS
 
 function checkStatus(response) {
   if (
@@ -38,7 +41,7 @@ function makeHeaders() {
 
 function makeAuthHeaders() {
   const headers = makeHeaders()
-  const jwtToken = localStorageFallback.getItem('jwt_token')
+  const jwtToken = localStorageFallback.getItem(LOCAL_STORAGE_JWT_TOKEN_KEY)
 
   headers['Authorization'] = `Bearer ${jwtToken}`
 

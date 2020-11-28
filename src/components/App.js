@@ -5,6 +5,7 @@ import * as jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
 
 import { localStorageFallback } from '../utils/storage_factory'
+import { CONSTANTS } from '../utils/constants'
 import { ApiCache } from '../utils/api_cache'
 import { apiClient } from '../utils/api'
 import { errorLogger } from '../utils/functions'
@@ -14,7 +15,11 @@ import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
 import Spinner from './base/Spinner/Spinner'
 
-const JWT_SECRET = process.env.REACT_APP_JWT_SECRET
+const {
+  JWT_SECRET,
+  LOCAL_STORAGE_SESSION_TOKEN_KEY,
+  LOCAL_STORAGE_JWT_TOKEN_KEY,
+} = CONSTANTS
 
 const useStyles = () => {
   return {
@@ -34,7 +39,7 @@ class App extends React.Component {
 
     this.apiCache = ApiCache.getInstance()
 
-    const sessionToken = localStorageFallback.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
     if (typeof sessionToken !== 'string' || sessionToken.length === 0) {
       this.resetLocalStorage()
     }
@@ -107,10 +112,10 @@ class App extends React.Component {
   }
 
   handleOnLogin = (profile) => {
-    const sessionToken = localStorageFallback.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
     const token = jwt.sign({ email: profile.email, oneTimePassword: profile.oneTimePassword, sessionToken }, JWT_SECRET)
 
-    localStorageFallback.setItem('jwt_token', token)
+    localStorageFallback.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, token)
 
     this.setState({
       isLoggedIn: true,
@@ -123,8 +128,8 @@ class App extends React.Component {
 
   resetLocalStorage = () => {
     this.apiCache.clearCache()
-    localStorageFallback.setItem('jwt_token', '')
-    localStorageFallback.setItem('session_token', uuidv4())
+    localStorageFallback.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, '')
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_TOKEN_KEY, uuidv4())
   }
 
   handleLogout = () => {
