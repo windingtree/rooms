@@ -1,3 +1,5 @@
+import { localStorageFallback } from '../storage_factory'
+
 function checkStatus(response) {
   if (
     (typeof response.status !== 'number') ||
@@ -36,7 +38,7 @@ function makeHeaders() {
 
 function makeAuthHeaders() {
   const headers = makeHeaders()
-  const jwtToken = window.localStorage.getItem('jwt_token')
+  const jwtToken = localStorageFallback.getItem('jwt_token')
 
   headers['Authorization'] = `Bearer ${jwtToken}`
 

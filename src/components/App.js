@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import * as jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
 
+import { localStorageFallback } from '../utils/storage_factory'
 import { ApiCache } from '../utils/api_cache'
 import { apiClient } from '../utils/api'
 import { errorLogger } from '../utils/functions'
@@ -32,6 +33,11 @@ class App extends React.Component {
     this._isDestroyed = false
 
     this.apiCache = ApiCache.getInstance()
+
+    const sessionToken = localStorageFallback.getItem('session_token')
+    if (typeof sessionToken !== 'string' || sessionToken.length === 0) {
+      this.resetLocalStorage()
+    }
 
     let profile = this.apiCache.getProfile()
     let profileId
@@ -101,10 +107,10 @@ class App extends React.Component {
   }
 
   handleOnLogin = (profile) => {
-    const sessionToken = window.localStorage.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem('session_token')
     const token = jwt.sign({ email: profile.email, oneTimePassword: profile.oneTimePassword, sessionToken }, JWT_SECRET)
 
-    window.localStorage.setItem('jwt_token', token)
+    localStorageFallback.setItem('jwt_token', token)
 
     this.setState({
       isLoggedIn: true,
@@ -115,10 +121,10 @@ class App extends React.Component {
     this.props.history.push('/dashboard')
   }
 
-  resetLocalStorage = (refreshSessionToken) => {
+  resetLocalStorage = () => {
     this.apiCache.clearCache()
-    window.localStorage.setItem('jwt_token', '')
-    window.localStorage.setItem('session_token', uuidv4())
+    localStorageFallback.setItem('jwt_token', '')
+    localStorageFallback.setItem('session_token', uuidv4())
   }
 
   handleLogout = () => {
