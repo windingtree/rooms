@@ -151,18 +151,19 @@ class LoginForm extends React.Component {
         }
 
         if (response && response.oneTimePassword && response.oneTimePassword !== 'sent') {
-          this.setState({
-            sendGridNotWorking: true,
-            secondLoginOption: response.oneTimePassword,
-          })
+          this.setState({ sendGridNotWorking: true, secondLoginOption: response.oneTimePassword })
         }
 
-        this.setState({ tryingToEmailPass: false })
-        this.setState({ canInputOneTimePassword: true })
+        this.setState({ tryingToEmailPass: false, canInputOneTimePassword: true })
       })
-      .catch((err) => {
-        this.setState({ tryingToEmailPass: false })
-        this.setState({ canInputOneTimePassword: false })
+      .catch((error) => {
+        if (this._isDestroyed) {
+          return
+        }
+
+        errorLogger(error)
+
+        this.setState({ tryingToEmailPass: false, canInputOneTimePassword: false })
       })
   }
 
@@ -186,6 +187,10 @@ class LoginForm extends React.Component {
         this.props.onLogin(response)
       })
       .catch((error) => {
+        if (this._isDestroyed) {
+          return
+        }
+
         errorLogger(error)
 
         this.setState({ tryingToLogin: false })
