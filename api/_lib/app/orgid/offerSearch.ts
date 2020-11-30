@@ -14,7 +14,7 @@ import {
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
-  console.log('request.body')
+  console.log('offerSearch :: request.body ::')
   console.log(JSON.stringify(request.body))
   console.log('')
 

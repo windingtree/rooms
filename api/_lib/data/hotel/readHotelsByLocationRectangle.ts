@@ -31,7 +31,7 @@ async function readHotelsByLocationRectangle(rectangle: ILocationRectangle): Pro
     ],
   ]
 
-  console.log('Search polygon:')
+  console.log('readHotelsByLocationRectangle :: search polygon ::')
   console.log(JSON.stringify(polygon))
   console.log('')
 
