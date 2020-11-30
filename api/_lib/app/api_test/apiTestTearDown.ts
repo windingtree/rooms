@@ -29,14 +29,16 @@ async function apiTestTearDown(requester: IProfile): Promise<void> {
   const profileDbRecord: IProfileDbRecord = await readProfileByEmail(appConfig.API_TEST_EMAIL)
   const profile: IProfile = profileMapper(profileDbRecord)
 
-  const bookingCollection: IBookingCollection = await readBookingsByHotelId(profile.hotelId)
-  for (let c1 = 0; c1 < bookingCollection.length; c1 += 1) {
-    await deleteBooking(bookingCollection[c1].id)
-  }
+  if (typeof profile.hotelId === 'string' && profile.hotelId.length > 0) {
+    const bookingCollection: IBookingCollection = await readBookingsByHotelId(profile.hotelId)
+    for (let c1 = 0; c1 < bookingCollection.length; c1 += 1) {
+      await deleteBooking(bookingCollection[c1].id)
+    }
 
-  const roomTypeCollection: IRoomTypeCollection = await readRoomTypesByHotelId(profile.hotelId)
-  for (let c1 = 0; c1 < roomTypeCollection.length; c1 += 1) {
-    await deleteRoomType(roomTypeCollection[c1].id)
+    const roomTypeCollection: IRoomTypeCollection = await readRoomTypesByHotelId(profile.hotelId)
+    for (let c1 = 0; c1 < roomTypeCollection.length; c1 += 1) {
+      await deleteRoomType(roomTypeCollection[c1].id)
+    }
   }
 
   await deleteProfile(profile.id)
