@@ -1,5 +1,3 @@
-import { ObjectID } from 'mongodb'
-
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { CError } from '../../../_lib/tools'
 import { MongoDB } from '../../../_lib/infra/mongo'

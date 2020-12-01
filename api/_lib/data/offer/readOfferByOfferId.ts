@@ -1,5 +1,3 @@
-import { ObjectID } from 'mongodb'
-
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
 import { offerMapper } from './_mapper'

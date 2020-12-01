@@ -106,6 +106,7 @@ export {
 
 export {
   IPostCreateOrderPassenger,
+  IPostCreateOrderPayloadPassengers,
   IPostCreateOrderPayload,
   ICreateOrderResult,
 } from './order'

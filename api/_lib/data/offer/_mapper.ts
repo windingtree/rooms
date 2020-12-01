@@ -72,9 +72,8 @@ function offerCollectionDbRecordMapper(offerCollection: IOfferCollection): IOffe
 
 function patchOfferPayloadDbDataMapper(patchOfferPayload: IPatchOfferPayload): IPatchOfferPayloadDbData {
   const patchOfferPayloadDbData: IPatchOfferPayloadDbData = {}
-  let prop: keyof IPatchOfferPayload
+  const prop: keyof IPatchOfferPayload = 'offer'
 
-  prop = 'offer'
   if (typeof patchOfferPayload[prop] !== 'undefined') {
     patchOfferPayloadDbData[prop] = patchOfferPayload[prop]
   }

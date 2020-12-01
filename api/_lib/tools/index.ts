@@ -37,6 +37,7 @@ export {
 
 export {
   isFunction,
+  isObject,
   getObjectId,
   getObjectIdString,
 } from './funcs'

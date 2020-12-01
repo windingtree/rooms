@@ -33,22 +33,22 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
 
   const result: IOfferSearchResults = {
     accommodations: {},
-    "pricePlans": {
-      "BAR": {
-        "name": "Winding Tree BAR",
-        "penalties": {
-          "refund": {
-            "refundable": true
-          }
-        }
-      }
+    pricePlans: {
+      BAR: {
+        name: 'Winding Tree BAR',
+        penalties: {
+          refund: {
+            refundable: true,
+          },
+        },
+      },
     },
     offers: {},
     passengers: {
-      "PAX1": {
-        "type": "ADT"
-      }
-    }
+      PAX1: {
+        type: 'ADT',
+      },
+    },
   }
 
   hotels.forEach((hotel) => {
@@ -69,8 +69,8 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
     let hotelMedia: Array<{ type: string, url: string }> = []
     if (typeof hotel.imageUrl === 'string' && hotel.imageUrl.length > 0) {
       hotelMedia = [{
-        "type": "photo",
-        "url": hotel.imageUrl,
+        type: 'photo',
+        url: hotel.imageUrl,
       }]
     }
 
@@ -119,19 +119,19 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
       }
 
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
-        "name": roomType.type,
-        "description": 'Room provided by Rooms project.',
-        "amenities": roomType.amenities.split(';'),
-        "size": {
-          "value": "",
-          "_unit_": ""
+        name: roomType.type,
+        description: 'Room provided by Rooms project.',
+        amenities: roomType.amenities.split(';'),
+        size: {
+          value: '',
+          _unit_: '',
         },
-        "maximumOccupancy": {
-          "adults": "2",
-          "childs": "1"
+        maximumOccupancy: {
+          adults: 2,
+          childs: 1,
         },
-        "media": roomTypeMedia,
-        "policies": {}
+        media: roomTypeMedia,
+        policies: {},
       }
     })
   })

@@ -7,7 +7,11 @@ const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 function isFunction(functionToCheck: unknown): boolean {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
- }
+}
+
+function isObject(variableToCheck: unknown): boolean {
+  return Object.prototype.toString.call(variableToCheck) === '[object Object]'
+}
 
 function getObjectId(id: string|undefined|null): ObjectID|null {
   if (typeof id === 'undefined' || id === null || id === '') {
@@ -36,6 +40,7 @@ function getObjectIdString(objectId: ObjectID|string|undefined|null): string {
 
 export {
   isFunction,
+  isObject,
   getObjectId,
   getObjectIdString,
 }

@@ -1,7 +1,7 @@
 import { NowRequest } from '@vercel/node'
 
-import { CError } from '../../../_lib/tools'
-import { validateRequiredString, validateOptionalString  } from '../_helpers'
+import { CError, isObject } from '../../../_lib/tools'
+import { validateRequiredString  } from '../_helpers'
 import { IPostCreateOrderPayload, IPostCreateOrderPassenger } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
@@ -17,6 +17,7 @@ async function postCreateOrderPayloadValidator(request: NowRequest): Promise<IPo
     travellerName: '',
     travellerPhone: '',
     travellerEmail: '',
+    passengers: {},
   }
 
   const ALLOWED_PROPS: Array<string> = [
@@ -35,28 +36,39 @@ async function postCreateOrderPayloadValidator(request: NowRequest): Promise<IPo
   await validateRequiredString('offerId', offerId)
   payload.offerId = offerId
 
-  if (request.body.passengers) {
+  if (isObject(request.body.passengers)) {
     const passengers = Object.values(request.body.passengers)
 
-    if (Array.isArray(passengers) && passengers.length !== 0) {
+    if (Array.isArray(passengers) && passengers.length > 0) {
+      payload.passengers = request.body.passengers
+
       const passenger: IPostCreateOrderPassenger = (passengers[0] as IPostCreateOrderPassenger)
 
-      console.log(passenger)
-
-      const lastName = (Array.isArray(passenger.lastnames) && typeof passenger.lastnames[0] === 'string') ? passenger.lastnames[0] : ''
-      const firstName = (Array.isArray(passenger.firstnames) && typeof passenger.firstnames[0] === 'string') ? passenger.firstnames[0] : ''
-
+      let lastName = ''
+      if (Array.isArray(passenger.lastnames) && typeof passenger.lastnames[0] === 'string') {
+        lastName = passenger.lastnames[0]
+      }
+      let firstName = ''
+      if (Array.isArray(passenger.firstnames) && typeof passenger.firstnames[0] === 'string') {
+        firstName = passenger.lastnames[0]
+      }
       payload.travellerName = `${lastName} ${firstName}`.trim()
 
-      const phone = (Array.isArray(passenger.contactInformation) && typeof passenger.contactInformation[0] === 'string') ? passenger.contactInformation[0] : ''
+      let phone = ''
+      if (Array.isArray(passenger.contactInformation) && typeof passenger.contactInformation[0] === 'string') {
+        phone = passenger.contactInformation[0]
+      }
       payload.travellerPhone = phone.trim()
 
-      const email = (Array.isArray(passenger.contactInformation) && typeof passenger.contactInformation[1] === 'string') ? passenger.contactInformation[1] : ''
+      let email = ''
+      if (Array.isArray(passenger.contactInformation) && typeof passenger.contactInformation[1] === 'string') {
+        email = passenger.contactInformation[1]
+      }
       payload.travellerEmail = email.trim()
     }
+  } else {
+    throw new CError(BAD_REQUEST, `Property 'passengers' should be an object.`)
   }
-
-  console.log(payload)
 
   return payload
 }
