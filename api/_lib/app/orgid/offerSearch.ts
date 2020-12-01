@@ -1,6 +1,8 @@
 import { NowRequest } from '@vercel/node'
 import { v4 as uuidv4 } from 'uuid'
+import * as moment from 'moment'
 
+import { createOffers } from '../../../_lib/data/offer'
 import { readHotelsByLocationRectangle as readHotelsByLocationRectangleDbFunc } from '../../../_lib/data/hotel'
 import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
 import { CError } from '../../../_lib/tools'
@@ -8,16 +10,13 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 import {
   IHotelCollection,
   IRoomTypeCollection,
-  IOfferSearchResults
+  IOfferSearchResults,
+  IOfferCollection,
 } from '../../../_lib/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
-  console.log('offerSearch :: request.body ::')
-  console.log(JSON.stringify(request.body))
-  console.log('')
-
   let searchLocation
   if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
     searchLocation = request.body.accommodation.location
@@ -137,13 +136,16 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
     })
   })
 
+  const cachedOffers: IOfferCollection = []
+  const createdAt = moment.utc(new Date()).format()
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
       if (roomType.hotelId !== hotel.id) {
         return
       }
 
-      result.offers[`${hotel.id}-${roomType.id}-${uuidv4()}`] = {
+      const offerId = `${hotel.id}-${roomType.id}-${uuidv4()}`
+      const offer = {
         pricePlansReferences: {
           BAR: {
             accommodation: hotel.id,
@@ -157,8 +159,14 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
         },
       }
 
+      result.offers[offerId] = offer
+      cachedOffers.push({ id: '', offerId, offer, createdAt })
     })
   })
+
+  if (cachedOffers.length > 0) {
+    await createOffers(cachedOffers)
+  }
 
   return result
 }

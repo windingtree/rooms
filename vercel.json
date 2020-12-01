@@ -51,6 +51,11 @@
     },
 
     {
+      "source": "/api/v1/orders/createWithOffer",
+      "destination": "/api/v1/orders/createWithOffer.ts"
+    },
+
+    {
       "source": "/api/v1/one_time_password",
       "destination": "/api/v1/one_time_password.ts"
     },

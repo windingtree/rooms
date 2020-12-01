@@ -19,6 +19,10 @@ export {
 } from './emailOneTimePassword'
 
 export {
+  emailNewBooking,
+} from './emailNewBooking'
+
+export {
   getBearerToken,
 } from './getBearerToken'
 
