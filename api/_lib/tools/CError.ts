@@ -1,11 +1,11 @@
 import { IHttpStatusCodes } from '../../_lib/types'
 
 class CError {
-  code: keyof IHttpStatusCodes
+  status: keyof IHttpStatusCodes
   msg: string
 
   constructor(code: keyof IHttpStatusCodes, msg: string) {
-    this.code = code
+    this.status = code
     this.msg = msg
   }
 }

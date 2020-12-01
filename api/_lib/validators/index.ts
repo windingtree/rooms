@@ -25,3 +25,7 @@ export {
 export {
   postOneTimePasswordPayloadValidator,
 } from './OneTimePassword'
+
+export {
+  postCreateOrderPayloadValidator,
+} from './Order'

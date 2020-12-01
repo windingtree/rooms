@@ -88,3 +88,24 @@ export {
 export {
   ILocationRectangle,
 } from './geo'
+
+export {
+  IBaseOffer,
+  IOffer,
+  IOfferCollection,
+
+  IBaseOfferDbRecord,
+  IOfferDbRecord,
+  IOfferCollectionDbRecord,
+
+  IPostOfferPayload,
+  IPatchOfferPayload,
+
+  IPatchOfferPayloadDbData,
+} from './offer'
+
+export {
+  IPostCreateOrderPassenger,
+  IPostCreateOrderPayload,
+  ICreateOrderResult,
+} from './order'

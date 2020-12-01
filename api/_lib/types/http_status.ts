@@ -12,16 +12,16 @@ interface IHttpStatusCodes {
 }
 
 interface IHttpStatus {
-  OK: keyof IHttpStatusCodes
-  BAD_REQUEST: keyof IHttpStatusCodes
-  UNAUTHORIZED: keyof IHttpStatusCodes
-  FORBIDDEN: keyof IHttpStatusCodes
-  NOT_FOUND: keyof IHttpStatusCodes
-  METHOD_NOT_ALLOWED: keyof IHttpStatusCodes
-  INTERNAL_SERVER_ERROR: keyof IHttpStatusCodes
-  NOT_IMPLEMENTED: keyof IHttpStatusCodes
-  BAD_GATEWAY: keyof IHttpStatusCodes
-  SERVICE_UNAVAILABLE: keyof IHttpStatusCodes
+  OK: 'OK'
+  BAD_REQUEST: 'BAD_REQUEST'
+  UNAUTHORIZED: 'UNAUTHORIZED'
+  FORBIDDEN: 'FORBIDDEN'
+  NOT_FOUND: 'NOT_FOUND'
+  METHOD_NOT_ALLOWED: 'METHOD_NOT_ALLOWED'
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR'
+  NOT_IMPLEMENTED: 'NOT_IMPLEMENTED'
+  BAD_GATEWAY: 'BAD_GATEWAY'
+  SERVICE_UNAVAILABLE:'SERVICE_UNAVAILABLE'
 }
 
 export {

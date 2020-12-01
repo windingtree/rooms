@@ -31,10 +31,6 @@ async function readHotelsByLocationRectangle(rectangle: ILocationRectangle): Pro
     ],
   ]
 
-  console.log('readHotelsByLocationRectangle :: search polygon ::')
-  console.log(JSON.stringify(polygon))
-  console.log('')
-
   let result: IHotelDbRecordCollection
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
