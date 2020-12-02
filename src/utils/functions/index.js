@@ -1,10 +1,10 @@
 export {
   errorLogger,
-} from './error_logger'
+} from './errorLogger'
 
 export {
   objClone,
-} from './obj_clone'
+} from './objClone'
 
 export {
   isFunction,
