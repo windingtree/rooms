@@ -1,24 +1,24 @@
 import { NowResponse } from '@vercel/node'
 
-import { CError } from '../tools'
+import { CError } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 
 const { HTTP_STATUS, HTTP_STATUS_CODES } = CONSTANTS
 const { INTERNAL_SERVER_ERROR } = HTTP_STATUS
 
 function errorHandler(response: NowResponse, error: unknown): void {
+  let errorCode: number
+  let errorMessage: string
+
   if (error instanceof CError) {
-    const err: CError = (error as CError)
-
-    const errorCode = HTTP_STATUS_CODES[err.status]
-    const errorMessage = err.msg
-
-    response.status(errorCode).json({ err: errorMessage })
+    errorCode = HTTP_STATUS_CODES[error.status]
+    errorMessage = error.msg
   } else {
-    response
-      .status(HTTP_STATUS_CODES[INTERNAL_SERVER_ERROR])
-      .json({ err: 'Unhandled error occurred.' })
+    errorCode = HTTP_STATUS_CODES[INTERNAL_SERVER_ERROR]
+    errorMessage = 'Unhandled error occurred.'
   }
+
+  response.status(errorCode).json({ err: errorMessage })
 }
 
 export {

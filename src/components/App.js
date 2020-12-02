@@ -19,6 +19,7 @@ const {
   JWT_SECRET,
   LOCAL_STORAGE_SESSION_TOKEN_KEY,
   LOCAL_STORAGE_JWT_TOKEN_KEY,
+  LOCAL_STORAGE_SESSION_EMAIL_KEY,
 } = CONSTANTS
 
 const useStyles = () => {
@@ -128,14 +129,18 @@ class App extends React.Component {
 
   resetLocalStorage = () => {
     this.apiCache.clearCache()
+
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_EMAIL_KEY, '')
     localStorageFallback.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, '')
     localStorageFallback.setItem(LOCAL_STORAGE_SESSION_TOKEN_KEY, uuidv4())
   }
 
   handleLogout = () => {
     this.resetLocalStorage()
+
     this.setState({
       isLoggedIn: false,
+      loadingProfile: false,
       profile: null,
       profileId: null,
     })

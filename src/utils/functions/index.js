@@ -5,3 +5,7 @@ export {
 export {
   objClone,
 } from './obj_clone'
+
+export {
+  isFunction,
+} from './isFunction'
