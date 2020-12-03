@@ -87,6 +87,7 @@ export {
 
 export {
   ILocationRectangle,
+  ILocationRectangleDbType,
 } from './geo'
 
 export {

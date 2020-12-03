@@ -2,17 +2,17 @@ import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
 import { hotelCollectionMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IHotelDbRecord, IHotelDbRecordCollection, IHotelCollection, ILocationRectangle } from '../../../_lib/types'
+import { IHotelDbRecord, IHotelDbRecordCollection, IHotelCollection, ILocationRectangleDbType } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
-async function readHotelsByLocationRectangle(rectangle: ILocationRectangle): Promise<IHotelCollection> {
+async function readHotelsByLocationRectangle(rectangle: ILocationRectangleDbType): Promise<IHotelCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  const polygon = [
+  const polygon: Array<Array<number>> = [
     [
       rectangle.north,
       rectangle.east,

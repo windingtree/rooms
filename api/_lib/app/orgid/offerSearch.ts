@@ -12,9 +12,25 @@ import {
   IRoomTypeCollection,
   IOfferSearchResults,
   IOfferCollection,
+  ILocationRectangle,
+  ILocationRectangleDbType,
 } from '../../../_lib/types'
 
 const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
+
+async function convertToNum(val: number|string|null|undefined): Promise<number> {
+  let num: number
+
+  if (typeof val === 'number') {
+    num = val
+  } else if (typeof val === 'string' && !Number.isNaN(parseFloat(val))) {
+    num = parseFloat(val)
+  } else {
+    throw new CError(BAD_REQUEST, `Could not convert value '${val}' to a number.`)
+  }
+
+  return num
+}
 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
   let searchLocation
@@ -28,7 +44,15 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
     throw new CError(BAD_REQUEST, 'The search API supports only "location.rectangle" at this time.')
   }
 
-  const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(searchLocation.rectangle)
+  const rectangle: ILocationRectangle = searchLocation.rectangle
+  const rectangleDb: ILocationRectangleDbType = {
+    north: await convertToNum(rectangle.north),
+    south: await convertToNum(rectangle.south),
+    west: await convertToNum(rectangle.west),
+    east: await convertToNum(rectangle.east),
+  }
+
+  const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(rectangleDb)
   if (hotels.length === 0) {
     throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.')
   }
