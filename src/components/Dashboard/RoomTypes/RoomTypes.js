@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 
-import { errorLogger, objClone } from '../../../utils/functions'
+import { errorLogger, objClone, removeProp } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
 import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
@@ -89,6 +89,7 @@ class RoomTypes extends React.Component {
   initRoomTypeObj = () => {
     const roomTypeObj = {
       id: uuidv4(),
+      creating: true,
 
       hotelId: this.props.userProfile.hotelId,
 
@@ -109,22 +110,14 @@ class RoomTypes extends React.Component {
       roomTypes: this.state.roomTypes.concat(newRoomType),
     })
 
-    apiClient.createRoomType(Object.assign({}, newRoomType, { id: undefined }))
-      .then((attrs) => {
+    apiClient.createRoomType(removeProp(objClone(newRoomType), 'id', 'creating'))
+      .then((createdRoomType) => {
         if (this._isDestroyed) return
 
         this.setState({
           roomTypes: this.state.roomTypes.map((roomType) => {
             if (roomType.id === newRoomType.id) {
-              const _roomType = Object.assign(
-                {},
-                objClone(roomType),
-                {
-                  id: attrs.id,
-                }
-              )
-
-              return _roomType
+              return createdRoomType
             } else {
               return roomType
             }
@@ -145,7 +138,7 @@ class RoomTypes extends React.Component {
           const _roomType = Object.assign(
             {},
             objClone(roomType),
-            data
+            objClone(data)
           )
 
           return _roomType
@@ -166,7 +159,7 @@ class RoomTypes extends React.Component {
 
   deleteRoomType = (id) => {
     this.setState({
-      roomTypes: this.state.roomTypes.filter(t => t.id !== id),
+      roomTypes: this.state.roomTypes.filter(roomType => roomType.id !== id),
     })
 
     apiClient
