@@ -144,7 +144,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
         return
       }
 
-      const offerId = `${hotel.id}-${roomType.id}-${uuidv4()}`
+      const offerId = uuidv4()
       const offer = {
         pricePlansReferences: {
           BAR: {
