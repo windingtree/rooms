@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import {
   createBooking as createBookingDbFunc,
   readBooking as readBookingDbFunc,
@@ -32,6 +34,7 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
   }
 
   const data: IBaseBooking = {
+    orderId: uuidv4(),
     hotelId: payload.hotelId,
     checkInDate: (typeof payload.checkInDate !== 'undefined') ? payload.checkInDate : '',
     checkOutDate: (typeof payload.checkOutDate !== 'undefined') ? payload.checkOutDate : '',

@@ -3,6 +3,7 @@ import { IBookingDbRecord } from '../../../_lib/types'
 function buildProjection(): { [key: string]: 1 } {
   const allowedFields: Array<keyof IBookingDbRecord> = [
     '_id',
+    'orderId',
     'hotelId',
     'checkInDate',
     'checkOutDate',

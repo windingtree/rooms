@@ -16,6 +16,7 @@ import {
 
 function baseBookingDbRecordMapper(baseBooking: IBaseBooking): IBaseBookingDbRecord {
   const baseBookingDbRecord: IBaseBookingDbRecord = {
+    orderId: baseBooking.orderId,
     hotelId: getObjectId(baseBooking.hotelId),
     checkInDate: baseBooking.checkInDate,
     checkOutDate: baseBooking.checkOutDate,
@@ -73,6 +74,7 @@ function patchBookingPayloadDbDataMapper(patchBookingPayload: IPatchBookingPaylo
 function bookingMapper(bookingDbRecord: IBookingDbRecord): IBooking {
   const booking: IBooking = {
     id: getObjectIdString(bookingDbRecord._id),
+    orderId: bookingDbRecord.orderId,
     hotelId: getObjectIdString(bookingDbRecord.hotelId),
     checkInDate: bookingDbRecord.checkInDate,
     checkOutDate: bookingDbRecord.checkOutDate,
