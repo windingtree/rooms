@@ -1,6 +1,7 @@
 import { ObjectID } from 'mongodb'
 
 interface IBaseBooking {
+  orderId: string
   hotelId: string
   checkInDate: string
   checkOutDate: string
@@ -37,6 +38,7 @@ interface IPatchBookingPayload {
 }
 
 interface IBaseBookingDbRecord {
+  orderId: string
   hotelId: ObjectID|null
   checkInDate: string
   checkOutDate: string

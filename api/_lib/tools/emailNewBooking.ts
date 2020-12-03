@@ -6,7 +6,7 @@ import { CONSTANTS } from '../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
-async function emailNewBooking(did: string, bookingId: string, email: string): Promise<void> {
+async function emailNewBooking(did: string, orderId: string, email: string): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
   try {
@@ -18,11 +18,11 @@ async function emailNewBooking(did: string, bookingId: string, email: string): P
   const msg = {
     to: email,
     from: 'Rooms booking <auth@em.windingtree.com>',
-    subject: `Booking ${bookingId} created`,
-    text: `Organization with DID "${did}" just successfully created a booking in Rooms project. Booking ID is "${bookingId}".`,
+    subject: `Your booking in Rooms project was created`,
+    text: `Organization with DID "${did}" just successfully created a booking for you in Rooms project. Order ID is "${orderId}".`,
     html: `` +
       `<p>` +
-        `Organization with DID "${did}" just successfully created a booking in Rooms project. Booking ID is "${bookingId}".` +
+        `Organization with DID "${did}" just successfully created a booking for you in Rooms project. Order ID is "${orderId}".` +
       `</p>`,
   }
 
