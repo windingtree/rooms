@@ -159,7 +159,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
           }),
         size: {
           value: '',
-          _unit_: '',
+          unit: 'metric',
         },
         maximumOccupancy: {
           adults: 2,
