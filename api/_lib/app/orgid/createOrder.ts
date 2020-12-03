@@ -6,6 +6,11 @@ import { emailNewBooking } from '../../../_lib/tools'
 import { IPostCreateOrderPayload, ICreateOrderResult, IOrgDetails, IOffer, IBaseBooking } from '../../../_lib/types'
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
+  console.log('')
+  console.log('createOrder :: payload')
+  console.log(payload)
+  console.log('-------')
+
   const offer: IOffer = await readOfferByOfferId(payload.offerId)
   const orderId = uuidv4()
   const baseBooking: IBaseBooking = {
