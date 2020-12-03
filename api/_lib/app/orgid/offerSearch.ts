@@ -14,7 +14,7 @@ import {
   IOfferCollection,
 } from '../../../_lib/types'
 
-const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
+const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
   let searchLocation
@@ -29,6 +29,10 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
   }
 
   const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(searchLocation.rectangle)
+  if (hotels.length === 0) {
+    throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.')
+  }
+
   const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
 
   const result: IOfferSearchResults = {
@@ -63,7 +67,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
     })
 
     if (numAvailRoomTypes === 0) {
-      return
+      throw new CError(NOT_FOUND, 'No available roomtypes found for selected hotels.')
     }
 
     let hotelMedia: Array<{ type: string, url: string }> = []
