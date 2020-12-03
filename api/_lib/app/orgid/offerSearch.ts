@@ -149,7 +149,14 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
         name: roomType.type,
         description: 'Room provided by Rooms project.',
-        amenities: roomType.amenities.split(';'),
+        amenities: roomType.amenities
+          .split(';')
+          .map((amenity) => {
+            return amenity.trim()
+          })
+          .filter((amenity) => {
+            return amenity !== ''
+          }),
         size: {
           value: '',
           _unit_: '',
