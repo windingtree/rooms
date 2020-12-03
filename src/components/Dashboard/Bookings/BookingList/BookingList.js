@@ -13,6 +13,7 @@ class BookingList extends React.Component {
         checkInDate={booking.checkInDate}
         checkOutDate={booking.checkOutDate}
         guestName={booking.guestName}
+        creating={booking.creating}
 
         onEditClick={this.props.onEditClick}
         onTrashClick={this.props.onTrashClick}

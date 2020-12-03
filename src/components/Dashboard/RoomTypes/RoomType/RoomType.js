@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
+import Spinner from '../../../base/Spinner/Spinner'
 
 const useStyles = () => {
   return {
@@ -56,28 +57,31 @@ class RoomType extends React.Component {
     return (
       <Card className={classes.room_type_card}>
         <CardContent>
-
           <Grid
             container
             direction="column"
             justify="center"
             alignItems="stretch"
           >
-            <Grid item>
-              <TextEditInput
-                value={this.props.type}
-                label="Type"
-                onValueChange={this.handleTypeChange}
-                inputWidth={150}
-              />
-              <TextEditInput
-                value={this.props.quantity}
-                label="Quantity"
-                onValueChange={this.handleQuantityChange}
-                inputWidth={75}
-              />
-            </Grid>
-            <Grid item>
+            {
+              (this.props.creating === true) ?
+              <Spinner info="creating" /> :
+              <>
+                <Grid item>
+                  <TextEditInput
+                    value={this.props.type}
+                    label="Type"
+                    onValueChange={this.handleTypeChange}
+                    inputWidth={150}
+                  />
+                  <TextEditInput
+                    value={this.props.quantity}
+                    label="Quantity"
+                    onValueChange={this.handleQuantityChange}
+                    inputWidth={75}
+                  />
+                </Grid>
+                <Grid item>
               <TextEditInput
                 value={this.props.price}
                 label="Price"
@@ -86,18 +90,24 @@ class RoomType extends React.Component {
               />
               <div className={classes.price_currency}>USD</div>
             </Grid>
+              </>
+            }
           </Grid>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="edit" onClick={this.handleEditClick}>
-            <EditIcon />
-          </IconButton>
-
-          <div className={classes.grow}></div>
-
-          <IconButton aria-label="delete" onClick={this.handleTrashClick}>
-            <DeleteIcon />
-          </IconButton>
+          {
+            (this.props.creating === true) ?
+            <></> :
+            <>
+              <IconButton aria-label="edit" onClick={this.handleEditClick}>
+                <EditIcon />
+              </IconButton>
+              <div className={classes.grow}></div>
+              <IconButton aria-label="delete" onClick={this.handleTrashClick}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          }
         </CardActions>
       </Card>
     )

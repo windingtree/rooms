@@ -9,9 +9,12 @@ class RoomTypeList extends React.Component {
       <RoomType
         key={roomType.id}
         id={roomType.id}
+
         quantity={roomType.quantity}
         type={roomType.type}
         price={roomType.price}
+        creating={roomType.creating}
+
         onEditClick={this.props.onEditClick}
         onTrashClick={this.props.onTrashClick}
         onPropValueChange={this.props.onPropValueChange}

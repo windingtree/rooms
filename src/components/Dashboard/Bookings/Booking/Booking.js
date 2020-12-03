@@ -19,6 +19,7 @@ import * as moment from 'moment'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 import { datePickerThemeObj } from '../../../../utils/themes'
+import Spinner from '../../../base/Spinner/Spinner'
 
 const datePickerTheme = createMuiTheme(datePickerThemeObj);
 
@@ -91,62 +92,72 @@ class Booking extends React.Component {
             justify="center"
             alignItems="stretch"
           >
-            <Grid item>
-              <ThemeProvider theme={datePickerTheme}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="DD/MM/yyyy"
-                  margin="normal"
-                  label="Check In"
-                  value={this.state.checkInDate}
-                  onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
+            {
+              (this.props.creating === true) ?
+              <Spinner info="creating" /> :
+              <>
+                <Grid item>
+                  <ThemeProvider theme={datePickerTheme}>
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="DD/MM/yyyy"
+                      margin="normal"
+                      label="Check In"
+                      value={this.state.checkInDate}
+                      onChange={(e) => { this.handlePropChange(e, 'checkInDate') }}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  </ThemeProvider>
+                </Grid>
+                <Grid item>
+                  <ThemeProvider theme={datePickerTheme}>
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="DD/MM/yyyy"
+                      margin="normal"
+                      label="Check Out"
+                      value={this.state.checkOutDate}
+                      onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  </ThemeProvider>
+                </Grid>
+                <Grid item>
+                <TextEditInput
+                  value={this.props.guestName}
+                  label="Name"
+                  onValueChange={(e) => { this.handlePropChange(e, 'guestName') }}
+                  inputWidth={150}
                 />
-              </MuiPickersUtilsProvider>
-              </ThemeProvider>
-            </Grid>
-            <Grid item>
-              <ThemeProvider theme={datePickerTheme}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="DD/MM/yyyy"
-                  margin="normal"
-                  label="Check Out"
-                  value={this.state.checkOutDate}
-                  onChange={(e) => { this.handlePropChange(e, 'checkOutDate') }}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-              </ThemeProvider>
-            </Grid>
-            <Grid item>
-              <TextEditInput
-                value={this.props.guestName}
-                label="Name"
-                onValueChange={(e) => { this.handlePropChange(e, 'guestName') }}
-                inputWidth={150}
-              />
-            </Grid>
+              </Grid>
+              </>
+            }
           </Grid>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="edit" onClick={this.handleEditClick}>
-            <EditIcon />
-          </IconButton>
-
-          <div className={classes.grow}></div>
-
-          <IconButton aria-label="delete" onClick={this.handleTrashClick}>
-            <DeleteIcon />
-          </IconButton>
+          {
+            (this.props.creating === true) ?
+            <></> :
+            <>
+              <IconButton aria-label="edit" onClick={this.handleEditClick}>
+                <EditIcon />
+              </IconButton>
+              <div className={classes.grow}></div>
+              <IconButton aria-label="delete" onClick={this.handleTrashClick}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          }
         </CardActions>
       </Card>
     )

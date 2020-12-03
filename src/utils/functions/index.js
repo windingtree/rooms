@@ -9,3 +9,11 @@ export {
 export {
   isFunction,
 } from './isFunction'
+
+export {
+  isObject,
+} from './isObject'
+
+export {
+  removeProp,
+} from './removeProp'
