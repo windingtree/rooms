@@ -49,6 +49,22 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
     throw new CError(BAD_REQUEST, 'The search API supports only "location.rectangle" at this time.')
   }
 
+  if (!request.body || !request.body.accommodation || typeof request.body.accommodation.arrival !== 'string') {
+    throw new CError(BAD_REQUEST, 'Must provide "accommodation.arrival" property. It should be of type "string".')
+  }
+  const arrival: string = request.body.accommodation.arrival
+  if (!moment.utc(arrival).isValid()) {
+    throw new CError(BAD_REQUEST, 'The "accommodation.arrival" date is not avalid date string.')
+  }
+
+  if (!request.body || !request.body.accommodation || typeof request.body.accommodation.departure !== 'string') {
+    throw new CError(BAD_REQUEST, 'Must provide "accommodation.departure" property. It should be of type "string".')
+  }
+  const departure: string = request.body.accommodation.departure
+  if (!moment.utc(departure).isValid()) {
+    throw new CError(BAD_REQUEST, 'The "accommodation.departure" date is not avalid date string.')
+  }
+
   const rectangle: ILocationRectangle = searchLocation.rectangle
   const rectangleDb: ILocationRectangleDbType = {
     north: await convertToNum(rectangle.north),
@@ -178,6 +194,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
 
   const cachedOffers: IOfferCollection = []
   const createdAt = moment.utc(new Date()).format()
+
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
       if (roomType.hotelId !== hotel.id) {
@@ -200,7 +217,7 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
       }
 
       result.offers[offerId] = offer
-      cachedOffers.push({ id: '', offerId, offer, createdAt })
+      cachedOffers.push({ id: '', arrival, departure, offerId, offer, createdAt })
     })
   })
 

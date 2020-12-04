@@ -19,6 +19,8 @@ import {
 function baseOfferDbRecordMapper(baseOffer: IBaseOffer): IBaseOfferDbRecord {
   const baseOfferDbRecord: IBaseOfferDbRecord = {
     offerId: baseOffer.offerId,
+    arrival: moment.utc(baseOffer.arrival).toDate(),
+    departure: moment.utc(baseOffer.departure).toDate(),
     offer: {
       pricePlansReferences: {
         BAR: {
@@ -42,6 +44,8 @@ function offerDbRecordMapper(offer: IOffer): IOfferDbRecord {
   const offerDbRecord: IOfferDbRecord = {
     _id: getObjectId(offer.id),
     offerId: offer.offerId,
+    arrival: moment.utc(offer.arrival).toDate(),
+    departure: moment.utc(offer.departure).toDate(),
     offer: {
       pricePlansReferences: {
         BAR: {
@@ -81,23 +85,25 @@ function patchOfferPayloadDbDataMapper(patchOfferPayload: IPatchOfferPayload): I
   return patchOfferPayloadDbData
 }
 
-function baseOfferMapper(offerDbRecord: IBaseOfferDbRecord): IBaseOffer {
+function baseOfferMapper(baseOfferDbRecord: IBaseOfferDbRecord): IBaseOffer {
   const offer: IBaseOffer = {
-    offerId: offerDbRecord.offerId,
+    offerId: baseOfferDbRecord.offerId,
+    arrival: moment.utc(baseOfferDbRecord.arrival).format(),
+    departure: moment.utc(baseOfferDbRecord.departure).format(),
     offer: {
       pricePlansReferences: {
         BAR: {
-          accommodation: getObjectIdString(offerDbRecord.offer.pricePlansReferences.BAR.accommodation),
-          roomType: getObjectIdString(offerDbRecord.offer.pricePlansReferences.BAR.roomType),
+          accommodation: getObjectIdString(baseOfferDbRecord.offer.pricePlansReferences.BAR.accommodation),
+          roomType: getObjectIdString(baseOfferDbRecord.offer.pricePlansReferences.BAR.roomType),
         },
       },
       price: {
-        currency: offerDbRecord.offer.price.currency,
-        public: offerDbRecord.offer.price.public,
-        taxes: offerDbRecord.offer.price.taxes,
+        currency: baseOfferDbRecord.offer.price.currency,
+        public: baseOfferDbRecord.offer.price.public,
+        taxes: baseOfferDbRecord.offer.price.taxes,
       },
     },
-    createdAt: moment.utc(offerDbRecord.createdAt).format(),
+    createdAt: moment.utc(baseOfferDbRecord.createdAt).format(),
   }
 
   return offer
@@ -106,6 +112,8 @@ function baseOfferMapper(offerDbRecord: IBaseOfferDbRecord): IBaseOffer {
 function offerMapper(offerDbRecord: IOfferDbRecord): IOffer {
   const offer: IOffer = {
     id: getObjectIdString(offerDbRecord._id),
+    arrival: moment.utc(offerDbRecord.arrival).format(),
+    departure: moment.utc(offerDbRecord.departure).format(),
     offerId: offerDbRecord.offerId,
     offer: {
       pricePlansReferences: {

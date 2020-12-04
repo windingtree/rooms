@@ -4,6 +4,8 @@ function buildProjection(): { [key: string]: 1 } {
   const allowedFields: Array<keyof IOfferDbRecord> = [
     '_id',
     'offerId',
+    'arrival',
+    'departure',
     'offer',
     'createdAt',
   ]
