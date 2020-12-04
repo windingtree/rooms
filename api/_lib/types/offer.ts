@@ -36,6 +36,8 @@ interface IOfferDetailsDbRecord {
 
 interface IBaseOffer {
   offerId: string
+  arrival: string
+  departure: string
   offer: IOfferDetails
   createdAt: string
 }
@@ -48,16 +50,22 @@ type IOfferCollection = Array<IOffer>
 
 interface IPostOfferPayload {
   offerId: string
+  arrival: string
+  departure: string
   offer: IOfferDetails
   createdAt: string
 }
 
 interface IPatchOfferPayload {
+  arrival: string
+  departure: string
   offer: IOfferDetails
 }
 
 interface IBaseOfferDbRecord {
   offerId: string
+  arrival: Date
+  departure: Date
   offer: IOfferDetailsDbRecord
   createdAt: Date
 }
