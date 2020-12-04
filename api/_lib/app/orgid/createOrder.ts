@@ -8,7 +8,7 @@ import { IPostCreateOrderPayload, ICreateOrderResult, IOrgDetails, IOffer, IBase
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
   console.log('')
   console.log('createOrder :: payload')
-  console.log(payload)
+  console.log(JSON.stringify(payload))
   console.log('-------')
 
   const offer: IOffer = await readOfferByOfferId(payload.offerId)

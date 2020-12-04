@@ -35,7 +35,7 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
   console.log('')
   console.log('offerSearch :: request.body')
-  console.log(request.body)
+  console.log(JSON.stringify(request.body))
   console.log('-------')
 
   let searchLocation
