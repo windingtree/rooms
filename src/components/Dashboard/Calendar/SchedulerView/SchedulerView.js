@@ -1,6 +1,5 @@
 import React from 'react'
 import Scheduler, { SchedulerData, ViewTypes } from 'react-big-scheduler'
-import { DemoData } from './DemoData'
 
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -8,7 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import 'react-big-scheduler/lib/css/style.css'
 import moment from 'moment'
 
-class Calendar extends React.Component {
+class SchedulerView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,8 +15,8 @@ class Calendar extends React.Component {
     let schedulerData = new SchedulerData(new moment('2017-12-18').format(DATE_FORMAT), ViewTypes.Week);
 
     schedulerData.localeMoment.locale('en');
-    schedulerData.setResources(DemoData.resources);
-    schedulerData.setEvents(DemoData.events);
+    schedulerData.setResources(this.props.data.resources);
+    schedulerData.setEvents(this.props.data.events);
     this.state = {
       viewModel: schedulerData
     }
@@ -55,7 +54,7 @@ class Calendar extends React.Component {
   prevClick = (schedulerData) => {
     console.log('prevClick')
     schedulerData.prev();
-    schedulerData.setEvents(DemoData.events);
+    schedulerData.setEvents(this.props.data.events);
     this.setState({
       viewModel: schedulerData
     })
@@ -64,7 +63,7 @@ class Calendar extends React.Component {
   nextClick = (schedulerData) => {
     console.log('nextClick')
     schedulerData.next();
-    schedulerData.setEvents(DemoData.events);
+    schedulerData.setEvents(this.props.data.events);
     this.setState({
       viewModel: schedulerData
     })
@@ -73,7 +72,7 @@ class Calendar extends React.Component {
   onViewChange = (schedulerData, view) => {
     console.log('onViewChange')
     schedulerData.setViewType(view.viewType, view.showAgenda, view.isEventPerspective);
-    schedulerData.setEvents(DemoData.events);
+    schedulerData.setEvents(this.props.data.events);
     this.setState({
       viewModel: schedulerData
     })
@@ -82,7 +81,7 @@ class Calendar extends React.Component {
   onSelectDate = (schedulerData, date) => {
     console.log('onSelectDate')
     schedulerData.setDate(date);
-    schedulerData.setEvents(DemoData.events);
+    schedulerData.setEvents(this.props.data.events);
     this.setState({
       viewModel: schedulerData
     })
@@ -161,7 +160,7 @@ class Calendar extends React.Component {
   onScrollRight = (schedulerData, schedulerContent, maxScrollLeft) => {
     if (schedulerData.ViewTypes === ViewTypes.Day) {
       schedulerData.next();
-      schedulerData.setEvents(DemoData.events);
+      schedulerData.setEvents(this.props.data.events);
       this.setState({
         viewModel: schedulerData
       });
@@ -173,7 +172,7 @@ class Calendar extends React.Component {
   onScrollLeft = (schedulerData, schedulerContent, maxScrollLeft) => {
     if (schedulerData.ViewTypes === ViewTypes.Day) {
       schedulerData.prev();
-      schedulerData.setEvents(DemoData.events);
+      schedulerData.setEvents(this.props.data.events);
       this.setState({
         viewModel: schedulerData
       });
@@ -199,4 +198,4 @@ class Calendar extends React.Component {
   }
 }
 
-export default Calendar
+export default SchedulerView
