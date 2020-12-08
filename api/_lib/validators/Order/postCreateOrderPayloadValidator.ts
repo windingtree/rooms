@@ -14,6 +14,7 @@ async function postCreateOrderPayloadValidator(request: NowRequest): Promise<IPo
 
   const payload: IPostCreateOrderPayload = {
     offerId: '',
+    guaranteeId: '',
     travellerName: '',
     travellerPhone: '',
     travellerEmail: '',
@@ -35,6 +36,10 @@ async function postCreateOrderPayloadValidator(request: NowRequest): Promise<IPo
   const offerId = request.body.offerId
   await validateRequiredString('offerId', offerId)
   payload.offerId = offerId
+
+  const guaranteeId = request.body.guaranteeId
+  await validateRequiredString('guaranteeId', guaranteeId)
+  payload.guaranteeId = guaranteeId
 
   if (isObject(request.body.passengers)) {
     const passengers = Object.values(request.body.passengers)

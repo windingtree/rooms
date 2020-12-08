@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError } from '../../_lib/tools'
+import { errorHandler, CError, checkRequiredAppConfigProps } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IMethodHandlerHash } from '../../_lib/types'
 
@@ -40,6 +40,12 @@ async function genericApiMethodHandler(
   const methodFunc = availMethodHandlers[methodHandler]
   if (typeof methodFunc === 'undefined') {
     return errorHandler(response, new CError(INTERNAL_SERVER_ERROR, `Method handler for '${method}' is not defined.`))
+  }
+
+  try {
+    await checkRequiredAppConfigProps()
+  } catch (err) {
+    return errorHandler(response, err)
   }
 
   await methodFunc(request, response)

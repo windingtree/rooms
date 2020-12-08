@@ -1,4 +1,3 @@
-import { checkRequiredAppConfigProps } from './checkRequiredAppConfigProps'
 import { createProfile } from '../../../_lib/data/profile'
 import { CError } from '../../../_lib/tools'
 import { AppConfig } from '../../../_lib/infra/config'
@@ -10,8 +9,6 @@ const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
 async function apiTestSetup(): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
-
-  checkRequiredAppConfigProps(appConfig)
 
   if (appConfig.API_TEST_ENABLED !== 'enabled') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')

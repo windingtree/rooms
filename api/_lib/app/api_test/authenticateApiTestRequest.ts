@@ -1,18 +1,15 @@
 import { NowRequest } from '@vercel/node'
 
-import { checkRequiredAppConfigProps } from './checkRequiredAppConfigProps'
 import { decodeClientAppToken } from '../../../_lib/app/auth'
 import { AppConfig } from '../../../_lib/infra/config'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { getBearerToken, CError } from '../../../_lib/tools'
 import { IProfileAuthData } from '../../../_lib/types'
 
-const FORBIDDEN = CONSTANTS.HTTP_STATUS.FORBIDDEN
+const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
 async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
-
-  checkRequiredAppConfigProps(appConfig)
 
   if (appConfig.API_TEST_ENABLED !== 'enabled') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')

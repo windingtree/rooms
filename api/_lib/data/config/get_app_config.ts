@@ -16,6 +16,10 @@ async function getAppConfig(): Promise<IAppConfig> {
     WT_VERIFICATION_CODE: '',
     WT_THEGRAPH_API_URL: '',
     WT_ROOMS_ORGID: '',
+    WT_SIMARD_ORGID: '',
+    WT_SIMARD_API_URL: '',
+
+    WT_ROOMS_PRIVATE_KEY: '',
 
     API_TEST_ENABLED: '',
     API_TEST_EMAIL: '',

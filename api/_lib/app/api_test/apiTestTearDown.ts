@@ -1,4 +1,3 @@
-import { checkRequiredAppConfigProps } from './checkRequiredAppConfigProps'
 import { readBookingsByHotelId, deleteBooking } from '../../../_lib/data/booking'
 import { profileMapper, deleteProfile, readProfileByEmail } from '../../../_lib/data/profile'
 import {
@@ -15,12 +14,10 @@ import {
 } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
-const FORBIDDEN = CONSTANTS.HTTP_STATUS.FORBIDDEN
+const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
 async function apiTestTearDown(requester: IProfile): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
-
-  checkRequiredAppConfigProps(appConfig)
 
   if (appConfig.API_TEST_ENABLED !== 'enabled') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')

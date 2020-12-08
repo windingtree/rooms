@@ -41,3 +41,7 @@ export {
   getObjectId,
   getObjectIdString,
 } from './funcs'
+
+export {
+  checkRequiredAppConfigProps,
+} from './checkRequiredAppConfigProps'
