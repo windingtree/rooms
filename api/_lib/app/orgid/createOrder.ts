@@ -59,6 +59,8 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       itinerary: {},
       options: [],
       status: 'OK',
+      response: 'Committed',
+      reservationNumber: orderId.split('-')[0],
     },
   }
 

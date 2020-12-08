@@ -55,7 +55,7 @@ async function postCreateOrderPayloadValidator(request: NowRequest): Promise<IPo
       }
       let firstName = ''
       if (Array.isArray(passenger.firstnames) && typeof passenger.firstnames[0] === 'string') {
-        firstName = passenger.lastnames[0]
+        firstName = passenger.firstnames[0]
       }
       payload.travellerName = `${lastName} ${firstName}`.trim()
 
