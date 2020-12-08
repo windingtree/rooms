@@ -14,6 +14,7 @@ interface IPostCreateOrderPayloadPassengers {
 
 interface IPostCreateOrderPayload {
   offerId: string
+  guaranteeId: string
   travellerName?: string
   travellerPhone?: string
   travellerEmail?: string

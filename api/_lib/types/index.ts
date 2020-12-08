@@ -41,6 +41,7 @@ export {
 } from './profile'
 
 export {
+  IOrgJwtTokenOptions,
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,
@@ -111,3 +112,7 @@ export {
   IPostCreateOrderPayload,
   ICreateOrderResult,
 } from './order'
+
+export {
+  IPaymentInfo,
+} from './simard'

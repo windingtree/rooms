@@ -9,3 +9,7 @@ export {
 export {
   verifyOrgIdPublicKey,
 } from './verifyOrgIdPublicKey'
+
+export {
+  generateOrgIdJwt,
+} from './generateOrgIdJwt'

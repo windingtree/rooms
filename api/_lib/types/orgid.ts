@@ -1,3 +1,13 @@
+interface IOrgJwtTokenOptions {
+  priv: string
+  alg: string
+  aud: string
+  iss: string
+  fragment: string
+  exp: string
+  scope: string | undefined
+}
+
 interface IOrgPublicKey {
   id: string
   did: string
@@ -37,6 +47,7 @@ interface IDecodedOrgIdToken {
 }
 
 export {
+  IOrgJwtTokenOptions,
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,

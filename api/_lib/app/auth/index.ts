@@ -9,4 +9,5 @@ export {
   decodeOrgIdToken,
   authenticateOrgIdRequest,
   verifyOrgIdPublicKey,
+  generateOrgIdJwt,
 } from './orgid'

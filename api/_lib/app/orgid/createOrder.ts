@@ -1,15 +1,24 @@
 import { v4 as uuidv4 } from 'uuid'
 
+import { getPaymentInfo } from '../../../_lib/data/simard'
 import { readOfferByOfferId, deleteOfferByOfferId } from '../../../_lib/data/offer'
 import { createBooking } from '../../../_lib/data/booking'
-import { emailNewBooking } from '../../../_lib/tools'
-import { IPostCreateOrderPayload, ICreateOrderResult, IOrgDetails, IOffer, IBaseBooking } from '../../../_lib/types'
+import { emailNewBooking, CError } from '../../../_lib/tools'
+import { IPostCreateOrderPayload, ICreateOrderResult, IOrgDetails, IOffer, IBaseBooking, IPaymentInfo } from '../../../_lib/types'
+import { CONSTANTS } from '../../../_lib/infra/constants'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
   console.log('')
   console.log('createOrder :: payload')
   console.log(JSON.stringify(payload))
   console.log('-------')
+
+  const paymentInfo: IPaymentInfo = await getPaymentInfo(payload.guaranteeId)
+  if (paymentInfo.status !== 'OK') {
+    throw new CError(BAD_REQUEST, 'Must provcide a valid "guaranteeId" to make an order.')
+  }
 
   const offer: IOffer = await readOfferByOfferId(payload.offerId)
   const orderId = uuidv4()
