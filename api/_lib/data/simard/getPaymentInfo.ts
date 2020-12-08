@@ -28,11 +28,13 @@ async function getPaymentInfo(guaranteeId: string): Promise<IPaymentInfo> {
 
   console.log('-------')
   console.log(`Simard request options: ${JSON.stringify(options)}\n`)
+  console.log('-------')
 
   let response: AxiosResponse
   try {
     response = await axios(options)
 
+    console.log('-------')
     if (response && response.data) {
       console.log(`Simard response.data: ${JSON.stringify(response.data)}\n`)
     } else if (response) {
@@ -40,9 +42,9 @@ async function getPaymentInfo(guaranteeId: string): Promise<IPaymentInfo> {
     } else {
       console.log('Simard response: ', response)
     }
-
     console.log('-------')
   } catch (error) {
+    console.log('-------')
     console.error(`Simard error: ${JSON.stringify(error)}\n`)
     console.log('-------')
     throw new CError(BAD_GATEWAY, `Simard Pay did not verify guaranteeId '${guaranteeId}'`)
