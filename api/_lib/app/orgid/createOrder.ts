@@ -60,7 +60,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       options: [],
       status: 'OK',
       response: 'Committed',
-      reservationNumber: orderId.split('-')[0],
+      reservationNumber: orderId.split('-')[0].toUpperCase(),
     },
   }
 
