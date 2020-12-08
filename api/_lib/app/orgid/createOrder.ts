@@ -10,7 +10,7 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
-  console.log('')
+  console.log('-------')
   console.log('createOrder :: payload')
   console.log(JSON.stringify(payload))
   console.log('-------')
