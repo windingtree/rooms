@@ -1,6 +1,10 @@
 import { JWK, JWT } from 'jose'
 
+import { CError } from '../../../../_lib/tools'
+import { CONSTANTS } from '../../../infra/constants'
 import { IOrgJwtTokenOptions } from '../../../../_lib/types'
+
+const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 function genOptions(
   privKey: string,
@@ -22,31 +26,44 @@ function genOptions(
 }
 
 function createToken(options: IOrgJwtTokenOptions) {
-  const priv = JWK.asKey(
-    options.priv,
-    {
-      alg: options.alg,
-      use: 'sig',
-    }
-  )
+  let priv
+  try {
+    priv = JWK.asKey(
+      options.priv,
+      {
+        alg: options.alg,
+        use: 'sig',
+      }
+    )
+  } catch (err) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.')
+  }
 
-  return JWT.sign(
-    {
-      ...(options.scope ? { scope: options.scope } : {})
-    },
-    priv,
-    {
-      audience: options.aud,
-      ...(options.iss ? { issuer: `${options.iss}${options.fragment ? '#' + options.fragment : ''}` } : {}),
-      expiresIn: options.exp,
-      kid: false,
-      header: { typ: 'JWT' }
-    }
-  )
+  let token: string
+  try {
+    token = JWT.sign(
+      {
+        ...(options.scope ? { scope: options.scope } : {})
+      },
+      priv,
+      {
+        audience: options.aud,
+        ...(options.iss ? { issuer: `${options.iss}${options.fragment ? '#' + options.fragment : ''}` } : {}),
+        expiresIn: options.exp,
+        kid: false,
+        header: { typ: 'JWT' }
+      }
+    )
+  } catch (err) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.')
+  }
+
+  return token
 }
 
 function generateOrgIdJwt(privPem: string, originOrgId: string, recipientOrgId: string, fragment: string): string {
-  const options = genOptions(privPem, originOrgId, recipientOrgId, fragment)
+  const _privPem = `-----BEGIN EC PRIVATE KEY-----\n${privPem}\n-----END EC PRIVATE KEY-----`
+  const options = genOptions(_privPem, originOrgId, recipientOrgId, fragment)
 
   return createToken(options)
 }
