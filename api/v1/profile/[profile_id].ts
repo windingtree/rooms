@@ -1,108 +1,43 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getProfile, updateProfile, deleteProfile } from '../../_lib/app/profile'
-import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchProfilePayloadValidator } from '../../_lib/validators'
-import { IProfile, IPatchProfilePayload } from '../../_lib/types'
+import { IProfile, IPatchProfilePayload, IStatus } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest, response: NowResponse): Promise<IProfile> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'profile/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'profile/{id}' })
 
-  let profileId: string
-  try {
-    profileId = getQueryParamValue(request, 'profile_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const profileId: string = getQueryParamValue(request, 'profile_id')
 
-  let result: IProfile
-  try {
-    result = await getProfile(requester, profileId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await getProfile(requester, profileId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function PATCH(request: NowRequest, response: NowResponse): Promise<IProfile> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'PATCH', route: 'profile/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'PATCH', route: 'profile/{id}' })
 
-  let profileId: string
-  try {
-    profileId = getQueryParamValue(request, 'profile_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const profileId: string = getQueryParamValue(request, 'profile_id')
 
-  let data: IPatchProfilePayload
-  try {
-    data = await patchProfilePayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const data: IPatchProfilePayload = await patchProfilePayloadValidator(request)
 
-  let result: IProfile
-  try {
-    result = await updateProfile(requester, profileId, data)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await updateProfile(requester, profileId, data)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function DELETE(request: NowRequest, response: NowResponse): Promise<IStatus> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'DELETE', route: 'profile/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'DELETE', route: 'profile/{id}' })
 
-  let profileId: string
-  try {
-    profileId = getQueryParamValue(request, 'profile_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const profileId: string = getQueryParamValue(request, 'profile_id')
 
-  try {
-    await deleteProfile(requester, profileId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await deleteProfile(requester, profileId)
 
-  response.status(200).json({ deletedCount: 1 })
+  return { status: 'OK' }
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

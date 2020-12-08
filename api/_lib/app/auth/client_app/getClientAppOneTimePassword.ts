@@ -38,7 +38,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
       imageUrl: '',
     })
 
-    updateProfile(profileId, { hotelId })
+    await updateProfile(profileId, { hotelId })
   } else {
     await updateProfile(profile.id, { oneTimePassword, sessionToken: payload.sessionToken })
   }

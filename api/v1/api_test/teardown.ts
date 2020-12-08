@@ -2,30 +2,19 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { authenticateApiTestRequest, apiTestTearDown } from '../../_lib/app/api_test'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler } from '../../_lib/tools'
-import { IProfile } from '../../_lib/types'
+import { genericApiMethodHandler } from '../../_lib/tools'
+import { IProfile, IStatus } from '../../_lib/types'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  try {
-    await authenticateApiTestRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function POST(request: NowRequest, response: NowResponse): Promise<IStatus> {
+  await authenticateApiTestRequest(request)
 
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await apiTestTearDown(requester)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await apiTestTearDown(requester)
 
-  response.status(200).json({ teardown: 'OK' })
+  const result: IStatus = { status: 'OK' }
+
+  return result
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
