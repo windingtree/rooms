@@ -2,30 +2,17 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { authenticateApiTestRequest, apiTestSetup } from '../../_lib/app/api_test'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler } from '../../_lib/tools'
+import { genericApiMethodHandler } from '../../_lib/tools'
 import { IProfile } from '../../_lib/types'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  try {
-    await authenticateApiTestRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function POST(request: NowRequest, response: NowResponse): Promise<IProfile> {
+  await authenticateApiTestRequest(request)
 
-  try {
-    await apiTestSetup()
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await apiTestSetup()
 
-  let result: IProfile
-  try {
-    result = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const result: IProfile = await authenticateClientAppRequest(request)
 
-  response.status(200).json(result)
+  return result
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

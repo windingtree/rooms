@@ -3,6 +3,12 @@ export {
 } from './api'
 
 export {
+  IStatus,
+  IHealthStatus,
+  IOtpStatus,
+} from './resultTypes'
+
+export {
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,

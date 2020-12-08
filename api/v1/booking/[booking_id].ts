@@ -1,108 +1,43 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getBooking, updateBooking, deleteBooking } from '../../_lib/app/Booking'
-import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchBookingPayloadValidator } from '../../_lib/validators'
-import { IProfile, IBooking, IPatchBookingPayload } from '../../_lib/types'
+import { IProfile, IBooking, IPatchBookingPayload, IStatus } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest, response: NowResponse): Promise<IBooking> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'booking/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'booking/{id}' })
 
-  let bookingId: string
-  try {
-    bookingId = getQueryParamValue(request, 'booking_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const bookingId: string = getQueryParamValue(request, 'booking_id')
 
-  let result: IBooking
-  try {
-    result = await getBooking(requester, bookingId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await getBooking(requester, bookingId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function PATCH(request: NowRequest, response: NowResponse): Promise<IBooking> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'PATCH', route: 'booking/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'PATCH', route: 'booking/{id}' })
 
-  let bookingId: string
-  try {
-    bookingId = getQueryParamValue(request, 'booking_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const bookingId: string = getQueryParamValue(request, 'booking_id')
 
-  let data: IPatchBookingPayload
-  try {
-    data = await patchBookingPayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const data: IPatchBookingPayload = await patchBookingPayloadValidator(request)
 
-  let result: IBooking
-  try {
-    result = await updateBooking(requester, bookingId, data)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await updateBooking(requester, bookingId, data)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function DELETE(request: NowRequest, response: NowResponse): Promise<IStatus> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'DELETE', route: 'booking/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'DELETE', route: 'booking/{id}' })
 
-  let bookingId: string
-  try {
-    bookingId = getQueryParamValue(request, 'booking_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const bookingId: string = getQueryParamValue(request, 'booking_id')
 
-  try {
-    await deleteBooking(requester, bookingId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await deleteBooking(requester, bookingId)
 
-  response.status(200).json({ deletedCount: 1 })
+  return { status: 'OK' }
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

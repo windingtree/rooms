@@ -1,43 +1,24 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getClientAppOneTimePassword } from '../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler, emailOneTimePassword } from '../_lib/tools'
+import { genericApiMethodHandler, emailOneTimePassword } from '../_lib/tools'
 import { AppConfig } from '../_lib/infra/config'
 import { postOneTimePasswordPayloadValidator } from '../_lib/validators'
-import { IOneTimePasswordPayload } from '../_lib/types'
+import { IOneTimePasswordPayload, IOtpStatus } from '../_lib/types'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let appConfig
-  try {
-    appConfig = await AppConfig.getInstance().getConfig()
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function POST(request: NowRequest, response: NowResponse): Promise<IOtpStatus> {
+  const payload: IOneTimePasswordPayload = await postOneTimePasswordPayloadValidator(request)
 
-  let payload: IOneTimePasswordPayload
-  try {
-    payload = await postOneTimePasswordPayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const oneTimePassword: string = await getClientAppOneTimePassword(payload)
 
-  let oneTimePassword: string
-  try {
-    oneTimePassword = await getClientAppOneTimePassword(payload)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  try {
-    await emailOneTimePassword(payload.email, oneTimePassword)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const appConfig = await AppConfig.getInstance().getConfig()
 
   if (appConfig.ENABLE_LOGIN_WITHOUT_SENDGRID === 'true') {
-    response.status(200).json({ email: payload.email, oneTimePassword })
+    return { email: payload.email, oneTimePassword }
   } else {
-    response.status(200).json({ email: payload.email, oneTimePassword: 'sent' })
+    await emailOneTimePassword(payload.email, oneTimePassword)
+
+    return { email: payload.email, oneTimePassword: 'sent' }
   }
 }
 

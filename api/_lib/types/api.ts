@@ -1,6 +1,40 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<void>
+import {
+  IBooking,
+  IBookingCollection,
+  IProfile,
+  IProfileCollection,
+  IHotel,
+  IHotelCollection,
+  IRoomType,
+  IRoomTypeCollection,
+  IOfferSearchResults,
+  ICreateOrderResult,
+  IOrgDetails,
+  IStatus,
+  IHealthStatus,
+  IOtpStatus,
+} from '../../_lib/types'
+
+type TAvailableResultTypes =
+  |IBooking
+  |IBookingCollection
+  |IProfile
+  |IProfileCollection
+  |IHotel
+  |IHotelCollection
+  |IRoomType
+  |IRoomTypeCollection
+  |IOfferSearchResults
+  |ICreateOrderResult
+  |IOrgDetails
+  |IStatus
+  |IHealthStatus
+  |IOtpStatus
+  |string
+
+type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<TAvailableResultTypes>
 
 interface IMethodHandlerHash {
   // All available HTTP methods. As defined in RFC 7231, and RFC 5789.

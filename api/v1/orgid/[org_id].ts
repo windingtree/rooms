@@ -2,38 +2,17 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { getOrgDetails } from '../../_lib/app/orgid'
-import { genericApiMethodHandler, authorizeRequest, getQueryParamValue, errorHandler } from '../../_lib/tools'
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
 import { IOrgDetails, IProfile } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest, response: NowResponse): Promise<IOrgDetails> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'orgid/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'orgid/{id}' })
 
-  let orgId: string
-  try {
-    orgId = getQueryParamValue(request, 'org_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const orgId: string = getQueryParamValue(request, 'org_id')
 
-  let result: IOrgDetails
-  try {
-    result = await getOrgDetails(orgId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await getOrgDetails(orgId)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

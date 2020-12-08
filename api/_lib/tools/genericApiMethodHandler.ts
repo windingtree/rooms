@@ -4,7 +4,8 @@ import { errorHandler, CError, checkRequiredAppConfigProps } from '../../_lib/to
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IMethodHandlerHash } from '../../_lib/types'
 
-const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR }  = CONSTANTS.HTTP_STATUS
+const { HTTP_STATUS_CODES } = CONSTANTS
+const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR, OK }  = CONSTANTS.HTTP_STATUS
 
 async function genericApiMethodHandler(
   request: NowRequest, response: NowResponse,
@@ -42,13 +43,19 @@ async function genericApiMethodHandler(
     return errorHandler(response, new CError(INTERNAL_SERVER_ERROR, `Method handler for '${method}' is not defined.`))
   }
 
+  let result
   try {
     await checkRequiredAppConfigProps()
+    result = await methodFunc(request, response)
   } catch (err) {
     return errorHandler(response, err)
   }
 
-  await methodFunc(request, response)
+  if (typeof result === 'string') {
+    response.status(HTTP_STATUS_CODES[OK]).send(result)
+  } else {
+    response.status(HTTP_STATUS_CODES[OK]).json(result)
+  }
 }
 
 export {
