@@ -38,11 +38,13 @@ interface ICreateOrderResultDetailsRestrictions {
 
 interface ICreateOrderResultDetails {
   passengers: IPostCreateOrderPayloadPassengers
-  price: ICreateOrderResultDetailsPrice,
+  price: ICreateOrderResultDetailsPrice
   restrictions: ICreateOrderResultDetailsRestrictions
-  itinerary: unknown,
-  options: Array<unknown>,
+  itinerary: unknown
+  options: Array<unknown>
   status: string
+  response: string
+  reservationNumber: string
 }
 
 interface ICreateOrderResult {
