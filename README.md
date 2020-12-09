@@ -1,79 +1,101 @@
-# Rooms UI
+# Winding Tree Rooms
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Winding Tree's `Rooms` is an easy to use web application in ReactJS and NodeJS for small hoteliers to manage their inventory and expose it to the Winding Tree marketplace.
 
-```sh
-node --version # v12.18.3
-npm --version # 6.14.6
+It aims at replacing the traditional *Pen and Paper* approach, but does not provide the depth of features and capabilities of a Channel Manager or Property Management System.
 
-# Then initial setup was performed (this is for REFERENCE ONLY. No need to run!):
-npm i -g create-react-app@3.4.1
-create-react-app rooms-ui --scripts-version=3.4.3
+The project is open-source with an MIT license, meaning anyone can copy and use it for commercial usage. We do however appreciate sponsors and pull requests for any exciting features you would like to contribute back!
+
+## Usage
+
+Hoteliers can navigate to the Rooms user interface to create their hotels:
+
+* [Production/Live](https://rooms.windingtree.com/)
+* [Staging/Test](https://staging.rooms.windingtree.com/)
+
+## API Documentation
+
+Developers willing to integrate with Winding Tree `Rooms` can refer to the OpenAPI documentation at:
+
+* [API Production/Live](https://rooms.windingtree.com/api/doc/)
+* [API Staging/Test](https://staging.rooms.windingtree.com/api/doc)
+
+## Local Development
+
+The product can be run locally.
+
+### Pre-requisites
+
+The following tools should be installed. Please refer to their documentation:
+
+* git
+* node - From v12.18.3
+* npm - From 6.14.6
+
+`Rooms` also rely on a few infrastructure components:
+
+* MongoDB: Make sure you have a MongoDB instance configured either locally or in the cloud
+* SendGrid: Create a SendGrid account and an API Key
+* Vercel: Create an account on Vercel to deploy your instance
+
+### Setting-up a local environment
+
+The following steps allow to prepare a local environment:
+
+* Clone the repository and navigate to the `rooms` folder:
+
+```shell
+git clone git@github.com:windingtree/rooms.git
+cd rooms
 ```
 
-## Available Scripts
+* Install UI dependencies:
 
-In the project directory, you can run:
+```shell
+npm install
+```
 
-### `npm start`
+* Install API dependencies:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```shell
+cd api
+npm install
+cd ..
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+* Create an environment file:
 
-### `npm test`
+Create a `.env` file and provide the various settings there:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Variable | Usage | Example |
+|-|-|-|
+| `MONGODB_URL` | MongoDB connection string | mongodb://login:password@localhost:27017/rooms |
+| `ROOMS_DB_NAME` | MongoDB database name | rooms |
+| `PUBLIC_URL` | Public URL for the project (default: [http://localhost:3000](http://localhost:3000))  | |
+| `REACT_APP_JWT_SECRET` | Authentication secret for the API backend | |
+| `ENV_ENCRYPTION_DETAILS` | Encryption keys for the configuration database | |
 
-### `npm run build`
+(TODO: Add sample `.env` file in repo)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Hint**: If you already have a project setup in Vercel, you can simply run the following command to pull your settings and create the `env` file:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```shell
+vercel env pull
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Create configuration keys in Database:
 
-### `npm run eject`
+(TODO: List variables and provide a script)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* Run locally using vercel:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```shell
+npm run dev
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**Note**: If it is your first run, you will be guided with the setup flow with Vercel.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* Navigate to your local instance with a browser:
 
-## Learn More
+[http://localhost:3000](http://localhost:3000)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
