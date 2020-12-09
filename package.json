@@ -26,6 +26,7 @@
     "build": "./build-swagger.sh && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "dev": "vercel dev",
     "postman-local": "newman run ./postman/tests/API_Tests.postman_collection.json --environment ./postman/environments/local.postman_environment.json",
     "postman-develop": "newman run ./postman/tests/API_Tests.postman_collection.json --environment ./postman/environments/staging.postman_environment.json",
     "postman-master": "newman run ./postman/tests/API_Tests.postman_collection.json --environment ./postman/environments/prod.postman_environment.json"
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "newman": "^5.2.0",
+    "vercel": "^21.0.1",
     "yamljs": "^0.3.0"
   }
 }

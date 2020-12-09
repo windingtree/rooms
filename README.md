@@ -49,10 +49,18 @@ git clone git@github.com:windingtree/rooms.git
 cd rooms
 ```
 
-* Install dependencies:
+* Install UI dependencies:
 
 ```shell
 npm install
+```
+
+* Install API dependencies:
+
+```shell
+cd api
+npm install
+cd ..
 ```
 
 * Create an environment file:
@@ -61,24 +69,31 @@ Create a `.env` file and provide the various settings there:
 
 | Variable | Usage | Example |
 |-|-|-|
-| MONGODB_URL | | |
-| ROOMS_DB_NAME | | |
-| PUBLIC_URL | | |
-| REACT_APP_JWT_SECRET | |
+| `MONGODB_URL` | MongoDB connection string | mongodb://login:password@localhost:27017/rooms |
+| `ROOMS_DB_NAME` | MongoDB database name | rooms |
+| `PUBLIC_URL` | Public URL for the project (default: [http://localhost:3000](http://localhost:3000))  | |
+| `REACT_APP_JWT_SECRET` | Authentication secret for the API backend | |
+| `ENV_ENCRYPTION_DETAILS` | Encryption keys for the configuration database | |
 
 (TODO: Add sample `.env` file in repo)
+
+**Hint**: If you already have a project setup in Vercel, you can simply run the following command to pull your settings and create the `env` file:
+
+```shell
+vercel env pull
+```
 
 * Create configuration keys in Database:
 
 (TODO: List variables and provide a script)
 
-* Run locally
+* Run locally using vercel:
 
 ```shell
-npm start
+npm run dev
 ```
 
-(TODO: Add vercel in dependencies and adapt `package.json` accordingly)
+**Note**: If it is your first run, you will be guided with the setup flow with Vercel.
 
 * Navigate to your local instance with a browser:
 
