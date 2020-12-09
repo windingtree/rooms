@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { createRoomType } from '../_lib/app/room_type'
-import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
 import { postRoomTypePayloadValidator } from '../_lib/validators'
 import { IProfile, IRoomType, IPostRoomTypePayload } from '../_lib/types'

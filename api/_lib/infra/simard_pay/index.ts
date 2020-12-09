@@ -1,0 +1,3 @@
+export {
+  SimardPay,
+} from './SimardPay'

@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getAllBookings } from '../_lib/app/Booking'
-import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
 import { IProfile, IBookingCollection } from '../_lib/types'
 

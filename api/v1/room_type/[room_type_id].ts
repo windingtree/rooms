@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getRoomType, updateRoomType, deleteRoomType } from '../../_lib/app/room_type'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { patchRoomTypePayloadValidator } from '../../_lib/validators'
 import { IProfile, IRoomType, IPatchRoomTypePayload, IStatus } from '../../_lib/types'
 

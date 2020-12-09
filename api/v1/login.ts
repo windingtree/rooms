@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { authenticateClientAppUser } from '../_lib/app/auth'
+import { authenticateClientAppUser } from '../_lib/app/auth/client_app'
 import { genericApiMethodHandler } from '../_lib/tools'
 import { postLoginPayloadValidator } from '../_lib/validators'
 import { IProfile, IProfileAuthData } from '../_lib/types'

@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getAllProfiles } from '../_lib/app/profile'
-import { authenticateClientAppRequest } from '../_lib/app/auth'
+import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
 import { IProfile, IProfileCollection } from '../_lib/types'
 

@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getProfile, updateProfile, deleteProfile } from '../../_lib/app/profile'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { patchProfilePayloadValidator } from '../../_lib/validators'
 import { IProfile, IPatchProfilePayload, IStatus } from '../../_lib/types'
 

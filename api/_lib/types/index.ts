@@ -120,5 +120,6 @@ export {
 } from './order'
 
 export {
+  ISimardPay,
   IPaymentInfo,
 } from './simard'

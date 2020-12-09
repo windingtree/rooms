@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken } from '../../../_lib/app/auth'
+import { decodeClientAppToken } from '../../../_lib/app/auth/client_app'
 import { AppConfig } from '../../../_lib/infra/config'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { getBearerToken, CError } from '../../../_lib/tools'

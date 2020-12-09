@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getBooking, updateBooking, deleteBooking } from '../../_lib/app/Booking'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { patchBookingPayloadValidator } from '../../_lib/validators'
 import { IProfile, IBooking, IPatchBookingPayload, IStatus } from '../../_lib/types'
 

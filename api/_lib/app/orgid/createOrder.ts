@@ -15,7 +15,17 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   console.log(JSON.stringify(payload))
   console.log('-------')
 
-  const paymentInfo: IPaymentInfo = await getPaymentInfo(payload.guaranteeId)
+  // const appConfig = await AppConfig.getInstance().getConfig()
+
+  // const roomsPrivateKey = appConfig.WT_ROOMS_PRIVATE_KEY
+  // const roomsOrgId = appConfig.WT_ROOMS_ORGID
+  // const simardOrgId = appConfig.WT_SIMARD_ORGID
+
+  // const simardApiUrl = appConfig.WT_SIMARD_API_URL
+
+  // const jwtToken = generateOrgIdJwt(roomsPrivateKey, roomsOrgId, simardOrgId, 'webserver')
+
+  const paymentInfo: IPaymentInfo = await getPaymentInfo(simardApiUrl, jwtToken, payload.guaranteeId)
   if (paymentInfo.status !== 'OK') {
     throw new CError(BAD_REQUEST, 'Must provcide a valid "guaranteeId" to make an order.')
   }

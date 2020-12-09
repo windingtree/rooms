@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken, authenticateClientAppUser } from '../../../../_lib/app/auth'
+import { decodeClientAppToken, authenticateClientAppUser } from '../../../../_lib/app/auth/client_app'
 import { getBearerToken } from '../../../../_lib/tools'
 import { IProfileAuthData, IProfile } from '../../../../_lib/types'
 

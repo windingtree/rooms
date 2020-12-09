@@ -13,3 +13,7 @@ export {
 export {
   decodeClientAppToken,
 } from './decodeClientAppToken'
+
+export {
+  handleOneTimePassword,
+} from './handleOneTimePassword'

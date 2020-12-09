@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { patchHotelPayloadValidator } from '../../_lib/validators'
 import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/types'
 
