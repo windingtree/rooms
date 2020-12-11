@@ -52,5 +52,4 @@ export {
 
 export {
   onExitCleanUp,
-  listenToExitSignals,
-} from './listenToExitSignals'
+} from './onExitCleanUp'
