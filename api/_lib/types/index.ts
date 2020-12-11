@@ -126,3 +126,7 @@ export {
 export {
   IExitHandlerOptions,
 } from './process'
+
+export {
+  IEnvVariables,
+} from './env'

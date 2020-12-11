@@ -2,7 +2,7 @@ import { readHotel, readHotelByOwnerId } from '../../../_lib/data/hotel'
 import { IProfile, IHotel } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function getHotel(requester: IProfile, hotelId: string): Promise<IHotel> {
   let hotel: IHotel

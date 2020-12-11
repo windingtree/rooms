@@ -1,6 +1,13 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError, checkRequiredAppConfigProps, onExitCleanUp, listenToExitSignals } from '../../_lib/tools'
+import {
+  errorHandler,
+  CError,
+  checkRequiredEnvProps,
+  checkRequiredAppConfigProps,
+  onExitCleanUp,
+  listenToExitSignals
+} from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IMethodHandlerHash } from '../../_lib/types'
 
@@ -9,7 +16,8 @@ const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR, OK }  = 
 
 async function genericApiMethodHandler(
   request: NowRequest, response: NowResponse,
-  availMethodHandlers: IMethodHandlerHash
+  availMethodHandlers: IMethodHandlerHash,
+  skipSanityChecks = false
 ): Promise<void> {
   listenToExitSignals()
 
@@ -47,8 +55,13 @@ async function genericApiMethodHandler(
 
   let result
   try {
-    await checkRequiredAppConfigProps()
+    if (skipSanityChecks === false) {
+      await checkRequiredEnvProps()
+      await checkRequiredAppConfigProps()
+    }
+
     result = await methodFunc(request, response)
+
     await onExitCleanUp()
   } catch (err) {
     return errorHandler(response, err)

@@ -7,11 +7,9 @@ import { IProfile, IProfileDbRecord, IBaseHotel, IHotel, IPostHotelPayload } fro
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
-const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER
-const OBSERVER = CONSTANTS.PROFILE_ROLE.OBSERVER
+const { SUPER_ADMIN, MANAGER, OBSERVER }  = CONSTANTS.PROFILE_ROLE
 
-const BAD_REQUEST = CONSTANTS.HTTP_STATUS.BAD_REQUEST
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 function generalErrorForHotelCreation(requester: IProfile, ownerProfile: IProfile) {
   throw new CError(
