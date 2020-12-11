@@ -47,6 +47,10 @@ export {
 } from './checkRequiredAppConfigProps'
 
 export {
+  checkRequiredEnvProps,
+} from './checkRequiredEnvProps'
+
+export {
   onExitCleanUp,
   listenToExitSignals,
 } from './listenToExitSignals'

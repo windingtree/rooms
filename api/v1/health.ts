@@ -22,7 +22,7 @@ async function GET(request: NowRequest, response: NowResponse): Promise<IHealthS
       status: mongoStatus,
       latency: (mongoStatus === 'up') ? `${timeInMs}ms` : undefined,
     },
-    app_version: ENV.APP_VERSION,
+    app_version: `${ENV.VERCEL_GITHUB_COMMIT_REF}:${ENV.VERCEL_GITHUB_COMMIT_SHA}`,
   }
 }
 

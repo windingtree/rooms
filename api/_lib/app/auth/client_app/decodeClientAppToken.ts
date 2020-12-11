@@ -5,13 +5,12 @@ import { ENV } from '../../../../_lib/infra/env'
 import { CONSTANTS } from '../../../infra/constants'
 import { IProfileAuthData } from '../../../../_lib/types'
 
-const { REACT_APP_JWT_SECRET } = ENV
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 async function decodeClientAppToken(bearerToken: string): Promise<IProfileAuthData> {
   let decodedToken: IProfileAuthData|unknown
   try {
-    decodedToken = jwt.verify(bearerToken, REACT_APP_JWT_SECRET)
+    decodedToken = jwt.verify(bearerToken, ENV.REACT_APP_JWT_SECRET)
   } catch (err) {
     throw new CError(UNAUTHORIZED, 'JWT token verification failed.')
   }

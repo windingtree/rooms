@@ -5,7 +5,7 @@ import {
 import { IProfile } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function deleteHotel(requester: IProfile, hotelId: string): Promise<void> {
   if (requester.role === SUPER_ADMIN) {

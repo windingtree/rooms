@@ -7,5 +7,5 @@ async function GET(request: NowRequest, response: NowResponse): Promise<string> 
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
-  await genericApiMethodHandler(request, response, { GET })
+  await genericApiMethodHandler(request, response, { GET }, true)
 }

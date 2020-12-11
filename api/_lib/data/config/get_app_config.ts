@@ -57,7 +57,7 @@ async function getAppConfig(): Promise<IAppConfig> {
 
       try {
         if (item.encrypted === true) {
-          value = decryptText(ENV.APP_ENV_ENCRYPTION_DETAILS, value)
+          value = decryptText(ENV.ENV_ENCRYPTION_DETAILS, value)
         }
       } catch (err) {
         decryptOk = false

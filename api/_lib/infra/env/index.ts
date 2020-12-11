@@ -1,20 +1,27 @@
+import { IEnvVariables } from '../../../_lib/types'
+
 import {
-  APP_VERSION,
-  APP_ENV_ENCRYPTION_DETAILS,
-} from './app'
+  VERCEL_GITHUB_COMMIT_REF,
+  VERCEL_GITHUB_COMMIT_SHA,
+} from './vercel'
+
+import {
+  ENV_ENCRYPTION_DETAILS,
+} from './crypto'
 
 import {
   REACT_APP_JWT_SECRET,
-} from './react_app_jwt'
+} from './react_app'
 
 import {
   MONGODB_URL,
   ROOMS_DB_NAME,
 } from './mongo'
 
-const ENV = {
-  APP_VERSION,
-  APP_ENV_ENCRYPTION_DETAILS,
+const ENV: IEnvVariables = {
+  VERCEL_GITHUB_COMMIT_REF,
+  VERCEL_GITHUB_COMMIT_SHA,
+  ENV_ENCRYPTION_DETAILS,
 
   REACT_APP_JWT_SECRET,
 

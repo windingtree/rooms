@@ -7,7 +7,7 @@ import {
 import { IProfile, IHotel, IPatchHotelPayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function updateHotel(requester: IProfile, hotelId: string, data: IPatchHotelPayload): Promise<IHotel> {
   let hotel: IHotel
