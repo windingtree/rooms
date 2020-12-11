@@ -35,7 +35,7 @@ The following tools should be installed. Please refer to their documentation:
 `Rooms` also rely on a few infrastructure components:
 
 * MongoDB: Make sure you have a MongoDB instance configured either locally or in the cloud
-* SendGrid: Create a SendGrid account and an API Key
+* SendGrid: Create a SendGrid account and generate a SendGrid API Key
 * Vercel: Create an account on Vercel to deploy your instance
 
 ### Setting-up a local environment
@@ -45,7 +45,7 @@ The following steps allow to prepare a local environment:
 * Clone the repository and navigate to the `rooms` folder:
 
 ```shell
-git clone git@github.com:windingtree/rooms.git
+git clone https://github.com/windingtree/rooms.git
 cd rooms
 ```
 
@@ -69,11 +69,10 @@ Create a `.env` file and provide the various settings there:
 
 | Variable | Usage | Example |
 |-|-|-|
-| `MONGODB_URL` | MongoDB connection string | mongodb://login:password@localhost:27017/rooms |
-| `ROOMS_DB_NAME` | MongoDB database name | rooms |
-| `PUBLIC_URL` | Public URL for the project (default: [http://localhost:3000](http://localhost:3000))  | |
-| `REACT_APP_JWT_SECRET` | Authentication secret for the API backend | |
-| `ENV_ENCRYPTION_DETAILS` | Encryption keys for the configuration database | |
+| `MONGODB_URL` | MongoDB connection string | `mongodb://login:password@localhost:27017/rooms` |
+| `ROOMS_DB_NAME` | MongoDB database name | `rooms` |
+| `REACT_APP_JWT_SECRET` | Web client authentication secret for the API backend | `29835uyr3248ru34r0892ru2r9uiru2` |
+| `APP_ENV_ENCRYPTION_DETAILS` | Encryption key for the configuration database | `aes-256-ctr:FZFdSKNy:37c1c1481da7e2e624e92997b914a55d` |
 
 (TODO: Add sample `.env` file in repo)
 
@@ -99,3 +98,16 @@ npm run dev
 
 [http://localhost:3000](http://localhost:3000)
 
+### Developing the API
+
+See additional docs in [api/README](./api/README.md).
+
+### Working on the API docs
+
+You can generate Swagger documentation locally by running the provided script `build-local-swagger.sh`. Once generated, the API docs will be accessible via the URL [http://localhost:3000/api/doc/](http://localhost:3000/api/doc/).
+
+If you want to update the API documentation, please edit the file [swagger.yaml](./swagger/api/v1/swagger.yaml). After each update to the `.yaml` file, you have to re-run the `build-local-swagger.sh` script to see updates locally.
+
+## License
+
+See [LICENSE](LICENSE) for more details.
