@@ -68,6 +68,12 @@ async function genericApiMethodHandler(
 
     await onExitCleanUp()
   } catch (err) {
+    try {
+      await onExitCleanUp()
+    } catch (err) {
+      // Do nothing. We are already in a try/catch block.
+    }
+
     return errorHandler(response, err)
   }
 
