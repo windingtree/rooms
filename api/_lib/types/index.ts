@@ -1,4 +1,5 @@
 export {
+  TMethodFunc,
   IMethodHandlerHash,
 } from './api'
 
@@ -122,10 +123,6 @@ export {
 export {
   IPaymentInfo,
 } from './simard'
-
-export {
-  IExitHandlerOptions,
-} from './process'
 
 export {
   IEnvVariables,

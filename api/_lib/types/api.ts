@@ -50,5 +50,6 @@ interface IMethodHandlerHash {
 }
 
 export {
+  TMethodFunc,
   IMethodHandlerHash,
 }

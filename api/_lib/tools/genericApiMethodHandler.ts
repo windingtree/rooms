@@ -6,23 +6,17 @@ import {
   checkRequiredEnvProps,
   checkRequiredAppConfigProps,
   onExitCleanUp,
-  listenToExitSignals
+  isFunction
 } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
-import { IMethodHandlerHash } from '../../_lib/types'
+import { IMethodHandlerHash, TMethodFunc } from '../../_lib/types'
 
 const { HTTP_STATUS_CODES } = CONSTANTS
 const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR, OK }  = CONSTANTS.HTTP_STATUS
 
-async function genericApiMethodHandler(
-  request: NowRequest, response: NowResponse,
-  availMethodHandlers: IMethodHandlerHash,
-  skipSanityChecks = false
-): Promise<void> {
-  listenToExitSignals()
-
+async function getMethodFunc(request: NowRequest, availMethodHandlers: IMethodHandlerHash): Promise<TMethodFunc> {
   if (!request || typeof request.method !== 'string') {
-    return errorHandler(response, new CError(BAD_REQUEST, 'Must provide request method.'))
+    throw new CError(BAD_REQUEST, 'Must provide request method.')
   }
 
   const method: string = request.method.toUpperCase()
@@ -40,21 +34,31 @@ async function genericApiMethodHandler(
   ]
 
   if (!ALLOWED_METHODS.includes(method as keyof IMethodHandlerHash)) {
-    return errorHandler(response, new CError(FORBIDDEN, `Method '${method}' is not allowed.`))
+    throw new CError(FORBIDDEN, `Method '${method}' is not allowed.`)
   }
 
-  const methodHandler: keyof IMethodHandlerHash = method as keyof IMethodHandlerHash
-  if (typeof availMethodHandlers[methodHandler] !== 'function') {
-    return errorHandler(response, new CError(NOT_IMPLEMENTED, `Method '${method}' is not implemented.`))
+  const methodHandler = method as keyof IMethodHandlerHash
+  if (!isFunction(availMethodHandlers[methodHandler])) {
+    throw new CError(NOT_IMPLEMENTED, `Method '${method}' is not implemented.`)
   }
 
   const methodFunc = availMethodHandlers[methodHandler]
   if (typeof methodFunc === 'undefined') {
-    return errorHandler(response, new CError(INTERNAL_SERVER_ERROR, `Method handler for '${method}' is not defined.`))
+    throw new CError(INTERNAL_SERVER_ERROR, `Method handler for '${method}' is not defined.`)
   }
 
+  return methodFunc
+}
+
+async function genericApiMethodHandler(
+  request: NowRequest, response: NowResponse,
+  availMethodHandlers: IMethodHandlerHash,
+  skipSanityChecks = false
+): Promise<void> {
   let result
   try {
+    const methodFunc = await getMethodFunc(request, availMethodHandlers)
+
     if (skipSanityChecks === false) {
       await checkRequiredEnvProps()
       await checkRequiredAppConfigProps()
