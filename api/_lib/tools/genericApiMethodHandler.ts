@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError, checkRequiredAppConfigProps, listenToExitSignals } from '../../_lib/tools'
+import { errorHandler, CError, checkRequiredAppConfigProps, onExitCleanUp, listenToExitSignals } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IMethodHandlerHash } from '../../_lib/types'
 
@@ -49,6 +49,7 @@ async function genericApiMethodHandler(
   try {
     await checkRequiredAppConfigProps()
     result = await methodFunc(request, response)
+    await onExitCleanUp()
   } catch (err) {
     return errorHandler(response, err)
   }
