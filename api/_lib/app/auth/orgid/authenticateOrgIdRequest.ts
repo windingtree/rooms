@@ -1,7 +1,7 @@
 import { NowRequest } from '@vercel/node'
 
 import { getOrgDetails } from '../../../../_lib/data/marketplace'
-import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../../_lib/app/auth'
+import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../../_lib/app/auth/orgid'
 import { getBearerToken, CError } from '../../../../_lib/tools'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
 import { IDecodedOrgIdToken, IOrgDetails } from '../../../../_lib/types'

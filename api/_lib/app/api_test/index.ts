@@ -9,3 +9,7 @@ export {
 export {
   apiTestTearDown,
 } from './apiTestTearDown'
+
+export {
+  generateJwtToken,
+} from './generateJwtToken'

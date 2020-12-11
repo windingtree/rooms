@@ -29,3 +29,7 @@ export {
 export {
   postCreateOrderPayloadValidator,
 } from './Order'
+
+export {
+  postJwtPayloadValidator,
+} from './Jwt'

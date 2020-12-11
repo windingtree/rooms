@@ -67,6 +67,10 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   'orgid/{id}': {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
   },
+
+  'api_test/teardown': {
+    POST: allowRoles(SUPER_ADMIN),
+  },
 }
 
 async function authorizeRequest(role: keyof IProfileRole, action: IAuthorizeRequestAction): Promise<boolean> {

@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { profileMapper, readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
+import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
 import { createHotel } from '../../../../_lib/data/hotel'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IProfile, IProfileDbRecord, IOneTimePasswordPayload } from '../../../../_lib/types'
+import { IProfile, IOneTimePasswordPayload } from '../../../../_lib/types'
 
 const { OWNER } = CONSTANTS.PROFILE_ROLE
 
@@ -12,8 +12,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
 
   let profile: IProfile|null
   try {
-    const profileDbRecord: IProfileDbRecord = await readProfileByEmail(payload.email)
-    profile = profileMapper(profileDbRecord)
+    profile = await readProfileByEmail(payload.email)
   } catch (err) {
     // Maybe a profile for the given email does not exist? We will try to create a new one below.
     profile = null

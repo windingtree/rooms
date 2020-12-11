@@ -11,7 +11,6 @@ interface IAppConfig {
   WT_ROOMS_PRIVATE_KEY: string
 
   API_TEST_ENABLED: string
-  API_TEST_EMAIL: string
   API_TEST_ONE_TIME_PASSWORD: string
   API_TEST_SESSION_TOKEN: string
 

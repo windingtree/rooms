@@ -43,7 +43,9 @@ export {
   IPatchProfilePayload,
   IProfileRoleEnum,
   IProfileRole,
+  IBaseProfileDbRecord,
   IProfileDbRecord,
+  IPatchProfilePayloadDbData,
   IProfileDbRecordCollection,
 } from './profile'
 
@@ -127,3 +129,7 @@ export {
 export {
   IEnvVariables,
 } from './env'
+
+export {
+  IJwtToken,
+} from './jwt'

@@ -1,5 +1,10 @@
-import { readBookingsByHotelId, deleteBooking } from '../../../_lib/data/booking'
-import { profileMapper, deleteProfile, readProfileByEmail } from '../../../_lib/data/profile'
+import {
+  readBookingsByHotelId as readBookingsByHotelIdDbFunc,
+  deleteBooking as deleteBookingDbFunc,
+} from '../../../_lib/data/booking'
+import {
+  deleteProfile as deleteProfileDbFunc,
+} from '../../../_lib/data/profile'
 import {
   readRoomTypesByHotelId,
   deleteRoomType,
@@ -9,36 +14,35 @@ import { AppConfig } from '../../../_lib/infra/config'
 import {
   IRoomTypeCollection,
   IProfile,
-  IProfileDbRecord,
   IBookingCollection,
+  IStatus,
 } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
-async function apiTestTearDown(requester: IProfile): Promise<void> {
+async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
   if (appConfig.API_TEST_ENABLED !== 'enabled') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')
   }
 
-  const profileDbRecord: IProfileDbRecord = await readProfileByEmail(appConfig.API_TEST_EMAIL)
-  const profile: IProfile = profileMapper(profileDbRecord)
-
-  if (typeof profile.hotelId === 'string' && profile.hotelId.length > 0) {
-    const bookingCollection: IBookingCollection = await readBookingsByHotelId(profile.hotelId)
+  if (typeof requester.hotelId === 'string' && requester.hotelId.length > 0) {
+    const bookingCollection: IBookingCollection = await readBookingsByHotelIdDbFunc(requester.hotelId)
     for (let c1 = 0; c1 < bookingCollection.length; c1 += 1) {
-      await deleteBooking(bookingCollection[c1].id)
+      await deleteBookingDbFunc(bookingCollection[c1].id)
     }
 
-    const roomTypeCollection: IRoomTypeCollection = await readRoomTypesByHotelId(profile.hotelId)
+    const roomTypeCollection: IRoomTypeCollection = await readRoomTypesByHotelId(requester.hotelId)
     for (let c1 = 0; c1 < roomTypeCollection.length; c1 += 1) {
       await deleteRoomType(roomTypeCollection[c1].id)
     }
   }
 
-  await deleteProfile(profile.id)
+  await deleteProfileDbFunc(requester.id)
+
+  return { status: 'OK' }
 }
 
 export {

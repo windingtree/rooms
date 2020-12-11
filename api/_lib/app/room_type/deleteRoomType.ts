@@ -4,6 +4,7 @@ import {
 } from '../../../_lib/data/room_type'
 import {
   IProfile,
+  IStatus,
 } from '../../../_lib/types'
 import {
   CONSTANTS,
@@ -11,7 +12,7 @@ import {
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
-async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<void> {
+async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<IStatus> {
   // TODO: Need to implement logic based on roles.
 
   if (requester.role === SUPER_ADMIN) {
@@ -19,6 +20,8 @@ async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<
   } else {
     await deleteRoomTypeByHotelIdDbFunc(roomTypeId, requester.hotelId)
   }
+
+  return { status: 'OK' }
 }
 
 export {

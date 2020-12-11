@@ -1,12 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { createBooking } from '../_lib/app/Booking'
-import { authenticateClientAppRequest } from '../_lib/app/auth'
 import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
 import { postBookingPayloadValidator } from '../_lib/validators'
 import { IProfile, IBooking, IPostBookingPayload } from '../_lib/types'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<IBooking> {
+async function POST(request: NowRequest): Promise<IBooking> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'POST', route: 'booking' })

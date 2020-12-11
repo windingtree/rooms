@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 
 import { genericApiMethodHandler } from '../_lib/tools'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<string> {
+async function GET(): Promise<string> {
   return 'OK'
 }
 

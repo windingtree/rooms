@@ -13,3 +13,7 @@ export {
 export {
   generateOrgIdJwt,
 } from './generateOrgIdJwt'
+
+export {
+  wtVerification,
+} from './wtVerification'

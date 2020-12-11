@@ -1,6 +1,6 @@
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken } from '../../../_lib/app/auth'
+import { decodeClientAppToken } from '../../../_lib/app/auth/client_app'
 import { AppConfig } from '../../../_lib/infra/config'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { getBearerToken, CError } from '../../../_lib/tools'
@@ -17,10 +17,9 @@ async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
 
   const bearerToken: string = await getBearerToken(request)
   const decodedToken: IProfileAuthData = await decodeClientAppToken(bearerToken)
-  const { email, oneTimePassword, sessionToken } = { ...decodedToken }
+  const { oneTimePassword, sessionToken } = { ...decodedToken }
 
   if (
-    (appConfig.API_TEST_EMAIL !== email) ||
     (appConfig.API_TEST_ONE_TIME_PASSWORD !== oneTimePassword) ||
     (appConfig.API_TEST_SESSION_TOKEN !== sessionToken)
   ) {

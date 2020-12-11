@@ -1,12 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchHotelPayloadValidator } from '../../_lib/validators'
 import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<IHotel> {
+async function GET(request: NowRequest): Promise<IHotel> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
@@ -16,28 +16,26 @@ async function GET(request: NowRequest, response: NowResponse): Promise<IHotel> 
   return await getHotel(requester, hotelId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<IHotel> {
+async function PATCH(request: NowRequest): Promise<IHotel> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'PATCH', route: 'hotel/{id}' })
 
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
 
-  const data: IPatchHotelPayload = await patchHotelPayloadValidator(request)
+  const payload: IPatchHotelPayload = await patchHotelPayloadValidator(request)
 
-  return await updateHotel(requester, hotelId, data)
+  return await updateHotel(requester, hotelId, payload)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<IStatus> {
+async function DELETE(request: NowRequest): Promise<IStatus> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'DELETE', route: 'hotel/{id}' })
 
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
 
-  await deleteHotel(requester, hotelId)
-
-  return { status: 'OK' }
+  return await deleteHotel(requester, hotelId)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
