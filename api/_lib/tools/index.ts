@@ -45,3 +45,7 @@ export {
 export {
   checkRequiredAppConfigProps,
 } from './checkRequiredAppConfigProps'
+
+export {
+  listenToExitSignals,
+} from './listenToExitSignals'
