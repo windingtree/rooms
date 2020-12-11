@@ -65,7 +65,12 @@ class MongoDB {
       return
     }
 
-    await this._dbClient.close()
+    try {
+      await this._dbClient.close()
+    } catch (err) {
+      throw new CError(BAD_GATEWAY, 'Could not close connection to the database.')
+    }
+
     this._dbClient = null
 
     console.log('[MongoDB :: cleanUp] => Mongo connection closed.')
