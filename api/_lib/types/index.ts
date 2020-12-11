@@ -122,3 +122,7 @@ export {
 export {
   IPaymentInfo,
 } from './simard'
+
+export {
+  IExitHandlerOptions,
+} from './process'

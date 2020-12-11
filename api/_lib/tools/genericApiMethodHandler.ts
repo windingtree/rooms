@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { errorHandler, CError, checkRequiredAppConfigProps } from '../../_lib/tools'
+import { errorHandler, CError, checkRequiredAppConfigProps, listenToExitSignals } from '../../_lib/tools'
 import { CONSTANTS } from '../../_lib/infra/constants'
 import { IMethodHandlerHash } from '../../_lib/types'
 
@@ -11,6 +11,8 @@ async function genericApiMethodHandler(
   request: NowRequest, response: NowResponse,
   availMethodHandlers: IMethodHandlerHash
 ): Promise<void> {
+  listenToExitSignals()
+
   if (!request || typeof request.method !== 'string') {
     return errorHandler(response, new CError(BAD_REQUEST, 'Must provide request method.'))
   }

@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, MongoClientOptions } from 'mongodb'
 
 import { CError } from '../../../_lib/tools'
 import { ENV } from '../../../_lib/infra/env'
@@ -9,12 +9,24 @@ const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 class MongoDB {
   private static _instance: MongoDB = new MongoDB()
   private _dbClient: MongoClient|null = null
+  private _dbClientOptions: MongoClientOptions
 
   constructor() {
     if (MongoDB._instance) {
       throw new CError(INTERNAL_SERVER_ERROR, 'MongoDB class instantiation failed. Use MongoDB.getInstance() instead of new operator.')
     }
     MongoDB._instance = this
+
+    this._dbClientOptions = {
+        // Enables the new unified topology layer.
+        useUnifiedTopology: true,
+
+        // TCP Connection timeout setting.
+        connectTimeoutMS: 15000,
+
+        // The number of milliseconds to wait before initiating keepAlive on the TCP socket.
+        keepAliveInitialDelay: 15000,
+    }
   }
 
   public static getInstance(): MongoDB {
@@ -27,17 +39,10 @@ class MongoDB {
     }
 
     try {
-      this._dbClient = new MongoClient(ENV.MONGODB_URL, { useUnifiedTopology: true })
-    } catch (err) {
-      this._dbClient = null
-      return
-    }
-
-    try {
+      this._dbClient = new MongoClient(ENV.MONGODB_URL, this._dbClientOptions)
       await this._dbClient.connect()
     } catch (err) {
       this._dbClient = null
-      return
     }
   }
 
@@ -49,6 +54,14 @@ class MongoDB {
     }
 
     return this._dbClient
+  }
+
+  public isConnected(): boolean {
+    if (this._dbClient === null) {
+      return false
+    }
+
+    return true
   }
 }
 
