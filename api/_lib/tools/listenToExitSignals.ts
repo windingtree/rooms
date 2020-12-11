@@ -1,16 +1,16 @@
 import { MongoDB } from '../../_lib/infra/mongo'
 import { IExitHandlerOptions } from '../../_lib/types'
 
+async function onExitCleanUp(): Promise<void> {
+  await MongoDB.getInstance().cleanUp()
+}
+
 async function exit(options: IExitHandlerOptions, code: number): Promise<void> {
   if (!options.exit) {
     return
   }
 
-  const instance = MongoDB.getInstance()
-  if (instance.isConnected()) {
-    const dbClient = await instance.getDbClient()
-    await dbClient.close()
-  }
+  await onExitCleanUp()
 
   process.exit(code)
 }
@@ -47,5 +47,6 @@ function listenToExitSignals(): void {
 }
 
 export {
+  onExitCleanUp,
   listenToExitSignals,
 }

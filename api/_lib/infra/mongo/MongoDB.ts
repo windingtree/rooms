@@ -44,6 +44,10 @@ class MongoDB {
     } catch (err) {
       this._dbClient = null
     }
+
+    if (this._dbClient !== null) {
+      console.log('[MongoDB :: createDbConnection] => Mongo connection created.')
+    }
   }
 
   public async getDbClient(): Promise<MongoClient> {
@@ -56,12 +60,15 @@ class MongoDB {
     return this._dbClient
   }
 
-  public isConnected(): boolean {
+  public async cleanUp(): Promise<void> {
     if (this._dbClient === null) {
-      return false
+      return
     }
 
-    return true
+    await this._dbClient.close()
+    this._dbClient = null
+
+    console.log('[MongoDB :: cleanUp] => Mongo connection closed.')
   }
 }
 
