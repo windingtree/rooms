@@ -72,7 +72,7 @@ Create a `.env` file and provide the various settings there:
 | `MONGODB_URL` | MongoDB connection string | `mongodb://login:password@localhost:27017/rooms` |
 | `ROOMS_DB_NAME` | MongoDB database name | `rooms` |
 | `REACT_APP_JWT_SECRET` | Web client authentication secret for the API backend | `29835uyr3248ru34r0892ru2r9uiru2` |
-| `APP_ENV_ENCRYPTION_DETAILS` | Encryption key for the configuration database | `aes-256-ctr:FZFdSKNy:37c1c1481da7e2e624e92997b914a55d` |
+| `ENV_ENCRYPTION_DETAILS` | Encryption key for the configuration database | `aes-256-ctr:FZFdSKNy:37c1c1481da7e2e624e92997b914a55d` |
 
 (TODO: Add sample `.env` file in repo)
 

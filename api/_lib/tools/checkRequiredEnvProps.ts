@@ -9,6 +9,7 @@ async function checkRequiredEnvProps(): Promise<void> {
   const requiredEnvProps: Array<keyof IEnvVariables> = [
     'VERCEL_GITHUB_COMMIT_REF',
     'VERCEL_GITHUB_COMMIT_SHA',
+
     'ENV_ENCRYPTION_DETAILS',
 
     'REACT_APP_JWT_SECRET',
