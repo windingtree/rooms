@@ -12,6 +12,7 @@ import {
   IOfferSearchResults,
   ICreateOrderResult,
   IOrgDetails,
+  IJwtToken,
   IStatus,
   IHealthStatus,
   IOtpStatus,
@@ -29,6 +30,7 @@ type TAvailableResultTypes =
   |IOfferSearchResults
   |ICreateOrderResult
   |IOrgDetails
+  |IJwtToken
   |IStatus
   |IHealthStatus
   |IOtpStatus

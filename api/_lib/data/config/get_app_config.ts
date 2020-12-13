@@ -22,7 +22,6 @@ async function getAppConfig(): Promise<IAppConfig> {
     WT_ROOMS_PRIVATE_KEY: '',
 
     API_TEST_ENABLED: '',
-    API_TEST_EMAIL: '',
     API_TEST_ONE_TIME_PASSWORD: '',
     API_TEST_SESSION_TOKEN: '',
 

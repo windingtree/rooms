@@ -6,7 +6,8 @@ import { CError } from '../../_lib/tools'
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 function isFunction(functionToCheck: unknown): boolean {
-  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  if (!functionToCheck) return false
+  return {}.toString.call(functionToCheck) === '[object Function]'
 }
 
 function isObject(variableToCheck: unknown): boolean {

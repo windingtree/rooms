@@ -27,6 +27,10 @@
       "destination": "/api/v1/api_test/setup.ts"
     },
     {
+      "source": "/api/v1/api_test/jwt",
+      "destination": "/api/v1/api_test/jwt.ts"
+    },
+    {
       "source": "/api/v1/api_test/teardown",
       "destination": "/api/v1/api_test/teardown.ts"
     },

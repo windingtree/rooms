@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { generateOrgIdJwt } from '../../../_lib/app/auth'
+import { generateOrgIdJwt } from '../../../_lib/app/auth/orgid'
 import { AppConfig } from '../../../_lib/infra/config'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../infra/constants'

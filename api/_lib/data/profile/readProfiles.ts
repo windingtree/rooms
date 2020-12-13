@@ -1,14 +1,15 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
 import { buildProjection } from './_projection'
+import { profileCollectionMapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IProfileDbRecord, IProfileDbRecordCollection } from '../../../_lib/types'
+import { IProfileDbRecord, IProfileDbRecordCollection, IProfileCollection } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
-async function readProfiles(): Promise<IProfileDbRecordCollection> {
+async function readProfiles(): Promise<IProfileCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
   let result: IProfileDbRecordCollection
@@ -31,7 +32,7 @@ async function readProfiles(): Promise<IProfileDbRecordCollection> {
     throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
   }
 
-  return result
+  return profileCollectionMapper(result)
 }
 
 export {

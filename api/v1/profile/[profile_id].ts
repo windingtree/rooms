@@ -1,12 +1,12 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getProfile, updateProfile, deleteProfile } from '../../_lib/app/profile'
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
 import { patchProfilePayloadValidator } from '../../_lib/validators'
 import { IProfile, IPatchProfilePayload, IStatus } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<IProfile> {
+async function GET(request: NowRequest): Promise<IProfile> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'GET', route: 'profile/{id}' })
@@ -16,28 +16,26 @@ async function GET(request: NowRequest, response: NowResponse): Promise<IProfile
   return await getProfile(requester, profileId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<IProfile> {
+async function PATCH(request: NowRequest): Promise<IProfile> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'PATCH', route: 'profile/{id}' })
 
   const profileId: string = getQueryParamValue(request, 'profile_id')
 
-  const data: IPatchProfilePayload = await patchProfilePayloadValidator(request)
+  const payload: IPatchProfilePayload = await patchProfilePayloadValidator(request)
 
-  return await updateProfile(requester, profileId, data)
+  return await updateProfile(requester, profileId, payload)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<IStatus> {
+async function DELETE(request: NowRequest): Promise<IStatus> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
   await authorizeRequest(requester.role, { method: 'DELETE', route: 'profile/{id}' })
 
   const profileId: string = getQueryParamValue(request, 'profile_id')
 
-  await deleteProfile(requester, profileId)
-
-  return { status: 'OK' }
+  return await deleteProfile(requester, profileId)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

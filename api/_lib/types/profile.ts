@@ -61,8 +61,7 @@ interface IPatchProfilePayload {
   hotelId?: string
 }
 
-interface IProfileDbRecord {
-  _id: ObjectID
+interface IBaseProfileDbRecord {
   email: string
   name: string
   phone: string
@@ -70,6 +69,20 @@ interface IProfileDbRecord {
   sessionToken: string
   role: keyof IProfileRole
   hotelId: ObjectID|null
+}
+
+interface IProfileDbRecord extends IBaseProfileDbRecord {
+  _id: ObjectID
+}
+
+interface IPatchProfilePayloadDbData {
+  email?: string
+  name?: string
+  phone?: string
+  oneTimePassword?: string
+  sessionToken?: string
+  role?: keyof IProfileRole
+  hotelId?: ObjectID|null
 }
 
 type IProfileDbRecordCollection = Array<IProfileDbRecord>
@@ -84,6 +97,8 @@ export {
   IPatchProfilePayload,
   IProfileRoleEnum,
   IProfileRole,
+  IBaseProfileDbRecord,
   IProfileDbRecord,
+  IPatchProfilePayloadDbData,
   IProfileDbRecordCollection,
 }

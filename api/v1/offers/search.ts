@@ -1,12 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { authenticateOrgIdRequest } from '../../_lib/app/auth/orgid'
 import { offerSearch } from '../../_lib/app/orgid'
-
-import { authenticateOrgIdRequest } from '../../_lib/app/auth'
 import { genericApiMethodHandler } from '../../_lib/tools'
 import { IOfferSearchResults } from '../../_lib/types'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<IOfferSearchResults> {
+async function POST(request: NowRequest): Promise<IOfferSearchResults> {
   await authenticateOrgIdRequest(request)
 
   return await offerSearch(request)

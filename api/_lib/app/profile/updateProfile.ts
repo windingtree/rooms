@@ -1,9 +1,8 @@
 import {
-  profileMapper,
   updateProfile as updateProfileDbFunc,
-  readProfile
+  readProfile as readProfileDbFunc,
 } from '../../../_lib/data/profile'
-import { IProfile, IPatchProfilePayload, IProfileDbRecord } from '../../../_lib/types'
+import { IProfile, IPatchProfilePayload } from '../../../_lib/types'
 
 async function updateProfile(requester: IProfile, profileId: string, data: IPatchProfilePayload): Promise<IProfile> {
   // TODO:
@@ -11,9 +10,7 @@ async function updateProfile(requester: IProfile, profileId: string, data: IPatc
   // 2. All other roles can only patch their own profile.
 
   await updateProfileDbFunc(profileId, data)
-
-  const profileDbRecord: IProfileDbRecord = await readProfile(profileId)
-  const profile: IProfile = profileMapper(profileDbRecord)
+  const profile: IProfile = await readProfileDbFunc(profileId)
 
   return profile
 }
