@@ -29,4 +29,7 @@ jobs:
     - run: npm install
     - run: npm run build
     - run: npm run test
-    - run: cd ./api && npm install && npm run build
+    - run: cd ./api && npm install
+    - run: cd ./api && npm run lint
+    - run: cd ./api && npm run build
+    - run: cd ./api && npm run test
