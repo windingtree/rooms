@@ -18,8 +18,8 @@ async function deleteHotel(hotelId: string): Promise<void> {
     const filter = { _id: new ObjectID(hotelId) }
 
     result = await collection.deleteOne(filter)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while deleting a '${ENTITY_NAME}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while deleting a '${ENTITY_NAME}'.`, err)
   }
 
   if (!result || !result.deletedCount) {

@@ -18,8 +18,8 @@ async function deleteHotelByOwnerId(hotelId: string, ownerId: string): Promise<v
     const filter = { _id: new ObjectID(hotelId), ownerId: new ObjectID(ownerId) }
 
     result = await collection.deleteOne(filter)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while deleting a '${ENTITY_NAME}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while deleting a '${ENTITY_NAME}'.`, err)
   }
 
   if (!result || !result.deletedCount) {

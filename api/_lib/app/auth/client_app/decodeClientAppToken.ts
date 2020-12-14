@@ -11,8 +11,8 @@ async function decodeClientAppToken(bearerToken: string): Promise<IProfileAuthDa
   let decodedToken: IProfileAuthData|unknown
   try {
     decodedToken = jwt.verify(bearerToken, ENV.REACT_APP_JWT_SECRET)
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'JWT token verification failed.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'JWT token verification failed.', err)
   }
   const decodedAuthClientAppToken: IProfileAuthData = (decodedToken as IProfileAuthData)
 

@@ -67,8 +67,8 @@ class MongoDB {
 
     try {
       await this._dbClient.close()
-    } catch (err) {
-      throw new CError(BAD_GATEWAY, 'Could not close connection to the database.')
+    } catch (err: unknown) {
+      throw new CError(BAD_GATEWAY, 'Could not close connection to the database.', err)
     }
 
     this._dbClient = null

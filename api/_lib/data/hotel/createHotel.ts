@@ -19,8 +19,8 @@ async function createHotel(data: IBaseHotel): Promise<string> {
     const collection = database.collection(COLLECTION_NAME)
 
     result = await collection.insertOne(dbData)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while creating a new '${ENTITY_NAME}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while creating a new '${ENTITY_NAME}'.`, err)
   }
 
   if (!result) {

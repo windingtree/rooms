@@ -24,8 +24,8 @@ async function updateRoomType(roomTypeId: string, data: IPatchRoomTypePayload): 
     const updateDoc = { $set: dbData }
 
     result = await collection.updateOne(filter, updateDoc, options)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while updating a '${ENTITY_NAME}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while updating a '${ENTITY_NAME}'.`, err)
   }
 
   if (!result || !result.matchedCount) {

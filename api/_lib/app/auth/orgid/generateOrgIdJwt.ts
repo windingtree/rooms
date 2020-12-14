@@ -35,8 +35,8 @@ function createToken(options: IOrgJwtTokenOptions) {
         use: 'sig',
       }
     )
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.')
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.', err)
   }
 
   let token: string
@@ -54,8 +54,8 @@ function createToken(options: IOrgJwtTokenOptions) {
         header: { typ: 'JWT' }
       }
     )
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.')
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not generate JWT token.', err)
   }
 
   return token

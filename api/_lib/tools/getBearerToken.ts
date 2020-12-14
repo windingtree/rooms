@@ -44,8 +44,8 @@ async function getBearerToken(request: NowRequest): Promise<string> {
 
   try {
     await jwtParse(bearerToken)
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Bearer token is malformed.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Bearer token is malformed.', err)
   }
 
   return bearerToken

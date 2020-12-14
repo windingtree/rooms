@@ -11,8 +11,8 @@ async function decodeOrgIdToken(bearerToken: string): Promise<IDecodedOrgIdToken
   try {
     // Decode the token using JWT library
     decodedToken = JWT.decode(bearerToken, { complete: true })
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'JWT token is malformed.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'JWT token is malformed.', err)
   }
 
   const { payload: { iss } } = (decodedToken as IDecodedOrgToken)

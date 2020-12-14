@@ -22,8 +22,8 @@ function getObjectId(id: string|undefined|null): ObjectID|null {
   let objectId: ObjectID
   try {
     objectId = new ObjectID(id)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, 'Tried to convert an illegal value to ObjectID.')
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Tried to convert an illegal value to ObjectID.', err)
   }
 
   return objectId
