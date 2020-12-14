@@ -19,11 +19,14 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   console.log(paymentInfo)
   console.log('--------------')
 
+  const offer: IOffer = await readOfferByOfferId(payload.offerId)
+
   if (paymentInfo.creditorOrgId !== appConfig.WT_ROOMS_ORGID) {
     throw new CError(BAD_REQUEST, 'Guarantee not meant for Rooms organization.')
+  } else if (paymentInfo.debtorOrgId !== offer.debtorOrgId) {
+    throw new CError(BAD_REQUEST, 'Guarantee not created by offer requestor')
   }
 
-  const offer: IOffer = await readOfferByOfferId(payload.offerId)
   const orderId = uuidv4()
   const baseBooking: IBaseBooking = {
     orderId,

@@ -35,6 +35,7 @@ function baseOfferDbRecordMapper(baseOffer: IBaseOffer): IBaseOfferDbRecord {
       },
     },
     createdAt: moment.utc(baseOffer.createdAt).toDate(),
+    debtorOrgId: baseOffer.debtorOrgId,
   }
 
   return baseOfferDbRecord
@@ -60,6 +61,7 @@ function offerDbRecordMapper(offer: IOffer): IOfferDbRecord {
       },
     },
     createdAt: moment.utc(offer.createdAt).toDate(),
+    debtorOrgId: offer.debtorOrgId,
   }
 
   return offerDbRecord
@@ -104,6 +106,7 @@ function baseOfferMapper(baseOfferDbRecord: IBaseOfferDbRecord): IBaseOffer {
       },
     },
     createdAt: moment.utc(baseOfferDbRecord.createdAt).format(),
+    debtorOrgId: baseOfferDbRecord.debtorOrgId,
   }
 
   return offer
@@ -129,6 +132,7 @@ function offerMapper(offerDbRecord: IOfferDbRecord): IOffer {
       },
     },
     createdAt: moment.utc(offerDbRecord.createdAt).format(),
+    debtorOrgId: offerDbRecord.debtorOrgId,
   }
 
   return offer
