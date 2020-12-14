@@ -10,6 +10,9 @@ const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 async function authenticateOrgIdRequest(request: NowRequest): Promise<IOrgDetails> {
   const bearerToken: string = await getBearerToken(request)
+
+  console.log(`bearerToken = ${bearerToken}`)
+
   const decodedToken: IDecodedOrgIdToken = await decodeOrgIdToken(bearerToken)
   const { orgId, publicKeyFragment } = { ...decodedToken }
   const orgDetails: IOrgDetails = await getOrgDetails(orgId)
