@@ -2,7 +2,9 @@ import { NowRequest } from '@vercel/node'
 import { IncomingMessage } from 'http'
 import * as net from 'net'
 
-function createRequestObject(body: { [key: string]: string|number|null|undefined }): NowRequest {
+import { IRequestBody } from '../../_tests/_types'
+
+function createRequestObject(body: IRequestBody): NowRequest {
   const socket = new net.Socket()
   const incomingMessage = new IncomingMessage(socket)
 
