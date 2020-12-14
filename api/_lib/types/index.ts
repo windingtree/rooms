@@ -123,7 +123,7 @@ export {
 } from './order'
 
 export {
-  IPaymentInfo,
+  ISimardPaymentInfo,
 } from './simard'
 
 export {

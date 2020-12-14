@@ -1,7 +1,11 @@
-interface IPaymentInfo {
-  status: string
+interface ISimardPaymentInfo {
+  amount: string
+  creditorOrgId: string
+  currency: string
+  debtorOrgId: string
+  expiration: string
 }
 
 export {
-  IPaymentInfo,
+  ISimardPaymentInfo,
 }

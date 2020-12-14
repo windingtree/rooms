@@ -4,11 +4,11 @@ import { generateOrgIdJwt } from '../../../_lib/app/auth/orgid'
 import { AppConfig } from '../../../_lib/infra/config'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../infra/constants'
-import { IPaymentInfo } from '../../../_lib/types'
+import { ISimardPaymentInfo } from '../../../_lib/types'
 
 const { BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
-async function getPaymentInfo(guaranteeId: string): Promise<IPaymentInfo> {
+async function getPaymentInfo(guaranteeId: string): Promise<ISimardPaymentInfo> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
   const roomsPrivateKey = appConfig.WT_ROOMS_PRIVATE_KEY
@@ -33,12 +33,18 @@ async function getPaymentInfo(guaranteeId: string): Promise<IPaymentInfo> {
     throw new CError(BAD_GATEWAY, `Simard Pay did not verify guaranteeId '${guaranteeId}'`, err)
   }
 
-  console.log('-------')
-  console.log(response)
-  console.log('-------')
+  if (!response || !response.data) {
+    throw new CError(BAD_GATEWAY, `Simard Pay returned a bad response for guaranteeId '${guaranteeId}'`)
+  }
+
+  const { amount, creditorOrgId, currency, debtorOrgId, expiration } = {...(response.data as ISimardPaymentInfo)}
 
   return {
-    status: 'OK',
+    amount,
+    creditorOrgId,
+    currency,
+    debtorOrgId,
+    expiration,
   }
 }
 
