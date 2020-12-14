@@ -56,8 +56,8 @@ async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   let orgDetails
   try {
     orgDetails = await makeGraphqlRequest(appConfig.WT_THEGRAPH_API_URL, orgId)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `Could not resolve org details for orgId '${orgId}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not resolve org details for orgId '${orgId}'.`, err)
   }
 
   return orgDetails

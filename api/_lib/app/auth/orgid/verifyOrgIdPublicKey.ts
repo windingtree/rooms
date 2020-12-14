@@ -18,8 +18,8 @@ async function verifyOrgIdPublicKey(
     publicKey = orgDetails.organization.publicKey.filter(
       p => p.id.match(RegExp(`#${publicKeyFragment}$`, 'g'))
     )[0]
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Error while retrieving public key.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Error while retrieving public key.', err)
   }
 
   if (!publicKey) {
@@ -38,8 +38,8 @@ async function verifyOrgIdPublicKey(
         use: 'sig',
       }
     )
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Could not load the public key as JWK.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Could not load the public key as JWK.', err)
   }
 
   const jwtOptions = {
@@ -54,8 +54,8 @@ async function verifyOrgIdPublicKey(
       pubKey,
       jwtOptions
     )
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Could not verify the public key.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Could not verify the public key.', err)
   }
 }
 

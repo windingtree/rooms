@@ -28,8 +28,8 @@ async function readProfiles(): Promise<IProfileCollection> {
     await cursor.forEach((item: IProfileDbRecord) => {
       result.push(item)
     })
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`, err)
   }
 
   return profileCollectionMapper(result)

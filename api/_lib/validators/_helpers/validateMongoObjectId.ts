@@ -22,10 +22,11 @@ async function validateMongoObjectId(propName: string, _value: unknown): Promise
     if (id !== _value) {
       throw new Error()
     }
-  } catch (err) {
+  } catch (err: unknown) {
     throw new CError(
       BAD_REQUEST,
-      `Property '${propName}' is not a valid Mongo ObjectID value.`
+      `Property '${propName}' is not a valid Mongo ObjectID value.`,
+      err
     )
   }
 }

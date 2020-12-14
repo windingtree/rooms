@@ -30,8 +30,8 @@ async function readBookingsByHotelId(hotelId: string): Promise<IBookingCollectio
     await cursor.forEach((item: IBookingDbRecord) => {
       result.push(item)
     })
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`, err)
   }
 
   return bookingCollectionMapper(result)

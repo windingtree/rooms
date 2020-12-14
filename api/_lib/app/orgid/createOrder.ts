@@ -10,11 +10,6 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
-  console.log('-------')
-  console.log('createOrder :: payload')
-  console.log(JSON.stringify(payload))
-  console.log('-------')
-
   const paymentInfo: IPaymentInfo = await getPaymentInfo(payload.guaranteeId)
   if (paymentInfo.status !== 'OK') {
     throw new CError(BAD_REQUEST, 'Must provcide a valid "guaranteeId" to make an order.')

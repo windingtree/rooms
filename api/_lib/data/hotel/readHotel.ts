@@ -22,8 +22,8 @@ async function readHotel(hotelId: string): Promise<IHotel> {
     const options = { projection: buildProjection() }
 
     result = await collection.findOne(query, options)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}'.`, err)
   }
 
   if (!result) {

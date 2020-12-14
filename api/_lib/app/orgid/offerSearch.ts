@@ -33,11 +33,6 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
 }
 
 async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
-  console.log('-------')
-  console.log('offerSearch :: request.body')
-  console.log(JSON.stringify(request.body))
-  console.log('-------')
-
   let searchLocation
   if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
     searchLocation = request.body.accommodation.location

@@ -9,8 +9,8 @@ async function authenticateClientAppUser(payload: IProfileAuthData): Promise<IPr
   let profile: IProfile
   try {
     profile = await readProfileByEmail(payload.email)
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'User profile does not exist.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'User profile does not exist.', err)
   }
 
   if (profile.oneTimePassword !== payload.oneTimePassword) {

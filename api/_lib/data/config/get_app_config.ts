@@ -29,6 +29,7 @@ async function getAppConfig(): Promise<IAppConfig> {
   }
 
   let decryptOk = true
+  let decryptError: unknown|null = null
 
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
@@ -58,18 +59,19 @@ async function getAppConfig(): Promise<IAppConfig> {
         if (item.encrypted === true) {
           value = decryptText(ENV.ENV_ENCRYPTION_DETAILS, value)
         }
-      } catch (err) {
+      } catch (err: unknown) {
         decryptOk = false
+        decryptError = err
       }
 
       appConfig[item.key] = value
     })
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, 'Something went wrong while getting app config.')
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, 'Something went wrong while getting app config.', err)
   }
 
   if (!decryptOk) {
-    throw new CError(INTERNAL_SERVER_ERROR, 'Could not decrypt AppConfig items.')
+    throw new CError(INTERNAL_SERVER_ERROR, 'Could not decrypt AppConfig items.', decryptError)
   }
 
   return appConfig

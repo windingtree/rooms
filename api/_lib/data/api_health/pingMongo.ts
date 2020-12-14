@@ -9,8 +9,8 @@ async function pingMongo(): Promise<void> {
 
   try {
     await dbClient.db().admin().ping()
-  } catch (err) {
-    throw new CError(BAD_GATEWAY, 'Could not complete ping() operation on the MongoDB.')
+  } catch (err: unknown) {
+    throw new CError(BAD_GATEWAY, 'Could not complete ping() operation on the MongoDB.', err)
   }
 }
 

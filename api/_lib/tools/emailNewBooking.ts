@@ -11,8 +11,8 @@ async function emailNewBooking(did: string, orderId: string, email: string): Pro
 
   try {
     sgMail.setApiKey(appConfig.SENDGRID_API_KEY)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `Could not set Send Grid API key '${appConfig.SENDGRID_API_KEY}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not set Send Grid API key '${appConfig.SENDGRID_API_KEY}'.`, err)
   }
 
   const msg = {
@@ -28,8 +28,8 @@ async function emailNewBooking(did: string, orderId: string, email: string): Pro
 
   try {
     await sgMail.send(msg)
-  } catch (err) {
-    throw new CError(BAD_GATEWAY, `Could not send booking confirmation to ${email}.`)
+  } catch (err: unknown) {
+    throw new CError(BAD_GATEWAY, `Could not send booking confirmation to ${email}.`, err)
   }
 }
 

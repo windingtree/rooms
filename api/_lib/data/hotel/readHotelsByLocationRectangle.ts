@@ -53,8 +53,8 @@ async function readHotelsByLocationRectangle(rectangle: ILocationRectangleDbType
     await cursor.forEach((item: IHotelDbRecord) => {
       result.push(item)
     })
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`, err)
   }
 
   return hotelCollectionMapper(result)
