@@ -14,6 +14,7 @@ import {
   IOfferCollection,
   ILocationRectangle,
   ILocationRectangleDbType,
+  IOrgDetails,
 } from '../../../_lib/types'
 
 const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
@@ -32,7 +33,7 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
-async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
+async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
   if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
     searchLocation = request.body.accommodation.location
@@ -212,7 +213,15 @@ async function offerSearch(request: NowRequest): Promise<IOfferSearchResults> {
       }
 
       result.offers[offerId] = offer
-      cachedOffers.push({ id: '', arrival, departure, offerId, offer, createdAt })
+      cachedOffers.push({
+        id: '',
+        arrival,
+        departure,
+        offerId,
+        offer,
+        createdAt,
+        debtorOrgId: requester.organization.id,
+      })
     })
   })
 
