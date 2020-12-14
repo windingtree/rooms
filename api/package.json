@@ -14,7 +14,7 @@
     "build:watch": "tsc --watch --outDir ./dist",
     "lint": "eslint -c ./.eslintrc.js --max-warnings=0 --resolve-plugins-relative-to ./ './**/*.ts'",
     "lint:fix": "eslint --fix -c ./.eslintrc.js --max-warnings=0 --resolve-plugins-relative-to ./ './**/*.ts'",
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
+    "test": "mocha -r ts-node/register ./_tests/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
