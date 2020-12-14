@@ -22,9 +22,32 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   const offer: IOffer = await readOfferByOfferId(payload.offerId)
 
   if (paymentInfo.creditorOrgId !== appConfig.WT_ROOMS_ORGID) {
-    throw new CError(BAD_REQUEST, 'Guarantee not meant for Rooms organization.')
+    throw new CError(
+      BAD_REQUEST,
+      'Guarantee not meant for Rooms organization.',
+      new Error(`appConfig.WT_ROOMS_ORGID = ${appConfig.WT_ROOMS_ORGID}; paymentInfo.creditorOrgId = ${paymentInfo.creditorOrgId}.`)
+    )
   } else if (paymentInfo.debtorOrgId !== offer.debtorOrgId) {
-    throw new CError(BAD_REQUEST, 'Guarantee not created by offer requestor')
+    throw new CError(
+      BAD_REQUEST,
+      'Guarantee not created by offer requestor.',
+      new Error(`offer.debtorOrgId = ${offer.debtorOrgId}; paymentInfo.debtorOrgId = ${paymentInfo.debtorOrgId}.`)
+    )
+  } else if (paymentInfo.currency !== offer.offer.price.currency) {
+    throw new CError(
+      BAD_REQUEST,
+      'Invalid Guarantee currency.',
+      new Error(`offer.offer.price.currency = ${offer.offer.price.currency}; paymentInfo.currency = ${paymentInfo.currency}.`)
+    )
+  } else if (
+    Number.isNaN(parseFloat(paymentInfo.amount)) ||
+    parseFloat(paymentInfo.amount) < offer.offer.price.public
+  ) {
+    throw new CError(
+      BAD_REQUEST,
+      'Invalid Guarantee amount.',
+      new Error(`offer.offer.price.public = ${offer.offer.price.public}; paymentInfo.amount = ${paymentInfo.amount}.`)
+    )
   }
 
   const orderId = uuidv4()
