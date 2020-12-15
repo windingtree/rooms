@@ -221,6 +221,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         offer,
         createdAt,
         debtorOrgId: requester.organization.id,
+        hotelEmail: hotel.email,
       })
     })
   })

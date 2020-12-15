@@ -35,6 +35,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
       address: '',
       location: { lat: 0, lng: 0 },
       imageUrl: '',
+      email: '',
     })
 
     await updateProfile(profileId, { hotelId })

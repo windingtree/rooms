@@ -36,6 +36,7 @@ class Profile extends React.Component {
     this.state = {
       hotelId: '',
       name: '',
+      email: '',
       address: '',
       imageUrl: '',
       location: [0, 0],
@@ -64,6 +65,7 @@ class Profile extends React.Component {
     this.setState({
       hotelId: (hotel.id) ? hotel.id : '',
       name: (hotel.name) ? hotel.name : '',
+      email: (hotel.email) ? hotel.email : '',
       address: (hotel.address) ? hotel.address : '',
       imageUrl: (hotel.imageUrl) ? hotel.imageUrl : '',
       location: locationCoords,
@@ -132,6 +134,14 @@ class Profile extends React.Component {
     this.updateHotel('name', newValue)
   }
 
+  onHotelEmailChange = (newValue) => {
+    this.setState({
+      email: newValue,
+    })
+
+    this.updateHotel('email', newValue)
+  }
+
   onHotelAddressChange = (newValue) => {
     this.setState({
       address: newValue,
@@ -177,6 +187,14 @@ class Profile extends React.Component {
                   label="Hotel Name"
                   value={this.state.name}
                   onValueChange={this.onHotelNameChange}
+                  inputWidth={400}
+                />
+              </div>
+              <div>
+                <TextEditInput
+                  label="Hotel Email"
+                  value={this.state.email}
+                  onValueChange={this.onHotelEmailChange}
                   inputWidth={400}
                 />
               </div>
