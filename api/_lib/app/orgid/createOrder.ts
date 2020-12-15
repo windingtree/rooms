@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import * as moment from 'moment'
 
 import { getPaymentInfo, claimGuarantee } from '../../../_lib/data/simard'
 import { readOfferByOfferId, deleteOfferByOfferId } from '../../../_lib/data/offer'
@@ -51,13 +52,31 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       new Error(`offer.offer.price.currency = ${offer.offer.price.currency}; paymentInfo.currency = ${paymentInfo.currency}.`)
     )
   } else if (
-    Number.isNaN(parseFloat(paymentInfo.amount)) ||
-    parseFloat(paymentInfo.amount) < offer.offer.price.public
+    (
+      (typeof paymentInfo.amount === 'number') &&
+      (paymentInfo.amount < offer.offer.price.public)
+    ) ||
+    (
+      (typeof paymentInfo.amount === 'string') &&
+      (
+        (Number.isNaN(parseFloat(paymentInfo.amount))) ||
+        (parseFloat(paymentInfo.amount) < offer.offer.price.public)
+      )
+    )
   ) {
     throw new CError(
       BAD_REQUEST,
       'Invalid Guarantee amount.',
       new Error(`offer.offer.price.public = ${offer.offer.price.public}; paymentInfo.amount = ${paymentInfo.amount}.`)
+    )
+  } else if (
+    (!moment.utc(paymentInfo.expiration).isValid()) ||
+    (moment.utc(paymentInfo.expiration).diff(moment.utc(new Date()), 'hours') <= 72)
+  ) {
+    throw new CError(
+      BAD_REQUEST,
+      'Guarantee expiration is too short.',
+      new Error(`paymentInfo.expiration = ${paymentInfo.expiration}.`)
     )
   }
 
