@@ -90,8 +90,8 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
 
   await claimGuarantee(payload.guaranteeId)
 
-  if (baseBooking.guestEmail.length > 0) {
-    await emailNewBooking(requester.organization.did, orderId, baseBooking.guestEmail)
+  if (typeof offer.hotelEmail === 'string' && offer.hotelEmail.length > 0) {
+    await emailNewBooking(requester.organization.did, orderId, offer.hotelEmail)
   }
 
   const result: ICreateOrderResult = {

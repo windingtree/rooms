@@ -41,6 +41,7 @@ interface IBaseOffer {
   offer: IOfferDetails
   createdAt: string
   debtorOrgId: string
+  hotelEmail: string
 }
 
 interface IOffer extends IBaseOffer {
@@ -56,6 +57,7 @@ interface IPostOfferPayload {
   offer: IOfferDetails
   createdAt: string
   debtorOrgId: string
+  hotelEmail: string
 }
 
 interface IPatchOfferPayload {
@@ -71,6 +73,7 @@ interface IBaseOfferDbRecord {
   offer: IOfferDetailsDbRecord
   createdAt: Date
   debtorOrgId: string
+  hotelEmail: string
 }
 
 interface IOfferDbRecord extends IBaseOfferDbRecord {

@@ -20,6 +20,7 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
     'address',
     'location',
     'imageUrl',
+    'email',
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -47,6 +48,10 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
   const imageUrl = request.body.imageUrl
   await validateOptionalString('imageUrl', imageUrl)
   if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
+
+  const email = request.body.email
+  await validateOptionalString('email', email)
+  if (typeof email !== 'undefined') payload.email = email
 
   return payload
 }

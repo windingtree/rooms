@@ -29,6 +29,7 @@ function baseHotelDbRecordMapper(baseHotel: IBaseHotel): IBaseHotelDbRecord {
       ]
     },
     imageUrl: baseHotel.imageUrl,
+    email: baseHotel.email,
   }
 
   return baseHotelDbRecord
@@ -69,6 +70,11 @@ function patchHotelPayloadDbDataMapper(patchHotelPayload: IPatchHotelPayload): I
     patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
   }
 
+  prop = 'email'
+  if (typeof patchHotelPayload[prop] !== 'undefined') {
+    patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+  }
+
   return patchHotelPayloadDbData
 }
 
@@ -83,6 +89,7 @@ function hotelMapper(hotelDbRecord: IHotelDbRecord): IHotel {
       lng: hotelDbRecord.location.coordinates[1],
     },
     imageUrl: hotelDbRecord.imageUrl,
+    email: hotelDbRecord.email,
   }
 
   return hotel
