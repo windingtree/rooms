@@ -1,5 +1,5 @@
 interface ISimardPaymentInfo {
-  amount: string
+  amount: string|number
   creditorOrgId: string
   currency: string
   debtorOrgId: string
