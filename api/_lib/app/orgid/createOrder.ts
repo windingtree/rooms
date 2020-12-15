@@ -13,7 +13,6 @@ import {
   IOffer,
   IBaseBooking,
   ISimardPaymentInfo,
-  ISimardGuaranteeClaim,
 } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
@@ -21,11 +20,6 @@ const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
   const paymentInfo: ISimardPaymentInfo = await getPaymentInfo(payload.guaranteeId)
-
-  console.log('--------------')
-  console.log('Simard :: paymentInfo')
-  console.log(paymentInfo)
-  console.log('--------------')
 
   const appConfig = await AppConfig.getInstance().getConfig()
 
@@ -94,12 +88,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   await createBooking(baseBooking)
   await deleteOfferByOfferId(payload.offerId)
 
-  const guaranteeClaim: ISimardGuaranteeClaim = await claimGuarantee(payload.guaranteeId)
-
-  console.log('--------------')
-  console.log('Simard :: guaranteeClaim')
-  console.log(guaranteeClaim)
-  console.log('--------------')
+  await claimGuarantee(payload.guaranteeId)
 
   if (baseBooking.guestEmail.length > 0) {
     await emailNewBooking(requester.organization.did, orderId, baseBooking.guestEmail)
@@ -111,19 +100,12 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       passengers: payload.passengers,
       price: {
         currency: offer.offer.price.currency,
-        private: 0,
         public: offer.offer.price.public,
-        commission: 0,
-        taxes: 0,
       },
       restrictions: {
-        exchangeFee: 0,
-        refundFee: 0,
         exchangeable: false,
         refundable: false,
       },
-      itinerary: {},
-      options: [],
       status: 'OK',
       response: 'Committed',
       reservationNumber: orderId.split('-')[0].toUpperCase(),
