@@ -6,6 +6,11 @@ interface ISimardPaymentInfo {
   expiration: string
 }
 
+interface ISimardGuaranteeClaim {
+  settlementId: string
+}
+
 export {
   ISimardPaymentInfo,
+  ISimardGuaranteeClaim,
 }
