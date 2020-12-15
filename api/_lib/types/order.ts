@@ -23,25 +23,25 @@ interface IPostCreateOrderPayload {
 
 interface ICreateOrderResultDetailsPrice {
   currency: string
-  private: number
+  private?: number
   public: number
-  commission: number
-  taxes: number
+  commission?: number
+  taxes?: number
 }
 
 interface ICreateOrderResultDetailsRestrictions {
   refundable: boolean
   exchangeable: boolean
-  refundFee: number
-  exchangeFee: number
+  refundFee?: number
+  exchangeFee?: number
 }
 
 interface ICreateOrderResultDetails {
   passengers: IPostCreateOrderPayloadPassengers
   price: ICreateOrderResultDetailsPrice
   restrictions: ICreateOrderResultDetailsRestrictions
-  itinerary: unknown
-  options: Array<unknown>
+  itinerary?: unknown
+  options?: Array<unknown>
   status: string
   response: string
   reservationNumber: string

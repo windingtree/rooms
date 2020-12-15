@@ -6,6 +6,12 @@ import { CONSTANTS } from '../../_lib/infra/constants'
 const { HTTP_STATUS, HTTP_STATUS_CODES } = CONSTANTS
 const { INTERNAL_SERVER_ERROR } = HTTP_STATUS
 
+function stdErr(err: unknown): void {
+  console.log('-------')
+  console.error(err)
+  console.log('-------')
+}
+
 function errorHandler(response: NowResponse, error: unknown): void {
   let errorCode: number
   let errorMessage: string
@@ -20,10 +26,9 @@ function errorHandler(response: NowResponse, error: unknown): void {
     errorMessage = 'Unhandled error occurred.'
   }
 
+  stdErr(error)
   if (originalError !== null) {
-    console.log('-------')
-    console.error(originalError)
-    console.log('-------')
+    stdErr(originalError)
   }
 
   response.status(errorCode).json({ err: errorMessage })
