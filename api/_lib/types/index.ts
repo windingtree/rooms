@@ -124,6 +124,7 @@ export {
 
 export {
   ISimardPaymentInfo,
+  ISimardGuaranteeClaim,
 } from './simard'
 
 export {

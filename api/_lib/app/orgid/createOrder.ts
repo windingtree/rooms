@@ -1,25 +1,32 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { getPaymentInfo } from '../../../_lib/data/simard'
+import { getPaymentInfo, claimGuarantee } from '../../../_lib/data/simard'
 import { readOfferByOfferId, deleteOfferByOfferId } from '../../../_lib/data/offer'
 import { createBooking } from '../../../_lib/data/booking'
 import { AppConfig } from '../../../_lib/infra/config'
 import { emailNewBooking, CError } from '../../../_lib/tools'
-import { IPostCreateOrderPayload, ICreateOrderResult, IOrgDetails, IOffer, IBaseBooking, ISimardPaymentInfo } from '../../../_lib/types'
+import {
+  IPostCreateOrderPayload,
+  ICreateOrderResult,
+  IOrgDetails,
+  IOffer,
+  IBaseBooking,
+  ISimardPaymentInfo,
+  ISimardGuaranteeClaim,
+} from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
-  const appConfig = await AppConfig.getInstance().getConfig()
-
   const paymentInfo: ISimardPaymentInfo = await getPaymentInfo(payload.guaranteeId)
 
   console.log('--------------')
+  console.log('Simard :: paymentInfo')
   console.log(paymentInfo)
   console.log('--------------')
 
-  const offer: IOffer = await readOfferByOfferId(payload.offerId)
+  const appConfig = await AppConfig.getInstance().getConfig()
 
   if (paymentInfo.creditorOrgId !== appConfig.WT_ROOMS_ORGID) {
     throw new CError(
@@ -27,7 +34,11 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       'Guarantee not meant for Rooms organization.',
       new Error(`appConfig.WT_ROOMS_ORGID = ${appConfig.WT_ROOMS_ORGID}; paymentInfo.creditorOrgId = ${paymentInfo.creditorOrgId}.`)
     )
-  } else if (paymentInfo.debtorOrgId !== offer.debtorOrgId) {
+  }
+
+  const offer: IOffer = await readOfferByOfferId(payload.offerId)
+
+  if (paymentInfo.debtorOrgId !== offer.debtorOrgId) {
     throw new CError(
       BAD_REQUEST,
       'Guarantee not created by offer requestor.',
@@ -64,6 +75,13 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   await createBooking(baseBooking)
   await deleteOfferByOfferId(payload.offerId)
 
+  const guaranteeClaim: ISimardGuaranteeClaim = await claimGuarantee(payload.guaranteeId)
+
+  console.log('--------------')
+  console.log('Simard :: guaranteeClaim')
+  console.log(guaranteeClaim)
+  console.log('--------------')
+
   if (baseBooking.guestEmail.length > 0) {
     await emailNewBooking(requester.organization.did, orderId, baseBooking.guestEmail)
   }
@@ -74,14 +92,14 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       passengers: payload.passengers,
       price: {
         currency: offer.offer.price.currency,
-        private: offer.offer.price.public,
+        private: 0,
         public: offer.offer.price.public,
-        commission: offer.offer.price.public,
-        taxes: offer.offer.price.public,
+        commission: 0,
+        taxes: 0,
       },
       restrictions: {
-        exchangeFee: offer.offer.price.public,
-        refundFee: offer.offer.price.public,
+        exchangeFee: 0,
+        refundFee: 0,
         exchangeable: false,
         refundable: false,
       },
