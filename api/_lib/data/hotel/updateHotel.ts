@@ -1,7 +1,7 @@
 import { ObjectID } from 'mongodb'
 
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { patchHotelPayloadDbDataMapper } from './_mapper'
+import { mapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
 import { IPatchHotelPayloadDbData, IPatchHotelPayload } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
@@ -13,7 +13,7 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 async function updateHotel(hotelId: string, data: IPatchHotelPayload): Promise<void> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  const dbData: IPatchHotelPayloadDbData = patchHotelPayloadDbDataMapper(data)
+  const dbData: IPatchHotelPayloadDbData = mapper.fromPatchEntityPayload(data)
 
   let result
   try {

@@ -32,6 +32,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
     const hotelId: string = await createHotel({
       ownerId: profileId,
       name: '',
+      description: '',
       address: '',
       location: { lat: 0, lng: 0 },
       imageUrl: '',

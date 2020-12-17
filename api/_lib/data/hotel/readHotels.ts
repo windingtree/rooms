@@ -1,8 +1,8 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { buildProjection } from './_projection'
-import { hotelCollectionMapper } from './_mapper'
+import { projection } from './_projection'
+import { mapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IHotelDbRecord, IHotelDbRecordCollection, IHotelCollection } from '../../../_lib/types'
+import { IHotelDbData, IHotelCollectionDbData, IHotelCollection } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
@@ -12,12 +12,12 @@ const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 async function readHotels(): Promise<IHotelCollection> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  let result: IHotelDbRecordCollection
+  let result: IHotelCollectionDbData
   try {
     const database = dbClient.db(ENV.ROOMS_DB_NAME)
     const collection = database.collection(COLLECTION_NAME)
     const query = {}
-    const options = { projection: buildProjection() }
+    const options = { projection }
 
     const cursor = collection.find(query, options)
 
@@ -25,14 +25,14 @@ async function readHotels(): Promise<IHotelCollection> {
       return []
     }
     result = []
-    await cursor.forEach((item: IHotelDbRecord) => {
+    await cursor.forEach((item: IHotelDbData) => {
       result.push(item)
     })
   } catch (err: unknown) {
     throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}' collection.`, err)
   }
 
-  return hotelCollectionMapper(result)
+  return mapper.toEntityCollection(result)
 }
 
 export {

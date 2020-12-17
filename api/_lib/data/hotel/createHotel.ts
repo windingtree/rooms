@@ -1,7 +1,7 @@
 import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { baseHotelDbRecordMapper } from './_mapper'
+import { mapper } from './_mapper'
 import { CError } from '../../../_lib/tools'
-import { IBaseHotelDbRecord, IBaseHotel } from '../../../_lib/types'
+import { IBaseHotelDbData, IBaseHotel } from '../../../_lib/types'
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
 import { CONSTANTS } from '../../../_lib/infra/constants'
@@ -11,7 +11,7 @@ const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 async function createHotel(data: IBaseHotel): Promise<string> {
   const dbClient = await MongoDB.getInstance().getDbClient()
 
-  const dbData: IBaseHotelDbRecord = baseHotelDbRecordMapper(data)
+  const dbData: IBaseHotelDbData = mapper.fromBaseEntity(data)
 
   let result
   try {

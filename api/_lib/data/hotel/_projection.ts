@@ -1,10 +1,11 @@
-import { IHotelDbRecord } from '../../../_lib/types'
+import { IHotelDbData } from '../../../_lib/types'
 
 function buildProjection(): { [key: string]: 1 } {
-  const allowedFields: Array<keyof IHotelDbRecord> = [
+  const allowedFields: Array<keyof IHotelDbData> = [
     '_id',
     'ownerId',
     'name',
+    'description',
     'address',
     'location',
     'imageUrl',
@@ -20,6 +21,8 @@ function buildProjection(): { [key: string]: 1 } {
   return projection
 }
 
+const projection = buildProjection()
+
 export {
-  buildProjection,
+  projection,
 }
