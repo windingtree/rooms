@@ -23,11 +23,11 @@ async function readHotelsByLocationRectangle(rectangle: ILocationRectangleDbType
     ],
     [
       rectangle.south,
-      rectangle.east,
+      rectangle.west,
     ],
     [
       rectangle.south,
-      rectangle.west,
+      rectangle.east,
     ],
   ]
 
