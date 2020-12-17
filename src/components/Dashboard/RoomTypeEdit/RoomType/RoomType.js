@@ -46,7 +46,6 @@ class RoomType extends React.Component {
         { name: 'Safe box, air conditioning, hair dryer, iron and ironing board, laundry services' },
         { name: 'Room service 24 hours' },
 
-        { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
         { name: 'American breakfast in the restaurant' },
         { name: 'Spinning Center Gym (Basement Floor) except Spa and Hair Salon Services' },
         { name: 'High Speed Wired Internet and Wi-Fi inside the hotel' },
