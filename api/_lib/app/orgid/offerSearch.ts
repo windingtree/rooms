@@ -1,6 +1,7 @@
 import { NowRequest } from '@vercel/node'
 import { v4 as uuidv4 } from 'uuid'
-import * as moment from 'moment'
+import * as Moment from 'moment'
+import { extendMoment } from 'moment-range'
 
 import { createOffers } from '../../../_lib/data/offer'
 import { readHotelsByLocationRectangle as readHotelsByLocationRectangleDbFunc } from '../../../_lib/data/hotel'
@@ -16,6 +17,8 @@ import {
   ILocationRectangleDbType,
   IOrgDetails,
 } from '../../../_lib/types'
+
+const moment = extendMoment(Moment)
 
 const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
@@ -189,12 +192,30 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
   })
 
   const cachedOffers: IOfferCollection = []
-  const createdAt = moment.utc(new Date()).format()
+  const createdAt = moment.utc(new Date())
+
+  const arrivalDate = moment.utc(arrival)
+  const departureDate = moment.utc(departure)
+
+  const devConStartDate = moment.utc('2021-08-09T00:00:00+00:00')
+  const devConStopDate = moment.utc('2021-08-14T23:59:59+00:00')
+
+  const devConDateRange = moment.range(devConStartDate, devConStopDate)
 
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
       if (roomType.hotelId !== hotel.id) {
         return
+      }
+
+      let price = 0
+      if (
+        (devConDateRange.contains(arrivalDate) && devConDateRange.contains(departureDate)) &&
+        (typeof roomType.devConPrice === 'number' && roomType.devConPrice > 0)
+      ) {
+        price = roomType.devConPrice
+      } else if (typeof roomType.price === 'number' && roomType.price > 0) {
+        price = roomType.price
       }
 
       const offerId = uuidv4()
@@ -207,7 +228,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         },
         price: {
           currency: 'USD',
-          public: roomType.price,
+          public: price,
           taxes: 0,
         },
       }
@@ -219,7 +240,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         departure,
         offerId,
         offer,
-        createdAt,
+        createdAt: createdAt.format(),
         debtorOrgId: requester.organization.id,
         hotelEmail: hotel.email,
       })

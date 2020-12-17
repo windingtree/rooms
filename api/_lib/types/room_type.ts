@@ -6,6 +6,7 @@ interface IBaseRoomType {
   description: string
   quantity: number
   price: number
+  devConPrice: number
   amenities: string
   imageUrl: string
 }
@@ -22,6 +23,7 @@ interface IPostRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  devConPrice?: number
   amenities?: string
   imageUrl?: string
 }
@@ -32,6 +34,7 @@ interface IPatchRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  devConPrice?: number
   amenities?: string
   imageUrl?: string
 }
@@ -42,6 +45,7 @@ interface IBaseRoomTypeDbRecord {
   description: string
   quantity: number
   price: number
+  devConPrice: number
   amenities: string
   imageUrl: string
 }
@@ -56,6 +60,7 @@ interface IPatchRoomTypePayloadDbData {
   description?: string
   quantity?: number
   price?: number
+  devConPrice?: number
   amenities?: string
   imageUrl?: string
 }

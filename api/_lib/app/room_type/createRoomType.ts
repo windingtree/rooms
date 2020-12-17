@@ -37,6 +37,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     description: (typeof payload.description !== 'undefined') ? payload.description : '',
     quantity: (typeof payload.quantity !== 'undefined') ? payload.quantity : 0,
     price: (typeof payload.price !== 'undefined') ? payload.price : 0,
+    devConPrice: (typeof payload.devConPrice !== 'undefined') ? payload.devConPrice : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
     imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
   }

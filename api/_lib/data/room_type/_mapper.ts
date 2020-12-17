@@ -21,6 +21,7 @@ function baseRoomTypeDbRecordMapper(baseRoomType: IBaseRoomType): IBaseRoomTypeD
     description: baseRoomType.description,
     quantity: baseRoomType.quantity,
     price: baseRoomType.price,
+    devConPrice: baseRoomType.devConPrice,
     amenities: baseRoomType.amenities,
     imageUrl: baseRoomType.imageUrl,
   }
@@ -57,6 +58,11 @@ function patchRoomTypePayloadDbDataMapper(patchRoomTypePayload: IPatchRoomTypePa
     patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
   }
 
+  prop = 'devConPrice'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
   prop = 'amenities'
   if (typeof patchRoomTypePayload[prop] !== 'undefined') {
     patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
@@ -78,6 +84,7 @@ function roomTypeMapper(roomTypeDbRecord: IRoomTypeDbRecord): IRoomType {
     description: roomTypeDbRecord.description,
     quantity: roomTypeDbRecord.quantity,
     price: roomTypeDbRecord.price,
+    devConPrice: roomTypeDbRecord.devConPrice,
     amenities: roomTypeDbRecord.amenities,
     imageUrl: roomTypeDbRecord.imageUrl,
   }
