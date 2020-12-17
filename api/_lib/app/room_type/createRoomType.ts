@@ -34,6 +34,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
   const data: IBaseRoomType = {
     hotelId: payload.hotelId,
     type: (typeof payload.type !== 'undefined') ? payload.type : '',
+    description: (typeof payload.description !== 'undefined') ? payload.description : '',
     quantity: (typeof payload.quantity !== 'undefined') ? payload.quantity : 0,
     price: (typeof payload.price !== 'undefined') ? payload.price : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',

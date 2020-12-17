@@ -108,7 +108,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     })
 
     if (numAvailRoomTypes === 0) {
-      throw new CError(NOT_FOUND, 'No available roomtypes found for selected hotels.')
+      throw new CError(NOT_FOUND, 'No available rooms found for selected hotels.')
     }
 
     let hotelMedia: Array<{ type: string, url: string }> = []
@@ -165,7 +165,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
         name: roomType.type,
-        description: 'Room provided by Rooms project.',
+        description: roomType.description,
         amenities: roomType.amenities
           .split(';')
           .map((amenity) => {

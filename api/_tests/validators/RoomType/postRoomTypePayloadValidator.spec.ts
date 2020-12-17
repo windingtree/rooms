@@ -31,20 +31,6 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
 
   describe('check of "type" property in body', () => {
     describe('should throw if value is', () => {
-      it('undefined', async () => {
-        requestBody.type = undefined
-
-        await expect(sut(request)).to.be.rejected
-
-        try {
-          await sut(request)
-        } catch (err) {
-          expect(err).to.deep.equal(
-            new CError(BAD_REQUEST, `Property 'type' is required. It must have a value of type 'string'.`)
-          )
-        }
-      })
-
       it('null', async () => {
         requestBody.type = null
 
@@ -54,7 +40,7 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
           await sut(request)
         } catch (err) {
           expect(err).to.deep.equal(
-            new CError(BAD_REQUEST, `Property 'type' is required. It must have a value of type 'string'.`)
+            new CError(BAD_REQUEST, `Property 'type' is optional. If provided, it must have a value of type 'string'.`)
           )
         }
       })
@@ -68,7 +54,7 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
           await sut(request)
         } catch (err) {
           expect(err).to.deep.equal(
-            new CError(BAD_REQUEST, `Property 'type' is required. It must have a value of type 'string'.`)
+            new CError(BAD_REQUEST, `Property 'type' is optional. If provided, it must have a value of type 'string'.`)
           )
         }
       })
@@ -82,7 +68,7 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
           await sut(request)
         } catch (err) {
           expect(err).to.deep.equal(
-            new CError(BAD_REQUEST, `Property 'type' is required. It must have a value of type 'string'.`)
+            new CError(BAD_REQUEST, `Property 'type' is optional. If provided, it must have a value of type 'string'.`)
           )
         }
       })
@@ -96,7 +82,7 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
           await sut(request)
         } catch (err) {
           expect(err).to.deep.equal(
-            new CError(BAD_REQUEST, `Property 'type' is required. It must have a value of type 'string'.`)
+            new CError(BAD_REQUEST, `Property 'type' is optional. If provided, it must have a value of type 'string'.`)
           )
         }
       })

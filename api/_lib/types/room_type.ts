@@ -3,6 +3,7 @@ import { ObjectID } from 'mongodb'
 interface IBaseRoomType {
   hotelId: string
   type: string
+  description: string
   quantity: number
   price: number
   amenities: string
@@ -18,6 +19,7 @@ type IRoomTypeCollection = Array<IRoomType>
 interface IPostRoomTypePayload {
   hotelId: string
   type?: string
+  description?: string
   quantity?: number
   price?: number
   amenities?: string
@@ -27,6 +29,7 @@ interface IPostRoomTypePayload {
 interface IPatchRoomTypePayload {
   hotelId?: string
   type?: string
+  description?: string
   quantity?: number
   price?: number
   amenities?: string
@@ -36,6 +39,7 @@ interface IPatchRoomTypePayload {
 interface IBaseRoomTypeDbRecord {
   hotelId: ObjectID|null
   type: string
+  description: string
   quantity: number
   price: number
   amenities: string
@@ -49,6 +53,7 @@ interface IRoomTypeDbRecord extends IBaseRoomTypeDbRecord {
 interface IPatchRoomTypePayloadDbData {
   hotelId?: ObjectID|null
   type?: string
+  description?: string
   quantity?: number
   price?: number
   amenities?: string

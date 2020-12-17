@@ -14,12 +14,12 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
 
   const payload: IPostRoomTypePayload = {
     hotelId: '',
-    type: '',
   }
 
   const ALLOWED_PROPS: Array<keyof IPostRoomTypePayload> = [
     'hotelId',
     'type',
+    'description',
     'quantity',
     'price',
     'amenities',
@@ -37,24 +37,28 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   payload.hotelId = hotelId
 
   const type = request.body.type
-  await validateRequiredString('type', type)
-  payload.type = type
+  await validateOptionalString('type', type)
+  if (typeof type !== 'undefined') payload.type = type
+
+  const description = request.body.description
+  await validateOptionalString('description', description)
+  if (typeof description !== 'undefined') payload.description = description
 
   const quantity = request.body.quantity
   await validateOptionalNumber('quantity', quantity)
-  payload.quantity = quantity
+  if (typeof quantity !== 'undefined') payload.quantity = quantity
 
   const price = request.body.price
   await validateOptionalNumber('price', price)
-  payload.price = price
+  if (typeof price !== 'undefined') payload.price = price
 
   const amenities = request.body.amenities
   await validateOptionalString('amenities', amenities)
-  payload.amenities = amenities
+  if (typeof amenities !== 'undefined') payload.amenities = amenities
 
   const imageUrl = request.body.imageUrl
   await validateOptionalString('imageUrl', imageUrl)
-  payload.imageUrl = imageUrl
+  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
 
   return payload
 }

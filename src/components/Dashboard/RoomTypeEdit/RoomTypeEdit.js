@@ -115,6 +115,7 @@ class RoomTypeEdit extends React.Component {
               id={this.state.roomType.id}
               quantity={this.state.roomType.quantity}
               type={this.state.roomType.type}
+              description={this.state.roomType.description}
               price={this.state.roomType.price}
               amenities={this.state.roomType.amenities}
               imageUrl={this.state.roomType.imageUrl}
