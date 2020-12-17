@@ -16,6 +16,8 @@ const CONSTANTS: IConstants = {
 
   HTTP_STATUS_CODES,
   HTTP_STATUS,
+
+  ONE_MONGO_CONNECTION_PER_REQUEST: false,
 }
 
 export {
