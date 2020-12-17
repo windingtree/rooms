@@ -43,6 +43,7 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
   const data: IBaseHotel = {
     ownerId: payload.ownerId,
     name: (typeof payload.name !== 'undefined') ? payload.name : '',
+    description: (typeof payload.description !== 'undefined') ? payload.description : '',
     address: (typeof payload.address !== 'undefined') ? payload.address : '',
     location: (typeof payload.location !== 'undefined') ? payload.location : { lat: 0, lng: 0 },
     imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',

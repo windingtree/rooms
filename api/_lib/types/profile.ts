@@ -72,7 +72,7 @@ interface IBaseProfileDbRecord {
 }
 
 interface IProfileDbRecord extends IBaseProfileDbRecord {
-  _id: ObjectID
+  _id: ObjectID|null
 }
 
 interface IPatchProfilePayloadDbData {

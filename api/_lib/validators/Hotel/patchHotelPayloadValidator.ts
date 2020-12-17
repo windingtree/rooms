@@ -17,6 +17,7 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
   const ALLOWED_PROPS: Array<keyof IPatchHotelPayload> = [
     'ownerId',
     'name',
+    'description',
     'address',
     'location',
     'imageUrl',
@@ -36,6 +37,10 @@ async function patchHotelPayloadValidator(request: NowRequest): Promise<IPatchHo
   const name = request.body.name
   await validateOptionalString('name', name)
   if (typeof name !== 'undefined') payload.name = name
+
+  const description = request.body.description
+  await validateOptionalString('description', description)
+  if (typeof description !== 'undefined') payload.description = description
 
   const address = request.body.address
   await validateOptionalString('address', address)

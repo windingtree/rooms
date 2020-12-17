@@ -69,10 +69,10 @@ export {
   IHotelCollection,
   IPostHotelPayload,
   IPatchHotelPayload,
-  IBaseHotelDbRecord,
-  IHotelDbRecord,
+  IBaseHotelDbData,
+  IHotelDbData,
   IPatchHotelPayloadDbData,
-  IHotelDbRecordCollection,
+  IHotelCollectionDbData,
 } from './hotel'
 
 export {

@@ -13,6 +13,7 @@ interface IHotelDbLocation {
 interface IBaseHotel {
   ownerId: string
   name: string
+  description: string
   address: string
   location: IHotelLocation
   imageUrl: string
@@ -28,6 +29,7 @@ type IHotelCollection = Array<IHotel>
 interface IPostHotelPayload {
   ownerId: string
   name?: string
+  description?: string
   address?: string
   location?: IHotelLocation
   imageUrl?: string
@@ -37,35 +39,38 @@ interface IPostHotelPayload {
 interface IPatchHotelPayload {
   ownerId?: string
   name?: string
+  description?: string
   address?: string
   location?: IHotelLocation
   imageUrl?: string
   email?: string
 }
 
-interface IBaseHotelDbRecord {
+interface IBaseHotelDbData {
   ownerId: ObjectID|null
   name: string
+  description: string
   address: string
   location: IHotelDbLocation
   imageUrl: string
   email: string
 }
 
-interface IHotelDbRecord extends IBaseHotelDbRecord {
+interface IHotelDbData extends IBaseHotelDbData {
   _id: ObjectID|null
 }
 
 interface IPatchHotelPayloadDbData {
   ownerId?: ObjectID|null
   name?: string
+  description?: string
   address?: string
   location?: IHotelDbLocation
   imageUrl?: string
   email?: string
 }
 
-type IHotelDbRecordCollection = Array<IHotelDbRecord>
+type IHotelCollectionDbData = Array<IHotelDbData>
 
 export {
   IHotelLocation,
@@ -74,8 +79,8 @@ export {
   IHotelCollection,
   IPostHotelPayload,
   IPatchHotelPayload,
-  IBaseHotelDbRecord,
-  IHotelDbRecord,
+  IBaseHotelDbData,
+  IHotelDbData,
   IPatchHotelPayloadDbData,
-  IHotelDbRecordCollection,
+  IHotelCollectionDbData,
 }

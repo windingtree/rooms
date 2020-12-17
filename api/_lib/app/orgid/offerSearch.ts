@@ -122,7 +122,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     result.accommodations[hotel.id] = {
       name: hotel.name,
       type: 'hotel',
-      description: 'Hotel provided by Rooms project.',
+      description: hotel.description,
       location: {
         coordinates: {
           latitude: hotel.location.lat,
