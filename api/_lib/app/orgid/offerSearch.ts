@@ -36,6 +36,40 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
+function enumerateDaysBetweenDates(startDate: string, endDate: string): Array<Date> {
+  const currDate = moment.utc(startDate).startOf('day')
+  const lastDate = moment.utc(endDate).startOf('day')
+
+  const dates = [currDate.clone().toDate()]
+
+  while (currDate.add(1, 'days').diff(lastDate) < 0) {
+    dates.push(currDate.clone().toDate())
+  }
+
+  return dates
+}
+
+function calculateTotalPrice(price: number, devConPrice: number, arrival: string, departure: string): number {
+  const devConStartDate = moment.utc('2021-08-10T00:00:00+00:00')
+  const devConStopDate = moment.utc('2021-08-13T23:59:59+00:00')
+
+  const devConDateRange = moment.range(devConStartDate, devConStopDate)
+
+  const stayDates: Array<Date> = enumerateDaysBetweenDates(arrival, departure)
+
+  let totalPrice = 0
+
+  stayDates.forEach((date: Date) => {
+    if (devConDateRange.contains(date)) {
+      totalPrice += devConPrice
+    } else {
+      totalPrice += price
+    }
+  })
+
+  return totalPrice
+}
+
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
   if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
@@ -194,14 +228,6 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
   const cachedOffers: IOfferCollection = []
   const createdAt = moment.utc(new Date())
 
-  const arrivalDate = moment.utc(arrival)
-  const departureDate = moment.utc(departure)
-
-  const devConStartDate = moment.utc('2021-08-09T00:00:00+00:00')
-  const devConStopDate = moment.utc('2021-08-14T23:59:59+00:00')
-
-  const devConDateRange = moment.range(devConStartDate, devConStopDate)
-
   roomTypes.forEach((roomType) => {
     hotels.forEach((hotel) => {
       if (roomType.hotelId !== hotel.id) {
@@ -209,13 +235,13 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       }
 
       let price = 0
-      if (
-        (devConDateRange.contains(arrivalDate) && devConDateRange.contains(departureDate)) &&
-        (typeof roomType.devConPrice === 'number' && roomType.devConPrice > 0)
-      ) {
-        price = roomType.devConPrice
-      } else if (typeof roomType.price === 'number' && roomType.price > 0) {
+      if (typeof roomType.price === 'number' && roomType.price > 0) {
         price = roomType.price
+      }
+
+      let devConPrice = 0
+      if (typeof roomType.devConPrice === 'number' && roomType.devConPrice > 0) {
+        devConPrice = roomType.devConPrice
       }
 
       const offerId = uuidv4()
@@ -228,7 +254,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         },
         price: {
           currency: 'USD',
-          public: price,
+          public: calculateTotalPrice(price, devConPrice, arrival, departure),
           taxes: 0,
         },
       }
