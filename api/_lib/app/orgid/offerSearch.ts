@@ -244,6 +244,10 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         devConPrice = roomType.devConPrice
       }
 
+      if (devConPrice === 0) {
+        devConPrice = price
+      }
+
       const offerId = uuidv4()
       const offer = {
         pricePlansReferences: {
