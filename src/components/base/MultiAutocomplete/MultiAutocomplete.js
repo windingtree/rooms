@@ -207,7 +207,7 @@ class MultiAutocomplete extends React.Component {
                   variant="outlined"
                 />
               </li>
-            );
+            )
           })}
         </div>
       </div>

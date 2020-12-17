@@ -21,7 +21,7 @@ import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 import { datePickerThemeObj } from '../../../../utils/themes'
 import Spinner from '../../../base/Spinner/Spinner'
 
-const datePickerTheme = createMuiTheme(datePickerThemeObj);
+const datePickerTheme = createMuiTheme(datePickerThemeObj)
 
 const useStyles = () => {
   return {
