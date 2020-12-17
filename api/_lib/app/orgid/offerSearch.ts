@@ -71,7 +71,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(rectangleDb)
   if (hotels.length === 0) {
-    throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.')
+    throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.', { rectangleDb })
   }
 
   const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
