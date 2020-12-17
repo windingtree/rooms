@@ -5,6 +5,7 @@ function buildProjection(): { [key: string]: 1 } {
     '_id',
     'hotelId',
     'type',
+    'description',
     'quantity',
     'price',
     'amenities',

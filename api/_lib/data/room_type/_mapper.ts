@@ -18,6 +18,7 @@ function baseRoomTypeDbRecordMapper(baseRoomType: IBaseRoomType): IBaseRoomTypeD
   const baseRoomTypeDbRecord: IBaseRoomTypeDbRecord = {
     hotelId: getObjectId(baseRoomType.hotelId),
     type: baseRoomType.type,
+    description: baseRoomType.description,
     quantity: baseRoomType.quantity,
     price: baseRoomType.price,
     amenities: baseRoomType.amenities,
@@ -37,6 +38,11 @@ function patchRoomTypePayloadDbDataMapper(patchRoomTypePayload: IPatchRoomTypePa
   }
 
   prop = 'type'
+  if (typeof patchRoomTypePayload[prop] !== 'undefined') {
+    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+  }
+
+  prop = 'description'
   if (typeof patchRoomTypePayload[prop] !== 'undefined') {
     patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
   }
@@ -69,6 +75,7 @@ function roomTypeMapper(roomTypeDbRecord: IRoomTypeDbRecord): IRoomType {
     id: getObjectIdString(roomTypeDbRecord._id),
     hotelId: getObjectIdString(roomTypeDbRecord.hotelId),
     type: roomTypeDbRecord.type,
+    description: roomTypeDbRecord.description,
     quantity: roomTypeDbRecord.quantity,
     price: roomTypeDbRecord.price,
     amenities: roomTypeDbRecord.amenities,

@@ -17,6 +17,7 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const ALLOWED_PROPS: Array<keyof IPatchRoomTypePayload> = [
     'hotelId',
     'type',
+    'description',
     'quantity',
     'price',
     'amenities',
@@ -38,6 +39,10 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   await validateOptionalString('type', type)
   if (typeof type !== 'undefined') payload.type = type
 
+  const description = request.body.description
+  await validateOptionalString('description', description)
+  if (typeof description !== 'undefined') payload.description = description
+
   const quantity = request.body.quantity
   await validateOptionalNumber('quantity', quantity)
   if (typeof quantity !== 'undefined') payload.quantity = quantity
@@ -52,7 +57,7 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
 
   const imageUrl = request.body.imageUrl
   await validateOptionalString('imageUrl', imageUrl)
-  payload.imageUrl = imageUrl
+  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
 
   return payload
 }

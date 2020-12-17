@@ -59,6 +59,10 @@ class RoomType extends React.Component {
     this.props.onPropValueChange(this.props.id, 'type', e)
   }
 
+  handleDescriptionChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'description', e)
+  }
+
   handleQuantityChange = (e) => {
     this.props.onPropValueChange(this.props.id, 'quantity', Number.parseInt(e, 10))
   }
@@ -100,6 +104,14 @@ class RoomType extends React.Component {
                 label="Quantity"
                 onValueChange={this.handleQuantityChange}
                 inputWidth={75}
+              />
+            </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.description}
+                label="Description"
+                onValueChange={this.handleDescriptionChange}
+                inputWidth={300}
               />
             </Grid>
             <Grid item>
