@@ -107,6 +107,10 @@ class RoomType extends React.Component {
     this.props.onPropValueChange(this.props.id, 'price', Number.parseFloat(e, 10))
   }
 
+  handleDevConPriceChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'devConPrice', Number.parseFloat(e, 10))
+  }
+
   handleAmenitiesChange = (e) => {
     this.props.onPropValueChange(this.props.id, 'amenities', e)
   }
@@ -155,6 +159,15 @@ class RoomType extends React.Component {
                 value={this.props.price}
                 label="Price"
                 onValueChange={this.handlePriceChange}
+                inputWidth={90}
+              />
+              <div className={classes.price_currency}>USD</div>
+            </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.devConPrice}
+                label="DevCon Price"
+                onValueChange={this.handleDevConPriceChange}
                 inputWidth={90}
               />
               <div className={classes.price_currency}>USD</div>

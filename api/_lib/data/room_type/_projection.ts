@@ -8,6 +8,7 @@ function buildProjection(): { [key: string]: 1 } {
     'description',
     'quantity',
     'price',
+    'devConPrice',
     'amenities',
     'imageUrl',
   ]
