@@ -36,51 +36,45 @@ class Mapper {
   }
 
   fromPatchEntityPayload(patchHotelPayload: IPatchHotelPayload): IPatchHotelPayloadDbData {
-    const patchHotelPayloadDbData: IPatchHotelPayloadDbData = {}
-    let prop: keyof IPatchHotelPayload
+    const availProps: Array<keyof IPatchHotelPayload> = [
+      'ownerId',
+      'name',
+      'description',
+      'address',
+      'location',
+      'imageUrl',
+      'email',
+    ]
 
-    prop = 'ownerId'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = getObjectId(patchHotelPayload[prop])
-    }
-
-    prop = 'name'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
-    }
-
-    prop = 'description'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
-    }
-
-    prop = 'address'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
-    }
-
-    prop = 'location'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = {
-        type: 'Point',
-        coordinates: [
-          (patchHotelPayload[prop] as IHotelLocation).lat,
-          (patchHotelPayload[prop] as IHotelLocation).lng,
-        ]
+    return availProps.reduce((patchHotelPayloadDbData: IPatchHotelPayloadDbData, prop): IPatchHotelPayloadDbData => {
+      if (!patchHotelPayload[prop]) {
+        return patchHotelPayloadDbData
       }
-    }
 
-    prop = 'imageUrl'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
-    }
+      switch (prop) {
+        case 'ownerId':
+          patchHotelPayloadDbData[prop] = getObjectId(patchHotelPayload[prop])
+          break
+        case 'location':
+          patchHotelPayloadDbData[prop] = {
+            type: 'Point',
+            coordinates: [
+              (patchHotelPayload[prop] as IHotelLocation).lat,
+              (patchHotelPayload[prop] as IHotelLocation).lng,
+            ]
+          }
+          break
+        case 'name':
+        case 'description':
+        case 'address':
+        case 'imageUrl':
+        case 'email':
+          patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+          break
+      }
 
-    prop = 'email'
-    if (typeof patchHotelPayload[prop] !== 'undefined') {
-      patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
-    }
-
-    return patchHotelPayloadDbData
+      return patchHotelPayloadDbData
+    }, {})
   }
 
   toEntity(hotelDbData: IHotelDbData): IHotel {
@@ -100,13 +94,9 @@ class Mapper {
   }
 
   toEntityCollection(hotelCollectionDbData: IHotelCollectionDbData): IHotelCollection {
-    const hotels: IHotelCollection = []
-
-    hotelCollectionDbData.forEach((hotelDbData: IHotelDbData) => {
-      hotels.push(this.toEntity(hotelDbData))
+    return hotelCollectionDbData.map((hotelDbData: IHotelDbData): IHotel => {
+      return this.toEntity(hotelDbData)
     })
-
-    return hotels
   }
 }
 
