@@ -15,6 +15,8 @@ interface IAppConfig {
   API_TEST_SESSION_TOKEN: string
 
   ENABLE_LOGIN_WITHOUT_SENDGRID: string
+
+  ONE_MONGO_CONNECTION_PER_REQUEST: string
 }
 
 interface IAppConfigDbItem {

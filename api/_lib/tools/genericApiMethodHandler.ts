@@ -14,6 +14,12 @@ import { IMethodHandlerHash, TMethodFunc } from '../../_lib/types'
 const { HTTP_STATUS_CODES } = CONSTANTS
 const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR, OK }  = CONSTANTS.HTTP_STATUS
 
+function reportRequestTime(startTime: [number, number]): void {
+  const endTime: [number, number] = process.hrtime(startTime)
+  const timeInMs: number = (endTime[0] * 1000000000 + endTime[1]) / 1000000
+  console.log(`\n--- request processed in ${timeInMs}ms ---\n`)
+}
+
 async function getMethodFunc(request: NowRequest, availMethodHandlers: IMethodHandlerHash): Promise<TMethodFunc> {
   if (!request || typeof request.method !== 'string') {
     throw new CError(BAD_REQUEST, 'Must provide request method.')
@@ -55,6 +61,8 @@ async function genericApiMethodHandler(
   availMethodHandlers: IMethodHandlerHash,
   skipSanityChecks = false
 ): Promise<void> {
+  const startTime: [number, number] = process.hrtime()
+
   let result
   try {
     const methodFunc = await getMethodFunc(request, availMethodHandlers)
@@ -74,7 +82,10 @@ async function genericApiMethodHandler(
       // Do nothing. We are already in a try/catch block.
     }
 
-    return errorHandler(response, err)
+    errorHandler(response, err)
+
+    reportRequestTime(startTime)
+    return
   }
 
   if (typeof result === 'string') {
@@ -82,6 +93,8 @@ async function genericApiMethodHandler(
   } else {
     response.status(HTTP_STATUS_CODES[OK]).json(result)
   }
+
+  reportRequestTime(startTime)
 }
 
 export {
