@@ -26,6 +26,8 @@ async function getAppConfig(): Promise<IAppConfig> {
     API_TEST_SESSION_TOKEN: '',
 
     ENABLE_LOGIN_WITHOUT_SENDGRID: '',
+
+    ONE_MONGO_CONNECTION_PER_REQUEST: '',
   }
 
   let decryptOk = true

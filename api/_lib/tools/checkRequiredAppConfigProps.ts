@@ -25,6 +25,8 @@ async function checkRequiredAppConfigProps(): Promise<void> {
     'API_TEST_SESSION_TOKEN',
 
     'ENABLE_LOGIN_WITHOUT_SENDGRID',
+
+    'ONE_MONGO_CONNECTION_PER_REQUEST',
   ]
 
   for (let c1 = 0; c1 < requiredAppConfigProps.length; c1 += 1) {

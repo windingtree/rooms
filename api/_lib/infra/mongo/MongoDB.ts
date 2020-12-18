@@ -13,7 +13,10 @@ class MongoDB {
 
   constructor() {
     if (MongoDB._instance) {
-      throw new CError(INTERNAL_SERVER_ERROR, 'MongoDB class instantiation failed. Use MongoDB.getInstance() instead of new operator.')
+      throw new CError(
+        INTERNAL_SERVER_ERROR,
+        'MongoDB class instantiation failed. Use MongoDB.getInstance() instead of new operator.'
+      )
     }
     MongoDB._instance = this
 
@@ -33,45 +36,47 @@ class MongoDB {
     return MongoDB._instance
   }
 
-  private async createDbConnection(): Promise<void> {
+  private async createDbClient(): Promise<void> {
     if (this._dbClient) {
       return
     }
 
     try {
       this._dbClient = new MongoClient(ENV.MONGODB_URL, this._dbClientOptions)
-      await this._dbClient.connect()
-    } catch (err) {
-      this._dbClient = null
+    } catch (err: unknown) {
+      throw new CError(BAD_GATEWAY, 'Could not create a new MongoClient instance.', err)
     }
 
-    if (this._dbClient !== null) {
-      console.log('[MongoDB :: createDbConnection] => Mongo connection created.')
+    try {
+      await this._dbClient.connect()
+    } catch (err: unknown) {
+      throw new CError(BAD_GATEWAY, 'Could not connect to the database.', err)
     }
+
+    console.log('[MongoDB :: createDbClient] => Mongo connection created.')
   }
 
   public async getDbClient(): Promise<MongoClient> {
-    await MongoDB._instance.createDbConnection()
+    await MongoDB._instance.createDbClient()
 
     if (this._dbClient === null) {
-      throw new CError(BAD_GATEWAY, 'Could not connect to the database.')
+      throw new CError(INTERNAL_SERVER_ERROR, 'DbClient = null, this should not happen.')
     }
 
     return this._dbClient
   }
 
   public async cleanUp(): Promise<void> {
-    if (this._dbClient === null) {
+    if (!this._dbClient) {
       return
     }
 
     try {
       await this._dbClient.close()
+      this._dbClient = null
     } catch (err: unknown) {
       throw new CError(BAD_GATEWAY, 'Could not close connection to the database.', err)
     }
-
-    this._dbClient = null
 
     console.log('[MongoDB :: cleanUp] => Mongo connection closed.')
   }

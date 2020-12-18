@@ -1,12 +1,15 @@
 import { MongoDB } from '../../_lib/infra/mongo'
-import { CONSTANTS } from '../../_lib/infra/constants'
-
-const { ONE_MONGO_CONNECTION_PER_REQUEST } = CONSTANTS
+import { AppConfig } from '../../_lib/infra/config'
+import { IAppConfig } from '../../_lib/types'
 
 async function onExitCleanUp(): Promise<void> {
-  if (ONE_MONGO_CONNECTION_PER_REQUEST === true) {
+  const appConfig: IAppConfig = await AppConfig.getInstance().getConfig()
+
+  if (appConfig.ONE_MONGO_CONNECTION_PER_REQUEST === 'true') {
     await MongoDB.getInstance().cleanUp()
   }
+
+  await AppConfig.getInstance().cleanUp()
 }
 
 export {
