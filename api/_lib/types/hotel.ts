@@ -1,5 +1,20 @@
 import { ObjectID } from 'mongodb'
 
+type THotelDbDataFields =
+  | '_id'
+  | 'ownerId'
+  | 'name'
+  | 'description'
+  | 'address'
+  | 'location'
+  | 'imageUrl'
+  | 'email'
+  | 'test'
+
+type IHotelDbDataProjection = {
+  [key in THotelDbDataFields]?: 1
+}
+
 interface IHotelLocation {
   lat: number
   lng: number
@@ -73,6 +88,8 @@ interface IPatchHotelPayloadDbData {
 type IHotelCollectionDbData = Array<IHotelDbData>
 
 export {
+  THotelDbDataFields,
+  IHotelDbDataProjection,
   IHotelLocation,
   IBaseHotel,
   IHotel,

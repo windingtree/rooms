@@ -63,6 +63,8 @@ export {
 } from './app_config'
 
 export {
+  THotelDbDataFields,
+  IHotelDbDataProjection,
   IHotelLocation,
   IBaseHotel,
   IHotel,

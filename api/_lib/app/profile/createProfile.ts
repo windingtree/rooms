@@ -2,13 +2,15 @@ import {
   createProfile as createProfileDbFunc,
   readProfile as readProfileDbFunc,
 } from '../../../_lib/data/profile'
-import { readHotel } from '../../../_lib/data/hotel'
+import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
 import { IBaseProfile, IProfile, IPostProfilePayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import { CError } from '../../../_lib/tools'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE
+
+const hotelRepo = new HotelRepo()
 
 async function createProfile(requester: IProfile, payload: IPostProfilePayload): Promise<IProfile> {
   if (
@@ -30,7 +32,7 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
   }
 
   if (payload.hotelId) {
-    await readHotel(payload.hotelId)
+    await hotelRepo.readHotel(payload.hotelId)
   }
 
   const data: IBaseProfile = {

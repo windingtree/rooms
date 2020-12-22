@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
-import { createHotel } from '../../../../_lib/data/hotel'
+import { HotelRepo } from '../../../../_lib/data/hotel/HotelRepo'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
 import { IProfile, IOneTimePasswordPayload } from '../../../../_lib/types'
 
 const { OWNER } = CONSTANTS.PROFILE_ROLE
+
+const hotelRepo = new HotelRepo()
 
 async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Promise<string> {
   const oneTimePassword: string = uuidv4()
@@ -29,7 +31,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
       hotelId: '',
     })
 
-    const hotelId: string = await createHotel({
+    const hotelId: string = await hotelRepo.createHotel({
       ownerId: profileId,
       name: '',
       description: '',

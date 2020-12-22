@@ -4,7 +4,7 @@ import * as Moment from 'moment'
 import { extendMoment } from 'moment-range'
 
 import { createOffers } from '../../../_lib/data/offer'
-import { readHotelsByLocationRectangle as readHotelsByLocationRectangleDbFunc } from '../../../_lib/data/hotel'
+import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
 import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../../_lib/infra/constants'
@@ -21,6 +21,8 @@ import {
 const moment = extendMoment(Moment)
 
 const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
+
+const hotelRepo = new HotelRepo()
 
 async function convertToNum(val: number|string|null|undefined): Promise<number> {
   let num: number
@@ -106,7 +108,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     east: await convertToNum(rectangle.east),
   }
 
-  const hotels: IHotelCollection = await readHotelsByLocationRectangleDbFunc(rectangleDb)
+  const hotels: IHotelCollection = await hotelRepo.readHotelsByLocationRectangle(rectangleDb)
   if (hotels.length === 0) {
     throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.', { rectangleDb })
   }

@@ -1,7 +1,4 @@
-import {
-  createHotel as createHotelDbFunc,
-  readHotel as readHotelDbFunc,
-} from '../../../_lib/data/hotel'
+import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
 import { readProfile as readProfileRecord } from '../../../_lib/data/profile'
 import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
 import { CONSTANTS } from '../../../_lib/infra/constants'
@@ -10,6 +7,8 @@ import { CError } from '../../../_lib/tools'
 const { SUPER_ADMIN, MANAGER, OBSERVER }  = CONSTANTS.PROFILE_ROLE
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
+
+const hotelRepo = new HotelRepo()
 
 function generalErrorForHotelCreation(requester: IProfile, ownerProfile: IProfile) {
   throw new CError(
@@ -49,8 +48,8 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
     imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
     email: (typeof payload.email !== 'undefined') ? payload.email : '',
   }
-  const hotelId: string = await createHotelDbFunc(data)
-  const hotel: IHotel = await readHotelDbFunc(hotelId)
+  const hotelId: string = await hotelRepo.createHotel(data)
+  const hotel: IHotel = await hotelRepo.readHotel(hotelId)
 
   return hotel
 }

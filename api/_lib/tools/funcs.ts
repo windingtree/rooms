@@ -32,7 +32,12 @@ function getObjectId(id: string|undefined|null): ObjectID|null {
 function getObjectIdString(objectId: ObjectID|string|undefined|null): string {
   if (typeof objectId === 'string') {
     return objectId
-  } else if (typeof objectId === 'undefined' || objectId === null || !isFunction(objectId.toHexString)) {
+  } else if (
+    typeof objectId === 'undefined' ||
+    objectId === undefined ||
+    objectId === null ||
+    !isFunction(objectId.toHexString)
+  ) {
     return ''
   }
 

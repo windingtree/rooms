@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 import {
   getObjectId,
   getObjectIdString,
@@ -17,6 +19,14 @@ import {
 } from '../../../_lib/types'
 
 class Mapper {
+  fromObjectId(objectId: ObjectID|null): string {
+    return getObjectIdString(objectId)
+  }
+
+  toObjectId(id: string): ObjectID|null {
+    return getObjectId(id)
+  }
+
   fromBaseEntity(baseHotel: IBaseHotel): IBaseHotelDbData {
     return {
       ownerId: getObjectId(baseHotel.ownerId),
@@ -100,8 +110,6 @@ class Mapper {
   }
 }
 
-const mapper = new Mapper()
-
 export {
-  mapper,
+  Mapper,
 }
