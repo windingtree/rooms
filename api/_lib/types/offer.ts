@@ -1,5 +1,19 @@
 import { ObjectID } from 'mongodb'
 
+type TOfferDbDataFields =
+  | '_id'
+  | 'offerId'
+  | 'arrival'
+  | 'departure'
+  | 'offer'
+  | 'createdAt'
+  | 'debtorOrgId'
+  | 'hotelEmail'
+
+type IOfferDbDataProjection = {
+  [key in TOfferDbDataFields]?: 1
+}
+
 interface IOfferPricePlan {
   accommodation: string
   roomType: string
@@ -61,42 +75,43 @@ interface IPostOfferPayload {
 }
 
 interface IPatchOfferPayload {
-  arrival: string
-  departure: string
-  offer: IOfferDetails
+  arrival?: string
+  departure?: string
+  hotelEmail?: string
 }
 
-interface IBaseOfferDbRecord {
+interface IBaseOfferDbData {
   offerId: string
-  arrival: Date
-  departure: Date
+  arrival: Date|null
+  departure: Date|null
   offer: IOfferDetailsDbRecord
-  createdAt: Date
+  createdAt: Date|null
   debtorOrgId: string
   hotelEmail: string
 }
 
-interface IOfferDbRecord extends IBaseOfferDbRecord {
+interface IOfferDbData extends IBaseOfferDbData {
   _id: ObjectID|null
 }
 
-type IOfferCollectionDbRecord = Array<IOfferDbRecord>
+type IOfferCollectionDbData = Array<IOfferDbData>
 
 interface IPatchOfferPayloadDbData {
-  offer?: IOfferDetails
+  arrival?: Date|null
+  departure?: Date|null
+  hotelEmail?: string
 }
 
 export {
+  TOfferDbDataFields,
+  IOfferDbDataProjection,
   IBaseOffer,
   IOffer,
   IOfferCollection,
-
-  IBaseOfferDbRecord,
-  IOfferDbRecord,
-  IOfferCollectionDbRecord,
-
+  IBaseOfferDbData,
+  IOfferDbData,
+  IOfferCollectionDbData,
   IPostOfferPayload,
   IPatchOfferPayload,
-
   IPatchOfferPayloadDbData,
 }
