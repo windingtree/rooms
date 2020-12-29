@@ -103,17 +103,16 @@ export {
 } from './geo'
 
 export {
+  TOfferDbDataFields,
+  IOfferDbDataProjection,
   IBaseOffer,
   IOffer,
   IOfferCollection,
-
-  IBaseOfferDbRecord,
-  IOfferDbRecord,
-  IOfferCollectionDbRecord,
-
+  IBaseOfferDbData,
+  IOfferDbData,
+  IOfferCollectionDbData,
   IPostOfferPayload,
   IPatchOfferPayload,
-
   IPatchOfferPayloadDbData,
 } from './offer'
 

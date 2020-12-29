@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import * as moment from 'moment'
 
 import { getPaymentInfo, claimGuarantee } from '../../../_lib/data/simard'
-import { readOfferByOfferId, deleteOfferByOfferId } from '../../../_lib/data/offer'
+import { OfferRepo } from '../../../_lib/data/offer/OfferRepo'
 import { createBooking } from '../../../_lib/data/booking'
 import { AppConfig } from '../../../_lib/infra/config'
 import { emailNewBooking, CError } from '../../../_lib/tools'
@@ -18,6 +18,8 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
+const offerRepo = new OfferRepo()
+
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
   const paymentInfo: ISimardPaymentInfo = await getPaymentInfo(payload.guaranteeId)
 
@@ -31,7 +33,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     )
   }
 
-  const offer: IOffer = await readOfferByOfferId(payload.offerId)
+  const offer: IOffer = await offerRepo.readOfferByOfferId(payload.offerId)
 
   if (paymentInfo.debtorOrgId !== offer.debtorOrgId) {
     throw new CError(
@@ -86,7 +88,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     phoneNumber: payload.travellerPhone || '',
   }
   await createBooking(baseBooking)
-  await deleteOfferByOfferId(payload.offerId)
+  await offerRepo.deleteOfferByOfferId(payload.offerId)
 
   await claimGuarantee(payload.guaranteeId)
 
