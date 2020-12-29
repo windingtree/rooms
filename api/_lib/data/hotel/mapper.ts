@@ -1,8 +1,5 @@
-import { ObjectID } from 'mongodb'
-
 import {
-  getObjectId,
-  getObjectIdString,
+  BaseMongoDataMapper,
 } from '../../../_lib/tools'
 import {
   IBaseHotelDbData,
@@ -18,18 +15,10 @@ import {
   IHotelLocation,
 } from '../../../_lib/types'
 
-class Mapper {
-  fromObjectId(objectId: ObjectID|null): string {
-    return getObjectIdString(objectId)
-  }
-
-  toObjectId(id: string): ObjectID|null {
-    return getObjectId(id)
-  }
-
+class MongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseHotel: IBaseHotel): IBaseHotelDbData {
     return {
-      ownerId: getObjectId(baseHotel.ownerId),
+      ownerId: this.toObjectId(baseHotel.ownerId),
       name: baseHotel.name,
       description: baseHotel.description,
       address: baseHotel.address,
@@ -63,7 +52,7 @@ class Mapper {
 
       switch (prop) {
         case 'ownerId':
-          patchHotelPayloadDbData[prop] = getObjectId(patchHotelPayload[prop])
+          patchHotelPayloadDbData[prop] = this.toObjectId((patchHotelPayload[prop] as string))
           break
         case 'location':
           patchHotelPayloadDbData[prop] = {
@@ -89,8 +78,8 @@ class Mapper {
 
   toEntity(hotelDbData: IHotelDbData): IHotel {
     return {
-      id: getObjectIdString(hotelDbData._id),
-      ownerId: getObjectIdString(hotelDbData.ownerId),
+      id: this.fromObjectId(hotelDbData._id),
+      ownerId: this.fromObjectId(hotelDbData.ownerId),
       name: hotelDbData.name,
       description: hotelDbData.description,
       address: hotelDbData.address,
@@ -111,5 +100,5 @@ class Mapper {
 }
 
 export {
-  Mapper,
+  MongoDataMapper,
 }

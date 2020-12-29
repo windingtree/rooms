@@ -17,7 +17,7 @@ import {
   updateHotelByOwnerId,
 } from './functions'
 
-import { Mapper } from './mapper'
+import { MongoDataMapper } from './mapper'
 
 class HotelRepo {
   protected ENTITY_NAME
@@ -40,7 +40,7 @@ class HotelRepo {
     this.ENTITY_NAME = 'hotel'
     this.COLLECTION_NAME = 'hotels'
 
-    this.mapper = new Mapper()
+    this.mapper = new MongoDataMapper()
 
     this.createHotel = createHotel
     this.deleteHotel = deleteHotel
