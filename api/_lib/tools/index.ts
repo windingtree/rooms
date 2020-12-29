@@ -53,3 +53,7 @@ export {
 export {
   onExitCleanUp,
 } from './onExitCleanUp'
+
+export {
+  BaseMongoDataMapper,
+} from './BaseMongoDataMapper'
