@@ -1,5 +1,19 @@
 import { ObjectID } from 'mongodb'
 
+type TProfileDbDataFields =
+  | '_id'
+  | 'email'
+  | 'name'
+  | 'phone'
+  | 'oneTimePassword'
+  | 'sessionToken'
+  | 'role'
+  | 'hotelId'
+
+type IProfileDbDataProjection = {
+  [key in TProfileDbDataFields]?: 1
+}
+
 enum IProfileRoleEnum {
   SUPER_ADMIN = 'SUPER_ADMIN',
   MANAGER = 'MANAGER',
@@ -61,7 +75,7 @@ interface IPatchProfilePayload {
   hotelId?: string
 }
 
-interface IBaseProfileDbRecord {
+interface IBaseProfileDbData {
   email: string
   name: string
   phone: string
@@ -71,7 +85,7 @@ interface IBaseProfileDbRecord {
   hotelId: ObjectID|null
 }
 
-interface IProfileDbRecord extends IBaseProfileDbRecord {
+interface IProfileDbData extends IBaseProfileDbData {
   _id: ObjectID|null
 }
 
@@ -85,9 +99,11 @@ interface IPatchProfilePayloadDbData {
   hotelId?: ObjectID|null
 }
 
-type IProfileDbRecordCollection = Array<IProfileDbRecord>
+type IProfileCollectionDbData = Array<IProfileDbData>
 
 export {
+  TProfileDbDataFields,
+  IProfileDbDataProjection,
   IBaseProfile,
   IProfileAuthData,
   IOneTimePasswordPayload,
@@ -97,8 +113,8 @@ export {
   IPatchProfilePayload,
   IProfileRoleEnum,
   IProfileRole,
-  IBaseProfileDbRecord,
-  IProfileDbRecord,
+  IBaseProfileDbData,
+  IProfileDbData,
   IPatchProfilePayloadDbData,
-  IProfileDbRecordCollection,
+  IProfileCollectionDbData,
 }

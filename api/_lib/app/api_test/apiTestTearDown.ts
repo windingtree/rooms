@@ -2,9 +2,7 @@ import {
   readBookingsByHotelId as readBookingsByHotelIdDbFunc,
   deleteBooking as deleteBookingDbFunc,
 } from '../../../_lib/data/booking'
-import {
-  deleteProfile as deleteProfileDbFunc,
-} from '../../../_lib/data/profile'
+import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
 import {
   readRoomTypesByHotelId,
   deleteRoomType,
@@ -20,6 +18,8 @@ import {
 import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
+
+const profileRepo = new ProfileRepo()
 
 async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
   const appConfig = await AppConfig.getInstance().getConfig()
@@ -40,7 +40,7 @@ async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
     }
   }
 
-  await deleteProfileDbFunc(requester.id)
+  await profileRepo.deleteProfile(requester.id)
 
   return { status: 'OK' }
 }

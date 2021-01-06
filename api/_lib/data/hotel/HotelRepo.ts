@@ -2,6 +2,7 @@ import { Collection } from 'mongodb'
 
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
+import { BaseDataRepo } from '../../../_lib/tools'
 import { THotelDbDataFields, IHotelDbDataProjection, IHotelDbData } from '../../../_lib/types'
 
 import {
@@ -17,41 +18,27 @@ import {
   updateHotelByOwnerId,
 } from './functions'
 
-import { MongoDataMapper } from './mapper'
+import { HotelMongoDataMapper } from './HotelMongoDataMapper'
 
-class HotelRepo {
-  protected ENTITY_NAME
-  protected COLLECTION_NAME
+class HotelRepo extends BaseDataRepo {
+  protected mapper = new HotelMongoDataMapper()
 
-  protected mapper
-
-  public createHotel
-  public deleteHotel
-  public deleteHotelByOwnerId
-  public readHotel
-  public readHotelByOwnerId
-  public readHotels
-  public readHotelsByOwnerId
-  public readHotelsByLocationRectangle
-  public updateHotel
-  public updateHotelByOwnerId
+  public createHotel = createHotel
+  public deleteHotel = deleteHotel
+  public deleteHotelByOwnerId = deleteHotelByOwnerId
+  public readHotel = readHotel
+  public readHotelByOwnerId = readHotelByOwnerId
+  public readHotels = readHotels
+  public readHotelsByOwnerId = readHotelsByOwnerId
+  public readHotelsByLocationRectangle = readHotelsByLocationRectangle
+  public updateHotel = updateHotel
+  public updateHotelByOwnerId = updateHotelByOwnerId
 
   constructor() {
+    super()
+
     this.ENTITY_NAME = 'hotel'
     this.COLLECTION_NAME = 'hotels'
-
-    this.mapper = new MongoDataMapper()
-
-    this.createHotel = createHotel
-    this.deleteHotel = deleteHotel
-    this.deleteHotelByOwnerId = deleteHotelByOwnerId
-    this.readHotel = readHotel
-    this.readHotelByOwnerId = readHotelByOwnerId
-    this.readHotels = readHotels
-    this.readHotelsByOwnerId = readHotelsByOwnerId
-    this.readHotelsByLocationRectangle = readHotelsByLocationRectangle
-    this.updateHotel = updateHotel
-    this.updateHotelByOwnerId = updateHotelByOwnerId
   }
 
   protected getProjection(): IHotelDbDataProjection {

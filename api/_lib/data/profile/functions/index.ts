@@ -1,9 +1,4 @@
 export {
-  profileMapper,
-  profileCollectionMapper,
-} from './_mapper'
-
-export {
   createProfile,
 } from './createProfile'
 

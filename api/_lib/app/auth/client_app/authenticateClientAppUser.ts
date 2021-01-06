@@ -1,14 +1,16 @@
-import { readProfileByEmail } from '../../../../_lib/data/profile'
+import { ProfileRepo } from '../../../../_lib/data/profile/ProfileRepo'
 import { CError } from '../../../../_lib/tools'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
 import { IProfile, IProfileAuthData } from '../../../../_lib/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
+const profileRepo = new ProfileRepo()
+
 async function authenticateClientAppUser(payload: IProfileAuthData): Promise<IProfile> {
   let profile: IProfile
   try {
-    profile = await readProfileByEmail(payload.email)
+    profile = await profileRepo.readProfileByEmail(payload.email)
   } catch (err: unknown) {
     throw new CError(UNAUTHORIZED, 'User profile does not exist.', err)
   }

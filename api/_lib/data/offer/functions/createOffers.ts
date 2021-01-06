@@ -1,12 +1,8 @@
 import { OfferRepo } from '../OfferRepo'
-import { CError } from '../../../../_lib/tools'
-import { IOfferCollection, IOfferCollectionDbData } from '../../../../_lib/types'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
+import { IBaseOfferCollection, IBaseOfferCollectionDbData } from '../../../../_lib/types'
 
-const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
-
-async function createOffers(this: OfferRepo, data: IOfferCollection): Promise<void> {
-  const dbData: IOfferCollectionDbData = this.mapper.fromEntityCollection(data)
+async function createOffers(this: OfferRepo, data: IBaseOfferCollection): Promise<void> {
+  const dbData: IBaseOfferCollectionDbData = this.mapper.fromBaseEntityCollection(data)
 
   let result
   try {
@@ -14,11 +10,11 @@ async function createOffers(this: OfferRepo, data: IOfferCollection): Promise<vo
 
     result = await collection.insertMany(dbData)
   } catch (err: unknown) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while creating a new '${this.ENTITY_NAME}'.`, err)
+    throw this.errorInternalEntityCollectionCreate(err)
   }
 
-  if (!result) {
-    throw new CError(INTERNAL_SERVER_ERROR, `Could not create a new '${this.ENTITY_NAME}'.`)
+  if (!result.insertedCount) {
+    throw this.errorInternalEntityCollectionCreate()
   }
 }
 

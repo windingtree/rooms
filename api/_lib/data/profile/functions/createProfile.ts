@@ -1,8 +1,8 @@
-import { HotelRepo } from '../HotelRepo'
-import { IBaseHotelDbData, IBaseHotel } from '../../../../_lib/types'
+import { ProfileRepo } from '../ProfileRepo'
+import { IBaseProfileDbData, IBaseProfile } from '../../../../_lib/types'
 
-async function createHotel(this: HotelRepo, data: IBaseHotel): Promise<string> {
-  const dbData: IBaseHotelDbData = this.mapper.fromBaseEntity(data)
+async function createProfile(this: ProfileRepo, data: IBaseProfile): Promise<string> {
+  const dbData: IBaseProfileDbData = this.mapper.fromBaseEntity(data)
 
   let result
   try {
@@ -21,5 +21,5 @@ async function createHotel(this: HotelRepo, data: IBaseHotel): Promise<string> {
 }
 
 export {
-  createHotel,
+  createProfile,
 }

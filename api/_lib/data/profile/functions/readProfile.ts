@@ -1,11 +1,11 @@
-import { OfferRepo } from '../OfferRepo'
-import { IOfferDbData, IOffer } from '../../../../_lib/types'
+import { ProfileRepo } from '../ProfileRepo'
+import { IProfileDbData, IProfile } from '../../../../_lib/types'
 
-async function readOfferByOfferId(this: OfferRepo, offerId: string): Promise<IOffer> {
-  let result: IOfferDbData|null
+async function readProfile(this: ProfileRepo, profileId: string): Promise<IProfile> {
+  let result: IProfileDbData|null
   try {
     const collection = await this.getCollection()
-    const query = { offerId }
+    const query = { _id: this.mapper.toObjectId(profileId) }
     const options = { projection: this.getProjection() }
 
     result = await collection.findOne(query, options)
@@ -21,5 +21,5 @@ async function readOfferByOfferId(this: OfferRepo, offerId: string): Promise<IOf
 }
 
 export {
-  readOfferByOfferId,
+  readProfile,
 }

@@ -9,7 +9,6 @@ type THotelDbDataFields =
   | 'location'
   | 'imageUrl'
   | 'email'
-  | 'test'
 
 type IHotelDbDataProjection = {
   [key in THotelDbDataFields]?: 1

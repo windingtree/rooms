@@ -57,3 +57,7 @@ export {
 export {
   BaseMongoDataMapper,
 } from './BaseMongoDataMapper'
+
+export {
+  BaseDataRepo,
+} from './BaseDataRepo'

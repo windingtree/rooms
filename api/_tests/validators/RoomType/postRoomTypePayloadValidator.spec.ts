@@ -13,8 +13,8 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
-chai.use(chaiAsPromised);
-const expect = chai.expect;
+chai.use(chaiAsPromised)
+const expect = chai.expect
 
 describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
   let request: NowRequest
