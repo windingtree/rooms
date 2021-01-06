@@ -1,3 +1,0 @@
-export {
-  pingMongo,
-} from './pingMongo'

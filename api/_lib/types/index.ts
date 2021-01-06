@@ -5,6 +5,7 @@ export {
 
 export {
   IStatus,
+  IHealthStatusMongo,
   IHealthStatus,
   IOtpStatus,
 } from './resultTypes'

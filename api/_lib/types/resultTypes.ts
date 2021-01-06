@@ -5,6 +5,7 @@ interface IStatus {
 interface IHealthStatusMongo {
   status: string
   latency: string|undefined
+  err?: unknown
 }
 
 interface IHealthStatus {
@@ -19,6 +20,7 @@ interface IOtpStatus {
 
 export {
   IStatus,
+  IHealthStatusMongo,
   IHealthStatus,
   IOtpStatus,
 }
