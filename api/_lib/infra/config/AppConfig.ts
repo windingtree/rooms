@@ -19,10 +19,6 @@ class AppConfig {
     AppConfig._instance = this
   }
 
-  public static getInstance(): AppConfig {
-    return AppConfig._instance
-  }
-
   private async createAppConfig(): Promise<void> {
     if (this._appConfig) {
       return
@@ -37,8 +33,12 @@ class AppConfig {
     console.log('[AppConfig :: createAppConfig] => AppConfig data loaded.')
   }
 
+  public static getInstance(): AppConfig {
+    return AppConfig._instance
+  }
+
   public async getConfig(): Promise<IAppConfig> {
-    await AppConfig._instance.createAppConfig()
+    await this.createAppConfig()
 
     if (this._appConfig === null) {
       throw new CError(INTERNAL_SERVER_ERROR, 'AppConfig = null, this should not happen.')

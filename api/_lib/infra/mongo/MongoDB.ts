@@ -32,10 +32,6 @@ class MongoDB {
     }
   }
 
-  public static getInstance(): MongoDB {
-    return MongoDB._instance
-  }
-
   private async createDbClient(): Promise<void> {
     if (this._dbClient) {
       return
@@ -56,14 +52,28 @@ class MongoDB {
     console.log('[MongoDB :: createDbClient] => Mongo connection created.')
   }
 
+  public static getInstance(): MongoDB {
+    return MongoDB._instance
+  }
+
   public async getDbClient(): Promise<MongoClient> {
-    await MongoDB._instance.createDbClient()
+    await this.createDbClient()
 
     if (this._dbClient === null) {
       throw new CError(INTERNAL_SERVER_ERROR, 'DbClient = null, this should not happen.')
     }
 
     return this._dbClient
+  }
+
+  public async ping(): Promise<void> {
+    const dbClient = await this.getDbClient()
+
+    try {
+      await dbClient.db().admin().ping()
+    } catch (err: unknown) {
+      throw new CError(BAD_GATEWAY, 'Could not complete ping() operation on the MongoDB.', err)
+    }
   }
 
   public async cleanUp(): Promise<void> {
