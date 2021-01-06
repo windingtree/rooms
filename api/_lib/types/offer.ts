@@ -62,6 +62,7 @@ interface IOffer extends IBaseOffer {
   id: string
 }
 
+type IBaseOfferCollection = Array<IBaseOffer>
 type IOfferCollection = Array<IOffer>
 
 interface IPostOfferPayload {
@@ -94,6 +95,7 @@ interface IOfferDbData extends IBaseOfferDbData {
   _id: ObjectID|null
 }
 
+type IBaseOfferCollectionDbData = Array<IBaseOfferDbData>
 type IOfferCollectionDbData = Array<IOfferDbData>
 
 interface IPatchOfferPayloadDbData {
@@ -107,9 +109,11 @@ export {
   IOfferDbDataProjection,
   IBaseOffer,
   IOffer,
+  IBaseOfferCollection,
   IOfferCollection,
   IBaseOfferDbData,
   IOfferDbData,
+  IBaseOfferCollectionDbData,
   IOfferCollectionDbData,
   IPostOfferPayload,
   IPatchOfferPayload,

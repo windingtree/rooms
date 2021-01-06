@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { createProfile } from '../../../_lib/data/profile'
+import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
 import { CError } from '../../../_lib/tools'
 import { AppConfig } from '../../../_lib/infra/config'
 import { IBaseProfile, IProfile } from '../../../_lib/types'
@@ -9,6 +9,8 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
+const profileRepo = new ProfileRepo()
+
 async function apiTestSetup(): Promise<IProfile> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
@@ -16,7 +18,7 @@ async function apiTestSetup(): Promise<IProfile> {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')
   }
 
-  const profilePostData: IBaseProfile = {
+  const baseProfile: IBaseProfile = {
     email: `${uuidv4()}@test.com`,
     name: '',
     phone: '',
@@ -26,8 +28,8 @@ async function apiTestSetup(): Promise<IProfile> {
     hotelId: '',
   }
 
-  const profileId: string = await createProfile(profilePostData)
-  const profile: IProfile = Object.assign({}, profilePostData, { id: profileId })
+  const profileId: string = await profileRepo.createProfile(baseProfile)
+  const profile: IProfile = Object.assign({}, baseProfile, { id: profileId })
 
   return profile
 }

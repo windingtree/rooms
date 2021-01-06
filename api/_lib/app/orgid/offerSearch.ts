@@ -12,7 +12,7 @@ import {
   IHotelCollection,
   IRoomTypeCollection,
   IOfferSearchResults,
-  IOfferCollection,
+  IBaseOfferCollection,
   ILocationRectangle,
   ILocationRectangleDbType,
   IOrgDetails,
@@ -228,7 +228,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     })
   })
 
-  const cachedOffers: IOfferCollection = []
+  const cachedBaseOffers: IBaseOfferCollection = []
   const createdAt = moment.utc(new Date())
 
   roomTypes.forEach((roomType) => {
@@ -267,8 +267,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       }
 
       result.offers[offerId] = offer
-      cachedOffers.push({
-        id: '',
+      cachedBaseOffers.push({
         arrival,
         departure,
         offerId,
@@ -280,8 +279,8 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     })
   })
 
-  if (cachedOffers.length > 0) {
-    await offerRepo.createOffers(cachedOffers)
+  if (cachedBaseOffers.length > 0) {
+    await offerRepo.createOffers(cachedBaseOffers)
   }
 
   return result

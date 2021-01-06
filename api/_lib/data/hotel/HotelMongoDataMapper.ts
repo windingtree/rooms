@@ -15,7 +15,7 @@ import {
   IHotelLocation,
 } from '../../../_lib/types'
 
-class MongoDataMapper extends BaseMongoDataMapper {
+class HotelMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseHotel: IBaseHotel): IBaseHotelDbData {
     return {
       ownerId: this.toObjectId(baseHotel.ownerId),
@@ -31,6 +31,21 @@ class MongoDataMapper extends BaseMongoDataMapper {
       },
       imageUrl: baseHotel.imageUrl,
       email: baseHotel.email,
+    }
+  }
+
+  toBaseEntity(baseHotelDbData: IBaseHotelDbData): IBaseHotel {
+    return {
+      ownerId: this.fromObjectId(baseHotelDbData.ownerId),
+      name: baseHotelDbData.name,
+      description: baseHotelDbData.description,
+      address: baseHotelDbData.address,
+      location: {
+        lat: baseHotelDbData.location.coordinates[0],
+        lng: baseHotelDbData.location.coordinates[1],
+      },
+      imageUrl: baseHotelDbData.imageUrl,
+      email: baseHotelDbData.email,
     }
   }
 
@@ -76,20 +91,18 @@ class MongoDataMapper extends BaseMongoDataMapper {
     }, {})
   }
 
+  fromEntity(hotel: IHotel): IHotelDbData {
+    return Object.assign({ _id: this.toObjectId(hotel.id) }, this.fromBaseEntity(hotel))
+  }
+
   toEntity(hotelDbData: IHotelDbData): IHotel {
-    return {
-      id: this.fromObjectId(hotelDbData._id),
-      ownerId: this.fromObjectId(hotelDbData.ownerId),
-      name: hotelDbData.name,
-      description: hotelDbData.description,
-      address: hotelDbData.address,
-      location: {
-        lat: hotelDbData.location.coordinates[0],
-        lng: hotelDbData.location.coordinates[1],
-      },
-      imageUrl: hotelDbData.imageUrl,
-      email: hotelDbData.email,
-    }
+    return Object.assign({ id: this.fromObjectId(hotelDbData._id) }, this.toBaseEntity(hotelDbData))
+  }
+
+  fromEntityCollection(hotelCollection: IHotelCollection): IHotelCollectionDbData {
+    return hotelCollection.map((hotel: IHotel): IHotelDbData => {
+      return this.fromEntity(hotel)
+    })
   }
 
   toEntityCollection(hotelCollectionDbData: IHotelCollectionDbData): IHotelCollection {
@@ -100,5 +113,5 @@ class MongoDataMapper extends BaseMongoDataMapper {
 }
 
 export {
-  MongoDataMapper,
+  HotelMongoDataMapper,
 }

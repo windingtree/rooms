@@ -1,11 +1,11 @@
-import { HotelRepo } from '../HotelRepo'
-import { IHotelCollectionDbData, IHotelCollection } from '../../../../_lib/types'
+import { ProfileRepo } from '../ProfileRepo'
+import { IProfileCollectionDbData, IProfileCollection } from '../../../../_lib/types'
 
-async function readHotelsByOwnerId(this: HotelRepo, ownerId: string): Promise<IHotelCollection> {
-  const result: IHotelCollectionDbData = []
+async function readProfiles(this: ProfileRepo): Promise<IProfileCollection> {
+  const result: IProfileCollectionDbData = []
   try {
     const collection = await this.getCollection()
-    const query = { ownerId: this.mapper.toObjectId(ownerId) }
+    const query = {}
     const options = { projection: this.getProjection() }
 
     const cursor = collection.find(query, options)
@@ -23,5 +23,5 @@ async function readHotelsByOwnerId(this: HotelRepo, ownerId: string): Promise<IH
 }
 
 export {
-  readHotelsByOwnerId,
+  readProfiles,
 }

@@ -1,10 +1,10 @@
-import { OfferRepo } from '../OfferRepo'
+import { ProfileRepo } from '../ProfileRepo'
 
-async function deleteOfferByOfferId(this: OfferRepo, offerId: string): Promise<void> {
+async function deleteProfile(this: ProfileRepo, profileId: string): Promise<void> {
   let result
   try {
     const collection = await this.getCollection()
-    const filter = { offerId }
+    const filter = { _id: this.mapper.toObjectId(profileId) }
 
     result = await collection.deleteOne(filter)
   } catch (err: unknown) {
@@ -17,5 +17,5 @@ async function deleteOfferByOfferId(this: OfferRepo, offerId: string): Promise<v
 }
 
 export {
-  deleteOfferByOfferId,
+  deleteProfile,
 }

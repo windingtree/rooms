@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { readProfileByEmail, createProfile, updateProfile } from '../../../../_lib/data/profile'
+import { ProfileRepo } from '../../../../_lib/data/profile/ProfileRepo'
 import { HotelRepo } from '../../../../_lib/data/hotel/HotelRepo'
 import { CONSTANTS } from '../../../../_lib/infra/constants'
 import { IProfile, IOneTimePasswordPayload } from '../../../../_lib/types'
@@ -8,20 +8,21 @@ import { IProfile, IOneTimePasswordPayload } from '../../../../_lib/types'
 const { OWNER } = CONSTANTS.PROFILE_ROLE
 
 const hotelRepo = new HotelRepo()
+const profileRepo = new ProfileRepo()
 
 async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Promise<string> {
   const oneTimePassword: string = uuidv4()
 
   let profile: IProfile|null
   try {
-    profile = await readProfileByEmail(payload.email)
+    profile = await profileRepo.readProfileByEmail(payload.email)
   } catch (err) {
     // Maybe a profile for the given email does not exist? We will try to create a new one below.
     profile = null
   }
 
   if (profile === null) {
-    const profileId: string = await createProfile({
+    const profileId: string = await profileRepo.createProfile({
       email: payload.email,
       name: '',
       phone: '',
@@ -41,9 +42,9 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
       email: '',
     })
 
-    await updateProfile(profileId, { hotelId })
+    await profileRepo.updateProfile(profileId, { hotelId })
   } else {
-    await updateProfile(profile.id, { oneTimePassword, sessionToken: payload.sessionToken })
+    await profileRepo.updateProfile(profile.id, { oneTimePassword, sessionToken: payload.sessionToken })
   }
 
   return oneTimePassword

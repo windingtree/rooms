@@ -35,6 +35,8 @@ export {
 } from './booking'
 
 export {
+  TProfileDbDataFields,
+  IProfileDbDataProjection,
   IBaseProfile,
   IProfileAuthData,
   IOneTimePasswordPayload,
@@ -44,10 +46,10 @@ export {
   IPatchProfilePayload,
   IProfileRoleEnum,
   IProfileRole,
-  IBaseProfileDbRecord,
-  IProfileDbRecord,
+  IBaseProfileDbData,
+  IProfileDbData,
   IPatchProfilePayloadDbData,
-  IProfileDbRecordCollection,
+  IProfileCollectionDbData,
 } from './profile'
 
 export {
@@ -108,9 +110,11 @@ export {
   IOfferDbDataProjection,
   IBaseOffer,
   IOffer,
+  IBaseOfferCollection,
   IOfferCollection,
   IBaseOfferDbData,
   IOfferDbData,
+  IBaseOfferCollectionDbData,
   IOfferCollectionDbData,
   IPostOfferPayload,
   IPatchOfferPayload,

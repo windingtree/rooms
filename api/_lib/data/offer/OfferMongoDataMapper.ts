@@ -3,17 +3,19 @@ import {
 } from '../../../_lib/tools'
 import {
   IBaseOfferDbData,
+  IBaseOfferCollectionDbData,
   IOfferDbData,
   IOfferCollectionDbData,
   IPatchOfferPayloadDbData,
 
   IBaseOffer,
+  IBaseOfferCollection,
   IOffer,
   IOfferCollection,
   IPatchOfferPayload,
 } from '../../../_lib/types'
 
-class MongoDataMapper extends BaseMongoDataMapper {
+class OfferMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseOffer: IBaseOffer): IBaseOfferDbData {
     return {
       offerId: baseOffer.offerId,
@@ -81,6 +83,7 @@ class MongoDataMapper extends BaseMongoDataMapper {
           break
         case 'hotelEmail':
           patchOfferPayloadDbData[prop] = patchOfferPayload[prop]
+          break
       }
 
       return patchOfferPayloadDbData
@@ -93,6 +96,18 @@ class MongoDataMapper extends BaseMongoDataMapper {
 
   toEntity(offerDbRecord: IOfferDbData): IOffer {
     return Object.assign({ id: this.fromObjectId(offerDbRecord._id) }, this.toBaseEntity(offerDbRecord))
+  }
+
+  fromBaseEntityCollection(baseOfferCollection: IBaseOfferCollection): IBaseOfferCollectionDbData {
+    return baseOfferCollection.map((baseOffer: IBaseOffer): IBaseOfferDbData => {
+      return this.fromBaseEntity(baseOffer)
+    })
+  }
+
+  toBaseEntityCollection(baseOfferCollectionDbData: IBaseOfferCollectionDbData): IBaseOfferCollection {
+    return baseOfferCollectionDbData.map((baseOfferDbData: IBaseOfferDbData): IBaseOffer => {
+      return this.toBaseEntity(baseOfferDbData)
+    })
   }
 
   fromEntityCollection(offerCollection: IOfferCollection): IOfferCollectionDbData {
@@ -109,5 +124,5 @@ class MongoDataMapper extends BaseMongoDataMapper {
 }
 
 export {
-  MongoDataMapper,
+  OfferMongoDataMapper,
 }

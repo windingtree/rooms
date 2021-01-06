@@ -1,9 +1,5 @@
 import { HotelRepo } from '../HotelRepo'
-import { CError } from '../../../../_lib/tools'
 import { IHotelCollectionDbData, IHotelCollection, ILocationRectangleDbType } from '../../../../_lib/types'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-
-const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
 async function readHotelsByLocationRectangle(this: HotelRepo, rectangle: ILocationRectangleDbType): Promise<IHotelCollection> {
   const polygon: Array<Array<number>> = [
@@ -33,7 +29,7 @@ async function readHotelsByLocationRectangle(this: HotelRepo, rectangle: ILocati
       result.push(item)
     })
   } catch (err: unknown) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${this.ENTITY_NAME}' collection.`, err)
+    throw this.errorInternalEntityCollectionRead(err)
   }
 
   return this.mapper.toEntityCollection(result)

@@ -2,6 +2,7 @@ import { Collection } from 'mongodb'
 
 import { MongoDB } from '../../../_lib/infra/mongo'
 import { ENV } from '../../../_lib/infra/env'
+import { BaseDataRepo } from '../../../_lib/tools'
 import { TOfferDbDataFields, IOfferDbDataProjection, IOfferDbData } from '../../../_lib/types'
 
 import {
@@ -10,27 +11,20 @@ import {
   deleteOfferByOfferId,
 } from './functions'
 
-import { MongoDataMapper } from './mapper'
+import { OfferMongoDataMapper } from './OfferMongoDataMapper'
 
-class OfferRepo {
-  protected ENTITY_NAME
-  protected COLLECTION_NAME
+class OfferRepo extends BaseDataRepo {
+  protected mapper = new OfferMongoDataMapper()
 
-  protected mapper
-
-  public createOffers
-  public readOfferByOfferId
-  public deleteOfferByOfferId
+  public createOffers = createOffers
+  public readOfferByOfferId = readOfferByOfferId
+  public deleteOfferByOfferId = deleteOfferByOfferId
 
   constructor() {
+    super()
+
     this.ENTITY_NAME = 'offer'
     this.COLLECTION_NAME = 'offers'
-
-    this.mapper = new MongoDataMapper()
-
-    this.createOffers = createOffers
-    this.readOfferByOfferId = readOfferByOfferId
-    this.deleteOfferByOfferId = deleteOfferByOfferId
   }
 
   protected getProjection(): IOfferDbDataProjection {
