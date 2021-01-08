@@ -11,15 +11,17 @@ export {
 } from './resultTypes'
 
 export {
+  TRoomTypeDbDataFields,
+  IRoomTypeDbDataProjection,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
   IPostRoomTypePayload,
   IPatchRoomTypePayload,
-  IBaseRoomTypeDbRecord,
-  IRoomTypeDbRecord,
+  IBaseRoomTypeDbData,
+  IRoomTypeDbData,
   IPatchRoomTypePayloadDbData,
-  IRoomTypeDbRecordCollection,
+  IRoomTypeCollectionDbData,
 } from './room_type'
 
 export {
