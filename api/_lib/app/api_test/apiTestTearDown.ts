@@ -3,10 +3,7 @@ import {
   deleteBooking as deleteBookingDbFunc,
 } from '../../../_lib/data/booking'
 import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import {
-  readRoomTypesByHotelId,
-  deleteRoomType,
-} from '../././../../_lib/data/room_type'
+import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
 import { CError } from '../../../_lib/tools'
 import { AppConfig } from '../../../_lib/infra/config'
 import {
@@ -20,6 +17,7 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
 const profileRepo = new ProfileRepo()
+const roomTypeRepo = new RoomTypeRepo()
 
 async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
   const appConfig = await AppConfig.getInstance().getConfig()
@@ -34,9 +32,9 @@ async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
       await deleteBookingDbFunc(bookingCollection[c1].id)
     }
 
-    const roomTypeCollection: IRoomTypeCollection = await readRoomTypesByHotelId(requester.hotelId)
+    const roomTypeCollection: IRoomTypeCollection = await roomTypeRepo.readRoomTypesByHotelId(requester.hotelId)
     for (let c1 = 0; c1 < roomTypeCollection.length; c1 += 1) {
-      await deleteRoomType(roomTypeCollection[c1].id)
+      await roomTypeRepo.deleteRoomType(roomTypeCollection[c1].id)
     }
   }
 

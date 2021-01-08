@@ -1,5 +1,20 @@
 import { ObjectID } from 'mongodb'
 
+type TRoomTypeDbDataFields =
+  | '_id'
+  | 'hotelId'
+  | 'type'
+  | 'description'
+  | 'quantity'
+  | 'price'
+  | 'devConPrice'
+  | 'amenities'
+  | 'imageUrl'
+
+type IRoomTypeDbDataProjection = {
+  [key in TRoomTypeDbDataFields]?: 1
+}
+
 interface IBaseRoomType {
   hotelId: string
   type: string
@@ -39,7 +54,7 @@ interface IPatchRoomTypePayload {
   imageUrl?: string
 }
 
-interface IBaseRoomTypeDbRecord {
+interface IBaseRoomTypeDbData {
   hotelId: ObjectID|null
   type: string
   description: string
@@ -50,7 +65,7 @@ interface IBaseRoomTypeDbRecord {
   imageUrl: string
 }
 
-interface IRoomTypeDbRecord extends IBaseRoomTypeDbRecord {
+interface IRoomTypeDbData extends IBaseRoomTypeDbData {
   _id: ObjectID|null
 }
 
@@ -65,16 +80,18 @@ interface IPatchRoomTypePayloadDbData {
   imageUrl?: string
 }
 
-type IRoomTypeDbRecordCollection = Array<IRoomTypeDbRecord>
+type IRoomTypeCollectionDbData = Array<IRoomTypeDbData>
 
 export {
+  TRoomTypeDbDataFields,
+  IRoomTypeDbDataProjection,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
   IPostRoomTypePayload,
   IPatchRoomTypePayload,
-  IBaseRoomTypeDbRecord,
-  IRoomTypeDbRecord,
+  IBaseRoomTypeDbData,
+  IRoomTypeDbData,
   IPatchRoomTypePayloadDbData,
-  IRoomTypeDbRecordCollection,
+  IRoomTypeCollectionDbData,
 }

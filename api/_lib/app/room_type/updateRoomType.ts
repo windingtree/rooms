@@ -1,9 +1,4 @@
-import {
-  updateRoomType as updateRoomTypeDbFunc,
-  updateRoomTypeByHotelId as updateRoomTypeByHotelIdDbFunc,
-  readRoomType as readRoomTypeDbFunc,
-  readRoomTypeByHotelId as readRoomTypeByHotelIdDbFunc,
-} from '../../../_lib/data/room_type'
+import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
 import {
   IProfile,
   IRoomType,
@@ -15,17 +10,19 @@ import {
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
+const roomTypeRepo = new RoomTypeRepo()
+
 async function updateRoomType(requester: IProfile, roomTypeId: string, data: IPatchRoomTypePayload): Promise<IRoomType> {
   // TODO: Need to implement logic based on roles.
 
   let roomType: IRoomType
 
   if (requester.role === SUPER_ADMIN) {
-    await updateRoomTypeDbFunc(roomTypeId, data)
-    roomType = await readRoomTypeDbFunc(roomTypeId)
+    await roomTypeRepo.updateRoomType(roomTypeId, data)
+    roomType = await roomTypeRepo.readRoomType(roomTypeId)
   } else {
-    await updateRoomTypeByHotelIdDbFunc(roomTypeId, requester.hotelId, data)
-    roomType = await readRoomTypeByHotelIdDbFunc(roomTypeId, requester.hotelId)
+    await roomTypeRepo.updateRoomTypeByHotelId(roomTypeId, requester.hotelId, data)
+    roomType = await roomTypeRepo.readRoomTypeByHotelId(roomTypeId, requester.hotelId)
   }
 
   return roomType

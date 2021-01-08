@@ -1,7 +1,4 @@
-import {
-  readRoomTypes as readRoomTypesDbFunc,
-  readRoomTypesByHotelId as readRoomTypesByHotelIdDbFunc,
-} from '../../../_lib/data/room_type'
+import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
 import {
   IProfile,
   IRoomTypeCollection,
@@ -12,15 +9,17 @@ import {
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
+const roomTypeRepo = new RoomTypeRepo()
+
 async function getAllRoomTypes(requester: IProfile): Promise<IRoomTypeCollection> {
   // TODO: Need to implement logic based on roles.
 
   let roomTypeCollection: IRoomTypeCollection
 
   if (requester.role === SUPER_ADMIN) {
-    roomTypeCollection = await readRoomTypesDbFunc()
+    roomTypeCollection = await roomTypeRepo.readRoomTypes()
   } else {
-    roomTypeCollection = await readRoomTypesByHotelIdDbFunc(requester.hotelId)
+    roomTypeCollection = await roomTypeRepo.readRoomTypesByHotelId(requester.hotelId)
   }
 
   return roomTypeCollection

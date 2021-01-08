@@ -5,7 +5,7 @@ import { extendMoment } from 'moment-range'
 
 import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
 import { OfferRepo } from '../../../_lib/data/offer/OfferRepo'
-import { readRoomTypes as readRoomTypesDbFunc } from '../../../_lib/data/room_type'
+import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
 import { CError } from '../../../_lib/tools'
 import { CONSTANTS } from '../../../_lib/infra/constants'
 import {
@@ -24,6 +24,7 @@ const { BAD_REQUEST, NOT_FOUND } = CONSTANTS.HTTP_STATUS
 
 const hotelRepo = new HotelRepo()
 const offerRepo = new OfferRepo()
+const roomTypeRepo = new RoomTypeRepo()
 
 async function convertToNum(val: number|string|null|undefined): Promise<number> {
   let num: number
@@ -114,7 +115,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     throw new CError(NOT_FOUND, 'No hotels were found within the specified geo region.', { rectangleDb })
   }
 
-  const roomTypes: IRoomTypeCollection = await readRoomTypesDbFunc()
+  const roomTypes: IRoomTypeCollection = await roomTypeRepo.readRoomTypes()
 
   const result: IOfferSearchResults = {
     accommodations: {},
