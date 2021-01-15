@@ -1,9 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  createBooking as createBookingDbFunc,
-  readBooking as readBookingDbFunc,
-} from '../../../_lib/data/booking'
+import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
 import {
   CError,
 } from '../../../_lib/tools'
@@ -20,6 +17,8 @@ import {
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
+const bookingRepo = new BookingRepo()
+
 async function createBooking(requester: IProfile, payload: IPostBookingPayload): Promise<IBooking> {
   // TODO: Need to verify things in `payload`, and also implement logic based on roles.
 
@@ -33,7 +32,7 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
     )
   }
 
-  const data: IBaseBooking = {
+  const baseBooking: IBaseBooking = {
     orderId: uuidv4(),
     hotelId: payload.hotelId,
     checkInDate: (typeof payload.checkInDate !== 'undefined') ? payload.checkInDate : '',
@@ -43,8 +42,8 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
     phoneNumber: (typeof payload.phoneNumber !== 'undefined') ? payload.phoneNumber : '',
     roomTypeId: (typeof payload.roomTypeId !== 'undefined') ? payload.roomTypeId : '',
   }
-  const bookingId: string = await createBookingDbFunc(data)
-  const booking: IBooking = await readBookingDbFunc(bookingId)
+  const bookingId: string = await bookingRepo.createBooking(baseBooking)
+  const booking: IBooking = Object.assign({}, baseBooking, { id: bookingId })
 
   return booking
 }

@@ -1,9 +1,4 @@
-import {
-  updateBooking as updateBookingDbFunc,
-  updateBookingByHotelId as updateBookingByHotelIdDbFunc,
-  readBooking as readBookingDbFunc,
-  readBookingByHotelId as readBookingByHotelIdDbFunc,
-} from '../../../_lib/data/booking'
+import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
 import {
   IProfile,
   IBooking,
@@ -15,17 +10,19 @@ import {
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
+const bookingRepo = new BookingRepo()
+
 async function updateBooking(requester: IProfile, bookingId: string, data: IPatchBookingPayload): Promise<IBooking> {
   // TODO: Need to implement logic based on roles.
 
   let booking: IBooking
 
   if (requester.role === SUPER_ADMIN) {
-    await updateBookingDbFunc(bookingId, data)
-    booking = await readBookingDbFunc(bookingId)
+    await bookingRepo.updateBooking(bookingId, data)
+    booking = await bookingRepo.readBooking(bookingId)
   } else {
-    await updateBookingByHotelIdDbFunc(bookingId, requester.hotelId, data)
-    booking = await readBookingByHotelIdDbFunc(bookingId, requester.hotelId)
+    await bookingRepo.updateBookingByHotelId(bookingId, requester.hotelId, data)
+    booking = await bookingRepo.readBookingByHotelId(bookingId, requester.hotelId)
   }
 
   return booking

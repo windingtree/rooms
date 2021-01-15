@@ -1,36 +1,23 @@
-import { ObjectID } from 'mongodb'
+import { BookingRepo } from '../BookingRepo'
+import { IBookingDbData, IBooking } from '../../../../_lib/types'
 
-import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { buildProjection } from './_projection'
-import { bookingMapper } from './_mapper'
-import { CError } from '../../../_lib/tools'
-import { IBookingDbRecord, IBooking } from '../../../_lib/types'
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { ENV } from '../../../_lib/infra/env'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
-
-async function readBooking(bookingId: string): Promise<IBooking> {
-  const dbClient = await MongoDB.getInstance().getDbClient()
-
-  let result: IBookingDbRecord|null
+async function readBooking(this: BookingRepo, bookingId: string): Promise<IBooking> {
+  let result: IBookingDbData|null
   try {
-    const database = dbClient.db(ENV.ROOMS_DB_NAME)
-    const collection = database.collection(COLLECTION_NAME)
-    const query = { _id: new ObjectID(bookingId) }
-    const options = { projection: buildProjection() }
+    const collection = await this.getCollection()
+    const query = { _id: this.mapper.toObjectId(bookingId) }
+    const options = { projection: this.getProjection() }
 
     result = await collection.findOne(query, options)
   } catch (err: unknown) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while retrieving a '${ENTITY_NAME}'.`, err)
+    throw this.errorInternalEntityRead(err)
   }
 
   if (!result) {
-    throw new CError(NOT_FOUND, `Could not retrieve a '${ENTITY_NAME}'.`)
+    throw this.errorEntityNotFound()
   }
 
-  return bookingMapper(result)
+  return this.mapper.toEntity(result)
 }
 
 export {

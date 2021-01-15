@@ -25,15 +25,17 @@ export {
 } from './room_type'
 
 export {
+  TBookingDbDataFields,
+  IBookingDbDataProjection,
   IBaseBooking,
   IBooking,
   IBookingCollection,
   IPostBookingPayload,
   IPatchBookingPayload,
-  IBaseBookingDbRecord,
-  IBookingDbRecord,
+  IBaseBookingDbData,
+  IBookingDbData,
   IPatchBookingPayloadDbData,
-  IBookingDbRecordCollection,
+  IBookingCollectionDbData,
 } from './booking'
 
 export {

@@ -1,35 +1,23 @@
-import { ObjectID } from 'mongodb'
+import { BookingRepo } from '../BookingRepo'
+import { IPatchBookingPayloadDbData, IPatchBookingPayload } from '../../../../_lib/types'
 
-import { ENTITY_NAME, COLLECTION_NAME } from './_entity'
-import { patchBookingPayloadDbDataMapper } from './_mapper'
-import { CError } from '../../../_lib/tools'
-import { IPatchBookingPayloadDbData, IPatchBookingPayload } from '../../../_lib/types'
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { ENV } from '../../../_lib/infra/env'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = CONSTANTS.HTTP_STATUS
-
-async function updateBooking(bookingId: string, data: IPatchBookingPayload): Promise<void> {
-  const dbClient = await MongoDB.getInstance().getDbClient()
-
-  const dbData: IPatchBookingPayloadDbData = patchBookingPayloadDbDataMapper(data)
+async function updateBooking(this: BookingRepo, bookingId: string, data: IPatchBookingPayload): Promise<void> {
+  const dbData: IPatchBookingPayloadDbData = this.mapper.fromPatchEntityPayload(data)
 
   let result
   try {
-    const database = dbClient.db(ENV.ROOMS_DB_NAME)
-    const collection = database.collection(COLLECTION_NAME)
-    const filter = { _id: new ObjectID(bookingId) }
+    const collection = await this.getCollection()
+    const filter = { _id: this.mapper.toObjectId(bookingId) }
     const options = { upsert: false }
     const updateDoc = { $set: dbData }
 
     result = await collection.updateOne(filter, updateDoc, options)
   } catch (err: unknown) {
-    throw new CError(INTERNAL_SERVER_ERROR, `An error occurred while updating a '${ENTITY_NAME}'.`, err)
+    throw this.errorInternalEntityUpdate(err)
   }
 
   if (!result || !result.matchedCount) {
-    throw new CError(NOT_FOUND, `Could not update a '${ENTITY_NAME}'.`)
+    throw this.errorEntityNotFound()
   }
 }
 
