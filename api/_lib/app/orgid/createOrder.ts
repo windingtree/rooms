@@ -3,7 +3,7 @@ import * as moment from 'moment'
 
 import { getPaymentInfo, claimGuarantee } from '../../../_lib/data/simard'
 import { OfferRepo } from '../../../_lib/data/offer/OfferRepo'
-import { createBooking } from '../../../_lib/data/booking'
+import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
 import { AppConfig } from '../../../_lib/infra/config'
 import { emailNewBooking, CError } from '../../../_lib/tools'
 import {
@@ -19,6 +19,7 @@ import { CONSTANTS } from '../../../_lib/infra/constants'
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 const offerRepo = new OfferRepo()
+const bookingRepo = new BookingRepo()
 
 async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayload): Promise<ICreateOrderResult> {
   const paymentInfo: ISimardPaymentInfo = await getPaymentInfo(payload.guaranteeId)
@@ -87,7 +88,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     guestEmail: payload.travellerEmail || '',
     phoneNumber: payload.travellerPhone || '',
   }
-  await createBooking(baseBooking)
+  await bookingRepo.createBooking(baseBooking)
   await offerRepo.deleteOfferByOfferId(payload.offerId)
 
   await claimGuarantee(payload.guaranteeId)

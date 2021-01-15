@@ -1,7 +1,4 @@
-import {
-  readBookings as readBookingsDbFunc,
-  readBookingsByHotelId as readBookingsByHotelIdDbFunc,
-} from '../../../_lib/data/booking'
+import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
 import {
   IProfile,
   IBookingCollection,
@@ -12,15 +9,17 @@ import {
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
+const bookingRepo = new BookingRepo()
+
 async function getAllBookings(requester: IProfile): Promise<IBookingCollection> {
   // TODO: Need to implement logic based on roles.
 
   let bookingCollection: IBookingCollection
 
   if (requester.role === SUPER_ADMIN) {
-    bookingCollection = await readBookingsDbFunc()
+    bookingCollection = await bookingRepo.readBookings()
   } else {
-    bookingCollection = await readBookingsByHotelIdDbFunc(requester.hotelId)
+    bookingCollection = await bookingRepo.readBookingsByHotelId(requester.hotelId)
   }
 
   return bookingCollection
