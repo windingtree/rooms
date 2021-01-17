@@ -1,5 +1,5 @@
 import { ProfileRepo } from '../ProfileRepo'
-import { IBaseProfileDbData, IBaseProfile } from '../../../../_lib/types'
+import { IBaseProfileDbData, IBaseProfile } from '../../../common/types'
 
 async function createProfile(this: ProfileRepo, data: IBaseProfile): Promise<string> {
   const dbData: IBaseProfileDbData = this.mapper.fromBaseEntity(data)

@@ -1,9 +1,15 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler, authorizeRequest } from '../_lib/interface'
+
+// application layer imports
 import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
-import { getAllBookings } from '../_lib/app/Booking'
-import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
-import { IProfile, IBookingCollection } from '../_lib/types'
+import { getAllBookings } from '../_lib/app/booking'
+
+// common imports
+import { IProfile, IBookingCollection } from '../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IBookingCollection> {
   const requester: IProfile = await authenticateClientAppRequest(request)

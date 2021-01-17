@@ -1,9 +1,15 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler, authorizeRequest } from '../_lib/interface'
+
+// application layer imports
 import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { getAllRoomTypes } from '../_lib/app/room_type'
-import { genericApiMethodHandler, authorizeRequest } from '../_lib/tools'
-import { IProfile, IRoomTypeCollection } from '../_lib/types'
+
+// common imports
+import { IProfile, IRoomTypeCollection } from '../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IRoomTypeCollection> {
   const requester: IProfile = await authenticateClientAppRequest(request)

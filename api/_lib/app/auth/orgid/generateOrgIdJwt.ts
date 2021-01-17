@@ -1,8 +1,10 @@
+// node/npm imports
 import { JWK, JWT } from 'jose'
 
-import { CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../infra/constants'
-import { IOrgJwtTokenOptions } from '../../../../_lib/types'
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IOrgJwtTokenOptions } from '../../../common/types'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 

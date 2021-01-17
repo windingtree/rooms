@@ -1,9 +1,9 @@
 import { Collection } from 'mongodb'
 
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { ENV } from '../../../_lib/infra/env'
-import { BaseDataRepo } from '../../../_lib/tools'
-import { TOfferDbDataFields, IOfferDbDataProjection, IOfferDbData } from '../../../_lib/types'
+import { MongoDB } from '../../infra/mongo'
+import { ENV } from '../../common/env'
+import { BaseDataRepo } from '../../common/tools'
+import { TOfferDbDataFields, IOfferDbDataProjection, IOfferDbData } from '../../common/types'
 
 import {
   createOffers,

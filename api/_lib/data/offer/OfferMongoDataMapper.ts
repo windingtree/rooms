@@ -1,6 +1,6 @@
 import {
   BaseMongoDataMapper,
-} from '../../../_lib/tools'
+} from '../../common/tools'
 import {
   IBaseOfferDbData,
   IBaseOfferCollectionDbData,
@@ -13,7 +13,7 @@ import {
   IOffer,
   IOfferCollection,
   IPatchOfferPayload,
-} from '../../../_lib/types'
+} from '../../common/types'
 
 class OfferMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseOffer: IBaseOffer): IBaseOfferDbData {

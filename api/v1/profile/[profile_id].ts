@@ -1,10 +1,16 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
+import { patchProfilePayloadValidator } from '../../_lib/interface/validators'
+
+// application layer imports
 import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getProfile, updateProfile, deleteProfile } from '../../_lib/app/profile'
-import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { patchProfilePayloadValidator } from '../../_lib/validators'
-import { IProfile, IPatchProfilePayload, IStatus } from '../../_lib/types'
+
+// common imports
+import { IProfile, IPatchProfilePayload, IStatus } from '../../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IProfile> {
   const requester: IProfile = await authenticateClientAppRequest(request)

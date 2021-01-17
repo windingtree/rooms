@@ -1,10 +1,16 @@
+// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 
-import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import { CError } from '../../../_lib/tools'
-import { AppConfig } from '../../../_lib/infra/config'
-import { IBaseProfile, IProfile } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+// application layer imports
+import { AppConfig } from '../../app/config'
+
+// infrastructure layer imports
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IBaseProfile, IProfile } from '../../common/types'
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS

@@ -1,3 +1,0 @@
-export {
-  postOneTimePasswordPayloadValidator,
-} from './postOneTimePasswordPayloadValidator'

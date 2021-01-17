@@ -1,6 +1,9 @@
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { ENV } from '../../../_lib/infra/env'
-import { IHealthStatusMongo, IHealthStatus } from '../../../_lib/types'
+// infrastructure layer imports
+import { ENV } from '../../common/env'
+import { MongoDB } from '../../infra/mongo'
+
+// common imports
+import { IHealthStatusMongo, IHealthStatus } from '../../common/types'
 
 async function getHealth(): Promise<IHealthStatus> {
   let mongoStatus = 'up'

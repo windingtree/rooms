@@ -1,9 +1,10 @@
 import { Collection } from 'mongodb'
 
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { ENV } from '../../../_lib/infra/env'
-import { BaseDataRepo } from '../../../_lib/tools'
-import { TBookingDbDataFields, IBookingDbDataProjection, IBookingDbData } from '../../../_lib/types'
+import { ENV } from '../../common/env'
+import { MongoDB } from '../../infra/mongo'
+
+import { BaseDataRepo } from '../../common/tools'
+import { TBookingDbDataFields, IBookingDbDataProjection, IBookingDbData } from '../../common/types'
 
 import {
   createBooking,

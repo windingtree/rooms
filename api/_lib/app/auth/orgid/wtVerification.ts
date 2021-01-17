@@ -1,4 +1,5 @@
-import { AppConfig } from '../../../../_lib/infra/config'
+// application layer imports
+import { AppConfig } from '../../../app/config'
 
 async function wtVerification(): Promise<string> {
   const appConfig = await AppConfig.getInstance().getConfig()

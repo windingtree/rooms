@@ -1,5 +1,5 @@
 import { RoomTypeRepo } from '../RoomTypeRepo'
-import { IPatchRoomTypePayloadDbData, IPatchRoomTypePayload } from '../../../../_lib/types'
+import { IPatchRoomTypePayloadDbData, IPatchRoomTypePayload } from '../../../common/types'
 
 async function updateRoomTypeByHotelId(this: RoomTypeRepo, roomTypeId: string, hotelId: string, data: IPatchRoomTypePayload): Promise<void> {
   const dbData: IPatchRoomTypePayloadDbData = this.mapper.fromPatchEntityPayload(data)

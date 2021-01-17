@@ -1,0 +1,1 @@
+export { postJwtPayloadValidator } from './postJwtPayloadValidator'

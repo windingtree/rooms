@@ -1,3 +1,0 @@
-export {
-  postLoginPayloadValidator,
-} from './postLoginPayloadValidator'

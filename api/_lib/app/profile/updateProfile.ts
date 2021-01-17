@@ -1,5 +1,8 @@
-import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import { IProfile, IPatchProfilePayload } from '../../../_lib/types'
+// data layer imports
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+
+// common imports
+import { IProfile, IPatchProfilePayload } from '../../common/types'
 
 const profileRepo = new ProfileRepo()
 

@@ -1,5 +1,5 @@
 import { HotelRepo } from '../HotelRepo'
-import { IHotelDbData, IHotel } from '../../../../_lib/types'
+import { IHotelDbData, IHotel } from '../../../common/types'
 
 async function readHotelByOwnerId(this: HotelRepo, hotelId: string, ownerId: string): Promise<IHotel> {
   let result: IHotelDbData|null

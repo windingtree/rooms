@@ -1,10 +1,16 @@
+// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-import { getOrgDetails } from '../../../../_lib/data/marketplace'
-import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../../_lib/app/auth/orgid'
-import { getBearerToken, CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IDecodedOrgIdToken, IOrgDetails } from '../../../../_lib/types'
+// application layer imports
+import { decodeOrgIdToken, verifyOrgIdPublicKey } from './'
+
+// data layer imports
+import { getOrgDetails } from '../../../data/marketplace'
+
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { getBearerToken, CError } from '../../../common/tools'
+import { IDecodedOrgIdToken, IOrgDetails } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 

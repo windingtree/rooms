@@ -1,5 +1,5 @@
 import { BookingRepo } from '../BookingRepo'
-import { IBaseBookingDbData, IBaseBooking } from '../../../../_lib/types'
+import { IBaseBookingDbData, IBaseBooking } from '../../../common/types'
 
 async function createBooking(this: BookingRepo, data: IBaseBooking): Promise<string> {
   const dbData: IBaseBookingDbData = this.mapper.fromBaseEntity(data)

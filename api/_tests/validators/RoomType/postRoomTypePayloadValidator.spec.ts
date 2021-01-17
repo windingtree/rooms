@@ -7,9 +7,9 @@ import { NowRequest } from '@vercel/node'
 import { createRequestObject } from '../../../_tests/_tools'
 import { IRequestBody } from '../../../_tests/_types'
 
-import { CError } from '../../../_lib/tools'
-import { postRoomTypePayloadValidator as sut } from '../../../_lib/validators/RoomType'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { CError } from '../../../_lib/common/tools'
+import { postRoomTypePayloadValidator as sut } from '../../../_lib/interface/validators/RoomType'
+import { CONSTANTS } from '../../../_lib/common/constants'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 

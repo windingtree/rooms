@@ -1,8 +1,10 @@
+// node/npm imports
 import { JWT } from 'jose'
 
-import { CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IDecodedOrgToken, IDecodedOrgIdToken } from '../../../../_lib/types'
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IDecodedOrgToken, IDecodedOrgIdToken } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 

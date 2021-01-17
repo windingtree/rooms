@@ -1,9 +1,15 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler } from '../../_lib/interface'
+
+// application layer imports
 import { authenticateOrgIdRequest } from '../../_lib/app/auth/orgid'
 import { offerSearch } from '../../_lib/app/orgid'
-import { genericApiMethodHandler } from '../../_lib/tools'
-import { IOfferSearchResults, IOrgDetails } from '../../_lib/types'
+
+// common imports
+import { IOfferSearchResults, IOrgDetails } from '../../_lib/common/types'
 
 async function POST(request: NowRequest): Promise<IOfferSearchResults> {
   const requester: IOrgDetails = await authenticateOrgIdRequest(request)

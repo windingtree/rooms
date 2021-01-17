@@ -1,5 +1,8 @@
-import { getOrgDetails as getOrgDetailsRecord } from '../../../_lib/data/marketplace'
-import { IOrgDetails } from '../../../_lib/types'
+// data layer imports
+import { getOrgDetails as getOrgDetailsRecord } from '../../data/marketplace'
+
+// common imports
+import { IOrgDetails } from '../../common/types'
 
 async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   // TODO: Try to get `orgDetails` from cache first.

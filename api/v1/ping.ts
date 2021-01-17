@@ -1,6 +1,8 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler } from '../_lib/tools'
+// interface layer imports
+import { genericApiMethodHandler } from '../_lib/interface'
 
 async function GET(): Promise<string> {
   return 'OK'

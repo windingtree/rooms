@@ -1,5 +1,5 @@
 import { ProfileRepo } from '../ProfileRepo'
-import { IProfileDbData, IProfile } from '../../../../_lib/types'
+import { IProfileDbData, IProfile } from '../../../common/types'
 
 async function readProfileByEmail(this: ProfileRepo, email: string): Promise<IProfile> {
   let result: IProfileDbData|null

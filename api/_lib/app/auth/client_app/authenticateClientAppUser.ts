@@ -1,7 +1,10 @@
-import { ProfileRepo } from '../../../../_lib/data/profile/ProfileRepo'
-import { CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IProfile, IProfileAuthData } from '../../../../_lib/types'
+// data layer imports
+import { ProfileRepo } from '../../../data/profile/ProfileRepo'
+
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { IProfile, IProfileAuthData } from '../../../common/types'
+import { CError } from '../../../common/tools'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 

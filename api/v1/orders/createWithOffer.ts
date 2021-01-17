@@ -1,10 +1,16 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler } from '../../_lib/interface'
+import { postCreateOrderPayloadValidator } from '../../_lib/interface/validators'
+
+// application layer imports
 import { authenticateOrgIdRequest } from '../../_lib/app/auth/orgid'
 import { createOrder } from '../../_lib/app/orgid'
-import { genericApiMethodHandler } from '../../_lib/tools'
-import { postCreateOrderPayloadValidator } from '../../_lib/validators'
-import { IOrgDetails, IPostCreateOrderPayload, ICreateOrderResult } from '../../_lib/types'
+
+// common imports
+import { IOrgDetails, IPostCreateOrderPayload, ICreateOrderResult } from '../../_lib/common/types'
 
 async function POST(request: NowRequest): Promise<ICreateOrderResult> {
   const requester: IOrgDetails = await authenticateOrgIdRequest(request)

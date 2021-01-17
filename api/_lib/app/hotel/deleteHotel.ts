@@ -1,6 +1,9 @@
-import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
-import { IProfile, IStatus } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+// data layer imports
+import { HotelRepo } from '../../data/hotel/HotelRepo'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { IProfile, IStatus } from '../../common/types'
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 

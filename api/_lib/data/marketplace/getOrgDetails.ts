@@ -1,9 +1,13 @@
+// node/npm imports
 import { GraphQLClient, gql } from 'graphql-request'
 
-import { IOrgDetails } from '../../../_lib/types'
-import { CError } from '../../../_lib/tools'
-import { AppConfig } from '../../../_lib/infra/config'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+// application layer imports
+import { AppConfig } from '../../app/config'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IOrgDetails } from '../../common/types'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
@@ -63,6 +67,4 @@ async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   return orgDetails
 }
 
-export {
-  getOrgDetails,
-}
+export { getOrgDetails }

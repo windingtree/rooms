@@ -1,6 +1,6 @@
 import {
   BaseMongoDataMapper,
-} from '../../../_lib/tools'
+} from '../../common/tools'
 import {
   IBaseBookingDbData,
   IBookingDbData,
@@ -11,7 +11,7 @@ import {
   IBooking,
   IBookingCollection,
   IPatchBookingPayload,
-} from '../../../_lib/types'
+} from '../../common/types'
 
 class BookingMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseBooking: IBaseBooking): IBaseBookingDbData {

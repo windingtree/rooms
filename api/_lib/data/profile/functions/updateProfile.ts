@@ -1,5 +1,5 @@
 import { ProfileRepo } from '../ProfileRepo'
-import { IPatchProfilePayloadDbData, IPatchProfilePayload } from '../../../../_lib/types'
+import { IPatchProfilePayloadDbData, IPatchProfilePayload } from '../../../common/types'
 
 async function updateProfile(this: ProfileRepo, profileId: string, data: IPatchProfilePayload): Promise<void> {
   const dbData: IPatchProfilePayloadDbData = this.mapper.fromPatchEntityPayload(data)

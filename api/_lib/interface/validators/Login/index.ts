@@ -1,0 +1,1 @@
+export { postLoginPayloadValidator } from './postLoginPayloadValidator'
