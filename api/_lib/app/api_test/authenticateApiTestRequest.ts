@@ -1,10 +1,14 @@
+// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken } from '../../../_lib/app/auth/client_app'
-import { AppConfig } from '../../../_lib/infra/config'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { getBearerToken, CError } from '../../../_lib/tools'
-import { IProfileAuthData } from '../../../_lib/types'
+// application layer imports
+import { decodeClientAppToken } from '../../app/auth/client_app'
+import { AppConfig } from '../../app/config'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { getBearerToken, CError } from '../../common/tools'
+import { IProfileAuthData } from '../../common/types'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 

@@ -1,8 +1,14 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler } from '../_lib/interface'
+
+// application layer imports
 import { getHealth } from '../_lib/app/health'
-import { genericApiMethodHandler } from '../_lib/tools'
-import { IHealthStatus } from '../_lib/types'
+
+// common imports
+import { IHealthStatus } from '../_lib/common/types'
 
 async function GET(): Promise<IHealthStatus> {
   return await getHealth()

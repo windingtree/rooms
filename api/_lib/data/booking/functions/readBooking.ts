@@ -1,5 +1,5 @@
 import { BookingRepo } from '../BookingRepo'
-import { IBookingDbData, IBooking } from '../../../../_lib/types'
+import { IBookingDbData, IBooking } from '../../../common/types'
 
 async function readBooking(this: BookingRepo, bookingId: string): Promise<IBooking> {
   let result: IBookingDbData|null

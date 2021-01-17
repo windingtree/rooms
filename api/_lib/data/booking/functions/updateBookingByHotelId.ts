@@ -1,5 +1,5 @@
 import { BookingRepo } from '../BookingRepo'
-import { IPatchBookingPayloadDbData, IPatchBookingPayload } from '../../../../_lib/types'
+import { IPatchBookingPayloadDbData, IPatchBookingPayload } from '../../../common/types'
 
 async function updateBookingByHotelId(this: BookingRepo, bookingId: string, hotelId: string, data: IPatchBookingPayload): Promise<void> {
   const dbData: IPatchBookingPayloadDbData = this.mapper.fromPatchEntityPayload(data)

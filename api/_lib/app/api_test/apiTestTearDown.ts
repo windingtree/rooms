@@ -1,15 +1,15 @@
-import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
-import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
-import { CError } from '../../../_lib/tools'
-import { AppConfig } from '../../../_lib/infra/config'
-import {
-  IRoomTypeCollection,
-  IProfile,
-  IBookingCollection,
-  IStatus,
-} from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+// application layer imports
+import { AppConfig } from '../../app/config'
+
+// data layer imports
+import { BookingRepo } from '../../data/booking/BookingRepo'
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IRoomTypeCollection, IProfile, IBookingCollection, IStatus } from '../../common/types'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 

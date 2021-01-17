@@ -1,5 +1,5 @@
 import { OfferRepo } from '../OfferRepo'
-import { IBaseOfferCollection, IBaseOfferCollectionDbData } from '../../../../_lib/types'
+import { IBaseOfferCollection, IBaseOfferCollectionDbData } from '../../../common/types'
 
 async function createOffers(this: OfferRepo, data: IBaseOfferCollection): Promise<void> {
   const dbData: IBaseOfferCollectionDbData = this.mapper.fromBaseEntityCollection(data)

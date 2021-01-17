@@ -1,16 +1,10 @@
-import { RoomTypeRepo } from '../../../_lib/data/room_type/RoomTypeRepo'
-import {
-  CError,
-} from '../../../_lib/tools'
-import {
-  CONSTANTS,
-} from '../../../_lib/infra/constants'
-import {
-  IProfile,
-  IRoomType,
-  IBaseRoomType,
-  IPostRoomTypePayload,
-} from '../../../_lib/types'
+// data layer imports
+import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IProfile, IRoomType, IBaseRoomType, IPostRoomTypePayload } from '../../common/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE

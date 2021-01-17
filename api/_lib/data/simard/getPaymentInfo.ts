@@ -1,10 +1,14 @@
+// node/npm imports
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { generateOrgIdJwt } from '../../../_lib/app/auth/orgid'
-import { AppConfig } from '../../../_lib/infra/config'
-import { CError } from '../../../_lib/tools'
-import { CONSTANTS } from '../../infra/constants'
-import { ISimardPaymentInfo } from '../../../_lib/types'
+// application layer imports
+import { generateOrgIdJwt } from '../../app/auth/orgid'
+import { AppConfig } from '../../app/config'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { ISimardPaymentInfo } from '../../common/types'
 
 const { BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
@@ -48,6 +52,4 @@ async function getPaymentInfo(guaranteeId: string): Promise<ISimardPaymentInfo> 
   }
 }
 
-export {
-  getPaymentInfo,
-}
+export { getPaymentInfo }

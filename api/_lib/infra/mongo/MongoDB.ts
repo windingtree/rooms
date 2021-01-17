@@ -1,8 +1,10 @@
+// node/npm imports
 import { MongoClient, MongoClientOptions } from 'mongodb'
 
-import { CError } from '../../../_lib/tools'
-import { ENV } from '../../../_lib/infra/env'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { ENV } from '../../common/env'
+import { CError } from '../../common/tools'
 
 const { INTERNAL_SERVER_ERROR, BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 

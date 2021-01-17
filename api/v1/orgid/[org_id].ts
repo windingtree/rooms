@@ -1,9 +1,15 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
+
+// application layer imports
 import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getOrgDetails } from '../../_lib/app/orgid'
-import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { IOrgDetails, IProfile } from '../../_lib/types'
+
+// common imports
+import { IOrgDetails, IProfile } from '../../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IOrgDetails> {
   const requester: IProfile = await authenticateClientAppRequest(request)

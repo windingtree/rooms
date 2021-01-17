@@ -1,11 +1,13 @@
-import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
-import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { CError } from '../../../_lib/tools'
+// data layer imports
+import { HotelRepo } from '../../data/hotel/HotelRepo'
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-const { SUPER_ADMIN, MANAGER, OBSERVER }  = CONSTANTS.PROFILE_ROLE
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IProfile, IBaseHotel, IHotel, IPostHotelPayload } from '../../common/types'
 
+const { SUPER_ADMIN, MANAGER, OBSERVER } = CONSTANTS.PROFILE_ROLE
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
 const hotelRepo = new HotelRepo()

@@ -1,6 +1,6 @@
 import {
   BaseMongoDataMapper,
-} from '../../../_lib/tools'
+} from '../../common/tools'
 import {
   IBaseRoomTypeDbData,
   IRoomTypeDbData,
@@ -11,7 +11,7 @@ import {
   IRoomType,
   IRoomTypeCollection,
   IPatchRoomTypePayload,
-} from '../../../_lib/types'
+} from '../../common/types'
 
 class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseRoomType: IBaseRoomType): IBaseRoomTypeDbData {

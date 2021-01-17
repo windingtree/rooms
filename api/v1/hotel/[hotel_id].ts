@@ -1,10 +1,16 @@
+// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
+// interface layer imports
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
+import { patchHotelPayloadValidator } from '../../_lib/interface/validators'
+
+// application layer imports
 import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
-import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { patchHotelPayloadValidator } from '../../_lib/validators'
-import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/types'
+
+// common imports
+import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IHotel> {
   const requester: IProfile = await authenticateClientAppRequest(request)

@@ -1,5 +1,5 @@
 import { RoomTypeRepo } from '../RoomTypeRepo'
-import { IBaseRoomTypeDbData, IBaseRoomType } from '../../../../_lib/types'
+import { IBaseRoomTypeDbData, IBaseRoomType } from '../../../common/types'
 
 async function createRoomType(this: RoomTypeRepo, data: IBaseRoomType): Promise<string> {
   const dbData: IBaseRoomTypeDbData = this.mapper.fromBaseEntity(data)

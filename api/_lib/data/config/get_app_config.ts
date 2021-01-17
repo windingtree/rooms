@@ -1,8 +1,8 @@
-import { CError, decryptText } from '../../../_lib/tools'
-import { IAppConfig, IAppConfigDbItem } from '../../../_lib/types'
-import { MongoDB } from '../../../_lib/infra/mongo'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { ENV } from '../../../_lib/infra/env'
+import { CError, decryptText } from '../../common/tools'
+import { IAppConfig, IAppConfigDbItem } from '../../common/types'
+import { MongoDB } from '../../infra/mongo'
+import { CONSTANTS } from '../../common/constants'
+import { ENV } from '../../common/env'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 

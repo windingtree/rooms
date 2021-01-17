@@ -1,9 +1,13 @@
+// node/npm imports
 import * as jwt from 'jsonwebtoken'
 
-import { CError } from '../../../../_lib/tools'
-import { ENV } from '../../../../_lib/infra/env'
-import { CONSTANTS } from '../../../infra/constants'
-import { IProfileAuthData } from '../../../../_lib/types'
+// infrastructure layer imports
+import { ENV } from '../../../common/env'
+
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IProfileAuthData } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 

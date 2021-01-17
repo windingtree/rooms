@@ -1,5 +1,5 @@
 import { HotelRepo } from '../HotelRepo'
-import { IHotelCollectionDbData, IHotelCollection, ILocationRectangleDbType } from '../../../../_lib/types'
+import { IHotelCollectionDbData, IHotelCollection, ILocationRectangleDbType } from '../../../common/types'
 
 async function readHotelsByLocationRectangle(this: HotelRepo, rectangle: ILocationRectangleDbType): Promise<IHotelCollection> {
   const polygon: Array<Array<number>> = [

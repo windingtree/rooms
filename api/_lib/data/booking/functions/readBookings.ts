@@ -1,5 +1,5 @@
 import { BookingRepo } from '../BookingRepo'
-import { IBookingCollectionDbData, IBookingCollection } from '../../../../_lib/types'
+import { IBookingCollectionDbData, IBookingCollection } from '../../../common/types'
 
 async function readBookings(this: BookingRepo): Promise<IBookingCollection> {
   const result: IBookingCollectionDbData = []

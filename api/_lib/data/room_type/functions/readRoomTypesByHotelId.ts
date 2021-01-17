@@ -1,5 +1,5 @@
 import { RoomTypeRepo } from '../RoomTypeRepo'
-import { IRoomTypeCollectionDbData, IRoomTypeCollection } from '../../../../_lib/types'
+import { IRoomTypeCollectionDbData, IRoomTypeCollection } from '../../../common/types'
 
 async function readRoomTypesByHotelId(this: RoomTypeRepo, hotelId: string): Promise<IRoomTypeCollection> {
   const result: IRoomTypeCollectionDbData = []

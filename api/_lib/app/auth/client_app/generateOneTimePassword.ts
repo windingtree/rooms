@@ -1,7 +1,10 @@
-import { getClientAppOneTimePassword } from '../../../../_lib/app/auth/client_app'
-import { emailOneTimePassword } from '../../../../_lib/tools'
-import { AppConfig } from '../../../../_lib/infra/config'
-import { IOneTimePasswordPayload, IOtpStatus } from '../../../../_lib/types'
+// application layer imports
+import { getClientAppOneTimePassword } from './'
+import { AppConfig } from '../../../app/config'
+import { emailOneTimePassword } from '../../../app/email'
+
+// common imports
+import { IOneTimePasswordPayload, IOtpStatus } from '../../../common/types'
 
 async function generateOneTimePassword(payload: IOneTimePasswordPayload): Promise<IOtpStatus> {
   const oneTimePassword: string = await getClientAppOneTimePassword(payload)

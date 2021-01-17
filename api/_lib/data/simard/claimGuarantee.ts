@@ -1,10 +1,14 @@
+// node/npm imports
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { generateOrgIdJwt } from '../../../_lib/app/auth/orgid'
-import { AppConfig } from '../../../_lib/infra/config'
-import { CError } from '../../../_lib/tools'
-import { CONSTANTS } from '../../infra/constants'
-import { ISimardGuaranteeClaim } from '../../../_lib/types'
+// application layer imports
+import { generateOrgIdJwt } from '../../app/auth/orgid'
+import { AppConfig } from '../../app/config'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { ISimardGuaranteeClaim } from '../../common/types'
 
 const { BAD_GATEWAY } = CONSTANTS.HTTP_STATUS
 
@@ -44,6 +48,4 @@ async function claimGuarantee(guaranteeId: string): Promise<ISimardGuaranteeClai
   }
 }
 
-export {
-  claimGuarantee,
-}
+export { claimGuarantee }

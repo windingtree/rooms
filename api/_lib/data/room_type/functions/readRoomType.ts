@@ -1,5 +1,5 @@
 import { RoomTypeRepo } from '../RoomTypeRepo'
-import { IRoomTypeDbData, IRoomType } from '../../../../_lib/types'
+import { IRoomTypeDbData, IRoomType } from '../../../common/types'
 
 async function readRoomType(this: RoomTypeRepo, roomTypeId: string): Promise<IRoomType> {
   let result: IRoomTypeDbData|null

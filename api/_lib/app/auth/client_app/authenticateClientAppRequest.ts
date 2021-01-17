@@ -1,8 +1,12 @@
+// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken, authenticateClientAppUser } from '../../../../_lib/app/auth/client_app'
-import { getBearerToken } from '../../../../_lib/tools'
-import { IProfileAuthData, IProfile } from '../../../../_lib/types'
+// application layer imports
+import { decodeClientAppToken, authenticateClientAppUser } from './'
+
+// common imports
+import { getBearerToken } from '../../../common/tools'
+import { IProfileAuthData, IProfile } from '../../../common/types'
 
 async function authenticateClientAppRequest(request: NowRequest): Promise<IProfile> {
   const bearerToken: string = await getBearerToken(request)

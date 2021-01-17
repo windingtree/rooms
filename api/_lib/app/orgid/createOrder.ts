@@ -1,11 +1,19 @@
+// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 import * as moment from 'moment'
 
-import { getPaymentInfo, claimGuarantee } from '../../../_lib/data/simard'
-import { OfferRepo } from '../../../_lib/data/offer/OfferRepo'
-import { BookingRepo } from '../../../_lib/data/booking/BookingRepo'
-import { AppConfig } from '../../../_lib/infra/config'
-import { emailNewBooking, CError } from '../../../_lib/tools'
+// application layer imports
+import { AppConfig } from '../../app/config'
+import { emailNewBooking } from '../../app/email'
+
+// data layer imports
+import { BookingRepo } from '../../data/booking/BookingRepo'
+import { OfferRepo } from '../../data/offer/OfferRepo'
+import { getPaymentInfo, claimGuarantee } from '../../data/simard'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
 import {
   IPostCreateOrderPayload,
   ICreateOrderResult,
@@ -13,8 +21,7 @@ import {
   IOffer,
   IBaseBooking,
   ISimardPaymentInfo,
-} from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+} from '../../common/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 

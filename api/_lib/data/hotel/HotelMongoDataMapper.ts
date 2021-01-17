@@ -1,6 +1,6 @@
 import {
   BaseMongoDataMapper,
-} from '../../../_lib/tools'
+} from '../../common/tools'
 import {
   IBaseHotelDbData,
   IHotelDbData,
@@ -13,7 +13,7 @@ import {
   IPatchHotelPayload,
 
   IHotelLocation,
-} from '../../../_lib/types'
+} from '../../common/types'
 
 class HotelMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseHotel: IBaseHotel): IBaseHotelDbData {

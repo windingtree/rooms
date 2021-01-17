@@ -1,9 +1,13 @@
+// node/npm imports
 import { JWK, JWT } from 'jose'
 
-import { CError } from '../../../../_lib/tools'
-import { AppConfig } from '../../../../_lib/infra/config'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IOrgDetails } from '../../../../_lib/types'
+// application layer imports
+import { AppConfig } from '../../../app/config'
+
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IOrgDetails } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 

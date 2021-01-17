@@ -1,10 +1,16 @@
+// node/npm imports
 import * as jwt from 'jsonwebtoken'
 
-import { AppConfig } from '../../../_lib/infra/config'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { ENV } from '../../../_lib/infra/env'
-import { CError } from '../../../_lib/tools'
-import { IProfileAuthData, IJwtToken } from '../../../_lib/types'
+// application layer imports
+import { AppConfig } from '../../app/config'
+
+// infrastructure layer imports
+import { ENV } from '../../common/env'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IProfileAuthData, IJwtToken } from '../../common/types'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 

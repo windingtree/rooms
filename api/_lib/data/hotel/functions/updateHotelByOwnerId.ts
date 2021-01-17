@@ -1,5 +1,5 @@
 import { HotelRepo } from '../HotelRepo'
-import { IPatchHotelPayloadDbData, IPatchHotelPayload } from '../../../../_lib/types'
+import { IPatchHotelPayloadDbData, IPatchHotelPayload } from '../../../common/types'
 
 async function updateHotelByOwnerId(this: HotelRepo, hotelId: string, ownerId: string, data: IPatchHotelPayload): Promise<void> {
   const dbData: IPatchHotelPayloadDbData = this.mapper.fromPatchEntityPayload(data)

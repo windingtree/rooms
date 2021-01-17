@@ -1,6 +1,6 @@
 import {
   BaseMongoDataMapper,
-} from '../../../_lib/tools'
+} from '../../common/tools'
 import {
   IBaseProfileDbData,
   IProfileDbData,
@@ -11,7 +11,7 @@ import {
   IProfile,
   IProfileCollection,
   IPatchProfilePayload,
-} from '../../../_lib/types'
+} from '../../common/types'
 
 class ProfileMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseProfile: IBaseProfile): IBaseProfileDbData {

@@ -1,8 +1,11 @@
-import { ProfileRepo } from '../../../_lib/data/profile/ProfileRepo'
-import { HotelRepo } from '../../../_lib/data/hotel/HotelRepo'
-import { IBaseProfile, IProfile, IPostProfilePayload } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { CError } from '../../../_lib/tools'
+// data layer imports
+import { HotelRepo } from '../../data/hotel/HotelRepo'
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+
+// common imports
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IBaseProfile, IProfile, IPostProfilePayload } from '../../common/types'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE

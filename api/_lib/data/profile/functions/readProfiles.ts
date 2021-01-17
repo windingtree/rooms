@@ -1,5 +1,5 @@
 import { ProfileRepo } from '../ProfileRepo'
-import { IProfileCollectionDbData, IProfileCollection } from '../../../../_lib/types'
+import { IProfileCollectionDbData, IProfileCollection } from '../../../common/types'
 
 async function readProfiles(this: ProfileRepo): Promise<IProfileCollection> {
   const result: IProfileCollectionDbData = []

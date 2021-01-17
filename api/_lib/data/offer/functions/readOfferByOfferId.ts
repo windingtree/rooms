@@ -1,5 +1,5 @@
 import { OfferRepo } from '../OfferRepo'
-import { IOfferDbData, IOffer } from '../../../../_lib/types'
+import { IOfferDbData, IOffer } from '../../../common/types'
 
 async function readOfferByOfferId(this: OfferRepo, offerId: string): Promise<IOffer> {
   let result: IOfferDbData|null

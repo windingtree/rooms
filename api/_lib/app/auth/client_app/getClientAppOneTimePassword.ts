@@ -1,9 +1,13 @@
+// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 
-import { ProfileRepo } from '../../../../_lib/data/profile/ProfileRepo'
-import { HotelRepo } from '../../../../_lib/data/hotel/HotelRepo'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IProfile, IOneTimePasswordPayload } from '../../../../_lib/types'
+// data layer imports
+import { ProfileRepo } from '../../../data/profile/ProfileRepo'
+import { HotelRepo } from '../../../data/hotel/HotelRepo'
+
+// common imports
+import { CONSTANTS } from '../../../common/constants'
+import { IProfile, IOneTimePasswordPayload } from '../../../common/types'
 
 const { OWNER } = CONSTANTS.PROFILE_ROLE
 
