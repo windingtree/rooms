@@ -1,15 +1,11 @@
-// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
-// interface layer imports
 import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
 import { patchRoomTypePayloadValidator } from '../../_lib/interface/validators'
 
-// application layer imports
 import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getRoomType, updateRoomType, deleteRoomType } from '../../_lib/app/room_type'
 
-// common imports
 import { IProfile, IRoomType, IPatchRoomTypePayload, IStatus } from '../../_lib/common/types'
 
 async function GET(request: NowRequest): Promise<IRoomType> {

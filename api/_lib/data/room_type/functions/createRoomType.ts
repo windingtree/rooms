@@ -20,6 +20,4 @@ async function createRoomType(this: RoomTypeRepo, data: IBaseRoomType): Promise<
   return this.mapper.fromObjectId(result.insertedId)
 }
 
-export {
-  createRoomType,
-}
+export { createRoomType }

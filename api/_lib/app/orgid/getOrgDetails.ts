@@ -1,7 +1,5 @@
-// data layer imports
 import { getOrgDetails as getOrgDetailsRecord } from '../../data/marketplace'
 
-// common imports
 import { IOrgDetails } from '../../common/types'
 
 async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
@@ -12,6 +10,4 @@ async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   return orgDetails
 }
 
-export {
-  getOrgDetails,
-}
+export { getOrgDetails }

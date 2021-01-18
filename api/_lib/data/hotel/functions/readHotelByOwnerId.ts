@@ -20,6 +20,4 @@ async function readHotelByOwnerId(this: HotelRepo, hotelId: string, ownerId: str
   return this.mapper.toEntity(result)
 }
 
-export {
-  readHotelByOwnerId,
-}
+export { readHotelByOwnerId }

@@ -1,3 +1,1 @@
-export {
-  createRequestObject,
-} from './createRequestObject'
+export { createRequestObject } from './createRequestObject'

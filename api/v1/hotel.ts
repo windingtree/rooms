@@ -1,15 +1,11 @@
-// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
-// interface layer imports
 import { genericApiMethodHandler, authorizeRequest } from '../_lib/interface'
 import { postHotelPayloadValidator } from '../_lib/interface/validators'
 
-// application layer imports
 import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { createHotel } from '../_lib/app/hotel'
 
-// common imports
 import { IProfile, IHotel, IPostHotelPayload } from '../_lib/common/types'
 
 async function POST(request: NowRequest): Promise<IHotel> {

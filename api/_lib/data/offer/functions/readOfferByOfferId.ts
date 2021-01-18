@@ -20,6 +20,4 @@ async function readOfferByOfferId(this: OfferRepo, offerId: string): Promise<IOf
   return this.mapper.toEntity(result)
 }
 
-export {
-  readOfferByOfferId,
-}
+export { readOfferByOfferId }

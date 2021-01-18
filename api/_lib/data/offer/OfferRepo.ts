@@ -54,6 +54,4 @@ class OfferRepo extends BaseDataRepo {
   }
 }
 
-export {
-  OfferRepo,
-}
+export { OfferRepo }

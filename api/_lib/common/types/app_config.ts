@@ -1,4 +1,40 @@
-interface IAppConfig {
+import { ObjectID } from 'mongodb'
+
+type TAppConfigDbDataFields =
+  | '_id'
+  | 'key'
+  | 'value'
+  | 'encrypted'
+
+type IAppConfigDbDataProjection = {
+  [key in TAppConfigDbDataFields]?: 1
+}
+
+interface IBaseAppConfig {
+  key: string
+  value: string
+  encrypted: boolean
+}
+
+interface IAppConfig extends IBaseAppConfig {
+  id: string
+}
+
+type IAppConfigCollection = Array<IAppConfig>
+
+interface IBaseAppConfigDbData {
+  key: string
+  value: string
+  encrypted: boolean
+}
+
+interface IAppConfigDbData extends IBaseAppConfigDbData {
+  _id: ObjectID|null
+}
+
+type IAppConfigCollectionDbData = Array<IAppConfigDbData>
+
+interface IAppConfigHash {
   SENDGRID_CALLBACK_URL: string
   SENDGRID_API_KEY: string
 
@@ -19,13 +55,14 @@ interface IAppConfig {
   ONE_MONGO_CONNECTION_PER_REQUEST: string
 }
 
-interface IAppConfigDbItem {
-  key: keyof IAppConfig
-  value: string
-  encrypted: boolean
-}
-
 export {
+  TAppConfigDbDataFields,
+  IAppConfigDbDataProjection,
+  IBaseAppConfig,
   IAppConfig,
-  IAppConfigDbItem,
+  IAppConfigCollection,
+  IBaseAppConfigDbData,
+  IAppConfigDbData,
+  IAppConfigCollectionDbData,
+  IAppConfigHash,
 }

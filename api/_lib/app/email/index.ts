@@ -1,7 +1,2 @@
-export {
-  emailNewBooking,
-} from './emailNewBooking'
-
-export {
-  emailOneTimePassword,
-} from './emailOneTimePassword'
+export { emailNewBooking } from './emailNewBooking'
+export { emailOneTimePassword } from './emailOneTimePassword'

@@ -16,6 +16,4 @@ async function deleteOfferByOfferId(this: OfferRepo, offerId: string): Promise<v
   }
 }
 
-export {
-  deleteOfferByOfferId,
-}
+export { deleteOfferByOfferId }

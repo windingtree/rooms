@@ -1,8 +1,6 @@
-// infrastructure layer imports
-import { ENV } from '../../common/env'
 import { MongoDB } from '../../infra/mongo'
 
-// common imports
+import { ENV } from '../../common/env'
 import { IHealthStatusMongo, IHealthStatus } from '../../common/types'
 
 async function getHealth(): Promise<IHealthStatus> {
@@ -16,8 +14,8 @@ async function getHealth(): Promise<IHealthStatus> {
     mongoStatus = 'down'
     pingErr = err
   }
-  const endTime = process.hrtime(startTime)
-  const timeInMs = (endTime[0] * 1000000000 + endTime[1]) / 1000000
+  const endTime: [number, number] = process.hrtime(startTime)
+  const timeInMs: number = (endTime[0] * 1000000000 + endTime[1]) / 1000000
 
   const mongoStatusObj: IHealthStatusMongo = {
     status: mongoStatus,
@@ -34,6 +32,4 @@ async function getHealth(): Promise<IHealthStatus> {
   }
 }
 
-export {
-  getHealth,
-}
+export { getHealth }

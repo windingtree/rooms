@@ -1,15 +1,12 @@
-// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
-// interface layer imports
 import { errorHandler, onExitCleanUp } from '../interface'
 
-// application layer imports
 import { AppConfig } from '../app/config'
 
-// common imports
 import { CONSTANTS } from '../common/constants'
-import { CError, checkRequiredEnvProps, isFunction } from '../common/tools'
+import { checkRequiredEnvProps } from '../common/env'
+import { CError, isFunction } from '../common/tools'
 import { IMethodHandlerHash, TMethodFunc } from '../common/types'
 
 const { HTTP_STATUS_CODE } = CONSTANTS
@@ -18,6 +15,7 @@ const { BAD_REQUEST, FORBIDDEN, NOT_IMPLEMENTED, INTERNAL_SERVER_ERROR, OK }  = 
 function reportRequestTime(startTime: [number, number]): void {
   const endTime: [number, number] = process.hrtime(startTime)
   const timeInMs: number = (endTime[0] * 1000000000 + endTime[1]) / 1000000
+
   console.log(`\n--- request processed in ${timeInMs}ms ---\n`)
 }
 
@@ -81,7 +79,7 @@ async function genericApiMethodHandler(
   } catch (err) {
     try {
       await onExitCleanUp()
-    } catch (err) {
+    } catch (_err) {
       // Do nothing. We are already in a try/catch block.
     }
 

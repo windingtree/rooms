@@ -35,6 +35,4 @@ async function readHotelsByLocationRectangle(this: HotelRepo, rectangle: ILocati
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readHotelsByLocationRectangle,
-}
+export { readHotelsByLocationRectangle }

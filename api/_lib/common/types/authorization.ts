@@ -1,4 +1,3 @@
-// common imports
 import { IProfileRoleEnum } from '../types'
 
 type IAuthorizeRulesRoles = {

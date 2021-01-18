@@ -1,10 +1,8 @@
-// data layer imports
 import { ProfileRepo } from '../../../data/profile/ProfileRepo'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
-import { IProfile, IProfileAuthData } from '../../../common/types'
 import { CError } from '../../../common/tools'
+import { IProfile, IProfileAuthData } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
@@ -29,6 +27,4 @@ async function authenticateClientAppUser(payload: IProfileAuthData): Promise<IPr
   return profile
 }
 
-export {
-  authenticateClientAppUser,
-}
+export { authenticateClientAppUser }

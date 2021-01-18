@@ -22,6 +22,4 @@ async function readProfiles(this: ProfileRepo): Promise<IProfileCollection> {
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readProfiles,
-}
+export { readProfiles }

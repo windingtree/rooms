@@ -22,6 +22,4 @@ async function readHotelsByOwnerId(this: HotelRepo, ownerId: string): Promise<IH
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readHotelsByOwnerId,
-}
+export { readHotelsByOwnerId }

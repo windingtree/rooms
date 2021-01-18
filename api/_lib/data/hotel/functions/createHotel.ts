@@ -20,6 +20,4 @@ async function createHotel(this: HotelRepo, data: IBaseHotel): Promise<string> {
   return this.mapper.fromObjectId(result.insertedId)
 }
 
-export {
-  createHotel,
-}
+export { createHotel }

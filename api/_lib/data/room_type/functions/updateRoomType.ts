@@ -21,6 +21,4 @@ async function updateRoomType(this: RoomTypeRepo, roomTypeId: string, data: IPat
   }
 }
 
-export {
-  updateRoomType,
-}
+export { updateRoomType }

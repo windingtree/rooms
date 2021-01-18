@@ -16,6 +16,4 @@ async function deleteRoomTypeByHotelId(this: RoomTypeRepo, roomTypeId: string, h
   }
 }
 
-export {
-  deleteRoomTypeByHotelId,
-}
+export { deleteRoomTypeByHotelId }

@@ -1,4 +1,3 @@
-// node/npm imports
 import * as crypto from 'crypto'
 
 function encryptText(encryptionDetails: string, text: string): string {
@@ -25,7 +24,4 @@ function decryptText(encryptionDetails: string, hash: string): string {
   return decrpyted.toString()
 }
 
-export {
-  encryptText,
-  decryptText,
-}
+export { encryptText, decryptText }

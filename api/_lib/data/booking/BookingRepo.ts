@@ -1,8 +1,8 @@
 import { Collection } from 'mongodb'
 
-import { ENV } from '../../common/env'
 import { MongoDB } from '../../infra/mongo'
 
+import { ENV } from '../../common/env'
 import { BaseDataRepo } from '../../common/tools'
 import { TBookingDbDataFields, IBookingDbDataProjection, IBookingDbData } from '../../common/types'
 
@@ -68,6 +68,4 @@ class BookingRepo extends BaseDataRepo {
   }
 }
 
-export {
-  BookingRepo,
-}
+export { BookingRepo }

@@ -16,6 +16,4 @@ async function deleteBooking(this: BookingRepo, bookingId: string): Promise<void
   }
 }
 
-export {
-  deleteBooking,
-}
+export { deleteBooking }

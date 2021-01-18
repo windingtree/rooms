@@ -1,7 +1,5 @@
-// data layer imports
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IStatus } from '../../common/types'
 
@@ -21,6 +19,4 @@ async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<
   return { status: 'OK' }
 }
 
-export {
-  deleteRoomType,
-}
+export { deleteRoomType }

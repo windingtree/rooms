@@ -112,6 +112,4 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
   }
 }
 
-export {
-  HotelMongoDataMapper,
-}
+export { HotelMongoDataMapper }

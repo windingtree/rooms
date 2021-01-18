@@ -20,6 +20,4 @@ async function readBooking(this: BookingRepo, bookingId: string): Promise<IBooki
   return this.mapper.toEntity(result)
 }
 
-export {
-  readBooking,
-}
+export { readBooking }

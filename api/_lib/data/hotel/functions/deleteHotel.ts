@@ -16,6 +16,4 @@ async function deleteHotel(this: HotelRepo, hotelId: string): Promise<void> {
   }
 }
 
-export {
-  deleteHotel,
-}
+export { deleteHotel }

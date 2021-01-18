@@ -21,6 +21,4 @@ async function updateBookingByHotelId(this: BookingRepo, bookingId: string, hote
   }
 }
 
-export {
-  updateBookingByHotelId,
-}
+export { updateBookingByHotelId }

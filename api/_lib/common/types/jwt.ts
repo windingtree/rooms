@@ -2,6 +2,4 @@ interface IJwtToken {
   jwt: string
 }
 
-export {
-  IJwtToken,
-}
+export { IJwtToken }

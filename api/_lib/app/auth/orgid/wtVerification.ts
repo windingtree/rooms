@@ -1,4 +1,3 @@
-// application layer imports
 import { AppConfig } from '../../../app/config'
 
 async function wtVerification(): Promise<string> {
@@ -7,6 +6,4 @@ async function wtVerification(): Promise<string> {
   return appConfig.WT_VERIFICATION_CODE
 }
 
-export {
-  wtVerification,
-}
+export { wtVerification }

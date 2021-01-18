@@ -1,9 +1,7 @@
-// application layer imports
-import { getClientAppOneTimePassword } from './'
+import { getClientAppOneTimePassword } from '../../../app/auth/client_app'
 import { AppConfig } from '../../../app/config'
 import { emailOneTimePassword } from '../../../app/email'
 
-// common imports
 import { IOneTimePasswordPayload, IOtpStatus } from '../../../common/types'
 
 async function generateOneTimePassword(payload: IOneTimePasswordPayload): Promise<IOtpStatus> {
@@ -26,6 +24,4 @@ async function generateOneTimePassword(payload: IOneTimePasswordPayload): Promis
   return otpStatus
 }
 
-export {
-  generateOneTimePassword,
-}
+export { generateOneTimePassword }

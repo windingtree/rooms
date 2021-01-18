@@ -1,4 +1,3 @@
-// node/npm imports
 import { NowRequest, NowResponse } from '@vercel/node'
 
 import {
@@ -52,7 +51,4 @@ interface IMethodHandlerHash {
   PATCH?: TMethodFunc
 }
 
-export {
-  TMethodFunc,
-  IMethodHandlerHash,
-}
+export { TMethodFunc, IMethodHandlerHash }

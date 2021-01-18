@@ -22,6 +22,4 @@ async function readBookings(this: BookingRepo): Promise<IBookingCollection> {
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readBookings,
-}
+export { readBookings }

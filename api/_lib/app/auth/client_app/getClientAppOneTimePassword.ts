@@ -1,11 +1,8 @@
-// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 
-// data layer imports
 import { ProfileRepo } from '../../../data/profile/ProfileRepo'
 import { HotelRepo } from '../../../data/hotel/HotelRepo'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { IProfile, IOneTimePasswordPayload } from '../../../common/types'
 
@@ -54,6 +51,4 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
   return oneTimePassword
 }
 
-export {
-  getClientAppOneTimePassword,
-}
+export { getClientAppOneTimePassword }

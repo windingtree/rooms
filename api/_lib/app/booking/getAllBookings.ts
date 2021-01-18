@@ -1,7 +1,5 @@
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IBookingCollection } from '../../common/types'
 
@@ -23,6 +21,4 @@ async function getAllBookings(requester: IProfile): Promise<IBookingCollection> 
   return bookingCollection
 }
 
-export {
-  getAllBookings,
-}
+export { getAllBookings }

@@ -1,7 +1,5 @@
-// data layer imports
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IRoomTypeCollection } from '../../common/types'
 
@@ -23,6 +21,4 @@ async function getAllRoomTypes(requester: IProfile): Promise<IRoomTypeCollection
   return roomTypeCollection
 }
 
-export {
-  getAllRoomTypes,
-}
+export { getAllRoomTypes }

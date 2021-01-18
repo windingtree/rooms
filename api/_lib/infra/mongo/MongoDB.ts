@@ -1,7 +1,5 @@
-// node/npm imports
 import { MongoClient, MongoClientOptions } from 'mongodb'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { ENV } from '../../common/env'
 import { CError } from '../../common/tools'
@@ -94,6 +92,4 @@ class MongoDB {
   }
 }
 
-export {
-  MongoDB,
-}
+export { MongoDB }

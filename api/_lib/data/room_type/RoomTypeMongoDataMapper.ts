@@ -99,6 +99,4 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
   }
 }
 
-export {
-  RoomTypeMongoDataMapper,
-}
+export { RoomTypeMongoDataMapper }

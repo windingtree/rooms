@@ -1,12 +1,9 @@
-// application layer imports
 import { AppConfig } from '../../app/config'
 
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { IRoomTypeCollection, IProfile, IBookingCollection, IStatus } from '../../common/types'
@@ -41,6 +38,4 @@ async function apiTestTearDown(requester: IProfile): Promise<IStatus> {
   return { status: 'OK' }
 }
 
-export {
-  apiTestTearDown,
-}
+export { apiTestTearDown }

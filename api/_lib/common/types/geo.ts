@@ -12,7 +12,4 @@ interface ILocationRectangleDbType {
   east: number
 }
 
-export {
-  ILocationRectangle,
-  ILocationRectangleDbType,
-}
+export { ILocationRectangle, ILocationRectangleDbType }

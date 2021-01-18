@@ -20,6 +20,4 @@ async function readRoomTypeByHotelId(this: RoomTypeRepo, roomTypeId: string, hot
   return this.mapper.toEntity(result)
 }
 
-export {
-  readRoomTypeByHotelId,
-}
+export { readRoomTypeByHotelId }

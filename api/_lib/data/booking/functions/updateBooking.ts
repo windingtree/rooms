@@ -21,6 +21,4 @@ async function updateBooking(this: BookingRepo, bookingId: string, data: IPatchB
   }
 }
 
-export {
-  updateBooking,
-}
+export { updateBooking }

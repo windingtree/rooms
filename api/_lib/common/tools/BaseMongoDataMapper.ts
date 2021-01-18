@@ -1,8 +1,6 @@
-// node/npm imports
 import { ObjectID } from 'mongodb'
 import * as moment from 'moment'
 
-// common imports
 import { getObjectId, getObjectIdString } from '../../common/tools'
 
 class BaseMongoDataMapper {
@@ -27,6 +25,4 @@ class BaseMongoDataMapper {
   }
 }
 
-export {
-  BaseMongoDataMapper,
-}
+export { BaseMongoDataMapper }

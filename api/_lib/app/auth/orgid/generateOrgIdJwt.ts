@@ -1,7 +1,5 @@
-// node/npm imports
 import { JWK, JWT } from 'jose'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 import { IOrgJwtTokenOptions } from '../../../common/types'
@@ -70,6 +68,4 @@ function generateOrgIdJwt(privPem: string, originOrgId: string, recipientOrgId: 
   return createToken(options)
 }
 
-export {
-  generateOrgIdJwt,
-}
+export { generateOrgIdJwt }

@@ -18,6 +18,4 @@ const CONSTANTS: IConstants = {
   HTTP_STATUS,
 }
 
-export {
-  CONSTANTS,
-}
+export { CONSTANTS }

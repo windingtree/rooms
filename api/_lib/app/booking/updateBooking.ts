@@ -1,7 +1,5 @@
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IBooking, IPatchBookingPayload } from '../../common/types'
 
@@ -25,6 +23,4 @@ async function updateBooking(requester: IProfile, bookingId: string, data: IPatc
   return booking
 }
 
-export {
-  updateBooking,
-}
+export { updateBooking }

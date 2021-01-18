@@ -16,6 +16,4 @@ async function deleteProfile(this: ProfileRepo, profileId: string): Promise<void
   }
 }
 
-export {
-  deleteProfile,
-}
+export { deleteProfile }

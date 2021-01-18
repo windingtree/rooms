@@ -18,6 +18,4 @@ async function createOffers(this: OfferRepo, data: IBaseOfferCollection): Promis
   }
 }
 
-export {
-  createOffers,
-}
+export { createOffers }

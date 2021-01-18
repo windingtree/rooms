@@ -1,10 +1,7 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-// interface layer imports
-import { validateOptionalString } from '../../validators/_helpers'
+import { validateOptionalString } from '../../../interface/validators/_helpers'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 import { IPatchProfilePayload } from '../../../common/types'

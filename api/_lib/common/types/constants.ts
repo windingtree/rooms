@@ -1,4 +1,3 @@
-// common imports
 import { IProfileRole, IHttpStatus, IHttpStatusCode } from '../types'
 
 interface IConstants {
@@ -7,6 +6,4 @@ interface IConstants {
   HTTP_STATUS: IHttpStatus
 }
 
-export {
-  IConstants,
-}
+export { IConstants }

@@ -10,6 +10,4 @@ interface IEnvVariables {
   ROOMS_DB_NAME: string
 }
 
-export {
-  IEnvVariables,
-}
+export { IEnvVariables }

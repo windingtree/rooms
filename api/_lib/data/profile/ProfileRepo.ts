@@ -60,6 +60,4 @@ class ProfileRepo extends BaseDataRepo {
   }
 }
 
-export {
-  ProfileRepo,
-}
+export { ProfileRepo }

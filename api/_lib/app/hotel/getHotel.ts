@@ -1,7 +1,5 @@
-// data layer imports
 import { HotelRepo } from '../../data/hotel/HotelRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IHotel } from '../../common/types'
 
@@ -21,6 +19,4 @@ async function getHotel(requester: IProfile, hotelId: string): Promise<IHotel> {
   return hotel
 }
 
-export {
-  getHotel,
-}
+export { getHotel }

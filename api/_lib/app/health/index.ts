@@ -1,3 +1,1 @@
-export {
-  getHealth,
-} from './health'
+export { getHealth } from './health'

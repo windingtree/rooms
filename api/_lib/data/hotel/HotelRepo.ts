@@ -68,6 +68,4 @@ class HotelRepo extends BaseDataRepo {
   }
 }
 
-export {
-  HotelRepo,
-}
+export { HotelRepo }

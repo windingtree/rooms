@@ -21,6 +21,4 @@ async function updateHotelByOwnerId(this: HotelRepo, hotelId: string, ownerId: s
   }
 }
 
-export {
-  updateHotelByOwnerId,
-}
+export { updateHotelByOwnerId }

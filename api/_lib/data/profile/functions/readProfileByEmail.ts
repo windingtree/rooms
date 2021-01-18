@@ -20,6 +20,4 @@ async function readProfileByEmail(this: ProfileRepo, email: string): Promise<IPr
   return this.mapper.toEntity(result)
 }
 
-export {
-  readProfileByEmail,
-}
+export { readProfileByEmail }

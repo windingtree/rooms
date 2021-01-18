@@ -22,6 +22,4 @@ async function readBookingsByHotelId(this: BookingRepo, hotelId: string): Promis
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readBookingsByHotelId,
-}
+export { readBookingsByHotelId }

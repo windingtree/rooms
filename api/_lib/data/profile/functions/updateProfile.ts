@@ -21,6 +21,4 @@ async function updateProfile(this: ProfileRepo, profileId: string, data: IPatchP
   }
 }
 
-export {
-  updateProfile,
-}
+export { updateProfile }

@@ -16,6 +16,4 @@ async function deleteRoomType(this: RoomTypeRepo, roomTypeId: string): Promise<v
   }
 }
 
-export {
-  deleteRoomType,
-}
+export { deleteRoomType }

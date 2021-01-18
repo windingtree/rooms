@@ -123,6 +123,4 @@ class OfferMongoDataMapper extends BaseMongoDataMapper {
   }
 }
 
-export {
-  OfferMongoDataMapper,
-}
+export { OfferMongoDataMapper }
