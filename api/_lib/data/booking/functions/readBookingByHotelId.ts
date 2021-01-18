@@ -20,6 +20,4 @@ async function readBookingByHotelId(this: BookingRepo, bookingId: string, hotelI
   return this.mapper.toEntity(result)
 }
 
-export {
-  readBookingByHotelId,
-}
+export { readBookingByHotelId }

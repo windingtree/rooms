@@ -1,11 +1,8 @@
-// node/npm imports
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// application layer imports
 import { generateOrgIdJwt } from '../../app/auth/orgid'
 import { AppConfig } from '../../app/config'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { ISimardGuaranteeClaim } from '../../common/types'
@@ -41,7 +38,7 @@ async function claimGuarantee(guaranteeId: string): Promise<ISimardGuaranteeClai
     throw new CError(BAD_GATEWAY, `Simard Pay returned a bad response for claim of guarantee with ID '${guaranteeId}'`)
   }
 
-  const { settlementId } = {...(response.data as ISimardGuaranteeClaim)}
+  const { settlementId } = { ...(response.data as ISimardGuaranteeClaim) }
 
   return {
     settlementId,

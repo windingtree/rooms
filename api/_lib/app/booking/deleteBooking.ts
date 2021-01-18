@@ -1,7 +1,5 @@
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IStatus } from '../../common/types'
 
@@ -21,6 +19,4 @@ async function deleteBooking(requester: IProfile, bookingId: string): Promise<IS
   return { status: 'OK' }
 }
 
-export {
-  deleteBooking,
-}
+export { deleteBooking }

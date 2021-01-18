@@ -1,6 +1,4 @@
-import {
-  BaseMongoDataMapper,
-} from '../../common/tools'
+import { BaseMongoDataMapper } from '../../common/tools'
 import {
   IBaseBookingDbData,
   IBookingDbData,
@@ -97,6 +95,4 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
   }
 }
 
-export {
-  BookingMongoDataMapper,
-}
+export { BookingMongoDataMapper }

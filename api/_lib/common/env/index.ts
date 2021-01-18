@@ -1,23 +1,11 @@
-// common imports
 import { IEnvVariables } from '../../common/types'
 
-import {
-  VERCEL_GITHUB_COMMIT_REF,
-  VERCEL_GITHUB_COMMIT_SHA,
-} from './vercel'
+import { VERCEL_GITHUB_COMMIT_REF, VERCEL_GITHUB_COMMIT_SHA } from './vercel'
+import { ENV_ENCRYPTION_DETAILS } from './crypto'
+import { REACT_APP_JWT_SECRET } from './react_app'
+import { MONGODB_URL, ROOMS_DB_NAME } from './mongo'
 
-import {
-  ENV_ENCRYPTION_DETAILS,
-} from './crypto'
-
-import {
-  REACT_APP_JWT_SECRET,
-} from './react_app'
-
-import {
-  MONGODB_URL,
-  ROOMS_DB_NAME,
-} from './mongo'
+import { checkRequiredEnvProps } from './checkRequiredEnvProps'
 
 const ENV: IEnvVariables = {
   VERCEL_GITHUB_COMMIT_REF,
@@ -31,6 +19,4 @@ const ENV: IEnvVariables = {
   ROOMS_DB_NAME,
 }
 
-export {
-  ENV,
-}
+export { ENV, checkRequiredEnvProps }

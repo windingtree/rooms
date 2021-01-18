@@ -32,6 +32,8 @@ module.exports = {
         allowIndentationTabs: false
       }
     ],
-    "eol-last": ["error", "always"]
+    "eol-last": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "curly": ["error", "multi-line"],
   },
 }

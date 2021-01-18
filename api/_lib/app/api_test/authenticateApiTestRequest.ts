@@ -1,11 +1,8 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-// application layer imports
 import { decodeClientAppToken } from '../../app/auth/client_app'
 import { AppConfig } from '../../app/config'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { getBearerToken, CError } from '../../common/tools'
 import { IProfileAuthData } from '../../common/types'
@@ -31,6 +28,4 @@ async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
   }
 }
 
-export {
-  authenticateApiTestRequest,
-}
+export { authenticateApiTestRequest }

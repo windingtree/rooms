@@ -1,17 +1,13 @@
-// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 import * as moment from 'moment'
 
-// application layer imports
 import { AppConfig } from '../../app/config'
 import { emailNewBooking } from '../../app/email'
 
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 import { OfferRepo } from '../../data/offer/OfferRepo'
 import { getPaymentInfo, claimGuarantee } from '../../data/simard'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import {
@@ -125,6 +121,4 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
   return result
 }
 
-export {
-  createOrder,
-}
+export { createOrder }

@@ -1,11 +1,8 @@
-// node/npm imports
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// application layer imports
 import { generateOrgIdJwt } from '../../app/auth/orgid'
 import { AppConfig } from '../../app/config'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { ISimardPaymentInfo } from '../../common/types'
@@ -41,7 +38,7 @@ async function getPaymentInfo(guaranteeId: string): Promise<ISimardPaymentInfo> 
     throw new CError(BAD_GATEWAY, `Simard Pay returned a bad response for guaranteeId '${guaranteeId}'`)
   }
 
-  const { amount, creditorOrgId, currency, debtorOrgId, expiration } = {...(response.data as ISimardPaymentInfo)}
+  const { amount, creditorOrgId, currency, debtorOrgId, expiration } = { ...(response.data as ISimardPaymentInfo) }
 
   return {
     amount,

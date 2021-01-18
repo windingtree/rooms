@@ -1,7 +1,5 @@
-// node/npm imports
 import { ObjectId } from 'mongodb'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 

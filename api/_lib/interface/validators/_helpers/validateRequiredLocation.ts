@@ -1,4 +1,3 @@
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 import { IHotelLocation } from '../../../common/types'

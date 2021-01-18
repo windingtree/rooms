@@ -95,6 +95,4 @@ class ProfileMongoDataMapper extends BaseMongoDataMapper {
   }
 }
 
-export {
-  ProfileMongoDataMapper,
-}
+export { ProfileMongoDataMapper }

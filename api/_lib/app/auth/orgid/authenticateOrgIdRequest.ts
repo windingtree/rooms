@@ -1,13 +1,9 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-// application layer imports
-import { decodeOrgIdToken, verifyOrgIdPublicKey } from './'
+import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../app/auth/orgid'
 
-// data layer imports
 import { getOrgDetails } from '../../../data/marketplace'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { getBearerToken, CError } from '../../../common/tools'
 import { IDecodedOrgIdToken, IOrgDetails } from '../../../common/types'
@@ -31,6 +27,4 @@ async function authenticateOrgIdRequest(request: NowRequest): Promise<IOrgDetail
   return orgDetails
 }
 
-export {
-  authenticateOrgIdRequest,
-}
+export { authenticateOrgIdRequest }

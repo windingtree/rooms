@@ -20,6 +20,4 @@ async function readRoomType(this: RoomTypeRepo, roomTypeId: string): Promise<IRo
   return this.mapper.toEntity(result)
 }
 
-export {
-  readRoomType,
-}
+export { readRoomType }

@@ -1,7 +1,5 @@
-// data layer imports
 import { HotelRepo } from '../../data/hotel/HotelRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IHotel, IPatchHotelPayload } from '../../common/types'
 
@@ -23,6 +21,4 @@ async function updateHotel(requester: IProfile, hotelId: string, data: IPatchHot
   return hotel
 }
 
-export {
-  updateHotel,
-}
+export { updateHotel }

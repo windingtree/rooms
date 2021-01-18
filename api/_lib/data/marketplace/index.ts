@@ -1,3 +1,1 @@
-export {
-  getOrgDetails,
-} from './getOrgDetails'
+export { getOrgDetails } from './getOrgDetails'

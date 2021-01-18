@@ -1,11 +1,7 @@
-// node/npm imports
 import * as jwt from 'jsonwebtoken'
 
-// infrastructure layer imports
-import { ENV } from '../../../common/env'
-
-// common imports
 import { CONSTANTS } from '../../../common/constants'
+import { ENV } from '../../../common/env'
 import { CError } from '../../../common/tools'
 import { IProfileAuthData } from '../../../common/types'
 
@@ -32,6 +28,4 @@ async function decodeClientAppToken(bearerToken: string): Promise<IProfileAuthDa
   return decodedAuthClientAppToken
 }
 
-export {
-  decodeClientAppToken,
-}
+export { decodeClientAppToken }

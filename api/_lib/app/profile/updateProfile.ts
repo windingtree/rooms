@@ -1,7 +1,5 @@
-// data layer imports
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-// common imports
 import { IProfile, IPatchProfilePayload } from '../../common/types'
 
 const profileRepo = new ProfileRepo()
@@ -17,6 +15,4 @@ async function updateProfile(requester: IProfile, profileId: string, data: IPatc
   return profile
 }
 
-export {
-  updateProfile,
-}
+export { updateProfile }

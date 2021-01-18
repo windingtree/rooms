@@ -1,14 +1,9 @@
-// node/npm imports
 import * as jwt from 'jsonwebtoken'
 
-// application layer imports
 import { AppConfig } from '../../app/config'
 
-// infrastructure layer imports
-import { ENV } from '../../common/env'
-
-// common imports
 import { CONSTANTS } from '../../common/constants'
+import { ENV } from '../../common/env'
 import { CError } from '../../common/tools'
 import { IProfileAuthData, IJwtToken } from '../../common/types'
 
@@ -28,6 +23,4 @@ async function generateJwtToken(payload: IProfileAuthData): Promise<IJwtToken> {
   }
 }
 
-export {
-  generateJwtToken,
-}
+export { generateJwtToken }

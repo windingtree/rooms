@@ -1,5 +1,3 @@
 const ENV_ENCRYPTION_DETAILS: string = process.env.ENV_ENCRYPTION_DETAILS || ''
 
-export {
-  ENV_ENCRYPTION_DETAILS,
-}
+export { ENV_ENCRYPTION_DETAILS }

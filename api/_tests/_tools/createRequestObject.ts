@@ -17,6 +17,4 @@ function createRequestObject(body: IRequestBody): NowRequest {
   return request
 }
 
-export {
-  createRequestObject,
-}
+export { createRequestObject }

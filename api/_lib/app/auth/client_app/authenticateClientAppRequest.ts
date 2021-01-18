@@ -1,10 +1,7 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-// application layer imports
-import { decodeClientAppToken, authenticateClientAppUser } from './'
+import { decodeClientAppToken, authenticateClientAppUser } from '../../../app/auth/client_app'
 
-// common imports
 import { getBearerToken } from '../../../common/tools'
 import { IProfileAuthData, IProfile } from '../../../common/types'
 
@@ -18,6 +15,4 @@ async function authenticateClientAppRequest(request: NowRequest): Promise<IProfi
   return profile
 }
 
-export {
-  authenticateClientAppRequest,
-}
+export { authenticateClientAppRequest }

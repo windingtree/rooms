@@ -65,8 +65,16 @@ export {
 } from './orgid'
 
 export {
+  TAppConfigDbDataFields,
+  IAppConfigDbDataProjection,
+  IBaseAppConfig,
   IAppConfig,
-  IAppConfigDbItem,
+  IAppConfigCollection,
+  IBaseAppConfigDbData,
+  IAppConfigDbData,
+  IAppConfigCollectionDbData,
+
+  IAppConfigHash,
 } from './app_config'
 
 export {

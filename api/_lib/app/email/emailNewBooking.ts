@@ -1,10 +1,7 @@
-// node/npm imports
 import sgMail from '@sendgrid/mail'
 
-// application layer imports
 import { AppConfig } from '../../app/config'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 
@@ -37,6 +34,4 @@ async function emailNewBooking(did: string, orderId: string, email: string): Pro
   }
 }
 
-export {
-  emailNewBooking,
-}
+export { emailNewBooking }

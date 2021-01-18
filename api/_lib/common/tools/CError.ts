@@ -1,4 +1,3 @@
-// common imports
 import { IHttpStatusCode } from '../../common/types'
 
 class CError {
@@ -13,6 +12,4 @@ class CError {
   }
 }
 
-export {
-  CError,
-}
+export { CError }

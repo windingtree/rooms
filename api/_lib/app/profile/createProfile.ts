@@ -1,8 +1,6 @@
-// data layer imports
 import { HotelRepo } from '../../data/hotel/HotelRepo'
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { IBaseProfile, IProfile, IPostProfilePayload } from '../../common/types'
@@ -51,6 +49,4 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
   return profile
 }
 
-export {
-  createProfile,
-}
+export { createProfile }

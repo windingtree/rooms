@@ -31,6 +31,4 @@ interface IOfferSearchResults {
   passengers: IPassengers
 }
 
-export {
-  IOfferSearchResults,
-}
+export { IOfferSearchResults }

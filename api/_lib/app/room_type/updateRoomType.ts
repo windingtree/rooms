@@ -1,7 +1,5 @@
-// data layer imports
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { IProfile, IRoomType, IPatchRoomTypePayload } from '../../common/types'
 
@@ -25,6 +23,4 @@ async function updateRoomType(requester: IProfile, roomTypeId: string, data: IPa
   return roomType
 }
 
-export {
-  updateRoomType,
-}
+export { updateRoomType }

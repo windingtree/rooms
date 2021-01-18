@@ -1,8 +1,5 @@
-// infrastructure layer imports
-import { ENV } from '../../common/env'
-
-// common imports
 import { CONSTANTS } from '../../common/constants'
+import { ENV } from '../../common/env'
 import { CError } from '../../common/tools'
 import { IEnvVariables } from '../../common/types'
 
@@ -30,6 +27,4 @@ async function checkRequiredEnvProps(): Promise<void> {
   }
 }
 
-export {
-  checkRequiredEnvProps,
-}
+export { checkRequiredEnvProps }

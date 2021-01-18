@@ -1,3 +1,1 @@
-export {
-  AppConfig,
-} from './AppConfig'
+export { AppConfig } from './AppConfig'

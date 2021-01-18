@@ -1,10 +1,7 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 
-// interface layer imports
-import { validateRequiredString, validateOptionalString } from '../../validators/_helpers'
+import { validateRequiredString, validateOptionalString } from '../../../interface/validators/_helpers'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 import { IPostBookingPayload } from '../../../common/types'

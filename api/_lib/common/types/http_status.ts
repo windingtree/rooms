@@ -24,7 +24,4 @@ interface IHttpStatus {
   SERVICE_UNAVAILABLE:'SERVICE_UNAVAILABLE'
 }
 
-export {
-  IHttpStatusCode,
-  IHttpStatus,
-}
+export { IHttpStatusCode, IHttpStatus }

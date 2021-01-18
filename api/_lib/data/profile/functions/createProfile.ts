@@ -20,6 +20,4 @@ async function createProfile(this: ProfileRepo, data: IBaseProfile): Promise<str
   return this.mapper.fromObjectId(result.insertedId)
 }
 
-export {
-  createProfile,
-}
+export { createProfile }

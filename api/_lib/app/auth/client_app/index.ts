@@ -1,19 +1,5 @@
-export {
-  getClientAppOneTimePassword,
-} from './getClientAppOneTimePassword'
-
-export {
-  authenticateClientAppUser,
-} from './authenticateClientAppUser'
-
-export {
-  authenticateClientAppRequest,
-} from './authenticateClientAppRequest'
-
-export {
-  decodeClientAppToken,
-} from './decodeClientAppToken'
-
-export {
-  generateOneTimePassword,
-} from './generateOneTimePassword'
+export { authenticateClientAppRequest } from './authenticateClientAppRequest'
+export { authenticateClientAppUser } from './authenticateClientAppUser'
+export { decodeClientAppToken } from './decodeClientAppToken'
+export { generateOneTimePassword } from './generateOneTimePassword'
+export { getClientAppOneTimePassword } from './getClientAppOneTimePassword'

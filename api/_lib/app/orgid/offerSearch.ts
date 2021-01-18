@@ -1,15 +1,12 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 import { v4 as uuidv4 } from 'uuid'
 import * as Moment from 'moment'
 import { extendMoment } from 'moment-range'
 
-// data layer imports
 import { HotelRepo } from '../../data/hotel/HotelRepo'
 import { OfferRepo } from '../../data/offer/OfferRepo'
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import {
@@ -291,6 +288,4 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
   return result
 }
 
-export {
-  offerSearch,
-}
+export { offerSearch }

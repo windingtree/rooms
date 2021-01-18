@@ -22,6 +22,4 @@ async function readHotels(this: HotelRepo): Promise<IHotelCollection> {
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readHotels,
-}
+export { readHotels }

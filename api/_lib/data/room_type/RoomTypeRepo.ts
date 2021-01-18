@@ -67,6 +67,4 @@ class RoomTypeRepo extends BaseDataRepo {
   }
 }
 
-export {
-  RoomTypeRepo,
-}
+export { RoomTypeRepo }

@@ -7,6 +7,4 @@ const PROFILE_ROLE: IProfileRole = {
   OBSERVER: 'OBSERVER',
 }
 
-export {
-  PROFILE_ROLE,
-}
+export { PROFILE_ROLE }

@@ -21,6 +21,4 @@ async function updateHotel(this: HotelRepo, hotelId: string, data: IPatchHotelPa
   }
 }
 
-export {
-  updateHotel,
-}
+export { updateHotel }

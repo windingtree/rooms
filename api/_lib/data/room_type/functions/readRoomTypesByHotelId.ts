@@ -22,6 +22,4 @@ async function readRoomTypesByHotelId(this: RoomTypeRepo, hotelId: string): Prom
   return this.mapper.toEntityCollection(result)
 }
 
-export {
-  readRoomTypesByHotelId,
-}
+export { readRoomTypesByHotelId }

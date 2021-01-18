@@ -1,4 +1,3 @@
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 
@@ -63,6 +62,4 @@ class BaseDataRepo {
   }
 }
 
-export {
-  BaseDataRepo,
-}
+export { BaseDataRepo }

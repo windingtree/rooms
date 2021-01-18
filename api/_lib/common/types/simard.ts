@@ -10,7 +10,4 @@ interface ISimardGuaranteeClaim {
   settlementId: string
 }
 
-export {
-  ISimardPaymentInfo,
-  ISimardGuaranteeClaim,
-}
+export { ISimardPaymentInfo, ISimardGuaranteeClaim }

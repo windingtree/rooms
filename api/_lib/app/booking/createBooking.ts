@@ -1,10 +1,7 @@
-// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 
-// data layer imports
 import { BookingRepo } from '../../data/booking/BookingRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { IProfile, IBaseBooking, IBooking, IPostBookingPayload } from '../../common/types'
@@ -43,6 +40,4 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
   return booking
 }
 
-export {
-  createBooking,
-}
+export { createBooking }

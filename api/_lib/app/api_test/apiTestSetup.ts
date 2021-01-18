@@ -1,13 +1,9 @@
-// node/npm imports
 import { v4 as uuidv4 } from 'uuid'
 
-// application layer imports
 import { AppConfig } from '../../app/config'
 
-// infrastructure layer imports
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { IBaseProfile, IProfile } from '../../common/types'
@@ -40,6 +36,4 @@ async function apiTestSetup(): Promise<IProfile> {
   return profile
 }
 
-export {
-  apiTestSetup,
-}
+export { apiTestSetup }

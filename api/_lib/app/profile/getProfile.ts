@@ -1,7 +1,5 @@
-// data layer imports
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-// common imports
 import { IProfile } from '../../common/types'
 
 const profileRepo = new ProfileRepo()
@@ -16,6 +14,4 @@ async function getProfile(requester: IProfile, profileId: string): Promise<IProf
   return profile
 }
 
-export {
-  getProfile,
-}
+export { getProfile }

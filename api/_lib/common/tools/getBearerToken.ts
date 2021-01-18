@@ -1,8 +1,6 @@
-// node/npm imports
 import { NowRequest } from '@vercel/node'
 import * as jwt from 'jsonwebtoken'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 
@@ -53,6 +51,4 @@ async function getBearerToken(request: NowRequest): Promise<string> {
   return bearerToken
 }
 
-export {
-  getBearerToken,
-}
+export { getBearerToken }

@@ -1,4 +1,3 @@
-// node/npm imports
 import { ObjectID } from 'mongodb'
 
 type TOfferDbDataFields =

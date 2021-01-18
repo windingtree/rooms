@@ -1,7 +1,5 @@
-// data layer imports
 import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 import { IProfile, IRoomType, IBaseRoomType, IPostRoomTypePayload } from '../../common/types'
@@ -40,6 +38,4 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
   return roomType
 }
 
-export {
-  createRoomType,
-}
+export { createRoomType }

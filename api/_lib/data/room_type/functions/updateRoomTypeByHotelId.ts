@@ -21,6 +21,4 @@ async function updateRoomTypeByHotelId(this: RoomTypeRepo, roomTypeId: string, h
   }
 }
 
-export {
-  updateRoomTypeByHotelId,
-}
+export { updateRoomTypeByHotelId }

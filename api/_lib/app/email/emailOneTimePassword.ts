@@ -1,10 +1,7 @@
-// node/npm imports
 import sgMail from '@sendgrid/mail'
 
-// application layer imports
 import { AppConfig } from '../../app/config'
 
-// common imports
 import { CONSTANTS } from '../../common/constants'
 import { CError } from '../../common/tools'
 
@@ -42,6 +39,4 @@ async function emailOneTimePassword(email: string, oneTimePassword: string): Pro
   }
 }
 
-export {
-  emailOneTimePassword,
-}
+export { emailOneTimePassword }

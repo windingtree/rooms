@@ -1,7 +1,5 @@
-// data layer imports
 import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-// common imports
 import { IProfile, IStatus } from '../../common/types'
 
 const profileRepo = new ProfileRepo()
@@ -16,6 +14,4 @@ async function deleteProfile(requester: IProfile, profileId: string): Promise<IS
   return { status: 'OK' }
 }
 
-export {
-  deleteProfile,
-}
+export { deleteProfile }

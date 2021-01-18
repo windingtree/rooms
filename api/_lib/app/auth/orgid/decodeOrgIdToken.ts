@@ -1,7 +1,5 @@
-// node/npm imports
 import { JWT } from 'jose'
 
-// common imports
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
 import { IDecodedOrgToken, IDecodedOrgIdToken } from '../../../common/types'
@@ -41,6 +39,4 @@ async function decodeOrgIdToken(bearerToken: string): Promise<IDecodedOrgIdToken
   }
 }
 
-export {
-  decodeOrgIdToken,
-}
+export { decodeOrgIdToken }

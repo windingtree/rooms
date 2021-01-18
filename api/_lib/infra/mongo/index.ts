@@ -1,3 +1,1 @@
-export {
-  MongoDB,
-} from './MongoDB'
+export { MongoDB } from './MongoDB'
