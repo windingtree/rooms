@@ -12,6 +12,26 @@ class BaseMongoDataMapper {
     return getObjectId(id)
   }
 
+  toObjectIdArray(ids: Array<string>): Array<ObjectID> {
+    const objIds: Array<ObjectID> = []
+
+    ids.forEach((id: string) => {
+      const objId: ObjectID|null = this.toObjectId(id)
+
+      if (objId) {
+        objIds.push(objId)
+      }
+    })
+
+    return objIds
+  }
+
+  fromObjectIdArray(objIds: Array<ObjectID>): Array<string> {
+    return objIds.map((objId: ObjectID) => {
+      return this.fromObjectId(objId)
+    })
+  }
+
   fromDate(date: Date|null): string {
     if (!moment.utc(date).isValid()) return ''
 

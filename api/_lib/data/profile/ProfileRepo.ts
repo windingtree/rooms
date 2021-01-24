@@ -42,7 +42,6 @@ class ProfileRepo extends BaseDataRepo {
       'oneTimePassword',
       'sessionToken',
       'role',
-      'hotelId',
     ]
 
     return allowedFields.reduce((projection: IProfileDbDataProjection, field) => {

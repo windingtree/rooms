@@ -30,10 +30,6 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     )
   }
 
-  if (payload.hotelId) {
-    await hotelRepo.readHotel(payload.hotelId)
-  }
-
   const baseProfile: IBaseProfile = {
     email: payload.email,
     name: (payload.name) ? payload.name : '',
@@ -41,7 +37,6 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     oneTimePassword: (payload.oneTimePassword) ? payload.oneTimePassword : '',
     sessionToken: (payload.sessionToken) ? payload.sessionToken : '',
     role: payload.role,
-    hotelId: (payload.hotelId) ? payload.hotelId : '',
   }
   const profileId: string = await profileRepo.createProfile(baseProfile)
   const profile: IProfile = Object.assign({}, baseProfile, { id: profileId })

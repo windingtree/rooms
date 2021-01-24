@@ -19,6 +19,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
   fromBaseEntity(baseHotel: IBaseHotel): IBaseHotelDbData {
     return {
       ownerId: this.toObjectId(baseHotel.ownerId),
+      managers: this.toObjectIdArray(baseHotel.managers),
       name: baseHotel.name,
       description: baseHotel.description,
       address: baseHotel.address,
@@ -37,6 +38,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
   toBaseEntity(baseHotelDbData: IBaseHotelDbData): IBaseHotel {
     return {
       ownerId: this.fromObjectId(baseHotelDbData.ownerId),
+      managers: this.fromObjectIdArray(baseHotelDbData.managers),
       name: baseHotelDbData.name,
       description: baseHotelDbData.description,
       address: baseHotelDbData.address,
@@ -52,6 +54,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
   fromPatchEntityPayload(patchHotelPayload: IPatchHotelPayload): IPatchHotelPayloadDbData {
     const availProps: Array<keyof IPatchHotelPayload> = [
       'ownerId',
+      'managers',
       'name',
       'description',
       'address',
@@ -68,6 +71,9 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
       switch (prop) {
         case 'ownerId':
           patchHotelPayloadDbData[prop] = this.toObjectId((patchHotelPayload[prop] as string))
+          break
+        case 'managers':
+          patchHotelPayloadDbData[prop] = this.toObjectIdArray((patchHotelPayload[prop] as Array<string>))
           break
         case 'location':
           patchHotelPayloadDbData[prop] = {

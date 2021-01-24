@@ -3,6 +3,7 @@ import { ObjectID } from 'mongodb'
 type THotelDbDataFields =
   | '_id'
   | 'ownerId'
+  | 'managers'
   | 'name'
   | 'description'
   | 'address'
@@ -26,6 +27,7 @@ interface IHotelDbLocation {
 
 interface IBaseHotel {
   ownerId: string
+  managers: Array<string>
   name: string
   description: string
   address: string
@@ -42,6 +44,7 @@ type IHotelCollection = Array<IHotel>
 
 interface IPostHotelPayload {
   ownerId: string
+  managers?: Array<string>
   name?: string
   description?: string
   address?: string
@@ -52,6 +55,7 @@ interface IPostHotelPayload {
 
 interface IPatchHotelPayload {
   ownerId?: string
+  managers?: Array<string>
   name?: string
   description?: string
   address?: string
@@ -62,6 +66,7 @@ interface IPatchHotelPayload {
 
 interface IBaseHotelDbData {
   ownerId: ObjectID|null
+  managers: Array<ObjectID>
   name: string
   description: string
   address: string
@@ -76,6 +81,7 @@ interface IHotelDbData extends IBaseHotelDbData {
 
 interface IPatchHotelPayloadDbData {
   ownerId?: ObjectID|null
+  managers?: Array<ObjectID>
   name?: string
   description?: string
   address?: string
