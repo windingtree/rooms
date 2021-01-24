@@ -12,7 +12,7 @@ const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 async function authenticateApiTestRequest(request: NowRequest): Promise<void> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
-  if (appConfig.API_TEST_ENABLED !== 'enabled') {
+  if (appConfig.API_TEST_ENABLED !== 'true') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')
   }
 
