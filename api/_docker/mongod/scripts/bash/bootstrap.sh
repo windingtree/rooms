@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z "${DO_CREATE_USERS}" ]]; then
+if [[ -z "${RUN_MIGRATIONS}" ]]; then
   /data/scripts/bash/no-migration.sh &
 else
   /data/scripts/bash/migration.sh &
