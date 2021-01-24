@@ -9,7 +9,7 @@ To run the MongoDB server (launch `mongod` process), execute:
 ```sh
 cd ./mongod
 docker build -t mongod -f Dockerfile .
-docker run --net host -e DO_CREATE_USERS=true mongod
+docker run --net host -e RUN_MIGRATIONS=true mongod
 ```
 
 If you want to stop the MongoDB server container, open a new terminal, and execute:
