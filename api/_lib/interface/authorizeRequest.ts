@@ -2,7 +2,7 @@ import { CONSTANTS } from '../common/constants'
 import { CError } from '../common/tools'
 import { IAuthorizeRules, IAuthorizeRulesRoles, IAuthorizeRequestAction, IProfileRole } from '../common/types'
 
-const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE
+const { SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER, MANAGER, CLERK } = CONSTANTS.PROFILE_ROLE
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 function allowRoles(...roles: Array<keyof IProfileRole>): IAuthorizeRulesRoles {
@@ -15,57 +15,61 @@ function allowRoles(...roles: Array<keyof IProfileRole>): IAuthorizeRulesRoles {
   return allowedRoles
 }
 
+const ALL_ROLES = allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER, MANAGER, CLERK)
+
+// TODO: Revisit the below role rules when all business requirements are in place.
+//       I.e. what user role can access what route. Complete list, fine grained control.
 const AUTHORIZE_RULES: IAuthorizeRules = {
   'hotel': {
-    POST: allowRoles(SUPER_ADMIN, MANAGER),
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
   },
   'hotel/{id}': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
-    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
-    DELETE: allowRoles(SUPER_ADMIN),
+    GET: ALL_ROLES,
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
+    DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
   },
   'hotels': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER),
+    GET: ALL_ROLES,
   },
 
   'profile': {
-    POST: allowRoles(SUPER_ADMIN, MANAGER),
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER),
   },
   'profile/{id}': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
-    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
-    DELETE: allowRoles(SUPER_ADMIN, MANAGER),
+    GET: ALL_ROLES,
+    PATCH: ALL_ROLES,
+    DELETE: ALL_ROLES,
   },
   'profiles': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER),
   },
 
   'room_type': {
-    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
   'room_type/{id}': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
-    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
-    DELETE: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
+    DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
   'room_types': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
 
   'booking': {
-    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
   'booking/{id}': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
-    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
-    DELETE: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
   'bookings': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
 
   'orgid/{id}': {
-    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
 
   'api_test/teardown': {

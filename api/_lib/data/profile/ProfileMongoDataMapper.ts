@@ -22,7 +22,6 @@ class ProfileMongoDataMapper extends BaseMongoDataMapper {
       oneTimePassword: baseProfile.oneTimePassword,
       sessionToken: baseProfile.sessionToken,
       role: baseProfile.role,
-      hotelId: this.toObjectId(baseProfile.hotelId),
     }
   }
 
@@ -34,7 +33,6 @@ class ProfileMongoDataMapper extends BaseMongoDataMapper {
       oneTimePassword: baseProfileDbData.oneTimePassword,
       sessionToken: baseProfileDbData.sessionToken,
       role: baseProfileDbData.role,
-      hotelId: this.fromObjectId(baseProfileDbData.hotelId),
     }
   }
 
@@ -46,7 +44,6 @@ class ProfileMongoDataMapper extends BaseMongoDataMapper {
       'oneTimePassword',
       'sessionToken',
       'role',
-      'hotelId',
     ]
 
     return availProps.reduce((patchProfilePayloadDbData: IPatchProfilePayloadDbData, prop): IPatchProfilePayloadDbData => {
@@ -64,9 +61,6 @@ class ProfileMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'role':
           patchProfilePayloadDbData[prop] = patchProfilePayload[prop]
-          break
-        case 'hotelId':
-          patchProfilePayloadDbData[prop] = this.toObjectId((patchProfilePayload[prop] as string))
           break
       }
 

@@ -40,6 +40,10 @@ class Dashboard extends React.Component {
 
     this.state = {
       currentDashboard: this.getCurrentDashboard(),
+      hotels: [
+        { id: 0, type: 'small' }, { id: 1, type: 'big' }, { id: 2, type: 'large' }
+      ],
+      hotelId: 0,
     }
   }
 
@@ -58,6 +62,16 @@ class Dashboard extends React.Component {
           currentDashboard: this.getCurrentDashboard(),
         })
       }
+    }
+  }
+
+  handlePropValueChange = (id, propName, newValue) => {
+    console.log(`id = ${id}`)
+    console.log(`propName = ${propName}`)
+    console.log(`newValue = ${newValue}`)
+
+    if (propName === 'hotelId') {
+      this.setState({ hotelId: newValue })
     }
   }
 
@@ -125,7 +139,12 @@ class Dashboard extends React.Component {
     return (
       <Router history={history}>
         <main className={classes.container}>
-          <NavTop handleLogout={this.props.handleLogout} />
+          <NavTop
+            handleLogout={this.props.handleLogout}
+            hotels={this.state.hotels}
+            hotelId={this.state.hotelId}
+            onPropValueChange={this.handlePropValueChange}
+          />
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">

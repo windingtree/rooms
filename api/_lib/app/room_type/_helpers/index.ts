@@ -1,0 +1,1 @@
+export { roleCanTakeActionOnRoomType } from './roleCanTakeActionOnRoomType'

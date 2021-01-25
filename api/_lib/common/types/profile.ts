@@ -8,7 +8,6 @@ type TProfileDbDataFields =
   | 'oneTimePassword'
   | 'sessionToken'
   | 'role'
-  | 'hotelId'
 
 type IProfileDbDataProjection = {
   [key in TProfileDbDataFields]?: 1
@@ -16,16 +15,20 @@ type IProfileDbDataProjection = {
 
 enum IProfileRoleEnum {
   SUPER_ADMIN = 'SUPER_ADMIN',
-  MANAGER = 'MANAGER',
+  SUPPORT_SUPERVISOR = 'SUPPORT_SUPERVISOR',
+  SUPPORT_AGENT = 'SUPPORT_AGENT',
   OWNER = 'OWNER',
-  OBSERVER = 'OBSERVER',
+  MANAGER = 'MANAGER',
+  CLERK = 'CLERK',
 }
 
 interface IProfileRole {
   SUPER_ADMIN: 'SUPER_ADMIN'
-  MANAGER: 'MANAGER'
+  SUPPORT_SUPERVISOR: 'SUPPORT_SUPERVISOR'
+  SUPPORT_AGENT: 'SUPPORT_AGENT'
   OWNER: 'OWNER'
-  OBSERVER: 'OBSERVER'
+  MANAGER: 'MANAGER'
+  CLERK: 'CLERK'
 }
 
 interface IBaseProfile {
@@ -35,7 +38,6 @@ interface IBaseProfile {
   oneTimePassword: string
   sessionToken: string
   role: keyof IProfileRole
-  hotelId: string
 }
 
 interface IProfileAuthData {
@@ -62,7 +64,6 @@ interface IPostProfilePayload {
   oneTimePassword?: string
   sessionToken?: string
   role: keyof IProfileRole
-  hotelId?: string
 }
 
 interface IPatchProfilePayload {
@@ -72,7 +73,6 @@ interface IPatchProfilePayload {
   oneTimePassword?: string
   sessionToken?: string
   role?: keyof IProfileRole
-  hotelId?: string
 }
 
 interface IBaseProfileDbData {
@@ -82,7 +82,6 @@ interface IBaseProfileDbData {
   oneTimePassword: string
   sessionToken: string
   role: keyof IProfileRole
-  hotelId: ObjectID|null
 }
 
 interface IProfileDbData extends IBaseProfileDbData {
@@ -96,7 +95,6 @@ interface IPatchProfilePayloadDbData {
   oneTimePassword?: string
   sessionToken?: string
   role?: keyof IProfileRole
-  hotelId?: ObjectID|null
 }
 
 type IProfileCollectionDbData = Array<IProfileDbData>

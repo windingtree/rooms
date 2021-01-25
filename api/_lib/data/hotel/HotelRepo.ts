@@ -45,6 +45,7 @@ class HotelRepo extends BaseDataRepo {
     const allowedFields: Array<THotelDbDataFields> = [
       '_id',
       'ownerId',
+      'managers',
       'name',
       'description',
       'address',
