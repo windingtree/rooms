@@ -18,14 +18,14 @@ function allowRoles(...roles: Array<keyof IProfileRole>): IAuthorizeRulesRoles {
 const ALL_ROLES = allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER, MANAGER, CLERK)
 
 // TODO: Revisit the below role rules when all business requirements are in place.
-//       I.e. what user role can do what actions. Complete list, fine grained.
+//       I.e. what user role can access what route. Complete list, fine grained control.
 const AUTHORIZE_RULES: IAuthorizeRules = {
   'hotel': {
     POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
   },
   'hotel/{id}': {
     GET: ALL_ROLES,
-    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
     DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
   },
   'hotels': {
@@ -33,7 +33,7 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   },
 
   'profile': {
-    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER),
   },
   'profile/{id}': {
     GET: ALL_ROLES,
@@ -41,31 +41,31 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
     DELETE: ALL_ROLES,
   },
   'profiles': {
-    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER),
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, SUPPORT_AGENT, OWNER),
   },
 
   'room_type': {
-    POST: ALL_ROLES
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
   'room_type/{id}': {
-    GET: ALL_ROLES,
-    PATCH: ALL_ROLES,
-    DELETE: ALL_ROLES,
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
+    DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
   'room_types': {
-    GET: ALL_ROLES,
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER),
   },
 
   'booking': {
-    POST: ALL_ROLES,
+    POST: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
   'booking/{id}': {
-    GET: ALL_ROLES,
-    PATCH: ALL_ROLES,
-    DELETE: ALL_ROLES,
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    PATCH: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
+    DELETE: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
   'bookings': {
-    GET: ALL_ROLES,
+    GET: allowRoles(SUPER_ADMIN, SUPPORT_SUPERVISOR, OWNER, MANAGER, CLERK),
   },
 
   'orgid/{id}': {
