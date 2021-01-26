@@ -31,3 +31,7 @@ npm run lint:fix # make ESLint fix errors which can be automatically fixed
 ## Running MongoDB locally
 
 There are setup scripts available to run MongoDB locally as a Docker container. For more details, see [README](./_docker/README.md)  in `./_docker` folder.
+
+## Code documentation
+
+You can find more details about the structure of the code base, and a discussion of some architectural decisions in [docs/README](./docs/README.md) file.
