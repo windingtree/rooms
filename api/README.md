@@ -34,4 +34,4 @@ There are setup scripts available to run MongoDB locally as a Docker container. 
 
 ## Code documentation
 
-You can find more details about the structure of the code base, and a discussion of some architectural decisions in [docs/README](./docs/README.md) file.
+You can find more details about the structure of the code base, and a discussion of some architectural decisions in [_docs/README](./_docs/README.md) file.
