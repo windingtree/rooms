@@ -1,21 +1,17 @@
-import { profileCollectionMapper, readProfiles, readProfilesByOwnerId } from '../../../_lib/data/profile'
-import { IProfile, IProfileCollection, IProfileDbRecordCollection } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+import { IProfile, IProfileCollection } from '../../common/types'
+
+const profileRepo = new ProfileRepo()
 
 async function getAllProfiles(requester: IProfile): Promise<IProfileCollection> {
-  let profileDbRecordCollection: IProfileDbRecordCollection
+  // TODO:
+  // 1. `SUPER_ADMIN` can read any profile.
+  // 2. `MANAGER` can read only his profile, and `OWNER` + `OBSERVER` profiles which he created.
 
-  if (requester.role === SUPER_ADMIN) {
-    profileDbRecordCollection = await readProfiles()
-  } else {
-    profileDbRecordCollection = await readProfilesByOwnerId(requester.id)
-  }
+  const profileCollection: IProfileCollection = await profileRepo.readProfiles()
 
-  return profileCollectionMapper(profileDbRecordCollection)
+  return profileCollection
 }
 
-export {
-  getAllProfiles,
-}
+export { getAllProfiles }

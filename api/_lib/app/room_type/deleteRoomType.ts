@@ -1,20 +1,22 @@
-import {
-  deleteRoomType as deleteRoomTypeDbFunc,
-  deleteRoomTypeByOwnerId as deleteRoomTypeByOwnerIdDbFunc
-} from '../../../_lib/data/room_type'
-import { IProfile } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+import { CONSTANTS } from '../../common/constants'
+import { IProfile, IStatus } from '../../common/types'
 
-async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<void> {
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
+
+const roomTypeRepo = new RoomTypeRepo()
+
+async function deleteRoomType(requester: IProfile, roomTypeId: string): Promise<IStatus> {
+  // TODO: Need to implement logic based on roles.
+
   if (requester.role === SUPER_ADMIN) {
-    await deleteRoomTypeDbFunc(roomTypeId)
+    await roomTypeRepo.deleteRoomType(roomTypeId)
   } else {
-    await deleteRoomTypeByOwnerIdDbFunc(roomTypeId, requester.id)
+    await roomTypeRepo.deleteRoomTypeByHotelId(roomTypeId, requester.hotelId)
   }
+
+  return { status: 'OK' }
 }
 
-export {
-  deleteRoomType,
-}
+export { deleteRoomType }

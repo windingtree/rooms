@@ -1,8 +1,9 @@
 import { NowRequest } from '@vercel/node'
 
-import { decodeClientAppToken, authenticateClientAppUser } from '../../../../_lib/app/auth'
-import { getBearerToken } from '../../../../_lib/tools'
-import { IProfileAuthData, IProfile } from '../../../../_lib/types'
+import { decodeClientAppToken, authenticateClientAppUser } from '../../../app/auth/client_app'
+
+import { getBearerToken } from '../../../common/tools'
+import { IProfileAuthData, IProfile } from '../../../common/types'
 
 async function authenticateClientAppRequest(request: NowRequest): Promise<IProfile> {
   const bearerToken: string = await getBearerToken(request)
@@ -14,6 +15,4 @@ async function authenticateClientAppRequest(request: NowRequest): Promise<IProfi
   return profile
 }
 
-export {
-  authenticateClientAppRequest,
-}
+export { authenticateClientAppRequest }

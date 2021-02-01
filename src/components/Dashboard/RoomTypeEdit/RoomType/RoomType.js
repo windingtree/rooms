@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import DoneIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done'
 
 import TextEditInput from '../../../base/TextEditInput/TextEditInput'
 import MultiAutocomplete from '../../../base/MultiAutocomplete/MultiAutocomplete'
@@ -36,13 +36,49 @@ class RoomType extends React.Component {
 
     this.state = {
       availableAmenities: [
-        { name: 'WiFi' },
-        { name: 'Fridge' },
-        { name: 'Double Bed' },
-        { name: 'Phone' },
-        { name: 'Air Conditioning' },
-        { name: 'Balcony' },
-        { name: 'Massage' },
+        { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
+
+        { name: 'Buffet breakfast at the restaurant' },
+        { name: 'Spinning Center Gym (Sótano 1) not SPA services' },
+        { name: 'Internet (High Speed) y Wi-Fi' },
+        { name: '5 first minutes in local calls' },
+        { name: 'Business Center 24 hours' },
+        { name: 'Safe box, air conditioning, hair dryer, iron and ironing board, laundry services' },
+        { name: 'Room service 24 hours' },
+
+        { name: 'American breakfast in the restaurant' },
+        { name: 'Spinning Center Gym (Basement Floor) except Spa and Hair Salon Services' },
+        { name: 'High Speed Wired Internet and Wi-Fi inside the hotel' },
+        { name: '5 minutes of local calls' },
+        { name: 'Business Center open 24 hours with printing services' },
+        { name: 'Safe deposit box, air conditioning and bioclimatic ventilation' },
+
+        { name: 'Room with Queen Bed' },
+        { name: 'Room with double beds' },
+        { name: 'Room with three beds' },
+        { name: 'Private bathroom with shower' },
+        { name: 'Flat screen TV' },
+        { name: 'DirecTV cable channels' },
+
+        { name: 'Minibar' },
+        { name: 'Exercises room' },
+        { name: 'Parking lot' },
+        { name: 'Free Wi-Fi throughout the building' },
+        { name: 'Security box' },
+        { name: 'Free local calls' },
+        { name: 'Free amenities' },
+        { name: 'Hair dryer' },
+        { name: 'Biosafety Certificate "Check In certified"' },
+        { name: 'Breakfast included in the rate' },
+
+        { name: 'Gym' },
+        { name: 'Spa and wet areas (sauna and Turkish)' },
+        { name: 'La Macuira restaurant' },
+        { name: 'Free Wi-Fi in rooms and throughout the building' },
+        { name: 'Business center' },
+        { name: 'Bar - Cafe' },
+        { name: 'Parking' },
+        { name: 'Biosafety Certificate "Check in certificate"' },
       ],
     }
   }
@@ -59,16 +95,28 @@ class RoomType extends React.Component {
     this.props.onPropValueChange(this.props.id, 'type', e)
   }
 
+  handleDescriptionChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'description', e)
+  }
+
   handleQuantityChange = (e) => {
-    this.props.onPropValueChange(this.props.id, 'quantity', e)
+    this.props.onPropValueChange(this.props.id, 'quantity', Number.parseInt(e, 10))
   }
 
   handlePriceChange = (e) => {
-    this.props.onPropValueChange(this.props.id, 'price', e)
+    this.props.onPropValueChange(this.props.id, 'price', Number.parseFloat(e, 10))
+  }
+
+  handleDevConPriceChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'devConPrice', Number.parseFloat(e, 10))
   }
 
   handleAmenitiesChange = (e) => {
     this.props.onPropValueChange(this.props.id, 'amenities', e)
+  }
+
+  handleImageUrlChange = (e) => {
+    this.props.onPropValueChange(this.props.id, 'imageUrl', e)
   }
 
   render() {
@@ -100,12 +148,37 @@ class RoomType extends React.Component {
             </Grid>
             <Grid item>
               <TextEditInput
+                value={this.props.description}
+                label="Description"
+                onValueChange={this.handleDescriptionChange}
+                inputWidth={300}
+              />
+            </Grid>
+            <Grid item>
+              <TextEditInput
                 value={this.props.price}
                 label="Price"
                 onValueChange={this.handlePriceChange}
                 inputWidth={90}
               />
               <div className={classes.price_currency}>USD</div>
+            </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.devConPrice}
+                label="DevCon Price"
+                onValueChange={this.handleDevConPriceChange}
+                inputWidth={90}
+              />
+              <div className={classes.price_currency}>USD</div>
+            </Grid>
+            <Grid item>
+              <TextEditInput
+                value={this.props.imageUrl}
+                label="Image URL"
+                onValueChange={this.handleImageUrlChange}
+                inputWidth={300}
+              />
             </Grid>
             <Grid item>
               <MultiAutocomplete

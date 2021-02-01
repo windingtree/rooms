@@ -132,33 +132,33 @@ class Dashboard extends React.Component {
                 <Redirect to="/dashboard/today" />
               </Route>
               <Route exact path="/dashboard/calendar">
-                { this.isLoggedIn ? <Calendar /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <Calendar userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/bookings">
-                { this.isLoggedIn ? <Bookings /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <Bookings userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/bookings/:bookingId">
-                { this.isLoggedIn ? <BookingTypeEdit /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <BookingTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/today">
-                { this.isLoggedIn ? <Today /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <Today userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/room-types">
-                { this.isLoggedIn ? <RoomTypes /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <RoomTypes userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/room-types/:roomTypeId">
-                { this.isLoggedIn ? <RoomTypeEdit /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <RoomTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/rates">
-                { this.isLoggedIn ? <Rates /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <Rates userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/profile">
-                { this.isLoggedIn ? <Profile /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <Profile userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route render={() => <h1>404: page not found</h1>} />

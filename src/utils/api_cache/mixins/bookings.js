@@ -59,7 +59,7 @@ function addBooking(booking) {
   this.saveCache()
 }
 
-function updateBooking(bookingId, newBooking) {
+function updateBooking(bookingId, data) {
   const _bookings = []
 
   if (!this.cache.bookings) {
@@ -68,7 +68,7 @@ function updateBooking(bookingId, newBooking) {
 
   this.cache.bookings.forEach((booking) => {
     if (booking.id === bookingId) {
-      _bookings.push(objClone(newBooking))
+      _bookings.push(Object.assign({}, objClone(booking), objClone(data)))
     } else {
       _bookings.push(objClone(booking))
     }

@@ -1,3 +1,6 @@
+import { localStorageFallback } from '../storage_factory'
+import { CONSTANTS } from '../constants'
+
 import {
   getBookings,
   setBookings,
@@ -28,19 +31,47 @@ import {
   updateHotel,
 } from './mixins/hotel'
 
-const LOCAL_STORAGE_CACHE_KEY = 'api_cache'
+const { LOCAL_STORAGE_CACHE_KEY } = CONSTANTS
 
 class CApiCache {
   constructor() {
+    if (this.isStorageSupported(localStorage) === false) {
+      console.error('Unfortunately, localStorage is not supported. Will use a fallback.')
+    }
     this.cache = {}
     this.loadCache()
+  }
+
+  isStorageSupported = (storage) => {
+    // NOTE for Firefox browser.
+    //
+    // Even though this function will return `true` in Firefox, sometimes
+    // localStorage does not persist across tabs and/or browser restarts.
+    //
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1453699 issue.
+    //
+    // In that issue, a workaround is provided:
+    //
+    // Date: 2019-12-04 03:11 PST
+    //
+    // "We are still stabilizing LSNG (which solves this issue) such
+    // that it is not on by default in releases (only in beta and nightly).
+    // You can switch it on using the pref dom.storage.next_gen set to true."
+    try {
+      const key = '__random_key_2398473289432743284__'
+      storage.setItem(key, key)
+      storage.removeItem(key)
+      return true
+    } catch (err) {
+      return false
+    }
   }
 
   loadCache = () => {
     let _cache
 
     try {
-      const _cacheStr = window.localStorage.getItem(LOCAL_STORAGE_CACHE_KEY)
+      const _cacheStr = localStorageFallback.getItem(LOCAL_STORAGE_CACHE_KEY)
       _cache = JSON.parse(_cacheStr)
     } catch (err) {
       this.clearCache()
@@ -56,7 +87,7 @@ class CApiCache {
 
   saveCache = () => {
     const _cacheStr = JSON.stringify(this.cache)
-    window.localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, _cacheStr)
+    localStorageFallback.setItem(LOCAL_STORAGE_CACHE_KEY, _cacheStr)
   }
 
   clearCache = () => {

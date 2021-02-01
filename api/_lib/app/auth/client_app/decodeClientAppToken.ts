@@ -1,19 +1,18 @@
 import * as jwt from 'jsonwebtoken'
 
-import { CError } from '../../../../_lib/tools'
-import { ENV } from '../../../../_lib/infra/env'
-import { CONSTANTS } from '../../../infra/constants'
-import { IProfileAuthData } from '../../../../_lib/types'
+import { CONSTANTS } from '../../../common/constants'
+import { ENV } from '../../../common/env'
+import { CError } from '../../../common/tools'
+import { IProfileAuthData } from '../../../common/types'
 
-const { REACT_APP_JWT_SECRET } = ENV
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 async function decodeClientAppToken(bearerToken: string): Promise<IProfileAuthData> {
   let decodedToken: IProfileAuthData|unknown
   try {
-    decodedToken = jwt.verify(bearerToken, REACT_APP_JWT_SECRET)
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'JWT token verification failed.')
+    decodedToken = jwt.verify(bearerToken, ENV.REACT_APP_JWT_SECRET)
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'JWT token verification failed.', err)
   }
   const decodedAuthClientAppToken: IProfileAuthData = (decodedToken as IProfileAuthData)
 
@@ -29,6 +28,4 @@ async function decodeClientAppToken(bearerToken: string): Promise<IProfileAuthDa
   return decodedAuthClientAppToken
 }
 
-export {
-  decodeClientAppToken,
-}
+export { decodeClientAppToken }

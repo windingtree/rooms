@@ -1,21 +1,24 @@
-import { roomTypeMapper, readRoomType, readRoomTypeByOwnerId } from '../../../_lib/data/room_type'
-import { IProfile, IRoomType, IRoomTypeDbRecord } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+import { CONSTANTS } from '../../common/constants'
+import { IProfile, IRoomType } from '../../common/types'
+
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
+
+const roomTypeRepo = new RoomTypeRepo()
 
 async function getRoomType(requester: IProfile, roomTypeId: string): Promise<IRoomType> {
-  let roomTypeDbRecord: IRoomTypeDbRecord
+  // TODO: Need to implement logic based on roles.
+
+  let roomType: IRoomType
 
   if (requester.role === SUPER_ADMIN) {
-    roomTypeDbRecord = await readRoomType(roomTypeId)
+    roomType = await roomTypeRepo.readRoomType(roomTypeId)
   } else {
-    roomTypeDbRecord = await readRoomTypeByOwnerId(roomTypeId, requester.id)
+    roomType = await roomTypeRepo.readRoomTypeByHotelId(roomTypeId, requester.hotelId)
   }
 
-  return roomTypeMapper(roomTypeDbRecord)
+  return roomType
 }
 
-export {
-  getRoomType,
-}
+export { getRoomType }

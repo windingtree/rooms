@@ -8,6 +8,8 @@ module.exports = {
 
     // Allows for the use of imports
     sourceType: "module",
+
+    project: "./tsconfig.json"
   },
   settings: {},
   extends: [
@@ -18,6 +20,7 @@ module.exports = {
     "no-throw-literal": "off",
     "@typescript-eslint/no-throw-literal": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-floating-promises": "error",
     "no-trailing-spaces": [
       "error", {
         "skipBlankLines": false,
@@ -29,6 +32,8 @@ module.exports = {
         allowIndentationTabs: false
       }
     ],
-    "eol-last": ["error", "always"]
+    "eol-last": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "curly": ["error", "multi-line"],
   },
-};
+}

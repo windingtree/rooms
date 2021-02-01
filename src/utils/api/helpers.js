@@ -1,3 +1,15 @@
+import { localStorageFallback } from '../storage_factory'
+import { CONSTANTS } from '../constants'
+import { isFunction } from '../functions'
+
+const { LOCAL_STORAGE_JWT_TOKEN_KEY } = CONSTANTS
+
+function logout() {
+  if (isFunction(window.__global_logout_method)) {
+    window.__global_logout_method()
+  }
+}
+
 function checkStatus(response) {
   if (
     (typeof response.status !== 'number') ||
@@ -9,14 +21,10 @@ function checkStatus(response) {
     error.response = response
 
     if (
-      ((error) && (error.status === 'Unauthorized')) ||
-      ((error) && (error.response) && (
-        error.response.status === 401 || error.response.status === 402 || error.response.status === 403
-      ))
+      ((typeof error.status === 'string') && (error.status.toLowerCase() === 'unauthorized')) ||
+      ((error.response) && (error.response.status === 401 || error.response.status === 403))
     ) {
-      if (typeof window.__global_logout_method !== 'undefined') {
-        window.__global_logout_method()
-      }
+      logout()
     }
 
     throw error
@@ -36,7 +44,7 @@ function makeHeaders() {
 
 function makeAuthHeaders() {
   const headers = makeHeaders()
-  const jwtToken = window.localStorage.getItem('jwt_token')
+  const jwtToken = localStorageFallback.getItem(LOCAL_STORAGE_JWT_TOKEN_KEY)
 
   headers['Authorization'] = `Bearer ${jwtToken}`
 

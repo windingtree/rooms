@@ -1,5 +1,6 @@
-import { getOrgDetails as getOrgDetailsRecord } from '../../../_lib/data/marketplace'
-import { IOrgDetails } from '../../../_lib/types'
+import { getOrgDetails as getOrgDetailsRecord } from '../../data/marketplace'
+
+import { IOrgDetails } from '../../common/types'
 
 async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   // TODO: Try to get `orgDetails` from cache first.
@@ -9,6 +10,4 @@ async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   return orgDetails
 }
 
-export {
-  getOrgDetails,
-}
+export { getOrgDetails }

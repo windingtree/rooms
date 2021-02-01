@@ -1,29 +1,24 @@
-import {
-  hotelMapper,
-  updateHotel as updateHotelDbFunc,
-  updateHotelByOwnerId as updateHotelByOwnerIdDbFunc,
-  readHotel,
-  readHotelByOwnerId
-} from '../../../_lib/data/hotel'
-import { IProfile, IHotel, IPatchHotelPayload, IHotelDbRecord } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { HotelRepo } from '../../data/hotel/HotelRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+import { CONSTANTS } from '../../common/constants'
+import { IProfile, IHotel, IPatchHotelPayload } from '../../common/types'
+
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
+
+const hotelRepo = new HotelRepo()
 
 async function updateHotel(requester: IProfile, hotelId: string, data: IPatchHotelPayload): Promise<IHotel> {
-  let hotelDbRecord: IHotelDbRecord
+  let hotel: IHotel
 
   if (requester.role === SUPER_ADMIN) {
-    await updateHotelDbFunc(hotelId, data)
-    hotelDbRecord = await readHotel(hotelId)
+    await hotelRepo.updateHotel(hotelId, data)
+    hotel = await hotelRepo.readHotel(hotelId)
   } else {
-    await updateHotelByOwnerIdDbFunc(hotelId, requester.id, data)
-    hotelDbRecord = await readHotelByOwnerId(hotelId, requester.id)
+    await hotelRepo.updateHotelByOwnerId(hotelId, requester.id, data)
+    hotel = await hotelRepo.readHotelByOwnerId(hotelId, requester.id)
   }
 
-  return hotelMapper(hotelDbRecord)
+  return hotel
 }
 
-export {
-  updateHotel,
-}
+export { updateHotel }

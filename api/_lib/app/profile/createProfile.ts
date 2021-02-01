@@ -1,11 +1,15 @@
-import { createProfile as createProfileRecord } from '../../../_lib/data/profile'
-import { readHotel } from '../../../_lib/data/hotel'
-import { IBaseProfile, IProfile, IPostProfilePayload } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { CError } from '../../../_lib/tools'
+import { HotelRepo } from '../../data/hotel/HotelRepo'
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IBaseProfile, IProfile, IPostProfilePayload } from '../../common/types'
 
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN, MANAGER, OWNER, OBSERVER } = CONSTANTS.PROFILE_ROLE
+
+const hotelRepo = new HotelRepo()
+const profileRepo = new ProfileRepo()
 
 async function createProfile(requester: IProfile, payload: IPostProfilePayload): Promise<IProfile> {
   if (
@@ -27,10 +31,10 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
   }
 
   if (payload.hotelId) {
-    await readHotel(payload.hotelId)
+    await hotelRepo.readHotel(payload.hotelId)
   }
 
-  const data: IBaseProfile = {
+  const baseProfile: IBaseProfile = {
     email: payload.email,
     name: (payload.name) ? payload.name : '',
     phone: (payload.phone) ? payload.phone : '',
@@ -39,12 +43,10 @@ async function createProfile(requester: IProfile, payload: IPostProfilePayload):
     role: payload.role,
     hotelId: (payload.hotelId) ? payload.hotelId : '',
   }
-  const profileId: string = await createProfileRecord(data)
-  const profile: IProfile = Object.assign({}, data, { id: profileId })
+  const profileId: string = await profileRepo.createProfile(baseProfile)
+  const profile: IProfile = Object.assign({}, baseProfile, { id: profileId })
 
   return profile
 }
 
-export {
-  createProfile,
-}
+export { createProfile }

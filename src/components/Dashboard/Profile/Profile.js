@@ -36,7 +36,10 @@ class Profile extends React.Component {
     this.state = {
       hotelId: '',
       name: '',
+      description: '',
+      email: '',
       address: '',
+      imageUrl: '',
       location: [0, 0],
       locationStr: '0, 0',
 
@@ -63,7 +66,10 @@ class Profile extends React.Component {
     this.setState({
       hotelId: (hotel.id) ? hotel.id : '',
       name: (hotel.name) ? hotel.name : '',
+      description: (hotel.description) ? hotel.description : '',
+      email: (hotel.email) ? hotel.email : '',
       address: (hotel.address) ? hotel.address : '',
+      imageUrl: (hotel.imageUrl) ? hotel.imageUrl : '',
       location: locationCoords,
       locationStr: this.getLocationStr(locationCoords),
     })
@@ -130,12 +136,36 @@ class Profile extends React.Component {
     this.updateHotel('name', newValue)
   }
 
+  onHotelDescriptionChange = (newValue) => {
+    this.setState({
+      description: newValue,
+    })
+
+    this.updateHotel('description', newValue)
+  }
+
+  onHotelEmailChange = (newValue) => {
+    this.setState({
+      email: newValue,
+    })
+
+    this.updateHotel('email', newValue)
+  }
+
   onHotelAddressChange = (newValue) => {
     this.setState({
       address: newValue,
     })
 
     this.updateHotel('address', newValue)
+  }
+
+  onHotelImageUrlChange = (newValue) => {
+    this.setState({
+      imageUrl: newValue,
+    })
+
+    this.updateHotel('imageUrl', newValue)
   }
 
   render() {
@@ -153,7 +183,7 @@ class Profile extends React.Component {
           ((!this.state.hotelId) && (this.state.apiLoading === true)) ?
             <Spinner info="loading" />:
             <div>
-              <div><h1>Profile</h1></div>
+              <div><h1>Hotel Info</h1></div>
               <div>
                 <TextEditInput
                   label="Hotel ID"
@@ -172,9 +202,33 @@ class Profile extends React.Component {
               </div>
               <div>
                 <TextEditInput
+                  label="Hotel Description"
+                  value={this.state.description}
+                  onValueChange={this.onHotelDescriptionChange}
+                  inputWidth={400}
+                />
+              </div>
+              <div>
+                <TextEditInput
+                  label="Hotel Email"
+                  value={this.state.email}
+                  onValueChange={this.onHotelEmailChange}
+                  inputWidth={400}
+                />
+              </div>
+              <div>
+                <TextEditInput
                   label="Hotel Address"
                   value={this.state.address}
                   onValueChange={this.onHotelAddressChange}
+                  inputWidth={400}
+                />
+              </div>
+              <div>
+                <TextEditInput
+                  label="Image URL"
+                  value={this.state.imageUrl}
+                  onValueChange={this.onHotelImageUrlChange}
                   inputWidth={400}
                 />
               </div>

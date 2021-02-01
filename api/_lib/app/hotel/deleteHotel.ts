@@ -1,20 +1,20 @@
-import {
-  deleteHotel as deleteHotelDbFunc,
-  deleteHotelByOwnerId as deleteHotelByOwnerIdDbFunc
-} from '../../../_lib/data/hotel'
-import { IProfile } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { HotelRepo } from '../../data/hotel/HotelRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
+import { CONSTANTS } from '../../common/constants'
+import { IProfile, IStatus } from '../../common/types'
 
-async function deleteHotel(requester: IProfile, hotelId: string): Promise<void> {
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
+
+const hotelRepo = new HotelRepo()
+
+async function deleteHotel(requester: IProfile, hotelId: string): Promise<IStatus> {
   if (requester.role === SUPER_ADMIN) {
-    await deleteHotelDbFunc(hotelId)
+    await hotelRepo.deleteHotel(hotelId)
   } else {
-    await deleteHotelByOwnerIdDbFunc(hotelId, requester.id)
+    await hotelRepo.deleteHotelByOwnerId(hotelId, requester.id)
   }
+
+  return { status: 'OK' }
 }
 
-export {
-  deleteHotel,
-}
+export { deleteHotel }

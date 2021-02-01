@@ -1,11 +1,5 @@
-export {
-  decodeOrgIdToken,
-} from './decodeOrgIdToken'
-
-export {
-  authenticateOrgIdRequest,
-} from './authenticateOrgIdRequest'
-
-export {
-  verifyOrgIdPublicKey,
-} from './verifyOrgIdPublicKey'
+export { authenticateOrgIdRequest } from './authenticateOrgIdRequest'
+export { decodeOrgIdToken } from './decodeOrgIdToken'
+export { generateOrgIdJwt } from './generateOrgIdJwt'
+export { verifyOrgIdPublicKey } from './verifyOrgIdPublicKey'
+export { wtVerification } from './wtVerification'

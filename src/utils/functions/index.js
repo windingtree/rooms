@@ -1,7 +1,19 @@
 export {
   errorLogger,
-} from './error_logger'
+} from './errorLogger'
 
 export {
   objClone,
-} from './obj_clone'
+} from './objClone'
+
+export {
+  isFunction,
+} from './isFunction'
+
+export {
+  isObject,
+} from './isObject'
+
+export {
+  removeProp,
+} from './removeProp'

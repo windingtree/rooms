@@ -1,9 +1,16 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
+import { localStorageFallback } from '../../../utils/storage_factory'
+import { CONSTANTS } from '../../../utils/constants'
 import { apiClient } from '../../../utils/api'
 import Spinner from '../../base/Spinner/Spinner'
 import { errorLogger } from '../../../utils/functions'
+
+const {
+  LOCAL_STORAGE_SESSION_TOKEN_KEY,
+  LOCAL_STORAGE_SESSION_EMAIL_KEY,
+} = CONSTANTS
 
 class SendGridRedirect extends React.Component {
   constructor(props) {
@@ -24,9 +31,9 @@ class SendGridRedirect extends React.Component {
   }
 
   tryToLogin = () => {
-    const email = window.localStorage.getItem('session_email')
+    const email = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_EMAIL_KEY)
     const oneTimePassword = this.state.oneTimePassword
-    const sessionToken = window.localStorage.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
 
     apiClient
       .login({
@@ -39,7 +46,7 @@ class SendGridRedirect extends React.Component {
           return
         }
 
-        this.props.onLogin(response.email, response.oneTimePassword)
+        this.props.onLogin(response)
       })
       .catch((error) => {
         if (this._isDestroyed) {

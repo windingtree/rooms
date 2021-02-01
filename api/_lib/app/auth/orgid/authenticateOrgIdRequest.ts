@@ -1,15 +1,18 @@
 import { NowRequest } from '@vercel/node'
 
-import { getOrgDetails } from '../../../../_lib/data/marketplace'
-import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../../_lib/app/auth'
-import { getBearerToken, CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IDecodedOrgIdToken, IOrgDetails } from '../../../../_lib/types'
+import { decodeOrgIdToken, verifyOrgIdPublicKey } from '../../../app/auth/orgid'
+
+import { getOrgDetails } from '../../../data/marketplace'
+
+import { CONSTANTS } from '../../../common/constants'
+import { getBearerToken, CError } from '../../../common/tools'
+import { IDecodedOrgIdToken, IOrgDetails } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
 async function authenticateOrgIdRequest(request: NowRequest): Promise<IOrgDetails> {
   const bearerToken: string = await getBearerToken(request)
+
   const decodedToken: IDecodedOrgIdToken = await decodeOrgIdToken(bearerToken)
   const { orgId, publicKeyFragment } = { ...decodedToken }
   const orgDetails: IOrgDetails = await getOrgDetails(orgId)
@@ -24,6 +27,4 @@ async function authenticateOrgIdRequest(request: NowRequest): Promise<IOrgDetail
   return orgDetails
 }
 
-export {
-  authenticateOrgIdRequest,
-}
+export { authenticateOrgIdRequest }

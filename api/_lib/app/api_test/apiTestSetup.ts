@@ -1,24 +1,27 @@
-import { checkRequiredAppConfigProps } from './checkRequiredAppConfigProps'
-import { createProfile } from '../../../_lib/data/profile'
-import { CError } from '../../../_lib/tools'
-import { AppConfig } from '../../../_lib/infra/config'
-import { IBaseProfile } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { v4 as uuidv4 } from 'uuid'
+
+import { AppConfig } from '../../app/config'
+
+import { ProfileRepo } from '../../data/profile/ProfileRepo'
+
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IBaseProfile, IProfile } from '../../common/types'
 
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 const { FORBIDDEN } = CONSTANTS.HTTP_STATUS
 
-async function apiTestSetup(): Promise<void> {
+const profileRepo = new ProfileRepo()
+
+async function apiTestSetup(): Promise<IProfile> {
   const appConfig = await AppConfig.getInstance().getConfig()
 
-  checkRequiredAppConfigProps(appConfig)
-
-  if (appConfig.API_TEST_ENABLED !== 'enabled') {
+  if (appConfig.API_TEST_ENABLED !== 'true') {
     throw new CError(FORBIDDEN, 'API test support not enabled for this environment.')
   }
 
-  const profilePostData: IBaseProfile = {
-    email: appConfig.API_TEST_EMAIL,
+  const baseProfile: IBaseProfile = {
+    email: `${uuidv4()}@test.com`,
     name: '',
     phone: '',
     oneTimePassword: appConfig.API_TEST_ONE_TIME_PASSWORD,
@@ -27,9 +30,10 @@ async function apiTestSetup(): Promise<void> {
     hotelId: '',
   }
 
-  await createProfile(profilePostData)
+  const profileId: string = await profileRepo.createProfile(baseProfile)
+  const profile: IProfile = Object.assign({}, baseProfile, { id: profileId })
+
+  return profile
 }
 
-export {
-  apiTestSetup,
-}
+export { apiTestSetup }

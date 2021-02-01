@@ -1,9 +1,10 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-import { IOrgDetails } from '../../../_lib/types'
-import { CError } from '../../../_lib/tools'
-import { AppConfig } from '../../../_lib/infra/config'
-import { CONSTANTS } from '../../../_lib/infra/constants'
+import { AppConfig } from '../../app/config'
+
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IOrgDetails } from '../../common/types'
 
 const { INTERNAL_SERVER_ERROR } = CONSTANTS.HTTP_STATUS
 
@@ -56,13 +57,11 @@ async function getOrgDetails(orgId: string): Promise<IOrgDetails> {
   let orgDetails
   try {
     orgDetails = await makeGraphqlRequest(appConfig.WT_THEGRAPH_API_URL, orgId)
-  } catch (err) {
-    throw new CError(INTERNAL_SERVER_ERROR, `Could not resolve org details for orgId '${orgId}'.`)
+  } catch (err: unknown) {
+    throw new CError(INTERNAL_SERVER_ERROR, `Could not resolve org details for orgId '${orgId}'.`, err)
   }
 
   return orgDetails
 }
 
-export {
-  getOrgDetails,
-}
+export { getOrgDetails }

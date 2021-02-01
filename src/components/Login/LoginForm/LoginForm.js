@@ -4,8 +4,15 @@ import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
-import { ApiCache } from '../../../utils/api_cache'
+import { localStorageFallback } from '../../../utils/storage_factory'
+import { CONSTANTS } from '../../../utils/constants'
+import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
+
+const {
+  LOCAL_STORAGE_SESSION_EMAIL_KEY,
+  LOCAL_STORAGE_SESSION_TOKEN_KEY,
+} = CONSTANTS
 
 const useStyles = () => {
   return {
@@ -38,8 +45,6 @@ class LoginForm extends React.Component {
     super(props)
 
     this._isDestroyed = false
-
-    this.apiCache = ApiCache.getInstance()
 
     this.state = {
       isEmailValid: false,
@@ -135,8 +140,8 @@ class LoginForm extends React.Component {
       secondLoginOption: '',
     })
 
-    const sessionToken = window.localStorage.getItem('session_token')
-    window.localStorage.setItem('session_email', this.state.email)
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_EMAIL_KEY, this.state.email)
 
     apiClient
       .emailOneTimePassword({ email: this.state.email, sessionToken })
@@ -146,25 +151,26 @@ class LoginForm extends React.Component {
         }
 
         if (response && response.oneTimePassword && response.oneTimePassword !== 'sent') {
-          this.setState({
-            sendGridNotWorking: true,
-            secondLoginOption: response.oneTimePassword,
-          })
+          this.setState({ sendGridNotWorking: true, secondLoginOption: response.oneTimePassword })
         }
 
-        this.setState({ tryingToEmailPass: false })
-        this.setState({ canInputOneTimePassword: true })
+        this.setState({ tryingToEmailPass: false, canInputOneTimePassword: true })
       })
-      .catch((err) => {
-        this.setState({ tryingToEmailPass: false })
-        this.setState({ canInputOneTimePassword: false })
+      .catch((error) => {
+        if (this._isDestroyed) {
+          return
+        }
+
+        errorLogger(error)
+
+        this.setState({ tryingToEmailPass: false, canInputOneTimePassword: false })
       })
   }
 
   tryToLogin = () => {
     this.setState({ tryingToLogin: true })
 
-    const sessionToken = window.localStorage.getItem('session_token')
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
 
     apiClient
       .login({
@@ -177,12 +183,16 @@ class LoginForm extends React.Component {
           return
         }
 
-        this.apiCache.setProfile(response)
-
         this.setState({ tryingToLogin: false })
-        this.props.onLogin(response.email, response.oneTimePassword)
+        this.props.onLogin(response)
       })
-      .catch((err) => {
+      .catch((error) => {
+        if (this._isDestroyed) {
+          return
+        }
+
+        errorLogger(error)
+
         this.setState({ tryingToLogin: false })
       })
   }

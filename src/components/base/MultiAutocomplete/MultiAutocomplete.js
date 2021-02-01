@@ -98,7 +98,7 @@ class MultiAutocomplete extends React.Component {
         disabled = false
       }
 
-      return Object.assign({}, objClone(option), { disabled })
+      return Object.assign({}, objClone(option), objClone({ disabled }))
     })
 
     this.setState({
@@ -128,7 +128,7 @@ class MultiAutocomplete extends React.Component {
         disabled = true
       }
 
-      return Object.assign({}, objClone(_option), { disabled })
+      return Object.assign({}, objClone(_option), objClone({ disabled }))
     })
 
     this.setState({
@@ -207,7 +207,7 @@ class MultiAutocomplete extends React.Component {
                   variant="outlined"
                 />
               </li>
-            );
+            )
           })}
         </div>
       </div>

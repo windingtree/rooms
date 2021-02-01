@@ -1,58 +1,41 @@
-import { createRoomType as createRoomTypeRecord } from '../../../_lib/data/room_type'
-import { readProfile as readProfileRecord } from '../../../_lib/data/profile'
-import { IProfile, IBaseRoomType, IRoomType, IPostRoomTypePayload } from '../../../_lib/types'
-import { CONSTANTS } from '../../../_lib/infra/constants'
-import { CError } from '../../../_lib/tools'
+import { RoomTypeRepo } from '../../data/room_type/RoomTypeRepo'
 
-const SUPER_ADMIN = CONSTANTS.PROFILE_ROLE.SUPER_ADMIN
-const MANAGER = CONSTANTS.PROFILE_ROLE.MANAGER
-const OBSERVER = CONSTANTS.PROFILE_ROLE.OBSERVER
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import { IProfile, IRoomType, IBaseRoomType, IPostRoomTypePayload } from '../../common/types'
 
-const BAD_REQUEST = CONSTANTS.HTTP_STATUS.BAD_REQUEST
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
-function generalErrorForRoomTypeCreation(requester: IProfile, ownerProfile: IProfile) {
-  throw new CError(
-    BAD_REQUEST,
-    `User with role '${requester.role}' can't create a roomType for another user with role '${ownerProfile.role}'.`
-  )
-}
+const roomTypeRepo = new RoomTypeRepo()
 
 async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload): Promise<IRoomType> {
-  const ownerProfile: IProfile = await readProfileRecord(payload.ownerId)
+  // TODO: Need to verify things in `payload`, and also implement logic based on roles.
 
-  if (ownerProfile.role === OBSERVER) {
-    generalErrorForRoomTypeCreation(requester, ownerProfile)
+  if (
+    (requester.role !== SUPER_ADMIN) &&
+    (requester.hotelId !== payload.hotelId)
+  ) {
+    throw new CError(
+      BAD_REQUEST,
+      `User with role ${requester.role} is not allowed to create a Room Type for a hotel which is not his.`
+    )
   }
 
-  if (requester.id !== ownerProfile.id) {
-    switch (requester.role) {
-      case SUPER_ADMIN:
-        if (ownerProfile.role === SUPER_ADMIN) {
-          generalErrorForRoomTypeCreation(requester, ownerProfile)
-        }
-        break
-      case MANAGER:
-        if (ownerProfile.role === SUPER_ADMIN || ownerProfile.role === MANAGER) {
-          generalErrorForRoomTypeCreation(requester, ownerProfile)
-        }
-        break
-    }
-  }
-
-  const data: IBaseRoomType = {
-    ownerId: payload.ownerId,
+  const baseRoomType: IBaseRoomType = {
     hotelId: payload.hotelId,
-    type: payload.type,
+    type: (typeof payload.type !== 'undefined') ? payload.type : '',
+    description: (typeof payload.description !== 'undefined') ? payload.description : '',
     quantity: (typeof payload.quantity !== 'undefined') ? payload.quantity : 0,
     price: (typeof payload.price !== 'undefined') ? payload.price : 0,
+    devConPrice: (typeof payload.devConPrice !== 'undefined') ? payload.devConPrice : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
+    imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
   }
-  const roomTypeId: string = await createRoomTypeRecord(data)
-  const roomType: IRoomType = Object.assign({}, data, { id: roomTypeId })
+  const roomTypeId: string = await roomTypeRepo.createRoomType(baseRoomType)
+  const roomType: IRoomType = Object.assign({}, baseRoomType, { id: roomTypeId })
 
   return roomType
 }
 
-export {
-  createRoomType,
-}
+export { createRoomType }

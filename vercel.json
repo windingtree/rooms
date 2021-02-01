@@ -23,12 +23,16 @@
   ],
   "rewrites": [
     {
-      "source": "/api/v1/api_test/teardown",
-      "destination": "/api/v1/api_test/teardown.ts"
-    },
-    {
       "source": "/api/v1/api_test/setup",
       "destination": "/api/v1/api_test/setup.ts"
+    },
+    {
+      "source": "/api/v1/api_test/jwt",
+      "destination": "/api/v1/api_test/jwt.ts"
+    },
+    {
+      "source": "/api/v1/api_test/teardown",
+      "destination": "/api/v1/api_test/teardown.ts"
     },
 
     {
@@ -51,8 +55,13 @@
     },
 
     {
-      "source": "/api/v1/send_one_time_pass",
-      "destination": "/api/v1/send_one_time_pass.ts"
+      "source": "/api/v1/orders/createWithOffer",
+      "destination": "/api/v1/orders/createWithOffer.ts"
+    },
+
+    {
+      "source": "/api/v1/one_time_password",
+      "destination": "/api/v1/one_time_password.ts"
     },
 
     {
@@ -113,11 +122,6 @@
     },
 
     {
-      "source": "/api/v1/send_one_time_pass",
-      "destination": "/api/v1/send_one_time_pass.ts"
-    },
-
-    {
       "source": "/api/v1/wt_verification",
       "destination": "/api/v1/wt_verification.ts"
     },
@@ -128,13 +132,25 @@
     },
 
     {
+      "source": "/dashboard",
+      "destination": "/"
+    },
+    {
       "source": "/dashboard/(.*)",
       "destination": "/"
     },
 
     {
+      "source": "/login",
+      "destination": "/"
+    },
+    {
       "source": "/login/(.*)",
       "destination": "/"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/public/favicon.ico"
     }
   ],
   "redirects": [

@@ -1,108 +1,43 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
+import { patchHotelPayloadValidator } from '../../_lib/interface/validators'
+
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
-import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { patchHotelPayloadValidator } from '../../_lib/validators'
-import { IProfile, IHotel, IPatchHotelPayload } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/common/types'
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest): Promise<IHotel> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  let hotelId: string
-  try {
-    hotelId = getQueryParamValue(request, 'hotel_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
 
-  let result: IHotel
-  try {
-    result = await getHotel(requester, hotelId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const hotelId: string = getQueryParamValue(request, 'hotel_id')
 
-  response.status(200).json(result)
+  return await getHotel(requester, hotelId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function PATCH(request: NowRequest): Promise<IHotel> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'PATCH', route: 'hotel/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'PATCH', route: 'hotel/{id}' })
 
-  let hotelId: string
-  try {
-    hotelId = getQueryParamValue(request, 'hotel_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const hotelId: string = getQueryParamValue(request, 'hotel_id')
 
-  let data: IPatchHotelPayload
-  try {
-    data = await patchHotelPayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const payload: IPatchHotelPayload = await patchHotelPayloadValidator(request)
 
-  let result: IHotel
-  try {
-    result = await updateHotel(requester, hotelId, data)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await updateHotel(requester, hotelId, payload)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function DELETE(request: NowRequest): Promise<IStatus> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'DELETE', route: 'hotel/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'DELETE', route: 'hotel/{id}' })
 
-  let hotelId: string
-  try {
-    hotelId = getQueryParamValue(request, 'hotel_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const hotelId: string = getQueryParamValue(request, 'hotel_id')
 
-  try {
-    await deleteHotel(requester, hotelId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json({ deletedCount: 1 })
+  return await deleteHotel(requester, hotelId)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

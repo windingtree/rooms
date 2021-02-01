@@ -6,27 +6,11 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 import * as moment from 'moment'
 
-import { errorLogger, objClone } from '../../../utils/functions'
+import { errorLogger, objClone, removeProp } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
 import { ApiCache } from '../../../utils/api_cache'
 import BookingList from './BookingList/BookingList'
 import Spinner from '../../base/Spinner/Spinner'
-
-function initBookingObj() {
-  const now = new Date()
-  const bookingObj = {
-    id: uuidv4(),
-
-    checkInDate: moment(now).format(),
-    checkOutDate: moment(now).add(1, 'days').format(),
-    guestName: '',
-    guestEmail: '',
-    phoneNumber: '',
-    roomType: '',
-  }
-
-  return bookingObj
-}
 
 class Bookings extends React.Component {
   constructor(props) {
@@ -75,7 +59,10 @@ class Bookings extends React.Component {
     }
     bookingToUpdate[propName] = newValue
 
-    this.updateBooking(bookingToUpdate)
+    const data = {}
+    data[propName] = newValue
+
+    this.updateBooking(id, data)
   }
 
   getBookings = () => {
@@ -101,29 +88,41 @@ class Bookings extends React.Component {
       })
   }
 
+  initBookingObj = () => {
+    const now = new Date()
+
+    const bookingObj = {
+      id: uuidv4(),
+      creating: true,
+
+      hotelId: this.props.userProfile.hotelId,
+      roomTypeId: '',
+
+      checkInDate: moment(now).format(),
+      checkOutDate: moment(now).add(1, 'days').format(),
+      guestName: '',
+      guestEmail: '',
+      phoneNumber: '',
+    }
+
+    return bookingObj
+  }
+
   createBooking = () => {
-    const newBooking = initBookingObj()
+    const newBooking = this.initBookingObj()
 
     this.setState({
       bookings: this.state.bookings.concat(newBooking),
     })
 
-    apiClient.createBooking(newBooking)
-      .then((attrs) => {
+    apiClient.createBooking(removeProp(objClone(newBooking), 'id', 'creating'))
+      .then((createdBooking) => {
         if (this._isDestroyed) return
 
         this.setState({
           bookings: this.state.bookings.map((booking) => {
             if (booking.id === newBooking.id) {
-              const _booking = Object.assign(
-                {},
-                objClone(booking),
-                {
-                  id: attrs.id
-                }
-              )
-
-              return _booking
+              return createdBooking
             } else {
               return booking
             }
@@ -137,21 +136,14 @@ class Bookings extends React.Component {
       })
   }
 
-  updateBooking = (attrs) => {
+  updateBooking = (id, data) => {
     this.setState({
       bookings: this.state.bookings.map((booking) => {
-        if (booking.id === attrs.id) {
+        if (booking.id === id) {
           const _booking = Object.assign(
             {},
             objClone(booking),
-            {
-              checkInDate: attrs.checkInDate,
-              checkOutDate: attrs.checkOutDate,
-              guestName: attrs.guestName,
-              guestEmail: attrs.guestEmail,
-              phoneNumber: attrs.phoneNumber,
-              roomType: attrs.roomType,
-            }
+            objClone(data)
           )
 
           return _booking
@@ -162,7 +154,7 @@ class Bookings extends React.Component {
     })
 
     apiClient
-      .updateBooking(attrs)
+      .updateBooking(id, data)
       .catch((error) => {
         if (this._isDestroyed) return
 
@@ -172,7 +164,7 @@ class Bookings extends React.Component {
 
   deleteBooking = (id) => {
     this.setState({
-      bookings: this.state.bookings.filter(t => t.id !== id),
+      bookings: this.state.bookings.filter(booking => booking.id !== id),
     })
 
     apiClient

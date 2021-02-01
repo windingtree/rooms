@@ -1,0 +1,1 @@
+export { readAppConfigs } from './readAppConfigs'

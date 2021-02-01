@@ -1,8 +1,8 @@
 import { JWT } from 'jose'
 
-import { CError } from '../../../../_lib/tools'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IDecodedOrgToken, IDecodedOrgIdToken } from '../../../../_lib/types'
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IDecodedOrgToken, IDecodedOrgIdToken } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
@@ -11,8 +11,8 @@ async function decodeOrgIdToken(bearerToken: string): Promise<IDecodedOrgIdToken
   try {
     // Decode the token using JWT library
     decodedToken = JWT.decode(bearerToken, { complete: true })
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'JWT token is malformed.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'JWT token is malformed.', err)
   }
 
   const { payload: { iss } } = (decodedToken as IDecodedOrgToken)
@@ -39,6 +39,4 @@ async function decodeOrgIdToken(bearerToken: string): Promise<IDecodedOrgIdToken
   }
 }
 
-export {
-  decodeOrgIdToken,
-}
+export { decodeOrgIdToken }

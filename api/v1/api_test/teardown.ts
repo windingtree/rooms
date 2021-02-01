@@ -1,31 +1,20 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { genericApiMethodHandler, authorizeRequest } from '../../_lib/interface'
+
 import { authenticateApiTestRequest, apiTestTearDown } from '../../_lib/app/api_test'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler } from '../../_lib/tools'
-import { IProfile } from '../../_lib/types'
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  try {
-    await authenticateApiTestRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { IProfile, IStatus } from '../../_lib/common/types'
 
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function POST(request: NowRequest): Promise<IStatus> {
+  await authenticateApiTestRequest(request)
 
-  try {
-    await apiTestTearDown(requester)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  response.status(200).json({ teardown: 'OK' })
+  await authorizeRequest(requester.role, { method: 'POST', route: 'api_test/teardown' })
+
+  return await apiTestTearDown(requester)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

@@ -1,108 +1,43 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '../../_lib/interface'
+import { patchRoomTypePayloadValidator } from '../../_lib/interface/validators'
+
+import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
 import { getRoomType, updateRoomType, deleteRoomType } from '../../_lib/app/room_type'
-import { genericApiMethodHandler, errorHandler, authorizeRequest, getQueryParamValue } from '../../_lib/tools'
-import { authenticateClientAppRequest } from '../../_lib/app/auth'
-import { patchRoomTypePayloadValidator } from '../../_lib/validators'
-import { IProfile, IRoomType, IPatchRoomTypePayload } from '../../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { IProfile, IRoomType, IPatchRoomTypePayload, IStatus } from '../../_lib/common/types'
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'room_type/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest): Promise<IRoomType> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  let roomTypeId: string
-  try {
-    roomTypeId = getQueryParamValue(request, 'room_type_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'room_type/{id}' })
 
-  let result: IRoomType
-  try {
-    result = await getRoomType(requester, roomTypeId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const roomTypeId: string = getQueryParamValue(request, 'room_type_id')
 
-  response.status(200).json(result)
+  return await getRoomType(requester, roomTypeId)
 }
 
-async function PATCH(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function PATCH(request: NowRequest): Promise<IRoomType> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'PATCH', route: 'room_type/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'PATCH', route: 'room_type/{id}' })
 
-  let roomTypeId: string
-  try {
-    roomTypeId = getQueryParamValue(request, 'room_type_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const roomTypeId: string = getQueryParamValue(request, 'room_type_id')
 
-  let data: IPatchRoomTypePayload
-  try {
-    data = await patchRoomTypePayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const payload: IPatchRoomTypePayload = await patchRoomTypePayloadValidator(request)
 
-  let result: IRoomType
-  try {
-    result = await updateRoomType(requester, roomTypeId, data)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json(result)
+  return await updateRoomType(requester, roomTypeId, payload)
 }
 
-async function DELETE(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function DELETE(request: NowRequest): Promise<IStatus> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  try {
-    await authorizeRequest(requester.role, { method: 'DELETE', route: 'room_type/{id}' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'DELETE', route: 'room_type/{id}' })
 
-  let roomTypeId: string
-  try {
-    roomTypeId = getQueryParamValue(request, 'room_type_id')
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  const roomTypeId: string = getQueryParamValue(request, 'room_type_id')
 
-  try {
-    await deleteRoomType(requester, roomTypeId)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
-
-  response.status(200).json({ deletedCount: 1 })
+  return await deleteRoomType(requester, roomTypeId)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

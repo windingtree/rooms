@@ -1,9 +1,10 @@
 import { JWK, JWT } from 'jose'
 
-import { CError } from '../../../../_lib/tools'
-import { AppConfig } from '../../../../_lib/infra/config'
-import { CONSTANTS } from '../../../../_lib/infra/constants'
-import { IOrgDetails } from '../../../../_lib/types'
+import { AppConfig } from '../../../app/config'
+
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IOrgDetails } from '../../../common/types'
 
 const { UNAUTHORIZED } = CONSTANTS.HTTP_STATUS
 
@@ -18,8 +19,8 @@ async function verifyOrgIdPublicKey(
     publicKey = orgDetails.organization.publicKey.filter(
       p => p.id.match(RegExp(`#${publicKeyFragment}$`, 'g'))
     )[0]
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Error while retrieving public key.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Error while retrieving public key.', err)
   }
 
   if (!publicKey) {
@@ -38,8 +39,8 @@ async function verifyOrgIdPublicKey(
         use: 'sig',
       }
     )
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Could not load the public key as JWK.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Could not load the public key as JWK.', err)
   }
 
   const jwtOptions = {
@@ -54,11 +55,9 @@ async function verifyOrgIdPublicKey(
       pubKey,
       jwtOptions
     )
-  } catch (err) {
-    throw new CError(UNAUTHORIZED, 'Could not verify the public key.')
+  } catch (err: unknown) {
+    throw new CError(UNAUTHORIZED, 'Could not verify the public key.', err)
   }
 }
 
-export {
-  verifyOrgIdPublicKey,
-}
+export { verifyOrgIdPublicKey }

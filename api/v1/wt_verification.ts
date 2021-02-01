@@ -1,17 +1,11 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
-import { AppConfig } from '../_lib/infra/config'
+import { genericApiMethodHandler } from '../_lib/interface'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let appConfig
-  try {
-    appConfig = await AppConfig.getInstance().getConfig()
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { wtVerification } from '../_lib/app/auth/orgid'
 
-  response.status(200).send(appConfig.WT_VERIFICATION_CODE)
+async function GET(): Promise<string> {
+  return await wtVerification()
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

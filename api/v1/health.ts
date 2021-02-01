@@ -1,28 +1,13 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { pingMongo } from '../_lib/data/api_health'
-import { genericApiMethodHandler } from '../_lib/tools'
-import { ENV } from '../_lib/infra/env'
+import { genericApiMethodHandler } from '../_lib/interface'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let mongoStatus = 'up'
+import { getHealth } from '../_lib/app/health'
 
-  const startTime = process.hrtime()
-  try {
-    await pingMongo()
-  } catch (err) {
-    mongoStatus = 'down'
-  }
-  const endTime = process.hrtime(startTime)
-  const timeInMs = (endTime[0] * 1000000000 + endTime[1]) / 1000000
+import { IHealthStatus } from '../_lib/common/types'
 
-  response.status(200).json({
-    mongo: {
-      status: mongoStatus,
-      latency: (mongoStatus === 'up') ? `${timeInMs}ms` : undefined,
-    },
-    app_version: ENV.APP_VERSION,
-  })
+async function GET(): Promise<IHealthStatus> {
+  return await getHealth()
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

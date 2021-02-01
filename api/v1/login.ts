@@ -1,26 +1,16 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
-import { authenticateClientAppUser } from '../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler } from '../_lib/tools'
-import { postLoginPayloadValidator } from '../_lib/validators'
-import { IProfile, IProfileAuthData } from '../_lib/types'
+import { genericApiMethodHandler } from '../_lib/interface'
+import { postLoginPayloadValidator } from '../_lib/interface/validators'
 
-async function POST(request: NowRequest, response: NowResponse): Promise<void> {
-  let payload: IProfileAuthData
-  try {
-    payload = await postLoginPayloadValidator(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { authenticateClientAppUser } from '../_lib/app/auth/client_app'
 
-  let result: IProfile
-  try {
-    result = await authenticateClientAppUser(payload)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { IProfile, IProfileAuthData } from '../_lib/common/types'
 
-  response.status(200).json(result)
+async function POST(request: NowRequest): Promise<IProfile> {
+  const payload: IProfileAuthData = await postLoginPayloadValidator(request)
+
+  return await authenticateClientAppUser(payload)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

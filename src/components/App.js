@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles'
 import * as jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
 
+import { localStorageFallback } from '../utils/storage_factory'
+import { CONSTANTS } from '../utils/constants'
 import { ApiCache } from '../utils/api_cache'
 import { apiClient } from '../utils/api'
 import { errorLogger } from '../utils/functions'
@@ -11,8 +13,14 @@ import OnBoarding from './OnBoarding/OnBoarding'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
+import Spinner from './base/Spinner/Spinner'
 
-const JWT_SECRET = process.env.REACT_APP_JWT_SECRET
+const {
+  JWT_SECRET,
+  LOCAL_STORAGE_SESSION_TOKEN_KEY,
+  LOCAL_STORAGE_JWT_TOKEN_KEY,
+  LOCAL_STORAGE_SESSION_EMAIL_KEY,
+} = CONSTANTS
 
 const useStyles = () => {
   return {
@@ -32,15 +40,25 @@ class App extends React.Component {
 
     this.apiCache = ApiCache.getInstance()
 
-    const isLoggedIn = this.areWeLoggedIn()
-    if (!isLoggedIn) {
-      this.resetLocalStorage(false)
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
+    if (typeof sessionToken !== 'string' || sessionToken.length === 0) {
+      this.resetLocalStorage()
     }
 
-    const profileId = this.getProfileIdFromCache()
+    let profile = this.apiCache.getProfile()
+    let profileId
+
+    if (profile && profile.id) {
+      profileId = profile.id
+    } else {
+      profile = null
+      profileId = null
+    }
 
     this.state = {
-      isLoggedIn,
+      isLoggedIn: false,
+      loadingProfile: true,
+      profile,
       profileId,
     }
   }
@@ -64,21 +82,14 @@ class App extends React.Component {
     this._isDestroyed = true
   }
 
-  getProfileIdFromCache = () => {
-    let profileId = ''
-
-    const profile = this.apiCache.getProfile()
-
-    if (profile && profile.id) {
-      profileId = profile.id
-    }
-
-    return profileId
-  }
-
   getProfile = () => {
     if (typeof this.state.profileId !== 'string' || this.state.profileId.length === 0) {
-      this.handleLogout()
+      this.setState({
+        loadingProfile: false,
+        profile: null,
+        profileId: null,
+      })
+
       return
     }
 
@@ -88,6 +99,9 @@ class App extends React.Component {
         if (this._isDestroyed) return
 
         this.setState({
+          isLoggedIn: true,
+          loadingProfile: false,
+          profile,
           profileId: profile.id,
         })
       })
@@ -98,64 +112,38 @@ class App extends React.Component {
       })
   }
 
-  handleOnLogin = (email, oneTimePassword) => {
-    const sessionToken = window.localStorage.getItem('session_token')
-    const token = jwt.sign({ email, oneTimePassword, sessionToken }, JWT_SECRET)
+  handleOnLogin = (profile) => {
+    const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
+    const token = jwt.sign({ email: profile.email, oneTimePassword: profile.oneTimePassword, sessionToken }, JWT_SECRET)
 
-    window.localStorage.setItem('jwt_token', token)
+    localStorageFallback.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, token)
 
-    const profileId = this.getProfileIdFromCache()
-
-    this.setState({ isLoggedIn: true, profileId })
+    this.setState({
+      isLoggedIn: true,
+      profileId: profile.id,
+      profile,
+    })
 
     this.props.history.push('/dashboard')
   }
 
-  areWeLoggedIn = () => {
-    let isLoggedIn = false
-    let decodedToken = {}
-
-    const jwtToken = window.localStorage.getItem('jwt_token')
-    const sessionToken = window.localStorage.getItem('session_token')
-
-    try {
-      decodedToken = jwt.verify(jwtToken, JWT_SECRET)
-    } catch (err) {
-      decodedToken = {}
-    }
-
-    if (
-      (typeof decodedToken.email !== 'string' || decodedToken.email.length === 0) ||
-      (typeof decodedToken.oneTimePassword !== 'string' || decodedToken.oneTimePassword.length === 0) ||
-      (typeof decodedToken.sessionToken !== 'string' || decodedToken.sessionToken.length === 0) ||
-      (typeof sessionToken !== 'string' || sessionToken.length === 0) ||
-      (sessionToken !== decodedToken.sessionToken)
-    ) {
-      isLoggedIn = false
-    } else {
-      isLoggedIn = true
-    }
-
-    return isLoggedIn
-  }
-
-  resetLocalStorage = (refreshSessionToken) => {
+  resetLocalStorage = () => {
     this.apiCache.clearCache()
-    window.localStorage.setItem('jwt_token', '')
 
-    const sessionToken = window.localStorage.getItem('session_token')
-    if (
-      (typeof sessionToken !== 'string') ||
-      (sessionToken.length === 0) ||
-      (refreshSessionToken === true)
-    ) {
-      window.localStorage.setItem('session_token', uuidv4())
-    }
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_EMAIL_KEY, '')
+    localStorageFallback.setItem(LOCAL_STORAGE_JWT_TOKEN_KEY, '')
+    localStorageFallback.setItem(LOCAL_STORAGE_SESSION_TOKEN_KEY, uuidv4())
   }
 
   handleLogout = () => {
-    this.resetLocalStorage(true)
-    this.setState({ isLoggedIn: false })
+    this.resetLocalStorage()
+
+    this.setState({
+      isLoggedIn: false,
+      loadingProfile: false,
+      profile: null,
+      profileId: null,
+    })
   }
 
   render() {
@@ -164,30 +152,34 @@ class App extends React.Component {
     return (
       <Router history={history}>
         <main className={classes.container}>
-          <Switch>
-            <Route exact path="/">
-              { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
-            </Route>
-            <Route exact path="/login">
-              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
-            </Route>
-            <Route exact path="/login/:oneTimePassword">
-              <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
-            </Route>
-            <Route exact path="/dashboard">
-              { this.state.isLoggedIn ?
-                <Dashboard handleLogout={this.handleLogout} /> :
-                <Redirect to="/" />
-              }
-            </Route>
-            <Route path={`/dashboard/:dashboardSectionId`}>
-              { this.state.isLoggedIn ?
-                <Dashboard handleLogout={this.handleLogout} /> :
-                <Redirect to="/" />
-              }
-            </Route>
-            <Route render={() => <h1>404: page not found</h1>} />
-          </Switch>
+          {
+            (this.state.loadingProfile) ?
+              <Spinner info="loading" /> :
+              <Switch>
+                <Route exact path="/">
+                  { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
+                </Route>
+                <Route exact path="/login">
+                  <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
+                </Route>
+                <Route exact path="/login/:oneTimePassword">
+                  <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
+                </Route>
+                <Route exact path="/dashboard">
+                  { this.state.isLoggedIn ?
+                    <Dashboard userProfile={this.state.profile} handleLogout={this.handleLogout} /> :
+                    <Redirect to="/" />
+                  }
+                </Route>
+                <Route path={`/dashboard/:dashboardSectionId`}>
+                  { this.state.isLoggedIn ?
+                    <Dashboard userProfile={this.state.profile} handleLogout={this.handleLogout} /> :
+                    <Redirect to="/" />
+                  }
+                </Route>
+                <Route render={() => <h1>404: page not found</h1>} />
+              </Switch>
+          }
         </main>
       </Router>
     )

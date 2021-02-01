@@ -1,32 +1,18 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 
+import { genericApiMethodHandler, authorizeRequest } from '../_lib/interface'
+
+import { authenticateClientAppRequest } from '../_lib/app/auth/client_app'
 import { getAllRoomTypes } from '../_lib/app/room_type'
-import { authenticateClientAppRequest } from '../_lib/app/auth'
-import { genericApiMethodHandler, errorHandler, authorizeRequest } from '../_lib/tools'
-import { IProfile, IRoomTypeCollection } from '../_lib/types'
 
-async function GET(request: NowRequest, response: NowResponse): Promise<void> {
-  let requester: IProfile
-  try {
-    requester = await authenticateClientAppRequest(request)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+import { IProfile, IRoomTypeCollection } from '../_lib/common/types'
 
-  try {
-    await authorizeRequest(requester.role, { method: 'GET', route: 'room_types' })
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+async function GET(request: NowRequest): Promise<IRoomTypeCollection> {
+  const requester: IProfile = await authenticateClientAppRequest(request)
 
-  let result: IRoomTypeCollection
-  try {
-    result = await getAllRoomTypes(requester)
-  } catch (err) {
-    return errorHandler(response, err)
-  }
+  await authorizeRequest(requester.role, { method: 'GET', route: 'room_types' })
 
-  response.status(200).json(result)
+  return await getAllRoomTypes(requester)
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {

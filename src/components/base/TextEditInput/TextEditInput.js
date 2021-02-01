@@ -6,7 +6,7 @@ const DEFAULT_INPUT_WIDTH = 200
 const DEFAULT_INPUT_LABEL = 'Label'
 
 function isFunction(functionToCheck) {
-  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
 }
 
 function measureText(text) {
