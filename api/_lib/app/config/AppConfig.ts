@@ -66,6 +66,9 @@ class AppConfig {
     let decryptOk = true
     let decryptError: unknown|null = null
 
+    console.log('')
+    console.log('=============== appConfigs ===============')
+    console.log('')
     appConfigs.forEach((item: IAppConfig) => {
       let value = item.value
 
@@ -80,7 +83,12 @@ class AppConfig {
 
       const key: keyof IAppConfigHash = item.key as keyof IAppConfigHash
       appConfig[key] = value
+
+      console.log(`key = ${key}; value = ${value}.`)
     })
+    console.log('')
+    console.log('=============== done ===============')
+    console.log('')
 
     if (!decryptOk) {
       throw new CError(INTERNAL_SERVER_ERROR, 'Could not decrypt AppConfig items.', decryptError)
