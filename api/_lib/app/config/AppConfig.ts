@@ -53,6 +53,7 @@ class AppConfig {
       WT_SIMARD_API_URL: '',
 
       WT_ROOMS_PRIVATE_KEY: '',
+      WT_ROOMS_PRIVATE_KEY_FRAGMENT: '',
 
       API_TEST_ENABLED: '',
       API_TEST_ONE_TIME_PASSWORD: '',
@@ -129,6 +130,7 @@ class AppConfig {
       'WT_SIMARD_API_URL',
 
       'WT_ROOMS_PRIVATE_KEY',
+      'WT_ROOMS_PRIVATE_KEY_FRAGMENT',
 
       'API_TEST_ENABLED',
       'API_TEST_ONE_TIME_PASSWORD',
