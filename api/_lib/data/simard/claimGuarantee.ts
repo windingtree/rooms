@@ -13,9 +13,10 @@ async function claimGuarantee(guaranteeId: string): Promise<ISimardGuaranteeClai
   const appConfig = await AppConfig.getInstance().getConfig()
 
   const roomsPrivateKey = appConfig.WT_ROOMS_PRIVATE_KEY
+  const roomsPrivateKeyFragment = appConfig.WT_ROOMS_PRIVATE_KEY_FRAGMENT
   const roomsOrgId = appConfig.WT_ROOMS_ORGID
   const simardOrgId = appConfig.WT_SIMARD_ORGID
-  const jwtToken = generateOrgIdJwt(roomsPrivateKey, roomsOrgId, simardOrgId, 'webserver')
+  const jwtToken = generateOrgIdJwt(roomsPrivateKey, roomsOrgId, simardOrgId, roomsPrivateKeyFragment)
 
   const simardApiUrl = appConfig.WT_SIMARD_API_URL
   const options: AxiosRequestConfig = {

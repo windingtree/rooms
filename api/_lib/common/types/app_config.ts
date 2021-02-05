@@ -45,6 +45,7 @@ interface IAppConfigHash {
   WT_SIMARD_API_URL: string
 
   WT_ROOMS_PRIVATE_KEY: string
+  WT_ROOMS_PRIVATE_KEY_FRAGMENT: string
 
   API_TEST_ENABLED: string
   API_TEST_ONE_TIME_PASSWORD: string
