@@ -26,6 +26,9 @@ async function getHealth(): Promise<IHealthStatus> {
     mongoStatusObj.err = pingErr
   }
 
+  console.log('ENV = ')
+  console.log(JSON.stringify(ENV))
+
   return {
     mongo: mongoStatusObj,
     app_version: `${ENV.VERCEL_GITHUB_COMMIT_REF}:${ENV.VERCEL_GITHUB_COMMIT_SHA}`,
