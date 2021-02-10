@@ -4,18 +4,30 @@ import { genericApiMethodHandler, authorizeRequest, getQueryParamValue } from '.
 import { patchHotelPayloadValidator } from '../../_lib/interface/validators'
 
 import { authenticateClientAppRequest } from '../../_lib/app/auth/client_app'
+import { authenticateOrgIdRequest } from '../../_lib/app/auth/orgid'
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
 
-import { IProfile, IHotel, IPatchHotelPayload, IStatus } from '../../_lib/common/types'
+import { IProfile, IHotel, IPatchHotelPayload, IStatus, IOrgDetails } from '../../_lib/common/types'
+import { CONSTANTS } from '../../_lib/common/constants'
+const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function GET(request: NowRequest): Promise<IHotel> {
-  const requester: IProfile = await authenticateClientAppRequest(request)
-
-  await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
-
+  const orgId: IOrgDetails = await authenticateOrgIdRequest(request)
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
+  let requester: IProfile;
 
-  return await getHotel(requester, hotelId)
+  if (orgId.organization.id === process.env.MARKETPLACE_ORGID) {
+    // Handling of the Marketplace request
+    requester = {
+      role: SUPER_ADMIN // workaround for getting hotel
+    };
+    return await getHotel(requester, hotelId)
+  } else {
+    // Handling of the Room App request
+    requester = await authenticateClientAppRequest(request)
+    await authorizeRequest(requester.role, { method: 'GET', route: 'hotel/{id}' })
+    return await getHotel(requester, hotelId)
+  }
 }
 
 async function PATCH(request: NowRequest): Promise<IHotel> {
