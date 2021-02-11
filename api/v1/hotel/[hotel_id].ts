@@ -21,7 +21,7 @@ async function GET(request: NowRequest): Promise<IHotel> {
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
   let requester: IProfile;
 
-  console.log('orgId:', orgId);
+  console.log('orgId:', `[${process.env.MARKETPLACE_ORGID}]`, orgId);
 
   if (orgId && orgId.organization.id === process.env.MARKETPLACE_ORGID) {
     // Handling of the Marketplace request
