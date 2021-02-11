@@ -12,11 +12,14 @@ import { CONSTANTS } from '../../_lib/common/constants'
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function GET(request: NowRequest): Promise<IHotel> {
-  const orgId: IOrgDetails = await authenticateOrgIdRequest(request)
+  let orgId: IOrgDetails;
+  try {
+    orgId = await authenticateOrgIdRequest(request);
+  } catch {}
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
   let requester: IProfile;
 
-  if (orgId.organization.id === process.env.MARKETPLACE_ORGID) {
+  if (orgId && orgId.organization.id === process.env.MARKETPLACE_ORGID) {
     // Handling of the Marketplace request
     requester = {
       role: SUPER_ADMIN // workaround for getting hotel
