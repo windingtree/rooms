@@ -15,9 +15,13 @@ async function GET(request: NowRequest): Promise<IHotel> {
   let orgId: IOrgDetails;
   try {
     orgId = await authenticateOrgIdRequest(request);
-  } catch {}
+  } catch(error) {
+    console.log('OrgId Auth error:', error);
+  }
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
   let requester: IProfile;
+
+  console.log('orgId:', orgId);
 
   if (orgId && orgId.organization.id === process.env.MARKETPLACE_ORGID) {
     // Handling of the Marketplace request
