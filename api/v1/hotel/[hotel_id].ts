@@ -8,22 +8,26 @@ import { authenticateOrgIdRequest } from '../../_lib/app/auth/orgid'
 import { getHotel, updateHotel, deleteHotel } from '../../_lib/app/hotel'
 
 import { IProfile, IHotel, IPatchHotelPayload, IStatus, IOrgDetails } from '../../_lib/common/types'
+import { AppConfig } from '../../_lib/app/config'
 import { CONSTANTS } from '../../_lib/common/constants'
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
 
 async function GET(request: NowRequest): Promise<IHotel> {
+  const appConfig = await AppConfig.getInstance().getConfig()
   let orgId: IOrgDetails;
+
   try {
     orgId = await authenticateOrgIdRequest(request);
   } catch(error) {
     console.log('OrgId Auth error:', error);
   }
+
   const hotelId: string = getQueryParamValue(request, 'hotel_id')
   let requester: IProfile;
 
-  console.log('orgId:', `[${process.env.MARKETPLACE_ORGID}]`, orgId);
+  console.log('orgId:', `[${appConfig.MARKETPLACE_ORGID}]`, orgId);
 
-  if (orgId && orgId.organization.id === process.env.MARKETPLACE_ORGID) {
+  if (orgId && orgId.organization.id === appConfig.MARKETPLACE_ORGID) {
     // Handling of the Marketplace request
     requester = {
       role: SUPER_ADMIN // workaround for getting hotel
