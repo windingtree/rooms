@@ -151,6 +151,18 @@
     {
       "source": "/favicon.ico",
       "destination": "/public/favicon.ico"
+    },
+    {
+      "source": "/api/v1/rate_modifier",
+      "destination": "/api/v1/rate_modifier.ts"
+    },
+    {
+      "source": "/api/v1/rate_modifiers",
+      "destination": "/api/v1/rate_modifiers.ts"
+    },
+    {
+      "source": "/api/v1/rate_modifier/(.*)",
+      "destination": "/api/v1/rate_modifier/[rate_modifier_id].ts?rate_modifier_id=$1"
     }
   ],
   "redirects": [

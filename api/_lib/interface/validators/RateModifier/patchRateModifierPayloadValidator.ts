@@ -1,0 +1,52 @@
+import { NowRequest } from '@vercel/node'
+
+import {
+  validateOptionalString,
+  validateMongoObjectId,
+} from '../_helpers'
+
+import { CONSTANTS } from '../../../common/constants'
+import { CError } from '../../../common/tools'
+import { IPatchRateModifierPayload } from '../../../common/types'
+
+const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
+
+async function patchRateModifierPayloadValidator(request: NowRequest): Promise<IPatchRateModifierPayload> {
+  if (!request.body) {
+    throw new CError(BAD_REQUEST, 'Must provide a valid body with request.')
+  }
+
+  const payload: IPatchRateModifierPayload = {}
+
+  const ALLOWED_PROPS: Array<keyof IPatchRateModifierPayload> = [
+    'hotelId',
+    'type',
+    'description',
+    'enabled'
+  ]
+
+  for (const [key] of Object.entries(request.body)) {
+    if (!ALLOWED_PROPS.includes(key as keyof IPatchRateModifierPayload)) {
+      throw new CError(BAD_REQUEST, `Property '${key}' on 'rateModifier' is not updatable.`)
+    }
+  }
+
+  const hotelId = request.body.hotelId
+  await validateMongoObjectId('hotelId', hotelId)
+  await validateOptionalString('hotelId', hotelId)
+  if (typeof hotelId !== 'undefined') payload.hotelId = hotelId
+
+  const type = request.body.type
+  await validateOptionalString('type', type)
+  if (typeof type !== 'undefined') payload.type = type
+
+  const description = request.body.description
+  await validateOptionalString('description', description)
+  if (typeof description !== 'undefined') payload.description = description
+
+  payload.enabled = !!request.body.enabled
+
+  return payload
+}
+
+export { patchRateModifierPayloadValidator }

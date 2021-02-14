@@ -152,3 +152,17 @@ export {
 export {
   IJwtToken,
 } from './jwt'
+
+export {
+  TRateModifierDbDataFields,
+  IRateModifierDbDataProjection,
+  IBaseRateModifier,
+  IRateModifier,
+  IRateModifierCollection,
+  IPostRateModifierPayload,
+  IPatchRateModifierPayload,
+  IBaseRateModifierDbData,
+  IRateModifierDbData,
+  IPatchRateModifierPayloadDbData,
+  IRateModifierCollectionDbData,
+} from './rate_modifiers'
