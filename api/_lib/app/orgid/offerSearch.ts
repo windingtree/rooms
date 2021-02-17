@@ -16,8 +16,9 @@ import {
   IBaseOfferCollection,
   ILocationRectangle,
   ILocationRectangleDbType,
-  IOrgDetails,
+  IOrgDetails
 } from '../../common/types'
+import { calculateOfferPrice } from "../rate_modifier/pricingEngine";
 
 const moment = extendMoment(Moment)
 
@@ -41,39 +42,6 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
-function enumerateDaysBetweenDates(startDate: string, endDate: string): Array<Date> {
-  const currDate = moment.utc(startDate).startOf('day')
-  const lastDate = moment.utc(endDate).startOf('day')
-
-  const dates = [currDate.clone().toDate()]
-
-  while (currDate.add(1, 'days').diff(lastDate) < 0) {
-    dates.push(currDate.clone().toDate())
-  }
-
-  return dates
-}
-
-function calculateTotalPrice(price: number, devConPrice: number, arrival: string, departure: string): number {
-  const devConStartDate = moment.utc('2021-08-10T00:00:00+00:00')
-  const devConStopDate = moment.utc('2021-08-13T23:59:59+00:00')
-
-  const devConDateRange = moment.range(devConStartDate, devConStopDate)
-
-  const stayDates: Array<Date> = enumerateDaysBetweenDates(arrival, departure)
-
-  let totalPrice = 0
-
-  stayDates.forEach((date: Date) => {
-    if (devConDateRange.contains(date)) {
-      totalPrice += devConPrice
-    } else {
-      totalPrice += price
-    }
-  })
-
-  return totalPrice
-}
 
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
@@ -233,10 +201,10 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
   const cachedBaseOffers: IBaseOfferCollection = []
   const createdAt = moment.utc(new Date())
 
-  roomTypes.forEach((roomType) => {
-    hotels.forEach((hotel) => {
-      if (roomType.hotelId !== hotel.id) {
-        return
+  for (const roomType of roomTypes) {
+    for (const hotelRecord of hotels) {
+      if (roomType.hotelId !== hotelRecord.id) {
+        continue;
       }
 
       let price = 0
@@ -244,26 +212,17 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         price = roomType.price
       }
 
-      let devConPrice = 0
-      if (typeof roomType.devConPrice === 'number' && roomType.devConPrice > 0) {
-        devConPrice = roomType.devConPrice
-      }
-
-      if (devConPrice === 0) {
-        devConPrice = price
-      }
-
       const offerId = uuidv4()
       const offer = {
         pricePlansReferences: {
           BAR: {
-            accommodation: hotel.id,
+            accommodation: hotelRecord.id,
             roomType: roomType.id,
           },
         },
         price: {
           currency: 'USD',
-          public: calculateTotalPrice(price, devConPrice, arrival, departure),
+          public:await calculateOfferPrice(hotelRecord, roomType, arrival, departure, price),
           taxes: 0,
         },
       }
@@ -276,10 +235,10 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         offer,
         createdAt: createdAt.format(),
         debtorOrgId: requester.organization.id,
-        hotelEmail: hotel.email,
+        hotelEmail: hotelRecord.email,
       })
-    })
-  })
+    }
+  }
 
   if (cachedBaseOffers.length > 0) {
     await offerRepo.createOffers(cachedBaseOffers)

@@ -1,8 +1,13 @@
-import {RateModifierRepo} from '../../data/rate_modifier/RateModifierRepo'
+import { RateModifierRepo } from '../../data/rate_modifier/RateModifierRepo'
 
-import {CONSTANTS} from '../../common/constants'
-import {CError} from '../../common/tools'
-import {IBaseRateModifier, IPostRateModifierPayload, IProfile, IRateModifier} from '../../common/types'
+import { CONSTANTS } from '../../common/constants'
+import { CError } from '../../common/tools'
+import {
+  IBaseRateModifier,
+  IPostRateModifierPayload,
+  IProfile,
+  IRateModifier
+} from '../../common/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 const { SUPER_ADMIN } = CONSTANTS.PROFILE_ROLE
@@ -26,10 +31,17 @@ async function createRateModifier(requester: IProfile, payload: IPostRateModifie
     hotelId: payload.hotelId,
     type: toValueOrEmpty(payload.type),
     description: toValueOrEmpty(payload.description),
-    enabled: !!payload.enabled
+    enabled: !!payload.enabled,
+    criteriaType:null,
+    priceModifierType:'',
+    priceModifierAmount:0,
+    combinable:true,
+    priority:3,
+    condition:{},
+    rooms:[]
   }
   const rateModifierId: string = await repository.createRateModifier(record)
-  return Object.assign({}, record, {id: rateModifierId})
+  return Object.assign({}, record, { id: rateModifierId })
 }
 
 function toValueOrEmpty (param?:string){

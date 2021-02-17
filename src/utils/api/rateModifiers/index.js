@@ -3,6 +3,16 @@ import {
   makeAuthHeaders,
   parseJSON,
 } from '../helpers'
+
+export const CRITERIA_TYPE_DATERANGE = 'DATE_RANGE';
+export const CRITERIA_TYPE_DAYOFWEEK = 'DAYOFWEEK';
+export const CRITERIA_TYPE_LENGTH_OF_STAY = 'LENGTH_OF_STAY';
+
+export const TYPE_ABSOLUTE = 'absolute';
+export const TYPE_PERCENTAGE = 'percentage';
+
+
+
 /*
 
 import {

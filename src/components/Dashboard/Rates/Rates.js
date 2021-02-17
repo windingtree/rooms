@@ -6,9 +6,9 @@ import Spinner from "../../base/Spinner/Spinner";
 import {apiClient} from "../../../utils/api";
 import {errorLogger, objClone} from "../../../utils/functions";
 import {makeStyles} from '@material-ui/core/styles';
-import {CardActionArea, Link, Switch} from "@material-ui/core";
+import {Box, CardActionArea, Link, Switch} from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-
+import {TYPE_PERCENTAGE} from "../../../utils/api/rateModifiers";
 
 const createRatesStyles = makeStyles({
     add_new_href: {
@@ -21,10 +21,10 @@ const Rates = ({userProfile}) => {
     const history = useHistory();
 
     const [rateModifiers, setRateModifiers] = useState([])
+    const [roomTypes, setRoomTypes] = useState([])
     const [loadInProgress, setLoadInProgress] = useState(false)
     const classes = createRatesStyles();
     useEffect(() => {
-        console.log('useEffect')
         fetchRecords();
     }, [])
 
@@ -43,6 +43,14 @@ const Rates = ({userProfile}) => {
             })
             .finally(() => {
                 setLoadInProgress(false);
+            })
+        apiClient.getRoomTypes()
+            .then(roomTypes=>{
+                setRoomTypes(roomTypes)
+            })
+            .catch(error => {
+                console.error('Failed to fetch room types:', error)
+                errorLogger(error)
             })
     }
 
@@ -75,25 +83,28 @@ const Rates = ({userProfile}) => {
      */
     function createRecord() {
         const newRecord = {
-            hotelId: userProfile.hotelId
+            hotelId: userProfile.hotelId,
+            enabled:true
         }
-        setRateModifiers(rateModifiers.concat(newRecord))
-        apiClient.createRateModifier(objClone(newRecord))
+        setLoadInProgress(true)
+        apiClient.createRateModifier(newRecord)
             .then((createdRecord) => {
-                console.log('Newly created record:', newRecord)
-                let records = rateModifiers.map((record) => {
+                /*let records = rateModifiers.map((record) => {
                     if (record.id === createdRecord.id) {
                         return createdRecord
                     } else {
                         return record
                     }
-                })
-                console.log('Rate modifiers with new record', records)
-                setRateModifiers(records)
+                })*/
+                // setRateModifiers(records)
+                history.push(`/dashboard/rates/${createdRecord.id}`)
             })
             .catch((error) => {
                 console.error(error)
                 errorLogger(error)
+            })
+            .finally(()=>{
+                setLoadInProgress(false)
             })
     }
 
@@ -102,31 +113,27 @@ const Rates = ({userProfile}) => {
     }
 
     function handleEditRateModifier(id) {
-        history.push(`/dashboard/rate/${id}`)
+        history.push(`/dashboard/rates/${id}`)
     }
 
     function handlePropertyValueChange(id, propertyName, propertyValue) {
-        console.log('Will update rate modifier, id:', id, ', property:', propertyName, ' new value:', propertyValue)
         const recordToUpdate = rateModifiers.find((record) => {
             return record.id === id;
         })
-        console.log('Record to update(BEFORE):', recordToUpdate)
         if (recordToUpdate[propertyName] === propertyValue) {
             return
         }
         const data = {}
         data[propertyName] = propertyValue
-        console.log('Record to update(AFTER):', data)
         updateRecord(id, data)
     }
 
-    console.log('Will render rates', rateModifiers)
     return (
         <>
             <h1>Rates</h1>
             {loadInProgress && <Spinner info="loading"/>}
             {rateModifiers && rateModifiers.length > 0 &&
-                <RateModifiersList rateModifiers={rateModifiers}
+                <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes}
                    handlePropertyValueChange={handlePropertyValueChange}
                    handleEditRateModifier={handleEditRateModifier}/>
             }
@@ -145,26 +152,35 @@ const Rates = ({userProfile}) => {
     )
 }
 
-const createListStyles = makeStyles({
-    rate_item: {
-        minWidth: 500,
-    }
-});
-
-
-const RateModifiersList = ({rateModifiers,handlePropertyValueChange,handleEditRateModifier}) =>
+export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange,handleEditRateModifier}) =>
 {
-    const classes = createListStyles();
-
-    const ratesList = rateModifiers && rateModifiers.map((rateModifier) => (
-        <RateModifierListItem
+    function getRoomNameById(roomTypeId){
+        if(roomTypes){
+            let room=roomTypes.find(({id})=>id === roomTypeId)
+            if(room)
+                return room.type;
+        }
+        return ''
+    }
+    const ratesList = rateModifiers && rateModifiers.map((rateModifier) => {
+        let rateModifierRoomIds = rateModifier.id;
+        let rateModifierRoomNames = [];
+        if (rateModifierRoomIds && Array.isArray(rateModifierRoomIds)) {
+            rateModifierRoomNames = rateModifierRoomIds.map(roomId => {
+                return getRoomNameById(roomId)
+            })
+        }
+        return (<RateModifierListItem
             key={rateModifier.id}
             id={rateModifier.id}
-            name={rateModifier.type}
+            type={rateModifier.type}
             enabled={rateModifier.enabled}
+            roomTypeNames={rateModifierRoomNames}
+            priceModifierAmount={rateModifier.priceModifierAmount}
+            priceModifierType={rateModifier.priceModifierType}
             handlePropertyValueChange={handlePropertyValueChange}
-            handleEditRateModifier={handleEditRateModifier}/>
-    ))
+            handleEditRateModifier={handleEditRateModifier}/>)
+    })
 
 
     return (
@@ -174,45 +190,81 @@ const RateModifiersList = ({rateModifiers,handlePropertyValueChange,handleEditRa
             justify="center"
             alignItems="center"
         >
-            <div className={classes.rate_item}>
                 {ratesList}
-            </div>
         </Grid>
 
     )
 }
 
 const createRateStyles = makeStyles({
-    rate_name: {
-        fontSize: '0.75em',
-    }}
+    rate_card: {
+        width: '26em',
+        marginTop: '1em',
+        marginBottom: '1em',
+    },
+        rate_name: {
+            fontSize: '1.5em',
+        },
+        negative: {
+            color: '#ff0000'
+        },
+        positive: {
+            color: '#00ff00'
+        }
+    }
 );
 
 
-const RateModifierListItem = ({id,type,enabled, handlePropertyValueChange,handleEditRateModifier}) =>
+export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceModifierAmount, roomTypeNames, handlePropertyValueChange, handleEditRateModifier}) =>
 {
     const classes = createRateStyles();
     //deconstruct rate modifier properties
-    const handleEnabledChange = (e) => {
-        e.preventDefault();
-        console.log('Enabled change, id:',id,'isEnabled:',enabled)
+    const handleEnabledChange = () => {
         handlePropertyValueChange(id, 'enabled', !enabled)
     }
     const handleEditClick = () => {
-        console.log('Edit change, id:',id,'isEnabled:',enabled)
         handleEditRateModifier(id)
     }
 
+    const formatDiscount = () => {
+        const amount = parseFloat(priceModifierAmount)
+        let typeStr = '';
+        if(priceModifierType ===  TYPE_PERCENTAGE) {
+            typeStr = '%';
+        }
+        let amountStr;
+        let className = '';
+        if(amount<0) {
+            className = classes.negative
+        }
+        if(amount>0) {
+            className = classes.positive
+        }
+        amountStr = `${amount} ${typeStr}`
+        return (<span className={className}>{amountStr}</span>)
+    }
+
     return (
-        <Card>
-            <CardActionArea onClick={handleEditClick}>
-                <div className={classes.rate_name}>{id},{type}</div>
-                <Switch
-                    checked={enabled}
-                    onChange={handleEnabledChange}
-                    name="enabled"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                />
+        <Card className={classes.rate_card}>
+            <CardActionArea >
+                <Grid container >
+                    <Grid item xs={8} onClick={handleEditClick}>
+                        <Box pl={2} pt={1} className={classes.rate_name}>{type} {formatDiscount()}</Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Switch
+                            checked={enabled}
+                            onChange={handleEnabledChange}
+                            name="enabled"
+                            inputProps={{'aria-label': 'secondary checkbox'}}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box pl={2} pb={1}>
+                            {roomTypeNames && roomTypeNames.join(',')}
+                        </Box>
+                    </Grid>
+                </Grid>
             </CardActionArea>
         </Card>
     )

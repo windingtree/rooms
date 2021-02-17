@@ -24,6 +24,12 @@ async function postRateModifierPayloadValidator(request: NowRequest): Promise<IP
     'hotelId',
     'type',
     'description',
+    'enabled',
+    'priority',
+    'criteriaType',
+    'priceModifierType',
+    'priceModifierAmount',
+    'combinable'
   ]
 
   for (const [key] of Object.entries(request.body)) {

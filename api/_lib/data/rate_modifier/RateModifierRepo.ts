@@ -32,7 +32,14 @@ class RateModifierRepo extends BaseDataRepo {
       'hotelId',
       'type',
       'description',
-      'enabled'
+      'enabled',
+      'priority',
+      'criteriaType',
+      'priceModifierType',
+      'priceModifierAmount',
+      'combinable',
+      'condition',
+      'rooms'
     ]
 
     return allowedFields.reduce((projection: IRateModifierDbDataProjection, field) => {

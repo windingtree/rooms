@@ -22,7 +22,14 @@ async function patchRateModifierPayloadValidator(request: NowRequest): Promise<I
     'hotelId',
     'type',
     'description',
-    'enabled'
+    'enabled',
+    'priority',
+    'criteriaType',
+    'priceModifierType',
+    'priceModifierAmount',
+    'combinable',
+    'condition',
+    'rooms'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -43,10 +50,22 @@ async function patchRateModifierPayloadValidator(request: NowRequest): Promise<I
   const description = request.body.description
   await validateOptionalString('description', description)
   if (typeof description !== 'undefined') payload.description = description
-
   payload.enabled = !!request.body.enabled
-
+  if(request.body.priority)
+    {payload.priority = request.body.priority}
+  if(request.body.criteriaType)
+    {payload.criteriaType = request.body.criteriaType}
+  if(request.body.priceModifierType)
+    {payload.priceModifierType = request.body.priceModifierType}
+  if(request.body.priceModifierAmount)
+    {payload.priceModifierAmount = request.body.priceModifierAmount}
+  payload.combinable = !!request.body.combinable
+  if(request.body.condition)
+    {payload.condition = request.body.condition;}
+  if(request.body.rooms)
+    {payload.rooms = request.body.rooms;}
   return payload
 }
+
 
 export { patchRateModifierPayloadValidator }

@@ -165,4 +165,7 @@ export {
   IRateModifierDbData,
   IPatchRateModifierPayloadDbData,
   IRateModifierCollectionDbData,
+  IRateModifierConditionPayload,
+  IRateModifierConditionType,
+  IRateModifierDiscountType,
 } from './rate_modifiers'
