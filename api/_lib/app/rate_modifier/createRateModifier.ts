@@ -6,7 +6,8 @@ import {
   IBaseRateModifier,
   IPostRateModifierPayload,
   IProfile,
-  IRateModifier
+  IRateModifier,
+  IRateModifierConditionType
 } from '../../common/types'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
@@ -32,7 +33,7 @@ async function createRateModifier(requester: IProfile, payload: IPostRateModifie
     type: toValueOrEmpty(payload.type),
     description: toValueOrEmpty(payload.description),
     enabled: !!payload.enabled,
-    criteriaType:null,
+    criteriaType:rateModifierConditionTypeFromString(payload.criteriaType),
     priceModifierType:'',
     priceModifierAmount:0,
     combinable:true,
@@ -42,6 +43,25 @@ async function createRateModifier(requester: IProfile, payload: IPostRateModifie
   }
   const rateModifierId: string = await repository.createRateModifier(record)
   return Object.assign({}, record, { id: rateModifierId })
+}
+
+function rateModifierConditionTypeFromString(criteriaType?:string):IRateModifierConditionType|null{
+  if(!criteriaType)
+    {return null;}
+  switch(criteriaType){
+    case IRateModifierConditionType.DAY_OF_WEEK:
+      return IRateModifierConditionType.DAY_OF_WEEK;
+    case IRateModifierConditionType.DATE_RANGE:
+      return IRateModifierConditionType.DATE_RANGE;
+    case IRateModifierConditionType.LENGTH_OF_STAY:
+      return IRateModifierConditionType.LENGTH_OF_STAY;
+    default:
+      throw new CError(
+          BAD_REQUEST,
+          `Unknown criteriaType value ${criteriaType}`
+      )
+  }
+
 }
 
 function toValueOrEmpty (param?:string){

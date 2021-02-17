@@ -150,4 +150,4 @@ function enumerateDaysBetweenDates(startDate: string, endDate: string): Array<Da
 
     return dates
 }
-export { calculateOfferPrice, getHotelAndRoomRateModifiersProductType }
+export { calculateOfferPrice }

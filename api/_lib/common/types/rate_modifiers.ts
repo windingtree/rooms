@@ -25,7 +25,7 @@ interface IBaseRateModifier {
   description: string
   enabled: boolean
   priority: number
-  criteriaType: IRateModifierConditionType
+  criteriaType: IRateModifierConditionType | null
   priceModifierType: string
   priceModifierAmount: number
   combinable: boolean
@@ -59,7 +59,7 @@ interface IPatchRateModifierPayload {
   description?: string
   enabled?: boolean
   priority?: number
-  criteriaType?: string
+  criteriaType: string
   priceModifierType?: string
   priceModifierAmount?: number
   combinable?: boolean,
@@ -73,7 +73,7 @@ interface IBaseRateModifierDbData {
   description: string
   enabled: boolean
   priority: number
-  criteriaType: IRateModifierConditionType
+  criteriaType: IRateModifierConditionType | null
   priceModifierType: string
   priceModifierAmount: number
   combinable: boolean
@@ -91,12 +91,12 @@ interface IPatchRateModifierPayloadDbData {
   description?: string
   enabled?: boolean
   priority?: number
-  criteriaType?: string
+  criteriaType: IRateModifierConditionType | null
   priceModifierType?: string
   priceModifierAmount?: number
   combinable?: boolean
   condition?:IRateModifierConditionPayload
-  rooms?:Array<string>
+  rooms:Array<ObjectID>
 }
 
 type IRateModifierCollectionDbData = Array<IRateModifierDbData>
