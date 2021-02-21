@@ -25,11 +25,11 @@ interface IBaseRateModifier {
   description: string
   enabled: boolean
   priority: number
-  criteriaType: IRateModifierConditionType | null
+  criteriaType: IRateModifierConditionType
   priceModifierType: string
   priceModifierAmount: number
   combinable: boolean
-  condition?:IRateModifierConditionPayload
+  condition:IRateModifierConditionPayload
   rooms:Array<string>
 }
 
@@ -59,7 +59,7 @@ interface IPatchRateModifierPayload {
   description?: string
   enabled?: boolean
   priority?: number
-  criteriaType: string
+  criteriaType?: string
   priceModifierType?: string
   priceModifierAmount?: number
   combinable?: boolean,
@@ -73,11 +73,11 @@ interface IBaseRateModifierDbData {
   description: string
   enabled: boolean
   priority: number
-  criteriaType: IRateModifierConditionType | null
+  criteriaType: IRateModifierConditionType
   priceModifierType: string
   priceModifierAmount: number
   combinable: boolean
-  condition?:IRateModifierConditionPayload
+  condition:IRateModifierConditionPayload
   rooms:Array<ObjectID>
 }
 
@@ -91,12 +91,12 @@ interface IPatchRateModifierPayloadDbData {
   description?: string
   enabled?: boolean
   priority?: number
-  criteriaType: IRateModifierConditionType | null
+  criteriaType?: IRateModifierConditionType
   priceModifierType?: string
   priceModifierAmount?: number
   combinable?: boolean
   condition?:IRateModifierConditionPayload
-  rooms:Array<ObjectID>
+  rooms?:Array<ObjectID>
 }
 
 type IRateModifierCollectionDbData = Array<IRateModifierDbData>
@@ -105,6 +105,7 @@ enum IRateModifierConditionType {
   DATE_RANGE = 'DATE_RANGE',
   DAY_OF_WEEK = 'DAYOFWEEK',
   LENGTH_OF_STAY = 'LENGTH_OF_STAY',
+  UNSPECIFIED = 'UNSPECIFIED',
 }
 enum IRateModifierDiscountType {
   PERCENTAGE = 'percentage',

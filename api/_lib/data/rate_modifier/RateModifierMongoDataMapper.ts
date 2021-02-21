@@ -6,11 +6,11 @@ import {
     IPatchRateModifierPayloadDbData,
     IRateModifier,
     IRateModifierCollection,
-    IRateModifierCollectionDbData,
-    IRateModifierConditionPayload,
+    IRateModifierCollectionDbData, IRateModifierConditionPayload,
     IRateModifierDbData,
 } from '../../common/types'
 import { ObjectID } from "mongodb";
+import { rateModifierConditionTypeFromString } from "../../interface/validators/RateModifier";
 
 class RateModifierMongoDataMapper extends BaseMongoDataMapper {
     fromBaseEntity(record: IBaseRateModifier): IBaseRateModifierDbData {
@@ -61,7 +61,7 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
         };
     }
 
-    fromPatchEntityPayload(patchRoomTypePayload: IPatchRateModifierPayload): IPatchRateModifierPayloadDbData {
+    fromPatchEntityPayload(payload: IPatchRateModifierPayload): IPatchRateModifierPayloadDbData {
         const availProps: Array<keyof IPatchRateModifierPayload> = [
             'hotelId',
             'type',
@@ -75,31 +75,29 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
             'condition',
             'rooms'
         ]
-
-        return availProps.reduce((patchRoomTypePayloadDbData: IPatchRateModifierPayloadDbData, prop): IPatchRateModifierPayloadDbData => {
-            if (!(prop in patchRoomTypePayload)) {
+/*
+            if (!(prop in payload)) {
                 return patchRoomTypePayloadDbData
             }
-
-            switch (prop) {
+                patchRoomTypePayloadDbData
+          /*  switch (prop) {
                 case 'hotelId':
-                    patchRoomTypePayloadDbData[prop] = this.toObjectId((patchRoomTypePayload[prop] as string))
+                    patchRoomTypePayloadDbData[prop] = this.toObjectId((payload[prop] as string))
                     break
                 case 'enabled':
                 case 'combinable':
-                    patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as boolean)
+                    patchRoomTypePayloadDbData[prop] = (payload[prop] as boolean)
                     break
-                case 'criteriaType':
                 case 'description':
                 case 'priceModifierType':
                 case 'type':
-                    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop] as string
+                    patchRoomTypePayloadDbData[prop] = payload[prop] as string
                     break;
                 case 'priceModifierAmount':
-                    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop] as number
+                    patchRoomTypePayloadDbData[prop] = payload[prop] as number
                     break;
                 case 'condition':
-                    const payloadCondition: IRateModifierConditionPayload = patchRoomTypePayload[prop] as IRateModifierConditionPayload
+                    const payloadCondition: IRateModifierConditionPayload = payload[prop] as IRateModifierConditionPayload
                     let dbCondition: IRateModifierConditionPayload = {};
                     if (payloadCondition) {
                         dbCondition = {
@@ -120,14 +118,78 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
                     patchRoomTypePayloadDbData[prop] = dbCondition;
                     break;
                 case 'rooms':
-                    patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop] as Array<string>
-                    console.log('patchRoomTypePayloadDbData[prop]=', patchRoomTypePayloadDbData[prop])
+                    /!*patchRoomTypePayloadDbData[prop] = payload[prop] as Array<string>
+                    console.log('patchRoomTypePayloadDbData[prop]=', patchRoomTypePayloadDbData[prop])*!/
+                    patchRoomTypePayloadDbData[prop] = [this.toObjectId("dasd")];
+                    break;
+                case 'criteriaType':
+                    patchRoomTypePayloadDbData[prop] = IRateModifierConditionType.LENGTH_OF_STAY;
                     break;
             }
 
-            return patchRoomTypePayloadDbData
+        return patchRoomTypePayloadDbData*/
+        return availProps.reduce((patchRoomTypePayloadDbData: IPatchRateModifierPayloadDbData, prop): IPatchRateModifierPayloadDbData => {
+            if (!(prop in payload)) {
+                return patchRoomTypePayloadDbData
+            }
+            switch(prop){
+                case 'hotelId':
+                    patchRoomTypePayloadDbData[prop] = this.toObjectId((payload[prop] as string))
+                    break
+                case 'enabled':
+                case 'combinable':
+                    patchRoomTypePayloadDbData[prop] = (payload[prop] as boolean)
+                    break
+                case 'description':
+                case 'priceModifierType':
+                case 'type':
+                    patchRoomTypePayloadDbData[prop] = payload[prop] as string
+                    break;
+                case 'priceModifierAmount':
+                    patchRoomTypePayloadDbData[prop] = payload[prop] as number
+                    break;
+                case 'condition':
+                    const payloadCondition: IRateModifierConditionPayload = payload[prop] as IRateModifierConditionPayload
+                    let dbCondition: IRateModifierConditionPayload = {};
+                    if (payloadCondition) {
+                        dbCondition = {
+                            minStay: payloadCondition.minStay,
+                            maxStay: payloadCondition.maxStay,
+                            monday: payloadCondition.monday,
+                            tuesday: payloadCondition.tuesday,
+                            wednesday: payloadCondition.wednesday,
+                            thursday: payloadCondition.thursday,
+                            friday: payloadCondition.friday,
+                            saturday: payloadCondition.saturday,
+                            sunday: payloadCondition.sunday,
+                            startDate: payloadCondition.startDate,
+                            endDate: payloadCondition.endDate,
+                            promoCode: payloadCondition.promoCode,
+                        }
+                    }
+                    patchRoomTypePayloadDbData[prop] = dbCondition;
+                    break;
+                case 'rooms':
+                    const rooms:Array<ObjectID> = [];
+                    if(payload.rooms){
+                        payload.rooms.forEach((roomId:string)=>{
+                            const roomObjId:ObjectID|null=this.toObjectId(roomId)
+                            if(roomObjId)
+                                {rooms.push(roomObjId);}
+                        })
+                    }
+                    patchRoomTypePayloadDbData[prop]=rooms;
+                    break;
+                case 'criteriaType':
+                    patchRoomTypePayloadDbData[prop] = rateModifierConditionTypeFromString(payload[prop]);
+                    break;
+            }
+
+            return patchRoomTypePayloadDbData;
         }, {})
+
     }
+
 
     fromEntity(profile: IRateModifier): IRateModifierDbData {
         return Object.assign({ _id: this.toObjectId(profile.id) }, this.fromBaseEntity(profile))
