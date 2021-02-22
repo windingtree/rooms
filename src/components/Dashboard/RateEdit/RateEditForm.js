@@ -106,7 +106,6 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                             <Select  value={priority}
                                      labelId="priority-label"
                                      color="secondary"
-                                     label="Priority"
                                      style = {{height: '3em'}}
                                      onChange={(e) => setPriority(e.target.value)}>
                                 <MenuItem value={1}>1</MenuItem>

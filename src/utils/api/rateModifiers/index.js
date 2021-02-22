@@ -3,6 +3,10 @@ import {
   makeAuthHeaders,
   parseJSON,
 } from '../helpers'
+import {
+  ApiCache,
+} from '../../api_cache'
+
 
 export const CRITERIA_TYPE_DATERANGE = 'DATE_RANGE';
 export const CRITERIA_TYPE_DAYOFWEEK = 'DAYOFWEEK';
@@ -11,16 +15,7 @@ export const CRITERIA_TYPE_LENGTH_OF_STAY = 'LENGTH_OF_STAY';
 export const TYPE_ABSOLUTE = 'absolute';
 export const TYPE_PERCENTAGE = 'percentage';
 
-
-
-/*
-
-import {
-  ApiCache,
-} from '../../api_cache'
-
-// const apiCache = ApiCache.getInstance()
-*/
+const apiCache = ApiCache.getInstance()
 
 function getRateModifiers() {
   return fetch('/api/v1/rate_modifiers', {
@@ -29,8 +24,7 @@ function getRateModifiers() {
   }).then(checkStatus)
     .then(parseJSON)
     .then((rateModifiers) => {
-        //TODO - add it to cache
-      // apiCache.setRoomTypes(roomTypes)
+      apiCache.setRateModifiers(rateModifiers)
       return rateModifiers
     })
 }
@@ -42,7 +36,7 @@ function getRateModifier(id) {
   }).then(checkStatus)
     .then(parseJSON)
     .then((record) => {
-      // apiCache.updateRoomType(id, roomType)
+      apiCache.updateRateModifier(id, record)
 
       return record
     })
@@ -56,13 +50,12 @@ function createRateModifier(data) {
     .then(checkStatus)
     .then(parseJSON)
     .then((record) => {
-      // apiCache.addRoomType(roomType)
+      apiCache.addRateModifier(record)
       return record
     })
 }
 function updateRateModifier(id, data) {
-  //TODO
-  // apiCache.updateRoomType(id, data)
+  apiCache.updateRateModifier(id, data)
 
   return fetch(`/api/v1/rate_modifier/${id}`, {
     method: 'PATCH',
@@ -71,15 +64,13 @@ function updateRateModifier(id, data) {
   }).then(checkStatus)
     .then(parseJSON)
     .then((rateModifier) => {
-      // apiCache.updateRoomType(id, record)
-
+      apiCache.updateRateModifier(id, rateModifier)
       return rateModifier
     })
 }
 
 function deleteRateModifier(id) {
-  //TODO - remove from cache
-  // apiCache.deleteRoomType(id)
+  apiCache.updateRateModifier(id)
 
   return fetch(`/api/v1/rate_modifier/${id}`, {
     method: 'DELETE',
@@ -87,7 +78,7 @@ function deleteRateModifier(id) {
   }).then(checkStatus)
     .then(parseJSON)
     .then((data) => {
-      // apiCache.deleteRoomType(id)
+      apiCache.updateRateModifier(id)
 
       return data
     })

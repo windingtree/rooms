@@ -89,14 +89,6 @@ const Rates = ({userProfile}) => {
         setLoadInProgress(true)
         apiClient.createRateModifier(newRecord)
             .then((createdRecord) => {
-                /*let records = rateModifiers.map((record) => {
-                    if (record.id === createdRecord.id) {
-                        return createdRecord
-                    } else {
-                        return record
-                    }
-                })*/
-                // setRateModifiers(records)
                 history.push(`/dashboard/rates/${createdRecord.id}`)
             })
             .catch((error) => {
@@ -138,16 +130,17 @@ const Rates = ({userProfile}) => {
                    handleEditRateModifier={handleEditRateModifier}/>
             }
             {(!rateModifiers || rateModifiers.length === 0) &&
-            <div>
+            <div style={{textAlign:"center"}}>
                 You have not created any rate modifiers yet
                 <p>Let’s create your first one</p>
             </div>
+
             }
             {
-                <>
+                <div style={{textAlign:"center"}}>
                     <Link href="#" onClick={handleAddRateModifier} className={classes.add_new_href}><AddCircleIcon/>Add
                         rate modifier</Link>
-                </>}
+                </div>}
         </>
     )
 }
