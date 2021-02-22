@@ -1,12 +1,12 @@
-import {RateModifierRepo} from '../../data/rate_modifier/RateModifierRepo'
+import { RateModifierRepo } from '../../data/rate_modifier/RateModifierRepo'
 import * as Moment from 'moment'
-import {extendMoment} from 'moment-range'
+import { extendMoment } from 'moment-range'
 import {
     IHotel, IRateModifier,
     IRateModifierCollection, IRateModifierConditionType, IRoomType
 } from '../../common/types'
-import {CError} from "../../common/tools";
-import {HTTP_STATUS} from "../../common/constants/http_status"
+import { CError } from "../../common/tools";
+import { HTTP_STATUS } from "../../common/constants/http_status"
 
 const moment = extendMoment(Moment)
 
@@ -22,7 +22,7 @@ async function getHotelAndRoomRateModifiers(hotelId: string, roomTypeId: string)
         //it was - return cached values
         hotelRateModifiers = hotelRateModifiersCache.get(hotelId);
         if(!hotelRateModifiers)
-            hotelRateModifiers=[];
+            {hotelRateModifiers=[];}
         //return only active and applicable modifiers (e.g. remove modifiers assigned to other room types)
         return getApplicableRoomRateModifiers(hotelRateModifiers,roomTypeId);
     }
@@ -184,4 +184,4 @@ function enumerateDaysBetweenDates(startDate: string, endDate: string): Array<Da
     return dates
 }
 
-export {calculateOfferPrice}
+export { calculateOfferPrice }
