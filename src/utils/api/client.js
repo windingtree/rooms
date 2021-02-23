@@ -29,6 +29,15 @@ import {
   updateHotel,
 } from './hotel'
 
+import {
+  getRateModifiers,
+  getRateModifier,
+  updateRateModifier,
+  deleteRateModifier,
+  createRateModifier
+} from './rateModifiers'
+
+
 const apiClient = (function () {
   return {
     login,
@@ -51,6 +60,12 @@ const apiClient = (function () {
 
     getHotel,
     updateHotel,
+
+    getRateModifiers,
+    getRateModifier,
+    updateRateModifier,
+    deleteRateModifier,
+    createRateModifier
   }
 }())
 

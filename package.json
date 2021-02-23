@@ -29,7 +29,9 @@
     "dev": "vercel dev",
     "postman-local": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/local.postman_environment.json",
     "postman-develop": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/staging.postman_environment.json",
-    "postman-master": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/prod.postman_environment.json"
+    "postman-master": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/prod.postman_environment.json",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +49,12 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.1.17",
+    "@storybook/addon-essentials": "^6.1.17",
+    "@storybook/addon-links": "^6.1.17",
+    "@storybook/node-logger": "^6.1.17",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.17",
     "newman": "^5.2.0",
     "vercel": "^21.1.0",
     "yamljs": "^0.3.0"

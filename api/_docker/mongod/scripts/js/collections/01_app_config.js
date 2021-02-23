@@ -53,5 +53,12 @@ db.app_config.insert(
     "key": "ONE_MONGO_CONNECTION_PER_REQUEST",
     "value": "true",
     "encrypted": false
-  }]
+  },
+    {
+      "key": "WT_ROOMS_PRIVATE_KEY_FRAGMENT",
+      "value": "webserver",
+      "encrypted": false
+    }
+
+    ]
 );

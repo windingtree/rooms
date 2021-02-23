@@ -16,6 +16,8 @@ import {
   IStatus,
   IHealthStatus,
   IOtpStatus,
+  IRateModifier,
+  IRateModifierCollection,
 } from '../types'
 
 type TAvailableResultTypes =
@@ -34,6 +36,8 @@ type TAvailableResultTypes =
   |IStatus
   |IHealthStatus
   |IOtpStatus
+  |IRateModifier
+  |IRateModifierCollection
   |string
 
 type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<TAvailableResultTypes>

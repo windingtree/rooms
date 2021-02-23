@@ -31,6 +31,15 @@ import {
   updateHotel,
 } from './mixins/hotel'
 
+import {
+  getRateModifiers,
+  setRateModifiers,
+  getRateModifier,
+  addRateModifier,
+  updateRateModifier,
+  deleteRateModifier,
+} from './mixins/rates'
+
 const { LOCAL_STORAGE_CACHE_KEY } = CONSTANTS
 
 class CApiCache {
@@ -124,6 +133,14 @@ Object.assign(CApiCache.prototype, {
   getHotel,
   setHotel,
   updateHotel,
+
+  getRateModifiers,
+  setRateModifiers,
+  getRateModifier,
+  addRateModifier,
+  updateRateModifier,
+  deleteRateModifier,
+
 })
 
 export {
