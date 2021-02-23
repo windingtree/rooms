@@ -84,7 +84,7 @@ async function calculateOfferPrice(hotel: IHotel, room: IRoomType, arrival: stri
             //if there are applicable rate modifiers (meaning the condition is met) - calculate price for a given day
             if (isRateModifierApplicable(rateModifier, arrivalDate, departureDate, date)) {
                 dayPrice = calculatePrice(dayPrice, rateModifier)
-                console.log(`Base rate:${basePrice}, calculated:${dayPrice}, rateModifier:`, rateModifier.type)
+                console.log(`Calculated room price, room:${room.type}, base rate:${basePrice}, calculated:${dayPrice}, rateModifier:`, rateModifier.type)
             }
         })
         //add calculated price to the total
