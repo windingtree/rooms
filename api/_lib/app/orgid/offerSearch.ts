@@ -99,11 +99,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       },
     },
     offers: {},
-    passengers: {
-      PAX1: {
-        type: 'ADT',
-      },
-    },
+    passengers: request.body.passengers
   }
 
   hotels.forEach((hotel) => {
