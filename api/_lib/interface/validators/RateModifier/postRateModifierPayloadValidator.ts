@@ -29,7 +29,9 @@ async function postRateModifierPayloadValidator(request: NowRequest): Promise<IP
     'criteriaType',
     'priceModifierType',
     'priceModifierAmount',
-    'combinable'
+    'combinable',
+    'condition',
+    'rooms'
   ]
 
   for (const [key] of Object.entries(request.body)) {

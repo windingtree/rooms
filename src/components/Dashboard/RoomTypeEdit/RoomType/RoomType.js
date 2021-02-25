@@ -111,17 +111,37 @@ class RoomType extends React.Component {
     this.props.onPropValueChange(this.props.id, 'devConPrice', Number.parseFloat(e, 10))
   }
 
+  //this will convert array of [{id:'1', name:'amenity1'}] into semicolon separated string (e.g. "amenity1;amenity2')
+  convertChipsToAmenities(chipData){
+    //return empty list in case input is not an array(e.g. in case of new records)
+    if(!Array.isArray(chipData))
+      return "";
+    const semicolonSeparatedList = chipData.reduce((acc, chip) => {
+       return `${acc}${chip.name};`
+     }, '')
+    return semicolonSeparatedList;
+  }
+  //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{id:'1', name:'amenity1'}]
+  convertAmenitiesToChips(semicolonSeparatedList){
+    if(!semicolonSeparatedList)
+      return [];
+    const chips = semicolonSeparatedList.split(';').map(label=>{return {name:label}})
+    return chips;
+  }
+
   handleAmenitiesChange = (e) => {
-    this.props.onPropValueChange(this.props.id, 'amenities', e)
+    const semicolonSeparatedList = this.convertChipsToAmenities(e)
+    this.props.onPropValueChange(this.props.id, 'amenities', semicolonSeparatedList)
   }
 
   handleImageUrlChange = (e) => {
     this.props.onPropValueChange(this.props.id, 'imageUrl', e)
   }
 
+
   render() {
     const { classes } = this.props
-
+    const chips = this.convertAmenitiesToChips(this.props.amenities);
     return (
       <Card className={classes.room_type_card}>
         <CardContent>
@@ -180,13 +200,13 @@ class RoomType extends React.Component {
                 inputWidth={300}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <MultiAutocomplete
                 options={this.state.availableAmenities}
-                value={this.props.amenities}
+                value={chips}
                 onValueChange={this.handleAmenitiesChange}
                 inputLabel="Amenities"
-                inputWidth={250}
+
               />
             </Grid>
           </Grid>
