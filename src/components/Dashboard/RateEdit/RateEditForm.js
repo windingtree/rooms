@@ -3,10 +3,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SaveIcon from "@material-ui/icons/Save";
 import {
+    Button,
     Checkbox,
     createMuiTheme,
     FormControlLabel,
@@ -26,6 +24,21 @@ import {
     CRITERIA_TYPE_DATERANGE,
 } from "../../../utils/api/rateModifiers";
 import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+
+
+
+const useStyles = makeStyles({
+    saveButton: {
+        background: DARK_PURPLE,
+        color: WHITE,
+        justifyContent: "flex-start",
+        margin:'10px'
+    },
+});
 
 
 export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSave, handleDelete}) => {
@@ -36,8 +49,36 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     const [priceModifierType, setPriceModifierType] = useState(rateModifier.priceModifierType ? rateModifier.priceModifierType : TYPE_PERCENTAGE)
     const [priceModifierAmount, setPriceModifierAmount] = useState(rateModifier.priceModifierAmount ? rateModifier.priceModifierAmount : 0)
     const [rooms, setRooms] = useState(rateModifier.rooms?rateModifier.rooms:[])
+    const [validationErrors, setValidationErrors] = useState({})
+    const classes = useStyles();
 
+    function validate(){
+        const errors={}
+        if(!type ){
+            errors['type']='Field is required'
+        }
+        console.log('isNaN(priceModifierAmount)=',isNaN(priceModifierAmount))
+        console.log('priceModifierAmount === 0',priceModifierAmount === 0)
+        if(isNaN(priceModifierAmount) || priceModifierAmount === 0){
+            errors['priceModifierAmount']='Valid number is required'
+        }
+        if(!criteriaType){
+            errors['criteriaType']='Select condition type'
+        }
+        if(!rooms || rooms.length === 0){
+            errors['rooms']='At least one room must be selected'
+        }
+        if(criteriaType === CRITERIA_TYPE_LENGTH_OF_STAY){
+            if(isNaN(criteria.minStay) && isNaN(criteria.maxStay)) {
+                errors['minStay'] = 'At least on of fields should be provided'
+                errors['maxStay'] = 'At least on of fields should be provided'
+            }
+        }
+        console.log('validationErrors',errors)
+        setValidationErrors(errors)
+    }
     function save() {
+        validate();
         const record = Object.assign({}, rateModifier);
         record.type = type;
         record.enabled = enabled;
@@ -68,7 +109,8 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     }
 
     return (
-            <Card>
+        <form noValidate autoComplete="off">
+            <Card style={{maxWidth:'600px'}}>
                 <CardContent>
                     <Grid
                         container
@@ -77,13 +119,27 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                         spacing={2}
                     >
                         <Grid item xs={12}>
-                            <h3>Rate Modifier</h3>
+                            <Grid container spacing={0}>
+                                <Grid item xs={8}>
+                                    <h3>Rate Modifier</h3>
+                                </Grid>
+                                <Grid item xs={4} style={{textAlign:'right'}}>
+                                    <IconButton aria-label="delete" onClick={handleDelete}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+
+
                             <TextField
                                 value={type}
                                 color="secondary"
                                 variant="outlined"
                                 label="Name"
                                 fullWidth
+                                helperText={validationErrors['type']}
+                                error={validationErrors['type']!==undefined}
+                                onBlur={validate}
                                 onChange={(e) => setType(e.target.value)}
                             />
                         </Grid>
@@ -93,6 +149,9 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 variant="outlined"
                                 color="secondary"
                                 label="Value"
+                                helperText={validationErrors['priceModifierAmount']}
+                                error={validationErrors['priceModifierAmount']!==undefined}
+                                onBlur={validate}
                                 fullWidth
                                 onChange={(e) => setPriceModifierAmount(e.target.value)}
                             />
@@ -118,6 +177,9 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 fullWidth
                                 select
                                 value={criteriaType}
+                                helperText={validationErrors['criteriaType']}
+                                error={validationErrors['criteriaType']!==undefined}
+                                onBlur={validate}
                                 onChange={(e) => setCriteriaType(e.target.value)}>
                                 <MenuItem value={CRITERIA_TYPE_DATERANGE}>Date</MenuItem>
                                 <MenuItem value={CRITERIA_TYPE_DAYOFWEEK}>Day of week</MenuItem>
@@ -125,34 +187,33 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                             </TextField>
                         </Grid>
                         <CriteriaForm criteria={criteria} criteriaType={criteriaType}
-                                      handleCriteriaChanged={handleCriteriaChanged}/>
+                                      handleCriteriaChanged={handleCriteriaChanged} handleValidate={validate} validationErrors={validationErrors}/>
                         <Grid item xs={12}>
                             <h3>Which rooms are affected?</h3>
                             <MultiAutocomplete
                                 options={roomNames}
                                 value={selectedRooms}
-                                onValueChange={handleSelectedRoomsChanged}
+                                onValueChange={(val)=>{validate();handleSelectedRoomsChanged(val)}}
                                 inputLabel="Choose room types"
-                                inputWidth={250}
+                                helperText={validationErrors['rooms']}
+                                error={validationErrors['rooms']!==undefined}
                             />
                         </Grid>
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <IconButton aria-label="delete" onClick={handleDelete}>
-                        <DeleteIcon/>
-                    </IconButton>
-                    <IconButton aria-label="Save" onClick={save}>
-                        <SaveIcon/>
-                    </IconButton>
+                    <Button variant="contained" className={classes.saveButton} onClick={save} fullWidth size="large">
+                        Save
+                    </Button>
                 </CardActions>
             </Card>
+        </form>
     )
 }
 
 const datePickerTheme = createMuiTheme(datePickerThemeObj)
 
-export const CriteriaForm = ({criteriaType, criteria, handleCriteriaChanged}) => {
+export const CriteriaForm = ({criteriaType, criteria, handleCriteriaChanged, validationErrors, handleValidate}) => {
 
     function handleCriteriaPropertyChange(propName, value) {
         let rec = Object.assign({}, criteria)
@@ -164,18 +225,18 @@ export const CriteriaForm = ({criteriaType, criteria, handleCriteriaChanged}) =>
         <>
             {criteriaType === CRITERIA_TYPE_DATERANGE &&
             <DateRangeCondition startDate={criteria.startDate} endDate={criteria.endDate}
-                                handleCriteriaPropertyChange={handleCriteriaPropertyChange}/>}
+                                handleCriteriaPropertyChange={handleCriteriaPropertyChange} validationErrors={validationErrors} handleValidate={handleValidate}/>}
             {criteriaType === CRITERIA_TYPE_LENGTH_OF_STAY &&
             <LengthOfStayCondition minStay={criteria.minStay} maxStay={criteria.maxStay}
-                                handleCriteriaPropertyChange={handleCriteriaPropertyChange}/>}
+                                handleCriteriaPropertyChange={handleCriteriaPropertyChange} validationErrors={validationErrors} handleValidate={handleValidate}/>}
             {criteriaType === CRITERIA_TYPE_DAYOFWEEK &&
             <DayOfWeekCondition criteria={criteria}
-                                handleCriteriaPropertyChange={handleCriteriaPropertyChange}/>}
+                                handleCriteriaPropertyChange={handleCriteriaPropertyChange} validationErrors={validationErrors} handleValidate={handleValidate}/>}
         </>
     )
 }
 
-export const DateRangeCondition = ({startDate, endDate, handleCriteriaPropertyChange}) => {
+export const DateRangeCondition = ({startDate, endDate, handleCriteriaPropertyChange, validationErrors, handleValidate}) => {
     function setDateProperty(propName, e) {
         let dateStr = null;
         if (e) {
@@ -233,7 +294,7 @@ export const DateRangeCondition = ({startDate, endDate, handleCriteriaPropertyCh
     )
 }
 
-export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyChange}) => {
+export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyChange, validationErrors, handleValidate}) => {
     function setProperty(propName, value) {
         handleCriteriaPropertyChange(propName, value)
     }
@@ -247,6 +308,9 @@ export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyC
                     fullWidth
                     value={minStay}
                     label="Min"
+                    helperText={validationErrors['minStay']}
+                    error={validationErrors['minStay']!==undefined}
+                    onBlur={handleValidate}
                     onChange={(e) => setProperty('minStay',e.target.value)}
                 />
             </Grid>
@@ -257,6 +321,9 @@ export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyC
                     fullWidth
                     value={maxStay}
                     label="Max"
+                    helperText={validationErrors['maxStay']}
+                    error={validationErrors['maxStay']!==undefined}
+                    onBlur={handleValidate}
                     onChange={(e) => setProperty('maxStay',e.target.value)}
                 />
             </Grid>
@@ -264,7 +331,7 @@ export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyC
     )
 }
 
-export const DayOfWeekCondition = ({criteria,handleCriteriaPropertyChange}) => {
+export const DayOfWeekCondition = ({criteria,handleCriteriaPropertyChange, validationErrors, handleValidate}) => {
     const days=[
         {id:'monday', label:'Mon'},
         {id:'tuesday', label:'Tue'},

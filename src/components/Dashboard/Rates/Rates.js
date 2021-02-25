@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory} from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
 import Spinner from "../../base/Spinner/Spinner";
 import {apiClient} from "../../../utils/api";
 import {errorLogger, objClone} from "../../../utils/functions";
 import {makeStyles} from '@material-ui/core/styles';
-import {Box, CardActionArea, Link, Switch} from "@material-ui/core";
+import {Box, CardActionArea, Link, Paper, Switch} from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {TYPE_PERCENTAGE} from "../../../utils/api/rateModifiers";
 import {ApiCache} from "../../../utils/api_cache";
@@ -50,7 +49,9 @@ const Rates = ({userProfile}) => {
         setRoomTypes(apiCache.getRoomTypes())
 
         //load data from the server
-        let fetchRatesPromise = apiClient.getRateModifiers().then(rateModifiers => {setRateModifiers(rateModifiers)});
+        let fetchRatesPromise = apiClient.getRateModifiers().then(rateModifiers => {
+            sortRateModifiersByPriority(rateModifiers);
+            setRateModifiers(rateModifiers)});
         let fetchRoomsPromise = apiClient.getRoomTypes().then(roomTypes=>{setRoomTypes(roomTypes)});
         Promise.all([fetchRatesPromise,fetchRoomsPromise])
             .catch(error => {
@@ -62,6 +63,14 @@ const Rates = ({userProfile}) => {
             })
 
     }, [apiCache])
+
+    function sortRateModifiersByPriority(rateModifiersList){
+        rateModifiersList.sort((a,b)=>{
+            if(a.priority>b.priority)
+            return -1;
+        })
+
+    }
 
     /**
      * Update rate modifier in the backend and update local store too
@@ -142,7 +151,7 @@ const Rates = ({userProfile}) => {
     )
 }
 
-export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange,handleEditRateModifier}) =>
+export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange, handleEditRateModifier}) =>
 {
     function getRoomNameById(roomTypeId){
         if(roomTypes){
@@ -235,7 +244,7 @@ export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceMod
     }
 
     return (
-        <Card className={classes.rate_card}>
+        <Paper className={classes.rate_card}>
             <CardActionArea >
                 <Grid container >
                     <Grid item xs={8} onClick={handleEditClick}>
@@ -256,7 +265,7 @@ export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceMod
                     </Grid>
                 </Grid>
             </CardActionArea>
-        </Card>
+        </Paper>
     )
 }
 

@@ -7,6 +7,7 @@ import Spinner from "../../base/Spinner/Spinner";
 import {RateModifierEditForm} from "./RateEditForm";
 import Grid from "@material-ui/core/Grid";
 import {ApiCache} from "../../../utils/api_cache";
+import {useTheme} from "@material-ui/core";
 
 const RateModifierEdit = () => {
     const [isLoadInProgress, setLoadInProgress] = useState(false)
@@ -15,7 +16,6 @@ const RateModifierEdit = () => {
     const {rateModifierId} = useParams();
     const history = useHistory();
     const apiCache = ApiCache.getInstance()
-
     useEffect(() => {
 
         //first load room types from cache
@@ -80,7 +80,10 @@ const RateModifierEdit = () => {
     function handleDeleteRateModifier() {
         //delete record from cache and server
         apiCache.deleteRateModifier(rateModifierId);
-        apiClient.deleteRateModifier(rateModifierId);
+        apiClient.deleteRateModifier(rateModifierId)
+            .catch(error=>{
+                errorLogger(error)
+            });
         //don't wait for server response - redirect to list
         history.push(`/dashboard/rates`);
     }
