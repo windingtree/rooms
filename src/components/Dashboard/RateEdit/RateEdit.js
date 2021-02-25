@@ -6,6 +6,7 @@ import {errorLogger} from "../../../utils/functions";
 import Spinner from "../../base/Spinner/Spinner";
 import {RateModifierEditForm} from "./RateEditForm";
 import Grid from "@material-ui/core/Grid";
+import {ApiCache} from "../../../utils/api_cache";
 
 const RateModifierEdit = () =>
 {
@@ -14,68 +15,72 @@ const RateModifierEdit = () =>
     const [roomTypes, setRoomTypes] = useState()
     const { rateModifierId } = useParams();
     const history = useHistory();
+    const apiCache = ApiCache.getInstance()
     useEffect(()=>{
-        loadAvailableRoomTypes();
-        fetchRecord(rateModifierId)
+        //first load room types from cache
+        setRoomTypes(apiCache.getRoomTypes());
+        //then load it from server
+        let fetchingPromises=[
+            apiClient.getRoomTypes().then(roomTypes => {setRoomTypes(roomTypes)}),
+        ]
+        if(rateModifierId==='temporary') {
+            //if it's 'temporary' record (newly created, without copy in DB or cache) - skip loading from cache, just prepare new record
+            let profile = apiCache.getProfile()
+            setRateModifier({id:'temporary', hotelId:profile.hotelId})
+        }else{
+            //otherwise, load record from cache
+            let record = apiCache.getRateModifier(rateModifierId)
+            if(record) {
+                setRateModifier(record)
+            }
+            //...and then from server too
+            fetchingPromises.push(apiClient.getRateModifier(rateModifierId).then(rateModifier => {
+                setRateModifier(rateModifier)
+            }));
+        }
+        //wait for all requests to complete
+        Promise.all(fetchingPromises)
+            .catch(error => {
+                console.error('Failed to fetch rate data:', error)
+                errorLogger(error)
+            })
+            .finally(() => {
+                // setLoadInProgress(false);
+            })
     },[rateModifierId])
 
     function handleSaveRateModifier(record){
         setLoadInProgress(true)
-        delete record.id
-        apiClient
-            .updateRateModifier(rateModifierId,record)
-            .then(()=>{
+        apiCache.updateRateModifier(rateModifierId,record)
+        delete record.id;
+        let savePromise
+        if(rateModifierId === 'temporary'){
+            //new record is being created - POST it to server
+            savePromise=apiClient.createRateModifier(record);
+        }else {
+            //existing record is being saved - PATCH it to server
+            savePromise=apiClient.updateRateModifier(rateModifierId, record)
+        }
+        savePromise
+            .then(() => {
                 history.push(`/dashboard/rates`)
             })
-            .catch(err=>{
-                errorLogger(err)
+            .catch((error) => {
+                errorLogger(error)
             })
-            .finally(()=>{
+            .finally(() => {
                 setLoadInProgress(false)
             })
+
     }
     function handleDeleteRateModifier(){
-        setLoadInProgress(true)
-        apiClient
-            .deleteRateModifier(rateModifierId)
-            .then(()=>{
-                history.push(`/dashboard/rates`)
-            })
-            .catch(err=>{
-                errorLogger(err)
-            })
-            .finally(()=>{
-                setLoadInProgress(false)
-            })
+        //delete record from cache and server
+        apiCache.deleteRateModifier(rateModifierId);
+        apiClient.deleteRateModifier(rateModifierId);
+        //don't wait for server response - redirect to list
+        history.push(`/dashboard/rates`);
     }
 
-    function fetchRecord(id) {
-        setLoadInProgress(true);
-        apiClient.getRateModifier(id)
-            .then(rateModifier => {
-                setRateModifier(rateModifier)
-            })
-            .catch(error => {
-                console.error('Failed to fetch rate modifier:', error)
-                errorLogger(error)
-            })
-            .finally(() => {
-                setLoadInProgress(false);
-            })
-    }
-
-    function loadAvailableRoomTypes() {
-        apiClient.getRoomTypes()
-            .then(roomTypes => {
-                setRoomTypes(roomTypes)
-            })
-            .catch(error => {
-                console.error('Failed to fetch room types:', error)
-                errorLogger(error)
-            })
-            .finally(() => {
-            })
-    }
     return (
         <Grid
             container

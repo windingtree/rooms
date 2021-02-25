@@ -9,13 +9,26 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Box, CardActionArea, Link, Switch} from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {TYPE_PERCENTAGE} from "../../../utils/api/rateModifiers";
+import {ApiCache} from "../../../utils/api_cache";
+import { withStyles } from '@material-ui/core/styles'
+
+
+const useStyles = (theme) => {
+    return {
+        typography:{
+            h3:{
+                fontSize: '3.2rem'
+            }
+        }
+    }
+}
+
 
 const createRatesStyles = makeStyles({
     add_new_href: {
         color: '#9226AD'
     },
 });
-
 
 const Rates = ({userProfile}) => {
     const history = useHistory();
@@ -24,33 +37,31 @@ const Rates = ({userProfile}) => {
     const [roomTypes, setRoomTypes] = useState([])
     const [loadInProgress, setLoadInProgress] = useState(false)
     const classes = createRatesStyles();
+    const apiCache = ApiCache.getInstance()
+
     useEffect(() => {
-        fetchRecords();
+        loadRateModifiersList();
     }, [])
 
     /**
      * Load rate modifiers from the backend and store them in a local state.
      */
-    function fetchRecords() {
+    function loadRateModifiersList() {
         setLoadInProgress(true);
-        apiClient.getRateModifiers()
-            .then(rateModifiers => {
-                setRateModifiers(rateModifiers)
-            })
+        //populate data from cache to speed up page loading
+        setRateModifiers(apiCache.getRateModifiers())
+        setRoomTypes(apiCache.getRoomTypes())
+
+        //load data from the server
+        let fetchRatesPromise = apiClient.getRateModifiers().then(rateModifiers => {setRateModifiers(rateModifiers)});
+        let fetchRoomsPromise = apiClient.getRoomTypes().then(roomTypes=>{setRoomTypes(roomTypes)});
+        Promise.all([fetchRatesPromise,fetchRoomsPromise])
             .catch(error => {
-                console.error('Failed to fetch rates:', error)
+                console.error('Failed to fetch data from server:', error)
                 errorLogger(error)
             })
             .finally(() => {
                 setLoadInProgress(false);
-            })
-        apiClient.getRoomTypes()
-            .then(roomTypes=>{
-                setRoomTypes(roomTypes)
-            })
-            .catch(error => {
-                console.error('Failed to fetch room types:', error)
-                errorLogger(error)
             })
     }
 
@@ -79,29 +90,17 @@ const Rates = ({userProfile}) => {
     }
 
     /**
-     * Create new rate modifier in the backend and update local store
+     * Create new rate modifier record, add that to cache.
+     * Note: it does not store it on server as it is not complete - user has to update fields and save it
      */
-    function createRecord() {
+    function handleAddRateModifier() {
         const newRecord = {
             hotelId: userProfile.hotelId,
-            enabled:true
+            id: 'temporary'
         }
-        setLoadInProgress(true)
-        apiClient.createRateModifier(newRecord)
-            .then((createdRecord) => {
-                history.push(`/dashboard/rates/${createdRecord.id}`)
-            })
-            .catch((error) => {
-                console.error(error)
-                errorLogger(error)
-            })
-            .finally(()=>{
-                setLoadInProgress(false)
-            })
-    }
-
-    function handleAddRateModifier() {
-        createRecord();
+        //add it to cache so that it can be loaded by the edit form
+        // apiCache.addRateModifier(newRecord);
+        history.push(`/dashboard/rates/${newRecord.id}`)
     }
 
     function handleEditRateModifier(id) {
@@ -122,8 +121,8 @@ const Rates = ({userProfile}) => {
 
     return (
         <>
-            <h1>Rates</h1>
-            {loadInProgress && <Spinner info="loading"/>}
+                <h3>Rate modifiers</h3>
+            {loadInProgress && (!rateModifiers || rateModifiers.length === 0) && <Spinner info="loading"/>}
             {rateModifiers && rateModifiers.length > 0 &&
                 <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes}
                    handlePropertyValueChange={handlePropertyValueChange}
@@ -131,8 +130,8 @@ const Rates = ({userProfile}) => {
             }
             {(!rateModifiers || rateModifiers.length === 0) &&
             <div style={{textAlign:"center"}}>
-                You have not created any rate modifiers yet
-                <p>Let’s create your first one</p>
+                Here you can create and apply discounts or price increases to you Unit Types base rates.
+                <p>Let’s create your first Rate Modifier</p>
             </div>
 
             }
@@ -264,4 +263,4 @@ export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceMod
 }
 
 
-export default Rates
+export default withStyles(useStyles)(Rates)

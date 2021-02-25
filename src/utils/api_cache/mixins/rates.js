@@ -46,7 +46,6 @@ function getRateModifier(rateModifierId) {
 
 function addRateModifier(rateModifier) {
   const _rateModifiers = []
-
   if (this.cache.rateModifiers) {
     this.cache.rateModifiers.forEach((rateModifier) => {
       _rateModifiers.push(objClone(rateModifier))

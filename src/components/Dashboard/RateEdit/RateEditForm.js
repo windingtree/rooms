@@ -10,10 +10,8 @@ import {
     Checkbox,
     createMuiTheme,
     FormControlLabel,
-    InputLabel,
     ListItemText,
     MenuItem,
-    Select,
     TextField
 } from "@material-ui/core";
 
@@ -28,6 +26,7 @@ import {
     CRITERIA_TYPE_LENGTH_OF_STAY,
     CRITERIA_TYPE_DATERANGE,
 } from "../../../utils/api/rateModifiers";
+import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
 
 
 
@@ -66,8 +65,19 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
             return '';
         return room.type;
     }
+    let roomNames = availableRooms.map(room=>{return {name:room.type, id: room.id}})
+    let selectedRooms = rooms.map((id)=>{return {name:getRoomNameById(id), id: id}})
+    console.log('Room names:',roomNames)
+    console.log('Selected rooms:',selectedRooms)
+
+
+    function handleSelectedRoomsChanged(chips) {
+        let roomIdList = chips.map(({id})=>id)
+        setRooms(roomIdList)
+    }
+
     return (
-            <Card style={{maxWidth: '40em'}}>
+            <Card>
                 <CardContent>
                     <Grid
                         container
@@ -76,46 +86,39 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                         spacing={2}
                     >
                         <Grid item xs={12}>
+                            <h3>Rate Modifier</h3>
                             <TextField
                                 value={type}
                                 color="secondary"
                                 variant="outlined"
                                 label="Name"
-                                style = {{width: 200}}
+                                fullWidth
                                 onChange={(e) => setType(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} md={6} >
+                        <Grid item xs={6} >
                             <TextField
                                 value={priceModifierAmount}
+                                variant="outlined"
                                 color="secondary"
-                                label="Modifier"
-                                style = {{width: 100}}
+                                label="Value"
+                                fullWidth
                                 onChange={(e) => setPriceModifierAmount(e.target.value)}
                             />
-                            <Select value={priceModifierType}
+                        </Grid>
+                        <Grid item xs={6} >
+                            <TextField value={priceModifierType}
                                     color="secondary"
-                                    style = {{height: '3em'}}
+                                    variant="outlined"
+                                    label="Units"
+                                    fullWidth
+                                    select
                                     onChange={(e) => setPriceModifierType(e.target.value)}>
                                 <MenuItem value={TYPE_ABSOLUTE}>$</MenuItem>
                                 <MenuItem value={TYPE_PERCENTAGE}>%</MenuItem>
-                            </Select>
+                            </TextField>
                         </Grid>
-                        <Grid item xs={12}>
-                            <InputLabel id="priority-label">Priority</InputLabel>
-                            <Select  value={priority}
-                                     labelId="priority-label"
-                                     color="secondary"
-                                     style = {{height: '3em'}}
-                                     onChange={(e) => setPriority(e.target.value)}>
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                                <MenuItem value={4}>4</MenuItem>
-                                <MenuItem value={5}>5</MenuItem>
-                            </Select>
-
-                        </Grid>
+{/*
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -128,45 +131,55 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Grid>
+*/}
                         <Grid item xs={12}>
-                            <InputLabel id="room-label">Room</InputLabel>
-                                <Select
-                                    labelId="room-label"
-                                    multiple
-                                    value={rooms}
-                                    color="secondary"
-                                    variant="outlined"
-                                    label="Room"
-                                    style = {{width: 200}}
-                                    onChange={(e)=>setRooms(e.target.value)}
-                                    renderValue={(selected) => selected.map(roomTypeId=>getRoomNameById(roomTypeId)).join(', ')}
-                                >
-                                    {availableRooms.map(({id,type}) => (
-
-                                        <MenuItem key={id} value={id}>
-                                            <Checkbox checked={rooms.indexOf(id) > -1} />
-                                            <ListItemText primary={type} />
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputLabel id="condition-label">Choose trigger</InputLabel>
-                            <Select
+                            <h3>What triggers the modifier?</h3>
+                            <TextField
                                 color="secondary"
                                 variant="outlined"
-                                label="Trigger"
+                                label="Choose trigger"
+                                fullWidth
+                                select
                                 value={criteriaType}
-                                style = {{width: 200}}
                                 onChange={(e) => setCriteriaType(e.target.value)}>
                                 <MenuItem value={CRITERIA_TYPE_DATERANGE}>Date</MenuItem>
                                 <MenuItem value={CRITERIA_TYPE_DAYOFWEEK}>Day of week</MenuItem>
                                 <MenuItem value={CRITERIA_TYPE_LENGTH_OF_STAY}>Length of stay</MenuItem>
-                            </Select>
+                            </TextField>
                         </Grid>
-
                         <CriteriaForm criteria={criteria} criteriaType={criteriaType}
                                       handleCriteriaChanged={handleCriteriaChanged}/>
+                        <Grid item xs={12}>
+                            <h3>Which rooms are affected?</h3>
+                            <MultiAutocomplete
+                                options={roomNames}
+                                value={selectedRooms}
+                                onValueChange={handleSelectedRoomsChanged}
+                                inputLabel="Amenities"
+                                inputWidth={250}
+                            />
+
+                            <TextField
+                                fullWidth
+                                select
+                                multiple
+                                placeholder="Choose a room"
+                                value={rooms}
+                                color="secondary"
+                                variant="outlined"
+                                style = {{width: 200}}
+                                onChange={(e)=>setRooms(e.target.value)}
+                                renderValue={(selected) => selected.map(roomTypeId=>getRoomNameById(roomTypeId)).join(', ')}
+                            >
+                                {availableRooms.map(({id,type}) => (
+                                    <MenuItem key={id} value={id}>
+                                        {/*<Checkbox checked={rooms.indexOf(id) > -1} />*/}
+                                        <ListItemText primary={type} />
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+
                     </Grid>
                 </CardContent>
                 <CardActions>
