@@ -39,14 +39,11 @@ const Rates = ({userProfile}) => {
     const classes = createRatesStyles();
     const apiCache = ApiCache.getInstance()
 
-    useEffect(() => {
-        loadRateModifiersList();
-    }, [])
-
     /**
      * Load rate modifiers from the backend and store them in a local state.
      */
-    function loadRateModifiersList() {
+
+    useEffect(() => {
         setLoadInProgress(true);
         //populate data from cache to speed up page loading
         setRateModifiers(apiCache.getRateModifiers())
@@ -63,7 +60,8 @@ const Rates = ({userProfile}) => {
             .finally(() => {
                 setLoadInProgress(false);
             })
-    }
+
+    }, [apiCache])
 
     /**
      * Update rate modifier in the backend and update local store too

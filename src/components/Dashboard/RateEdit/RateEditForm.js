@@ -32,9 +32,7 @@ import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
 
 export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSave, handleDelete}) => {
     const [type, setType] = useState(rateModifier.type)
-    const [description, setDescription] = useState(rateModifier.description)
     const [enabled] = useState(rateModifier.enabled)
-    const [priority, setPriority] = useState(rateModifier.priority ? rateModifier.priority : 1)
     const [criteria, setCriteria] = useState(rateModifier.condition ? rateModifier.condition : {})
     const [criteriaType, setCriteriaType] = useState(rateModifier.criteriaType ? rateModifier.criteriaType : '')
     const [priceModifierType, setPriceModifierType] = useState(rateModifier.priceModifierType ? rateModifier.priceModifierType : TYPE_PERCENTAGE)
@@ -44,9 +42,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     function save() {
         const record = Object.assign({}, rateModifier);
         record.type = type;
-        record.description = description;
         record.enabled = enabled;
-        record.priority = priority;
         record.priceModifierType = priceModifierType;
         record.priceModifierAmount = priceModifierAmount;
         record.criteriaType = criteriaType;
@@ -118,20 +114,6 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 <MenuItem value={TYPE_PERCENTAGE}>%</MenuItem>
                             </TextField>
                         </Grid>
-{/*
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                color="secondary"
-                                value={description}
-                                multiline
-                                rows={3}
-                                style = {{width: 200}}
-                                label="Modifier"
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </Grid>
-*/}
                         <Grid item xs={12}>
                             <h3>What triggers the modifier?</h3>
                             <TextField
