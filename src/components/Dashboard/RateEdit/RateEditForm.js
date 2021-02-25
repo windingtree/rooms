@@ -10,7 +10,6 @@ import {
     Checkbox,
     createMuiTheme,
     FormControlLabel,
-    ListItemText,
     MenuItem,
     TextField
 } from "@material-ui/core";
@@ -27,7 +26,6 @@ import {
     CRITERIA_TYPE_DATERANGE,
 } from "../../../utils/api/rateModifiers";
 import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
-
 
 
 export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSave, handleDelete}) => {
@@ -63,9 +61,6 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     }
     let roomNames = availableRooms.map(room=>{return {name:room.type, id: room.id}})
     let selectedRooms = rooms.map((id)=>{return {name:getRoomNameById(id), id: id}})
-    console.log('Room names:',roomNames)
-    console.log('Selected rooms:',selectedRooms)
-
 
     function handleSelectedRoomsChanged(chips) {
         let roomIdList = chips.map(({id})=>id)
@@ -92,7 +87,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 onChange={(e) => setType(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 value={priceModifierAmount}
                                 variant="outlined"
@@ -102,7 +97,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 onChange={(e) => setPriceModifierAmount(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={12} sm={6} >
                             <TextField value={priceModifierType}
                                     color="secondary"
                                     variant="outlined"
@@ -137,31 +132,10 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 options={roomNames}
                                 value={selectedRooms}
                                 onValueChange={handleSelectedRoomsChanged}
-                                inputLabel="Amenities"
+                                inputLabel="Choose room types"
                                 inputWidth={250}
                             />
-
-                            <TextField
-                                fullWidth
-                                select
-                                multiple
-                                placeholder="Choose a room"
-                                value={rooms}
-                                color="secondary"
-                                variant="outlined"
-                                style = {{width: 200}}
-                                onChange={(e)=>setRooms(e.target.value)}
-                                renderValue={(selected) => selected.map(roomTypeId=>getRoomNameById(roomTypeId)).join(', ')}
-                            >
-                                {availableRooms.map(({id,type}) => (
-                                    <MenuItem key={id} value={id}>
-                                        {/*<Checkbox checked={rooms.indexOf(id) > -1} />*/}
-                                        <ListItemText primary={type} />
-                                    </MenuItem>
-                                ))}
-                            </TextField>
                         </Grid>
-
                     </Grid>
                 </CardContent>
                 <CardActions>
@@ -212,15 +186,18 @@ export const DateRangeCondition = ({startDate, endDate, handleCriteriaPropertyCh
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
                 <ThemeProvider theme={datePickerTheme}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             disableToolbar
-                            variant="inline"
                             format="DD/MM/yyyy"
                             margin="normal"
+                            color="secondary"
+                            variant="inline"
                             label="From"
+                            fullWidth
+                            inputVariant="outlined"
                             value={startDate}
                             onChange={(e) => setDateProperty('startDate', e)}
                             KeyboardButtonProps={{
@@ -229,11 +206,16 @@ export const DateRangeCondition = ({startDate, endDate, handleCriteriaPropertyCh
                         />
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>
+            </Grid>
+                <Grid item xs={12} sm={6}>
                 <ThemeProvider theme={datePickerTheme}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             disableToolbar
+                            color="secondary"
                             variant="inline"
+                            inputVariant="outlined"
+                            fullWidth
                             format="DD/MM/yyyy"
                             margin="normal"
                             label="To"
@@ -258,19 +240,23 @@ export const LengthOfStayCondition = ({minStay, maxStay, handleCriteriaPropertyC
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
                 <TextField
+                    color="secondary"
                     variant="outlined"
+                    fullWidth
                     value={minStay}
                     label="Min"
-                    style = {{width: 200}}
                     onChange={(e) => setProperty('minStay',e.target.value)}
                 />
+            </Grid>
+                <Grid item xs={12} sm={6}>
                 <TextField
+                    color="secondary"
                     variant="outlined"
+                    fullWidth
                     value={maxStay}
                     label="Max"
-                    style = {{width: 200}}
                     onChange={(e) => setProperty('maxStay',e.target.value)}
                 />
             </Grid>
