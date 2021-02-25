@@ -7,7 +7,7 @@ import {
 } from '../../common/types'
 import { CError } from "../../common/tools";
 import { HTTP_STATUS } from "../../common/constants/http_status"
-import {TimeBasedCache} from "../../common/cache/timeBasedCache";
+import { TimeBasedCache } from "../../common/cache/timeBasedCache";
 
 const moment = extendMoment(Moment)
 const repository = new RateModifierRepo()

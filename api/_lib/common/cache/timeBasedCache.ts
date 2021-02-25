@@ -19,7 +19,7 @@ export class TimeBasedCache<K,V>{
     constructor(cacheTTLInMillis:number) {
         this.cacheTTLInMillis = cacheTTLInMillis;
     }
-    public put(key:K,value:V){
+    public put(key:K,value:V):void{
         this.evictOldEntries();
         this.cache.set(key,new CacheEntryWrapper(value));
     }
@@ -36,8 +36,8 @@ export class TimeBasedCache<K,V>{
     }
 
     private isEntryStale(entry:CacheEntryWrapper<V>):boolean{
-        let creationTime = entry.getCreationTime();
-        let now = Date.now();
+        const creationTime = entry.getCreationTime();
+        const now = Date.now();
         return (now-creationTime)>this.cacheTTLInMillis;
     }
     private evictOldEntries(){

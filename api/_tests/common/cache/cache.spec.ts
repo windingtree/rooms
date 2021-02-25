@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import 'mocha'
-import {TimeBasedCache} from '../../../_lib/common/cache/timeBasedCache'
+import { TimeBasedCache } from '../../../_lib/common/cache/timeBasedCache'
 
 describe('Cache', () => {
   it('should correctly add items to cache and return by key', () => {
@@ -28,8 +28,8 @@ describe('Cache', () => {
 
     setTimeout(()=>{
       console.log('check after time')
-      expect(cache.get('key1')).to.be.undefined;
-      expect(cache.get('key2')).to.be.undefined;
+      expect(cache.get('key1')).to.equal(undefined)
+      expect(cache.get('key2')).to.equal(undefined)
       done()
     },2*evictionTimeInMillis)
   })
