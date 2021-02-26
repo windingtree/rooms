@@ -42,6 +42,26 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
+//convert passengers from request to the format expected by the client
+function decodePassengers(request: NowRequest):any{
+  let paxData = request.body.passengers;
+  let transformed:any = {
+
+  }
+
+  Object.keys(paxData).forEach(paxId => {
+    const paxRecord = paxData[paxId]
+    let type = paxRecord.type;
+    let count = isNaN(paxRecord.count)?1:paxRecord.count;
+    for(let i=0;i<count;i++){
+      transformed[uuidv4()] = {
+            type: type
+      }
+    }
+  });
+  return transformed;
+}
+
 
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
@@ -99,7 +119,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       },
     },
     offers: {},
-    passengers: request.body.passengers
+    passengers: decodePassengers(request)
   }
 
   hotels.forEach((hotel) => {
@@ -242,5 +262,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   return result
 }
+
+
 
 export { offerSearch }
