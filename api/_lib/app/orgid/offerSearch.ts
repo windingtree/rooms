@@ -42,25 +42,6 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
-//convert passengers from request to the format expected by the client
-function decodePassengers(request: NowRequest):any{
-  let paxData = request.body.passengers;
-  let transformed:any = {
-
-  }
-
-  Object.keys(paxData).forEach(paxId => {
-    const paxRecord = paxData[paxId]
-    let type = paxRecord.type;
-    let count = isNaN(paxRecord.count)?1:paxRecord.count;
-    for(let i=0;i<count;i++){
-      transformed[uuidv4()] = {
-            type: type
-      }
-    }
-  });
-  return transformed;
-}
 
 
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
@@ -106,6 +87,8 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   const roomTypes: IRoomTypeCollection = await roomTypeRepo.readRoomTypes()
 
+
+
   const result: IOfferSearchResults = {
     accommodations: {},
     pricePlans: {
@@ -119,8 +102,23 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       },
     },
     offers: {},
-    passengers: decodePassengers(request)
+    passengers: {}
   }
+
+
+  //convert passengers from request to the format expected by the client
+  const paxData = request.body.passengers;
+
+  Object.keys(paxData).forEach(paxId => {
+    const paxRecord = paxData[paxId]
+    const type = paxRecord.type;
+    const count = isNaN(paxRecord.count)?1:paxRecord.count;
+    for(let i=0;i<count;i++){
+      result.passengers[uuidv4()] = {
+        type: type
+      }
+    }
+  });
 
   hotels.forEach((hotel) => {
     let numAvailRoomTypes = 0
@@ -129,7 +127,6 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       if (roomType.hotelId !== hotel.id) {
         return
       }
-
       numAvailRoomTypes += 1
     })
 
