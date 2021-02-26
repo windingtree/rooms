@@ -43,6 +43,7 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
 }
 
 
+
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
   if (request && request.body && request.body.accommodation && request.body.accommodation.location) {
@@ -86,6 +87,8 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   const roomTypes: IRoomTypeCollection = await roomTypeRepo.readRoomTypes()
 
+
+
   const result: IOfferSearchResults = {
     accommodations: {},
     pricePlans: {
@@ -99,8 +102,23 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       },
     },
     offers: {},
-    passengers: request.body.passengers
+    passengers: {}
   }
+
+
+  //convert passengers from request to the format expected by the client
+  const paxData = request.body.passengers;
+
+  Object.keys(paxData).forEach(paxId => {
+    const paxRecord = paxData[paxId]
+    const type = paxRecord.type;
+    const count = isNaN(paxRecord.count)?1:paxRecord.count;
+    for(let i=0;i<count;i++){
+      result.passengers[uuidv4()] = {
+        type: type
+      }
+    }
+  });
 
   hotels.forEach((hotel) => {
     let numAvailRoomTypes = 0
@@ -109,7 +127,6 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       if (roomType.hotelId !== hotel.id) {
         return
       }
-
       numAvailRoomTypes += 1
     })
 
@@ -242,5 +259,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   return result
 }
+
+
 
 export { offerSearch }

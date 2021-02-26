@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Chip from '@material-ui/core/Chip'
 import {v4 as uuidv4} from 'uuid'
-
+import { FormHelperText } from '@material-ui/core';
 import {objClone} from '../../../utils/functions'
 import {dropDownThemeObj} from '../../../utils/themes'
 
@@ -170,7 +170,7 @@ class MultiAutocomplete extends React.Component {
         <div className={classes.select}>
           <ThemeProvider theme={dropDownTheme}>
             <Autocomplete
-              fullWidth={this.props.fullWidth}
+                fullWidth={this.props.fullWidth}
               value={this.state.value}
               onChange={(event, newValue) => {
                 this.setValue(newValue)
@@ -197,6 +197,7 @@ class MultiAutocomplete extends React.Component {
                 )
               }}
             />
+            <FormHelperText error={this.props.error} >{this.props.helperText}</FormHelperText>
           </ThemeProvider>
         </div>
         <div className={classes.chips}>

@@ -15,7 +15,6 @@ const RateModifierEdit = () => {
     const {rateModifierId} = useParams();
     const history = useHistory();
     const apiCache = ApiCache.getInstance()
-
     useEffect(() => {
 
         //first load room types from cache
@@ -80,7 +79,10 @@ const RateModifierEdit = () => {
     function handleDeleteRateModifier() {
         //delete record from cache and server
         apiCache.deleteRateModifier(rateModifierId);
-        apiClient.deleteRateModifier(rateModifierId);
+        apiClient.deleteRateModifier(rateModifierId)
+            .catch(error=>{
+                errorLogger(error)
+            });
         //don't wait for server response - redirect to list
         history.push(`/dashboard/rates`);
     }
