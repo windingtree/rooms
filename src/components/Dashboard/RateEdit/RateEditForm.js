@@ -52,33 +52,39 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     const [validationErrors, setValidationErrors] = useState({})
     const classes = useStyles();
 
-    function validate(){
-        const errors={}
-        if(!type ){
-            errors['type']='Field is required'
+    const isNullOrEmpty = (param) => {
+        return (param === undefined || param === null || param === '')
+    }
+
+    function validate() {
+        const errors = {}
+        if (isNullOrEmpty(type)) {
+            errors['type'] = 'Field is required'
         }
-        console.log('isNaN(priceModifierAmount)=',isNaN(priceModifierAmount))
-        console.log('priceModifierAmount === 0',priceModifierAmount === 0)
-        if(isNaN(priceModifierAmount) || priceModifierAmount === 0){
-            errors['priceModifierAmount']='Valid number is required'
+        if (isNullOrEmpty(priceModifierAmount)) {
+            errors['priceModifierAmount'] = 'Valid number is required'
         }
-        if(!criteriaType){
-            errors['criteriaType']='Select condition type'
+
+        if (isNullOrEmpty(criteriaType)) {
+            errors['criteriaType'] = 'Select condition type'
         }
-        if(!rooms || rooms.length === 0){
-            errors['rooms']='At least one room must be selected'
+        if (!rooms || rooms.length === 0) {
+            errors['rooms'] = 'At least one room must be selected'
         }
-        if(criteriaType === CRITERIA_TYPE_LENGTH_OF_STAY){
-            if(isNaN(criteria.minStay) && isNaN(criteria.maxStay)) {
+        if (criteriaType === CRITERIA_TYPE_LENGTH_OF_STAY) {
+            if ((isNullOrEmpty(criteria.minStay) || isNaN(criteria.minStay)) && (isNullOrEmpty(criteria.maxStay) || isNaN(criteria.maxStay))) {
                 errors['minStay'] = 'At least on of fields should be provided'
                 errors['maxStay'] = 'At least on of fields should be provided'
             }
         }
-        console.log('validationErrors',errors)
         setValidationErrors(errors)
+        return Object.keys(errors).length === 0;
     }
     function save() {
-        validate();
+        if(!validate()){
+            console.log('Form is not valid')
+            return;
+        }
         const record = Object.assign({}, rateModifier);
         record.type = type;
         record.enabled = enabled;
