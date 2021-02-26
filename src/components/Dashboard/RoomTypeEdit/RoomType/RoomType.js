@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import DoneIcon from '@material-ui/icons/Done'
+// import DoneIcon from '@material-ui/icons/Done'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
@@ -76,8 +76,8 @@ const RoomType = props => {
     beds,
     price,
     currency,
-    devConPrice,
-    imageUrl,
+    // devConPrice,
+    // imageUrl,
     amenities,
     onTrashClick,
     onDoneClick,
