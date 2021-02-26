@@ -47,6 +47,7 @@ class RoomTypeRepo extends BaseDataRepo {
       'description',
       'quantity',
       'price',
+      'currency',
       'devConPrice',
       'amenities',
       'imageUrl',

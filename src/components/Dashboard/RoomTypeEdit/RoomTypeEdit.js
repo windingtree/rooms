@@ -50,7 +50,11 @@ class RoomTypeEdit extends React.Component {
     const data = {}
     data[propName] = newValue
 
-    this.updateRoomType(id, data)
+    try {
+      this.updateRoomType(id, data)
+    } catch (error) {
+      errorLogger(error)
+    }
   }
 
   getRoomType = (roomTypeId) => {
@@ -118,6 +122,7 @@ class RoomTypeEdit extends React.Component {
               type={this.state.roomType.type}
               description={this.state.roomType.description}
               price={this.state.roomType.price}
+              currency={this.state.roomType.currency}
               devConPrice={this.state.roomType.devConPrice}
               amenities={this.state.roomType.amenities}
               imageUrl={this.state.roomType.imageUrl}

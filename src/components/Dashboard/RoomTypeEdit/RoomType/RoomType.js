@@ -14,6 +14,7 @@ import TextEditInput from '../../../base/TextEditInput/TextField'
 import SelectField from '../../../base/SelectField'
 import CheckboxField from '../../../base/CheckboxField'
 import MultiAutocomplete from '../../../base/MultiAutocomplete/MultiAutocomplete'
+import DropzoneFiled from '../../../base/DropzoneField'
 
 const useStyles = () => ({
   grow: {
@@ -21,8 +22,7 @@ const useStyles = () => ({
   },
   room_type_card: {
     // width: '26em',
-    marginTop: '1em',
-    marginBottom: '1em',
+    margin: '16px'
   },
   price_currency: {
     display: 'inline',
@@ -70,11 +70,12 @@ const RoomType = props => {
     type,
     description,
     guestsNumber,
-    childFriendly,
-    petFriendly,
+    childFriendly = false,
+    petFriendly = false,
     quantity,
     beds,
     price,
+    currency,
     devConPrice,
     imageUrl,
     amenities,
@@ -83,7 +84,7 @@ const RoomType = props => {
     onPropValueChange
   } = props;
 
-  const [bedsItems, setBedsItems] = useState(beds || ['']);
+  const [bedsItems, setBedsItems] = useState(beds);
 
   const availableAmenities = [
     { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
@@ -183,10 +184,7 @@ const RoomType = props => {
   };
 
   const handleRemoveBed = bedIndex => {
-    console.log('@@@', bedIndex);
-    console.log('---', bedsItems);
     const newBeds = bedsItems.filter((_, index) => index !== bedIndex);
-    console.log('===@@@', newBeds);
     setBedsItems(newBeds);
     onPropValueChange(id, 'beds', newBeds.filter(item => item !== ''));
   };
@@ -212,14 +210,24 @@ const RoomType = props => {
   }
 
   const handleQuantityChange = (e) => {
-    if (e && e.target && typeof e.target.value === 'number') {
+    if (e && e.target && typeof e.target.value === 'string' && e.target.value !== '') {
       onPropValueChange(id, 'quantity', Number.parseInt(e.target.value, 10))
+    } else {
+      onPropValueChange(id, 'quantity', 0)
     }
   }
 
   const handlePriceChange = (e) => {
-    if (e && e.target && typeof e.target.value === 'number') {
+    if (e && e.target && typeof e.target.value === 'string' && e.target.value !== '') {
       onPropValueChange(id, 'price', Number.parseFloat(e.target.value, 10))
+    } else {
+      onPropValueChange(id, 'price', 0)
+    }
+  }
+
+  const handleCurrencyChange = value => {
+    if (typeof value === 'string') {
+      onPropValueChange(id, 'currency', value)
     }
   }
 
@@ -229,17 +237,11 @@ const RoomType = props => {
   //   }
   // }
 
-  const handleAmenitiesChange = (e) => {
-    if (e && e.target && e.target.value) {
-      onPropValueChange(id, 'amenities', e.target.value)
-    }
-  }
-
-  const handleImageUrlChange = (e) => {
-    if (e && e.target && typeof e.target.value === 'string') {
-      onPropValueChange(id, 'imageUrl', e.target.value)
-    }
-  }
+  // const handleImageUrlChange = (e) => {
+  //   if (e && e.target && typeof e.target.value === 'string') {
+  //     onPropValueChange(id, 'imageUrl', e.target.value)
+  //   }
+  // }
 
   const handleGuestsNumberChange = value => {
     if (typeof value === 'number') {
@@ -251,9 +253,36 @@ const RoomType = props => {
     onPropValueChange(id, 'childFriendly', value)
   }
 
+  //this will convert array of [{id:'1', name:'amenity1'}] into semicolon separated string (e.g. "amenity1;amenity2')
+  const convertChipsToAmenities = chipData => {
+    //return empty list in case input is not an array(e.g. in case of new records)
+    if(!Array.isArray(chipData)) {
+      return "";
+    }
+    const semicolonSeparatedList = chipData.reduce((acc, chip) => {
+       return `${acc}${chip.name};`
+     }, '')
+    return semicolonSeparatedList;
+  }
+
+  //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{id:'1', name:'amenity1'}]
+  const convertAmenitiesToChips = semicolonSeparatedList => {
+    if(!semicolonSeparatedList)
+      return [];
+    const chips = semicolonSeparatedList.split(';').map(label=>{return {name:label}})
+    return chips;
+  }
+
+  const handleAmenitiesChange = e => {
+    const semicolonSeparatedList = convertChipsToAmenities(e)
+    onPropValueChange(id, 'amenities', semicolonSeparatedList)
+  }
+
   const handlePetFriendlyChange = value => {
     onPropValueChange(id, 'petFriendly', value)
   }
+
+  const chips = convertAmenitiesToChips(amenities);
 
   return (
     <Card className={classes.room_type_card}>
@@ -274,6 +303,7 @@ const RoomType = props => {
               label="Name"
               onChange={handleTypeChange}
               fullWidth={true}
+              autoFocus={true}
             />
             <TextEditInput
               value={description}
@@ -312,6 +342,7 @@ const RoomType = props => {
               <Grid container key={index}>
                 <Grid item xs>
                   <SelectField
+                    key={Math.random()}
                     options={bedsTypes}
                     value={bed}
                     onChange={value => handleBedsChange(value, index)}
@@ -353,7 +384,6 @@ const RoomType = props => {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextEditInput
-                  type='number'
                   value={quantity}
                   label="Quantity"
                   onChange={handleQuantityChange}
@@ -374,8 +404,8 @@ const RoomType = props => {
               <Grid item xs={6}>
                 <SelectField
                   options={currencies}
-                  value={'USD'}
-                  onChange={() => {}}
+                  value={currency}
+                  onChange={handleCurrencyChange}
                   label='Currency'
                   fullWidth={true}
                 />
@@ -388,10 +418,9 @@ const RoomType = props => {
             </Typography>
             <MultiAutocomplete
               options={availableAmenities}
-              value={amenities}
+              value={chips}
               onValueChange={handleAmenitiesChange}
               inputLabel="Add amenities"
-              inputWidth={250}
             />
           </Grid>
           {/* <Grid item>
@@ -406,11 +435,14 @@ const RoomType = props => {
             <Typography className={classes.sectionLabel}>
               Images
             </Typography>
-            <TextEditInput
+            {/* <TextEditInput
               value={imageUrl}
               label="Image URL"
               onChange={handleImageUrlChange}
               fullWidth={true}
+            /> */}
+            <DropzoneFiled
+              note={'Add pictures here, so that the travellers could see what type of room is this'}
             />
           </Grid>
         </Grid>

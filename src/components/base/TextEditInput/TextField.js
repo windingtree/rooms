@@ -30,11 +30,15 @@ const useStyles = makeStyles({
 
 export default props => {
   const styles = useStyles();
+  const {
+    value,
+    ...restProps
+  } = props;
   return (
     <TextField
       className={styles.field}
       variant='outlined'
-      color='primary'
+      value={value || ''}
       InputProps={{
         classes: {
           root: styles.cssOutlinedInput,
@@ -48,7 +52,7 @@ export default props => {
           focused: styles.cssLabelFocused
         }
       }}
-      {...props}
+      {...restProps}
     />
   )
 };

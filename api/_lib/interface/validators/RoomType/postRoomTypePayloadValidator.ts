@@ -27,6 +27,7 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
     'description',
     'quantity',
     'price',
+    'currency',
     'devConPrice',
     'amenities',
     'imageUrl',
@@ -57,6 +58,10 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   const price = request.body.price
   await validateOptionalNumber('price', price)
   if (typeof price !== 'undefined') payload.price = price
+
+  const currency = request.body.currency
+  await validateOptionalString('currency', currency)
+  if (typeof currency !== 'undefined') payload.currency = currency
 
   const devConPrice = request.body.devConPrice
   await validateOptionalNumber('devConPrice', devConPrice)
