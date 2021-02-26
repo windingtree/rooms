@@ -7,7 +7,6 @@ import Spinner from "../../base/Spinner/Spinner";
 import {RateModifierEditForm} from "./RateEditForm";
 import Grid from "@material-ui/core/Grid";
 import {ApiCache} from "../../../utils/api_cache";
-import {useTheme} from "@material-ui/core";
 
 const RateModifierEdit = () => {
     const [isLoadInProgress, setLoadInProgress] = useState(false)

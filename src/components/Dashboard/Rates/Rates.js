@@ -12,7 +12,7 @@ import {ApiCache} from "../../../utils/api_cache";
 import { withStyles } from '@material-ui/core/styles'
 
 
-const useStyles = (theme) => {
+const useStyles = () => {
     return {
         typography:{
             h3:{
@@ -45,7 +45,10 @@ const Rates = ({userProfile}) => {
     useEffect(() => {
         setLoadInProgress(true);
         //populate data from cache to speed up page loading
-        setRateModifiers(apiCache.getRateModifiers())
+        const cachedRateModifiers = apiCache.getRateModifiers();
+        sortRateModifiersByPriority(cachedRateModifiers)
+        setRateModifiers(cachedRateModifiers)
+
         setRoomTypes(apiCache.getRoomTypes())
 
         //load data from the server
@@ -67,7 +70,10 @@ const Rates = ({userProfile}) => {
     function sortRateModifiersByPriority(rateModifiersList){
         rateModifiersList.sort((a,b)=>{
             if(a.priority>b.priority)
-            return -1;
+                return -1;
+            if(a.priority<b.priority)
+                return 1;
+            return 0
         })
 
     }
