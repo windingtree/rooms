@@ -50,6 +50,10 @@ class RoomTypeRepo extends BaseDataRepo {
       'devConPrice',
       'amenities',
       'imageUrl',
+      'guestsNumber',
+      'childFriendly',
+      'petFriendly',
+      'beds'
     ]
 
     return allowedFields.reduce((projection: IRoomTypeDbDataProjection, field) => {

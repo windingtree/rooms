@@ -18,6 +18,13 @@ const useStyles = (theme) => {
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.primary.contrastText,
       },
+      minWidth: '64px'
+    },
+    label: {
+      fontSize: '0.72rem',
+      '&$selected': {
+        fontSize: '0.75rem',
+      }
     },
     selected: {
       // This is left empty. Override default "selected" styles.

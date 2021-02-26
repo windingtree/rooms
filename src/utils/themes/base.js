@@ -10,6 +10,9 @@ import {
 } from './theme_colors'
 
 const _baseMuiThemeObj = {
+  typography: {
+    fontFamily: ['Inter'].join(',')
+  },
   palette: {
     primary: {
       light: WHITE,

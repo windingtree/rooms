@@ -16,9 +16,10 @@ const useStyles = (theme) => {
     container: {
       display: 'flex',
       flexDirection: 'column',
+      marginBottom: '16px'
     },
     select: {
-      padding: theme.spacing(0.5),
+      // padding: theme.spacing(0.5),
       margin: 0,
     },
     chips: {

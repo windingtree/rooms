@@ -117,6 +117,8 @@ class RoomTypes extends React.Component {
         this.setState({
           roomTypes: this.state.roomTypes.map((roomType) => {
             if (roomType.id === newRoomType.id) {
+              // Workaround to show edit UI
+              setTimeout(() => this.handleEditClick(createdRoomType.id));
               return createdRoomType
             } else {
               return roomType

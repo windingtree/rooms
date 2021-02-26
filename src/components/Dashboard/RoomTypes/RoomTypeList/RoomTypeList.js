@@ -15,6 +15,10 @@ class RoomTypeList extends React.Component {
         price={roomType.price}
         creating={roomType.creating}
 
+        guestsNumber={roomType.guestsNumber}
+        childFriendly={roomType.childFriendly}
+        petFriendly={roomType.petFriendly}
+
         onEditClick={this.props.onEditClick}
         onTrashClick={this.props.onTrashClick}
         onPropValueChange={this.props.onPropValueChange}
