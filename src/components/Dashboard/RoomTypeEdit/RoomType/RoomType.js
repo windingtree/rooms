@@ -84,7 +84,7 @@ const RoomType = props => {
     onPropValueChange
   } = props;
 
-  const [bedsItems, setBedsItems] = useState(beds);
+  const [bedsItems, setBedsItems] = useState(beds && beds.length >= 1 ? beds : ['']);
 
   const availableAmenities = [
     { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
