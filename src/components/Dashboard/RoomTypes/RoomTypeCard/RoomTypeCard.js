@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
@@ -7,9 +8,11 @@ import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
+import Typography from '@material-ui/core/Typography'
 
-import TextField from '../../../base/TextEditInput/TextField'
 import Spinner from '../../../base/Spinner/Spinner'
+import { errorLogger } from '../../../../utils/functions'
+import { apiClient } from '../../../../utils/api'
 
 const useStyles = () => {
   return {
@@ -33,28 +36,23 @@ const useStyles = () => {
   }
 }
 
-class RoomType extends React.Component {
+class RoomTypeCard extends React.Component {
   handleTrashClick = () => {
-    this.props.onTrashClick(this.props.id)
+    apiClient
+      .deleteRoomType(this.props.id)
+      .then(r => {
+        this.props.onDelete();
+      })
+      .catch((error) => {
+        if (this._isDestroyed) return
+
+        errorLogger(error)
+      })
   }
 
   handleEditClick = () => {
-    this.props.onEditClick(this.props.id)
+    this.props.history.push(`/dashboard/room-types/${this.props.id}`)
   }
-
-  handleTypeChange = (e) => {
-    if (e && e.target && typeof e.target.value === 'string') {
-      this.props.onPropValueChange(this.props.id, 'type', e.target.value)
-    }
-  }
-
-  // handleQuantityChange = (e) => {
-  //   this.props.onPropValueChange(this.props.id, 'quantity', Number.parseInt(e, 10))
-  // }
-
-  // handlePriceChange = (e) => {
-  //   this.props.onPropValueChange(this.props.id, 'price', Number.parseFloat(e))
-  // }
 
   render() {
     const { classes } = this.props
@@ -73,27 +71,11 @@ class RoomType extends React.Component {
               <Spinner info="creating" /> :
               <>
                 <Grid item>
-                  <TextField
-                    value={this.props.type}
-                    label="Type"
-                    onChange={this.handleTypeChange}
-                    fullWidth={true}
-                  />
-                  {/* <TextField
-                    value={this.props.quantity}
-                    label="Quantity"
-                    onChange={this.handleQuantityChange}
-                    fullWidth={true}
-                  /> */}
+                  <Typography>
+                    {this.props.type}
+                  </Typography>
                 </Grid>
                 <Grid item>
-                  {/* <TextField
-                    value={this.props.price}
-                    label="Price"
-                    onChange={this.handlePriceChange}
-                    inputWidth={90}
-                  />
-                  <div className={classes.price_currency}>USD</div> */}
                 </Grid>
               </>
             }
@@ -119,4 +101,4 @@ class RoomType extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(RoomType)
+export default withRouter(withStyles(useStyles)(RoomTypeCard))
