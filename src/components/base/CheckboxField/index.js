@@ -8,12 +8,23 @@ const useStyles = makeStyles({
     marginBottom: '16px',
     whiteSpace: 'nowrap'
   },
+<<<<<<< HEAD
   root: {
     '&$checked': {
       color: `#9226AD !important`
     }
   },
   checked: {}
+=======
+  // root: {
+  //   '&$checked': {
+  //     color: `#9226AD !important`
+  //   }
+  // },
+  checked: {
+    color: '#9226AD !important'
+  }
+>>>>>>> upstream/develop
 });
 
 export default props => {
@@ -42,7 +53,11 @@ export default props => {
           onChange={handleChange}
           name={name}
           classes={{
+<<<<<<< HEAD
             root: styles.root
+=======
+            checked: styles.checked
+>>>>>>> upstream/develop
           }}
           {...restProps}
         />

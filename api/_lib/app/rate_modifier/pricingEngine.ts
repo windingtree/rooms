@@ -7,19 +7,27 @@ import {
 } from '../../common/types'
 import { CError } from "../../common/tools";
 import { HTTP_STATUS } from "../../common/constants/http_status"
+import { TimeBasedCache } from "../../common/cache/timeBasedCache";
 
 const moment = extendMoment(Moment)
-
 const repository = new RateModifierRepo()
-const hotelRateModifiersCache = new Map<string, IRateModifierCollection>()
+
+//naive cache implementation
+//-it's used to avoid making frequent calls to retrieve rateModifiers for the same hotel (since it would be called 10 times if there are 10 rooms)
+//-it should not store cache between search calls
+//TODO - once we expect to have many hotels existing in the same database we need to replace this with dedicated cache (e.g. REDIS)
+
+const CACHE_ENTRIES_EVICTION_TIME_MILLIS=5000;  //remove entries from cache after 5 secs.
+const hotelRateModifiersCache = new TimeBasedCache<string, IRateModifierCollection>(CACHE_ENTRIES_EVICTION_TIME_MILLIS)
 
 //return all available rate modifiers for a given hotel and room
 //it uses cache (lazy loading) - if cache is empty, it will load rate modifiers into cache and all consecutive calls will return cached values
 async function getHotelAndRoomRateModifiers(hotelId: string, roomTypeId: string): Promise<IRateModifierCollection> {
     let hotelRateModifiers:IRateModifierCollection|undefined;
     //check if rate modifiers for a given hotel were already loaded before
-    if (hotelRateModifiersCache.has(hotelId)) {
-        //it was - return cached values
+    hotelRateModifiers = hotelRateModifiersCache.get(hotelId)
+    if (hotelRateModifiers) {
+        //it was in cache - return cached values
         hotelRateModifiers = hotelRateModifiersCache.get(hotelId);
         if(!hotelRateModifiers)
             {hotelRateModifiers=[];}
@@ -32,7 +40,7 @@ async function getHotelAndRoomRateModifiers(hotelId: string, roomTypeId: string)
         hotelRateModifiers = [];
     }
     //store in cache
-    hotelRateModifiersCache.set(hotelId, hotelRateModifiers);
+    hotelRateModifiersCache.put(hotelId, hotelRateModifiers);
     return getApplicableRoomRateModifiers(hotelRateModifiers,roomTypeId);
 }
 
@@ -66,7 +74,7 @@ function filterOnlyRoomRateModifiers(rateModifiers: IRateModifierCollection, roo
 
 
 
-//calculate price of a room offer takig into account all applicable room rate modifiers
+//calculate price of a room offer taking into account all applicable room rate modifiers
 async function calculateOfferPrice(hotel: IHotel, room: IRoomType, arrival: string, departure: string, basePrice: number): Promise<number> {
     //get all available rate modifiers for a given hotel and room that can influence price
     const rateModifiers: Array<IRateModifier> = await getHotelAndRoomRateModifiers(hotel.id, room.id);

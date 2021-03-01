@@ -6,7 +6,11 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+<<<<<<< HEAD
 import DoneIcon from '@material-ui/icons/Done'
+=======
+// import DoneIcon from '@material-ui/icons/Done'
+>>>>>>> upstream/develop
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
@@ -14,6 +18,7 @@ import TextEditInput from '../../../base/TextEditInput/TextField'
 import SelectField from '../../../base/SelectField'
 import CheckboxField from '../../../base/CheckboxField'
 import MultiAutocomplete from '../../../base/MultiAutocomplete/MultiAutocomplete'
+import DropzoneFiled from '../../../base/DropzoneField'
 
 const useStyles = () => ({
   grow: {
@@ -21,8 +26,12 @@ const useStyles = () => ({
   },
   room_type_card: {
     // width: '26em',
+<<<<<<< HEAD
     marginTop: '1em',
     marginBottom: '1em',
+=======
+    margin: '16px'
+>>>>>>> upstream/develop
   },
   price_currency: {
     display: 'inline',
@@ -70,6 +79,7 @@ const RoomType = props => {
     type,
     description,
     guestsNumber,
+<<<<<<< HEAD
     childFriendly,
     petFriendly,
     quantity,
@@ -77,13 +87,27 @@ const RoomType = props => {
     price,
     devConPrice,
     imageUrl,
+=======
+    childFriendly = false,
+    petFriendly = false,
+    quantity,
+    beds,
+    price,
+    currency,
+    // devConPrice,
+    // imageUrl,
+>>>>>>> upstream/develop
     amenities,
     onTrashClick,
     onDoneClick,
     onPropValueChange
   } = props;
 
+<<<<<<< HEAD
   const [bedsItems, setBedsItems] = useState(beds || ['']);
+=======
+  const [bedsItems, setBedsItems] = useState(beds && beds.length >= 1 ? beds : ['']);
+>>>>>>> upstream/develop
 
   const availableAmenities = [
     { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
@@ -134,6 +158,7 @@ const RoomType = props => {
     {
       label: '1 Guest',
       value: 0
+<<<<<<< HEAD
     },
     {
       label: '2 Guests',
@@ -150,6 +175,24 @@ const RoomType = props => {
       value: 0
     },
     {
+=======
+    },
+    {
+      label: '2 Guests',
+      value: 1
+    },
+    {
+      label: '3 Guests',
+      value: 2
+    }
+  ];
+  const bedsTypes = [
+    {
+      label: '1 Single bed',
+      value: 0
+    },
+    {
+>>>>>>> upstream/develop
       label: '1 Double bed',
       value: 1
     },
@@ -167,6 +210,7 @@ const RoomType = props => {
 
   const handleTrashClick = () => {
     onTrashClick(id)
+<<<<<<< HEAD
   }
 
   const handleEditClick = () => {
@@ -220,6 +264,68 @@ const RoomType = props => {
   const handlePriceChange = (e) => {
     if (e && e.target && typeof e.target.value === 'number') {
       onPropValueChange(id, 'price', Number.parseFloat(e.target.value, 10))
+=======
+  }
+
+  const handleEditClick = () => {
+    onDoneClick(id)
+  }
+
+  const handleAddBed = () => {
+    const newBeds = [
+      ...bedsItems,
+      ''
+    ];
+    setBedsItems(newBeds);
+    onPropValueChange(id, 'beds', newBeds.filter(item => item !== ''));
+  };
+
+  const handleRemoveBed = bedIndex => {
+    const newBeds = bedsItems.filter((_, index) => index !== bedIndex);
+    setBedsItems(newBeds);
+    onPropValueChange(id, 'beds', newBeds.filter(item => item !== ''));
+  };
+
+  const handleBedsChange = (value, index) => {
+    const newBedsItems = bedsItems.map(
+      (oldValue, i) => i === index ? value : oldValue
+    );
+    setBedsItems(newBedsItems);
+    onPropValueChange(id, 'beds', newBedsItems.filter(item => item !== ''))
+  }
+
+  const handleTypeChange = (e) => {
+    if (e && e.target && typeof e.target.value === 'string') {
+      onPropValueChange(id, 'type', e.target.value)
+    }
+  }
+
+  const handleDescriptionChange = (e) => {
+    if (e && e.target && e.target.value) {
+      onPropValueChange(id, 'description', e.target.value)
+    }
+  }
+
+  const handleQuantityChange = (e) => {
+    if (e && e.target && typeof e.target.value === 'string' && e.target.value !== '') {
+      onPropValueChange(id, 'quantity', Number.parseInt(e.target.value, 10))
+    } else {
+      onPropValueChange(id, 'quantity', 0)
+    }
+  }
+
+  const handlePriceChange = (e) => {
+    if (e && e.target && typeof e.target.value === 'string' && e.target.value !== '') {
+      onPropValueChange(id, 'price', Number.parseFloat(e.target.value, 10))
+    } else {
+      onPropValueChange(id, 'price', 0)
+    }
+  }
+
+  const handleCurrencyChange = value => {
+    if (typeof value === 'string') {
+      onPropValueChange(id, 'currency', value)
+>>>>>>> upstream/develop
     }
   }
 
@@ -229,6 +335,7 @@ const RoomType = props => {
   //   }
   // }
 
+<<<<<<< HEAD
   const handleAmenitiesChange = (e) => {
     if (e && e.target && e.target.value) {
       onPropValueChange(id, 'amenities', e.target.value)
@@ -255,6 +362,55 @@ const RoomType = props => {
     onPropValueChange(id, 'petFriendly', value)
   }
 
+=======
+  // const handleImageUrlChange = (e) => {
+  //   if (e && e.target && typeof e.target.value === 'string') {
+  //     onPropValueChange(id, 'imageUrl', e.target.value)
+  //   }
+  // }
+
+  const handleGuestsNumberChange = value => {
+    if (typeof value === 'number') {
+      onPropValueChange(id, 'guestsNumber', Number.parseInt(value, 10))
+    }
+  }
+
+  const handleChildFriendlyChange = value => {
+    onPropValueChange(id, 'childFriendly', value)
+  }
+
+  //this will convert array of [{id:'1', name:'amenity1'}] into semicolon separated string (e.g. "amenity1;amenity2')
+  const convertChipsToAmenities = chipData => {
+    //return empty list in case input is not an array(e.g. in case of new records)
+    if(!Array.isArray(chipData)) {
+      return "";
+    }
+    const semicolonSeparatedList = chipData.reduce((acc, chip) => {
+       return `${acc}${chip.name};`
+     }, '')
+    return semicolonSeparatedList;
+  }
+
+  //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{id:'1', name:'amenity1'}]
+  const convertAmenitiesToChips = semicolonSeparatedList => {
+    if(!semicolonSeparatedList)
+      return [];
+    const chips = semicolonSeparatedList.split(';').map(label=>{return {name:label}})
+    return chips;
+  }
+
+  const handleAmenitiesChange = e => {
+    const semicolonSeparatedList = convertChipsToAmenities(e)
+    onPropValueChange(id, 'amenities', semicolonSeparatedList)
+  }
+
+  const handlePetFriendlyChange = value => {
+    onPropValueChange(id, 'petFriendly', value)
+  }
+
+  const chips = convertAmenitiesToChips(amenities);
+
+>>>>>>> upstream/develop
   return (
     <Card className={classes.room_type_card}>
       <CardContent>
@@ -274,6 +430,10 @@ const RoomType = props => {
               label="Name"
               onChange={handleTypeChange}
               fullWidth={true}
+<<<<<<< HEAD
+=======
+              autoFocus={true}
+>>>>>>> upstream/develop
             />
             <TextEditInput
               value={description}
@@ -312,6 +472,10 @@ const RoomType = props => {
               <Grid container key={index}>
                 <Grid item xs>
                   <SelectField
+<<<<<<< HEAD
+=======
+                    key={Math.random()}
+>>>>>>> upstream/develop
                     options={bedsTypes}
                     value={bed}
                     onChange={value => handleBedsChange(value, index)}
@@ -353,7 +517,10 @@ const RoomType = props => {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextEditInput
+<<<<<<< HEAD
                   type='number'
+=======
+>>>>>>> upstream/develop
                   value={quantity}
                   label="Quantity"
                   onChange={handleQuantityChange}
@@ -374,8 +541,13 @@ const RoomType = props => {
               <Grid item xs={6}>
                 <SelectField
                   options={currencies}
+<<<<<<< HEAD
                   value={'USD'}
                   onChange={() => {}}
+=======
+                  value={currency}
+                  onChange={handleCurrencyChange}
+>>>>>>> upstream/develop
                   label='Currency'
                   fullWidth={true}
                 />
@@ -388,10 +560,16 @@ const RoomType = props => {
             </Typography>
             <MultiAutocomplete
               options={availableAmenities}
+<<<<<<< HEAD
               value={amenities}
               onValueChange={handleAmenitiesChange}
               inputLabel="Add amenities"
               inputWidth={250}
+=======
+              value={chips}
+              onValueChange={handleAmenitiesChange}
+              inputLabel="Add amenities"
+>>>>>>> upstream/develop
             />
           </Grid>
           {/* <Grid item>
@@ -406,11 +584,21 @@ const RoomType = props => {
             <Typography className={classes.sectionLabel}>
               Images
             </Typography>
+<<<<<<< HEAD
             <TextEditInput
+=======
+            {/* <TextEditInput
+>>>>>>> upstream/develop
               value={imageUrl}
               label="Image URL"
               onChange={handleImageUrlChange}
               fullWidth={true}
+<<<<<<< HEAD
+=======
+            /> */}
+            <DropzoneFiled
+              note={'Add pictures here, so that the travellers could see what type of room is this'}
+>>>>>>> upstream/develop
             />
           </Grid>
         </Grid>

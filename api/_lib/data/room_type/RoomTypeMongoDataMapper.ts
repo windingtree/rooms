@@ -21,6 +21,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomType.description,
       quantity: baseRoomType.quantity,
       price: baseRoomType.price,
+      currency: baseRoomType.currency,
       devConPrice: baseRoomType.devConPrice,
       amenities: baseRoomType.amenities,
       imageUrl: baseRoomType.imageUrl,
@@ -38,6 +39,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomTypeDbData.description,
       quantity: baseRoomTypeDbData.quantity,
       price: baseRoomTypeDbData.price,
+      currency: baseRoomTypeDbData.currency,
       devConPrice: baseRoomTypeDbData.devConPrice,
       amenities: baseRoomTypeDbData.amenities,
       imageUrl: baseRoomTypeDbData.imageUrl,
@@ -55,6 +57,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       'description',
       'quantity',
       'price',
+      'currency',
       'devConPrice',
       'amenities',
       'imageUrl',
@@ -81,6 +84,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'quantity':
         case 'price':
+        case 'currency':
         case 'devConPrice':
         case 'guestsNumber':
         case 'childFriendly':

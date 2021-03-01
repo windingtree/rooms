@@ -7,6 +7,7 @@ type TRoomTypeDbDataFields =
   | 'description'
   | 'quantity'
   | 'price'
+  | 'currency'
   | 'devConPrice'
   | 'amenities'
   | 'imageUrl'
@@ -25,6 +26,7 @@ interface IBaseRoomType {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
   imageUrl: string
@@ -46,6 +48,7 @@ interface IPostRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
@@ -61,6 +64,7 @@ interface IPatchRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
@@ -76,6 +80,7 @@ interface IBaseRoomTypeDbData {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
   imageUrl: string
@@ -95,6 +100,7 @@ interface IPatchRoomTypePayloadDbData {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
