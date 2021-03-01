@@ -79,15 +79,6 @@ const RoomType = props => {
     type,
     description,
     guestsNumber,
-<<<<<<< HEAD
-    childFriendly,
-    petFriendly,
-    quantity,
-    beds,
-    price,
-    devConPrice,
-    imageUrl,
-=======
     childFriendly = false,
     petFriendly = false,
     quantity,
@@ -96,18 +87,13 @@ const RoomType = props => {
     currency,
     // devConPrice,
     // imageUrl,
->>>>>>> upstream/develop
     amenities,
     onTrashClick,
     onDoneClick,
     onPropValueChange
   } = props;
 
-<<<<<<< HEAD
-  const [bedsItems, setBedsItems] = useState(beds || ['']);
-=======
   const [bedsItems, setBedsItems] = useState(beds && beds.length >= 1 ? beds : ['']);
->>>>>>> upstream/develop
 
   const availableAmenities = [
     { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
