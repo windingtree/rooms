@@ -1,15 +1,36 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import IconButton from '@material-ui/core/IconButton'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
+import { withStyles } from '@material-ui/core/styles'
+// import IconButton from '@material-ui/core/IconButton'
+// import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
 
 import { errorLogger, objClone, removeProp } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
 import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
+
+const useStyles = () => ({
+  container: {
+    minHeight: '100%'
+  },
+  addButton: {
+    backgroundColor: 'white',
+    boxShadow: '0px 4px 12px rgba(10, 23, 51, 0.04), 0px 2px 6px rgba(10, 23, 51, 0.04)',
+    color: '#9226AD',
+    fontSize: '16px',
+    fontWeight: 500,
+    textTransform: 'none',
+    minWidth: '60vw',
+    maxWidth: '80vw',
+    '&>span': {
+      justifyContent: 'flex-start'
+    }
+  }
+});
 
 class RoomTypes extends React.Component {
   constructor(props) {
@@ -117,6 +138,8 @@ class RoomTypes extends React.Component {
         this.setState({
           roomTypes: this.state.roomTypes.map((roomType) => {
             if (roomType.id === newRoomType.id) {
+              // Workaround to show edit UI
+              setTimeout(() => this.handleEditClick(createdRoomType.id));
               return createdRoomType
             } else {
               return roomType
@@ -174,11 +197,11 @@ class RoomTypes extends React.Component {
   render() {
     return (
       <Grid
+        className={this.props.classes.container}
         container
         direction="column"
         justify="center"
         alignItems="center"
-        style={{ minHeight: '100%' }}
       >
         {
           ((!this.state.roomTypes || !this.state.roomTypes.length) && (this.state.apiLoading)) ?
@@ -195,9 +218,17 @@ class RoomTypes extends React.Component {
                 onTrashClick={this.handleTrashClick}
                 onPropValueChange={this.handlePropValueChange}
               />
-              <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
+              <Button
+                className={this.props.classes.addButton}
+                aria-label="edit"
+                onClick={this.handleAddNewClick}
+                variant='contained'
+              >
+                + Add Unit Type
+              </Button>
+              {/* <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
                 <AddCircleIcon />
-              </IconButton>
+              </IconButton> */}
             </Grid>
         }
       </Grid>
@@ -205,4 +236,4 @@ class RoomTypes extends React.Component {
   }
 }
 
-export default withRouter(RoomTypes)
+export default withRouter(withStyles(useStyles)(RoomTypes))

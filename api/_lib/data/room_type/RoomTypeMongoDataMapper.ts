@@ -21,9 +21,14 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomType.description,
       quantity: baseRoomType.quantity,
       price: baseRoomType.price,
+      currency: baseRoomType.currency,
       devConPrice: baseRoomType.devConPrice,
       amenities: baseRoomType.amenities,
       imageUrl: baseRoomType.imageUrl,
+      guestsNumber: baseRoomType.guestsNumber,
+      childFriendly: baseRoomType.childFriendly,
+      petFriendly: baseRoomType.petFriendly,
+      beds: baseRoomType.beds,
     }
   }
 
@@ -34,9 +39,14 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomTypeDbData.description,
       quantity: baseRoomTypeDbData.quantity,
       price: baseRoomTypeDbData.price,
+      currency: baseRoomTypeDbData.currency,
       devConPrice: baseRoomTypeDbData.devConPrice,
       amenities: baseRoomTypeDbData.amenities,
       imageUrl: baseRoomTypeDbData.imageUrl,
+      guestsNumber: baseRoomTypeDbData.guestsNumber,
+      childFriendly: baseRoomTypeDbData.childFriendly,
+      petFriendly: baseRoomTypeDbData.petFriendly,
+      beds: baseRoomTypeDbData.beds,
     }
   }
 
@@ -47,13 +57,18 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       'description',
       'quantity',
       'price',
+      'currency',
       'devConPrice',
       'amenities',
       'imageUrl',
+      'guestsNumber',
+      'childFriendly',
+      'petFriendly',
+      'beds'
     ]
 
     return availProps.reduce((patchRoomTypePayloadDbData: IPatchRoomTypePayloadDbData, prop): IPatchRoomTypePayloadDbData => {
-      if (!patchRoomTypePayload[prop]) {
+      if (patchRoomTypePayload[prop] === undefined) {
         return patchRoomTypePayloadDbData
       }
 
@@ -69,7 +84,12 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'quantity':
         case 'price':
+        case 'currency':
         case 'devConPrice':
+        case 'guestsNumber':
+        case 'childFriendly':
+        case 'petFriendly':
+        case 'beds':
           patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
           break
       }

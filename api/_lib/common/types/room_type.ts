@@ -7,9 +7,14 @@ type TRoomTypeDbDataFields =
   | 'description'
   | 'quantity'
   | 'price'
+  | 'currency'
   | 'devConPrice'
   | 'amenities'
   | 'imageUrl'
+  | 'guestsNumber'
+  | 'childFriendly'
+  | 'petFriendly'
+  | 'beds'
 
 type IRoomTypeDbDataProjection = {
   [key in TRoomTypeDbDataFields]?: 1
@@ -21,9 +26,14 @@ interface IBaseRoomType {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
   imageUrl: string
+  guestsNumber: number
+  childFriendly: boolean
+  petFriendly: boolean
+  beds: any
 }
 
 interface IRoomType extends IBaseRoomType {
@@ -38,9 +48,14 @@ interface IPostRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: any
 }
 
 interface IPatchRoomTypePayload {
@@ -49,9 +64,14 @@ interface IPatchRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: any
 }
 
 interface IBaseRoomTypeDbData {
@@ -60,9 +80,14 @@ interface IBaseRoomTypeDbData {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
   imageUrl: string
+  guestsNumber: number
+  childFriendly: boolean
+  petFriendly: boolean
+  beds: any
 }
 
 interface IRoomTypeDbData extends IBaseRoomTypeDbData {
@@ -75,9 +100,14 @@ interface IPatchRoomTypePayloadDbData {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
   imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: any
 }
 
 type IRoomTypeCollectionDbData = Array<IRoomTypeDbData>

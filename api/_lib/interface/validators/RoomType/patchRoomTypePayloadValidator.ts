@@ -4,6 +4,8 @@ import {
   validateOptionalString,
   validateOptionalNumber,
   validateMongoObjectId,
+  validateOptionalBoolean,
+  validateOptionalArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -25,9 +27,14 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
     'description',
     'quantity',
     'price',
+    'currency',
     'devConPrice',
     'amenities',
     'imageUrl',
+    'guestsNumber',
+    'childFriendly',
+    'petFriendly',
+    'beds'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -57,6 +64,10 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   await validateOptionalNumber('price', price)
   if (typeof price !== 'undefined') payload.price = price
 
+  const currency = request.body.currency
+  await validateOptionalString('currency', currency)
+  if (typeof currency !== 'undefined') payload.currency = currency
+
   const devConPrice = request.body.devConPrice
   await validateOptionalNumber('devConPrice', devConPrice)
   if (typeof devConPrice !== 'undefined') payload.devConPrice = devConPrice
@@ -68,6 +79,22 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const imageUrl = request.body.imageUrl
   await validateOptionalString('imageUrl', imageUrl)
   if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
+
+  const guestsNumber = request.body.guestsNumber
+  await validateOptionalNumber('guestsNumber', guestsNumber)
+  if (typeof guestsNumber !== 'undefined') payload.guestsNumber = guestsNumber
+
+  const childFriendly = request.body.childFriendly
+  await validateOptionalBoolean('childFriendly', childFriendly)
+  if (typeof childFriendly !== 'undefined') payload.childFriendly = childFriendly
+
+  const petFriendly = request.body.petFriendly
+  await validateOptionalBoolean('petFriendly', petFriendly)
+  if (typeof petFriendly !== 'undefined') payload.petFriendly = petFriendly
+
+  const beds = request.body.beds
+  await validateOptionalArray('beds', beds)
+  if (typeof beds !== 'undefined') payload.beds = beds
 
   return payload
 }

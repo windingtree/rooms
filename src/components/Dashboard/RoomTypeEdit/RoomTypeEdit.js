@@ -50,11 +50,16 @@ class RoomTypeEdit extends React.Component {
     const data = {}
     data[propName] = newValue
 
-    this.updateRoomType(id, data)
+    try {
+      this.updateRoomType(id, data)
+    } catch (error) {
+      errorLogger(error)
+    }
   }
 
   getRoomType = (roomTypeId) => {
     const _roomType = this.apiCache.getRoomType(roomTypeId)
+
     if (_roomType) {
       this.setState({ roomType: _roomType })
     }
@@ -117,9 +122,14 @@ class RoomTypeEdit extends React.Component {
               type={this.state.roomType.type}
               description={this.state.roomType.description}
               price={this.state.roomType.price}
+              currency={this.state.roomType.currency}
               devConPrice={this.state.roomType.devConPrice}
               amenities={this.state.roomType.amenities}
               imageUrl={this.state.roomType.imageUrl}
+              guestsNumber={this.state.roomType.guestsNumber}
+              childFriendly={this.state.roomType.childFriendly}
+              petFriendly={this.state.roomType.petFriendly}
+              beds={this.state.roomType.beds}
               onDoneClick={this.handleDoneClick}
               onTrashClick={this.handleTrashClick}
               onPropValueChange={this.handlePropValueChange}
