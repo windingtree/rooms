@@ -4,7 +4,6 @@ import {
   WHITE,
   LIGHT_GRAY,
   DARK_PURPLE,
-  LIGHT_PURPLE,
   MIDDLE_PURPLE,
   BLACK
 } from './theme_colors'
