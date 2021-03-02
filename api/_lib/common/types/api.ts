@@ -18,6 +18,7 @@ import {
   IOtpStatus,
   IRateModifier,
   IRateModifierCollection,
+  IUploadImage,
 } from '../types'
 
 type TAvailableResultTypes =
@@ -38,6 +39,7 @@ type TAvailableResultTypes =
   |IOtpStatus
   |IRateModifier
   |IRateModifierCollection
+  |IUploadImage
   |string
 
 type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<TAvailableResultTypes>

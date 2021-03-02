@@ -62,6 +62,11 @@ class AppConfig {
       ENABLE_LOGIN_WITHOUT_SENDGRID: '',
 
       ONE_MONGO_CONNECTION_PER_REQUEST: '',
+
+      AWS_BUCKET_NAME: '',
+      AWS_REGION: '',
+      AWS_ACCESS_KEY_ID: '',
+      AWS_SECRET_ACCESS_KEY: '',
     }
 
     let decryptOk = true
@@ -139,6 +144,11 @@ class AppConfig {
       'ENABLE_LOGIN_WITHOUT_SENDGRID',
 
       'ONE_MONGO_CONNECTION_PER_REQUEST',
+
+      'AWS_BUCKET_NAME',
+      'AWS_REGION',
+      'AWS_ACCESS_KEY_ID',
+      'AWS_SECRET_ACCESS_KEY',
     ]
 
     if (this._appConfig === null) {
