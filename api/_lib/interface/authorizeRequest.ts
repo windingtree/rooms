@@ -83,6 +83,10 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   'rate_modifiers': {
     GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
   },
+
+  'upload_image': {
+    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
 }
 
 async function authorizeRequest(role: keyof IProfileRole, action: IAuthorizeRequestAction): Promise<boolean> {

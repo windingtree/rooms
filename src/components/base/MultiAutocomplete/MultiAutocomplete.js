@@ -171,7 +171,7 @@ class MultiAutocomplete extends React.Component {
         <div className={classes.select}>
           <ThemeProvider theme={dropDownTheme}>
             <Autocomplete
-                fullWidth={this.props.fullWidth}
+              fullWidth={this.props.fullWidth}
               value={this.state.value}
               onChange={(event, newValue) => {
                 this.setValue(newValue)
@@ -193,6 +193,7 @@ class MultiAutocomplete extends React.Component {
                   <TextField
                     {...params}
                     label={this.props.inputLabel}
+                    color="secondary"
                     variant="outlined"
                   />
                 )

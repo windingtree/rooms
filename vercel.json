@@ -94,6 +94,10 @@
       "source": "/api/v1/room_type/(.*)",
       "destination": "/api/v1/room_type/[room_type_id].ts?room_type_id=$1"
     },
+    {
+      "source": "/api/v1/upload_image",
+      "destination": "/api/v1/upload_image.ts"
+    },
 
     {
       "source": "/api/v1/profile",

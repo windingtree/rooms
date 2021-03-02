@@ -13,6 +13,7 @@ export {
 export {
   TRoomTypeDbDataFields,
   IRoomTypeDbDataProjection,
+  IRoomTypeBeds,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -169,3 +170,8 @@ export {
   IRateModifierConditionType,
   IRateModifierDiscountType,
 } from './rate_modifiers'
+
+export {
+  IPostUploadImagePayload,
+  IUploadImage,
+} from './upload_image'

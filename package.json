@@ -18,6 +18,7 @@
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "11.3.1",
     "react-leaflet": "^3.0.0-rc.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
@@ -57,7 +58,7 @@
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.17",
     "newman": "^5.2.0",
-    "vercel": "^21.1.0",
+    "vercel": "^21.3.1",
     "yamljs": "^0.3.0"
   }
 }
