@@ -57,5 +57,21 @@ db.app_config.insert([
     "key": "WT_ROOMS_PRIVATE_KEY_FRAGMENT",
     "value": "webserver",
     "encrypted": false
+  }, {
+    "key": "AWS_BUCKET_NAME",
+    "value": "local-rooms-images",
+    "encrypted": false
+  }, {
+    "key": "AWS_REGION",
+    "value": "us-west-2",
+    "encrypted": false
+  }, {
+    "key": "AWS_ACCESS_KEY_ID",
+    "value": "cca9510b66d12446cd2c6aea4bcf5736334dcec0",
+    "encrypted": true
+  }, {
+    "key": "AWS_SECRET_ACCESS_KEY",
+    "value": "f9a45a7200fc24569a1256c83bbe5e306d4fb88687b962b396fabb100ef3cd6907dc24cd6902bd23",
+    "encrypted": true
   }
 ]);

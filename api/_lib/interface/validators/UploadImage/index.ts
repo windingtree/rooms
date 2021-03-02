@@ -1,0 +1,1 @@
+export { postUploadImagePayloadValidator } from './postUploadImagePayloadValidator'
