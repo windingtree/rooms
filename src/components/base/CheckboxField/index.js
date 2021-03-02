@@ -8,11 +8,6 @@ const useStyles = makeStyles({
     marginBottom: '16px',
     whiteSpace: 'nowrap'
   },
-  // root: {
-  //   '&$checked': {
-  //     color: `#9226AD !important`
-  //   }
-  // },
   checked: {
     color: '#9226AD !important'
   }

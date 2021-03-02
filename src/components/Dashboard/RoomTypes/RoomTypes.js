@@ -1,13 +1,10 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
 import { withStyles } from '@material-ui/core/styles'
-// import IconButton from '@material-ui/core/IconButton'
-// import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 
-import { errorLogger, objClone, removeProp } from '../../../utils/functions'
+import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
 import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
@@ -53,10 +50,6 @@ class RoomTypes extends React.Component {
     this._isDestroyed = true
   }
 
-  handleAddNewClick = () => {
-    this.createRoomType()
-  }
-
   handleEditClick = (id) => {
     this.props.history.push(`/dashboard/room-types/${id}`)
   }
@@ -65,23 +58,8 @@ class RoomTypes extends React.Component {
     this.deleteRoomType(id)
   }
 
-  handlePropValueChange = (id, propName, newValue) => {
-    const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
-      if (roomType.id === id) {
-        return true
-      }
-
-      return false
-    })
-
-    if (roomTypeToUpdate[propName] === newValue) {
-      return
-    }
-
-    const data = {}
-    data[propName] = newValue
-
-    this.updateRoomType(id, data)
+  handleTypeDelete = () => {
+    this.getRoomTypes()
   }
 
   getRoomTypes = () => {
@@ -100,93 +78,6 @@ class RoomTypes extends React.Component {
           apiLoading: false,
         })
       })
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
-  }
-
-  initRoomTypeObj = () => {
-    const roomTypeObj = {
-      id: uuidv4(),
-      creating: true,
-
-      hotelId: this.props.userProfile.hotelId,
-
-      type: '',
-      quantity: 0,
-      price: 0,
-      amenities: '',
-      imageUrl: '',
-    }
-
-    return roomTypeObj
-  }
-
-  createRoomType = () => {
-    const newRoomType = this.initRoomTypeObj()
-
-    this.setState({
-      roomTypes: this.state.roomTypes.concat(newRoomType),
-    })
-
-    apiClient.createRoomType(removeProp(objClone(newRoomType), 'id', 'creating'))
-      .then((createdRoomType) => {
-        if (this._isDestroyed) return
-
-        this.setState({
-          roomTypes: this.state.roomTypes.map((roomType) => {
-            if (roomType.id === newRoomType.id) {
-              // Workaround to show edit UI
-              setTimeout(() => this.handleEditClick(createdRoomType.id));
-              return createdRoomType
-            } else {
-              return roomType
-            }
-          }),
-        })
-      })
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
-  }
-
-  updateRoomType = (id, data) => {
-    this.setState({
-      roomTypes: this.state.roomTypes.map((roomType) => {
-        if (roomType.id === id) {
-          const _roomType = Object.assign(
-            {},
-            objClone(roomType),
-            objClone(data)
-          )
-
-          return _roomType
-        } else {
-          return roomType
-        }
-      }),
-    })
-
-    apiClient
-      .updateRoomType(id, data)
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
-  }
-
-  deleteRoomType = (id) => {
-    this.setState({
-      roomTypes: this.state.roomTypes.filter(roomType => roomType.id !== id),
-    })
-
-    apiClient
-      .deleteRoomType(id)
       .catch((error) => {
         if (this._isDestroyed) return
 
@@ -214,21 +105,16 @@ class RoomTypes extends React.Component {
             >
               <RoomTypeList
                 roomTypes={this.state.roomTypes}
-                onEditClick={this.handleEditClick}
-                onTrashClick={this.handleTrashClick}
-                onPropValueChange={this.handlePropValueChange}
+                onDelete={this.handleTypeDelete}
               />
               <Button
                 className={this.props.classes.addButton}
                 aria-label="edit"
-                onClick={this.handleAddNewClick}
+                onClick={() => this.handleEditClick('temporary')}
                 variant='contained'
               >
                 + Add Unit Type
               </Button>
-              {/* <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
-                <AddCircleIcon />
-              </IconButton> */}
             </Grid>
         }
       </Grid>

@@ -4,6 +4,8 @@ import {
   validateOptionalString,
   validateOptionalNumber,
   validateRequiredString,
+  validateOptionalBoolean,
+  validateOptionalBedsArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -31,6 +33,10 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
     'devConPrice',
     'amenities',
     'imageUrl',
+    'guestsNumber',
+    'childFriendly',
+    'petFriendly',
+    'beds'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -74,6 +80,22 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   const imageUrl = request.body.imageUrl
   await validateOptionalString('imageUrl', imageUrl)
   if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
+
+  const guestsNumber = request.body.guestsNumber
+  await validateOptionalNumber('guestsNumber', guestsNumber)
+  if (typeof guestsNumber !== 'undefined') payload.guestsNumber = guestsNumber
+
+  const childFriendly = request.body.childFriendly
+  await validateOptionalBoolean('childFriendly', childFriendly)
+  if (typeof childFriendly !== 'undefined') payload.childFriendly = childFriendly
+
+  const petFriendly = request.body.petFriendly
+  await validateOptionalBoolean('petFriendly', petFriendly)
+  if (typeof petFriendly !== 'undefined') payload.petFriendly = petFriendly
+
+  const beds = request.body.beds
+  await validateOptionalBedsArray('beds', beds)
+  if (typeof beds !== 'undefined') payload.beds = beds
 
   return payload
 }

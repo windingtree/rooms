@@ -28,6 +28,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     description: (typeof payload.description !== 'undefined') ? payload.description : '',
     quantity: (typeof payload.quantity !== 'undefined') ? payload.quantity : 0,
     price: (typeof payload.price !== 'undefined') ? payload.price : 0,
+    currency: (typeof payload.currency !== 'undefined') ? payload.currency : 'USD',
     devConPrice: (typeof payload.devConPrice !== 'undefined') ? payload.devConPrice : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
     imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
@@ -35,7 +36,6 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     childFriendly: (typeof payload.childFriendly !== 'undefined') ? payload.childFriendly : false,
     petFriendly: (typeof payload.petFriendly !== 'undefined') ? payload.petFriendly : false,
     guestsNumber: (typeof payload.guestsNumber !== 'undefined') ? payload.guestsNumber : 0,
-    currency: (typeof payload.currency !== 'undefined') ? payload.currency : 'USD',
   }
   const roomTypeId: string = await roomTypeRepo.createRoomType(baseRoomType)
   const roomType: IRoomType = Object.assign({}, baseRoomType, { id: roomTypeId })

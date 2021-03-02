@@ -33,6 +33,8 @@ async function uploadImageToS3(requester: IProfile, payload: IPostUploadImagePay
     ACL: 'public-read'
   }
 
+  console.log('PARAMS', params);
+
   try {
     await s3bucket.upload(params, async (err: unknown) => {
       if (err) {

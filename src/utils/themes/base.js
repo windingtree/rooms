@@ -22,7 +22,7 @@ const _baseMuiThemeObj = {
     },
     secondary: {
       light: WHITE,
-      main: LIGHT_PURPLE,
+      main: DARK_PURPLE,
       dark: MIDDLE_PURPLE,
       contrastText: BLACK,
     },

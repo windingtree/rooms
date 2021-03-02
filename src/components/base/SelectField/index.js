@@ -9,26 +9,6 @@ const useStyles = makeStyles({
     '&.noBottomMargin': {
       marginBottom: 0
     }
-  },
-  cssOutlinedInput: {
-    '&$cssFocused $notchedOutline': {
-      borderColor: `#9226AD !important`,
-    },
-    color: '#42424F !important'
-  },
-  cssFocused: {
-    borderWidth: '1px',
-    borderColor: '#9226AD !important'
-  },
-  notchedOutline: {
-    borderWidth: '1px',
-    borderColor: '#C7C7C7 !important'
-  },
-  cssLabel: {
-    color : '#757575 !important'
-  },
-  cssLabelFocused: {
-    color : '#9226AD !important'
   }
 });
 
@@ -54,20 +34,8 @@ export default props => {
       className={`${styles.field} ${bottomMargin ? '' : 'noBottomMargin'}`}
       value={selectValue}
       onChange={handleChange}
-      variant='outlined'
-      InputProps={{
-        classes: {
-          root: styles.cssOutlinedInput,
-          focused: styles.cssFocused,
-          notchedOutline: styles.notchedOutline,
-        }
-      }}
-      InputLabelProps={{
-        classes: {
-          root: styles.cssLabel,
-          focused: styles.cssLabelFocused
-        }
-      }}
+      color="secondary"
+      variant="outlined"
       {...restProps}
     >
       <MenuItem value=''></MenuItem>
