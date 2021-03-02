@@ -13,6 +13,7 @@ export {
 export {
   TRoomTypeDbDataFields,
   IRoomTypeDbDataProjection,
+  IRoomTypeBeds,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
