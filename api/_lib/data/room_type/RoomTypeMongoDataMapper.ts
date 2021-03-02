@@ -7,6 +7,7 @@ import {
   IRoomTypeCollectionDbData,
   IPatchRoomTypePayloadDbData,
 
+  IRoomTypeBeds,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -28,7 +29,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       guestsNumber: baseRoomType.guestsNumber,
       childFriendly: baseRoomType.childFriendly,
       petFriendly: baseRoomType.petFriendly,
-      beds: baseRoomType.beds,
+      beds: baseRoomType.beds.map(el => el),
     }
   }
 
@@ -46,7 +47,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       guestsNumber: baseRoomTypeDbData.guestsNumber,
       childFriendly: baseRoomTypeDbData.childFriendly,
       petFriendly: baseRoomTypeDbData.petFriendly,
-      beds: baseRoomTypeDbData.beds,
+      beds: baseRoomTypeDbData.beds.map(el => el),
     }
   }
 
@@ -78,19 +79,23 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'type':
         case 'description':
+        case 'currency':
         case 'amenities':
         case 'imageUrl':
-          patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as string)
           break
         case 'quantity':
         case 'price':
-        case 'currency':
         case 'devConPrice':
         case 'guestsNumber':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as number)
+          break
         case 'childFriendly':
         case 'petFriendly':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as boolean)
+          break
         case 'beds':
-          patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeBeds).map(el => el)
           break
       }
 

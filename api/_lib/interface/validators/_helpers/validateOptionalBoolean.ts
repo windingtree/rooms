@@ -3,7 +3,7 @@ import { CError } from '../../../common/tools'
 
 const { BAD_REQUEST } = CONSTANTS.HTTP_STATUS
 
-export async function validateOptionalBoolean(propName: string, _value: unknown): Promise<boolean|undefined> {
+async function validateOptionalBoolean(propName: string, _value: unknown): Promise<boolean|undefined> {
   let value: boolean|undefined = undefined
 
   if (typeof _value === 'boolean') {
@@ -14,3 +14,5 @@ export async function validateOptionalBoolean(propName: string, _value: unknown)
 
   return value
 }
+
+export { validateOptionalBoolean }
