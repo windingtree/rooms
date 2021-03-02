@@ -20,7 +20,7 @@ const useStyles = () => {
       flexGrow: 1,
     },
     room_type_card: {
-      width: '765px',
+      width: '600px',
       margin: '16px',
       maxWidth: '90vw'
     },

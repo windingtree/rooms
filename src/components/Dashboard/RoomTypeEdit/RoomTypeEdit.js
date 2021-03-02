@@ -37,8 +37,9 @@ const useStyles = () => ({
     flexGrow: 1,
   },
   room_type_card: {
-    // width: '26em',
-    margin: '16px'
+    width: '600px',
+    margin: '16px',
+    maxWidth: '90vw'
   },
   price_currency: {
     display: 'inline',
@@ -187,24 +188,24 @@ const RoomTypeEdit = props => {
   }, []);
 
   useEffect(() => {
-    if (roomTypeId !== 'temporary') {
+    if (editMode) {
       getRoomType(roomTypeId);
     } else {
       setRoomType({
         hotelId: userProfile.hotelId,
         type: '',
         description: '',
-        guestsNumber: 1,
+        guestsNumber: '',
         childFriendly: false,
         petFriendly: false,
-        beds: [0],
-        quantity: 1,
-        price: 0,
+        beds: [''],
+        quantity: '',
+        price: '',
         currency: 'USD',
         amenities: ''
       });
     }
-  }, [getRoomType, roomTypeId, userProfile]);
+  }, [getRoomType, roomTypeId, editMode, userProfile]);
 
   if (!roomType) {
     return (
@@ -242,8 +243,13 @@ const RoomTypeEdit = props => {
         }
         break;
       case 'beds':
-        if (roomType.beds.length === 0) {
+        if (roomType.beds.length === 0 || (roomType.beds.length === 1 && roomType.beds[0] === '')) {
           errors[field] = 'At least on bed type should be selected';
+        }
+        break;
+      case 'quantity':
+        if (typeof roomType.quantity !== 'number' || roomType.price === 0) {
+          errors[field] = 'Please set a price for the room type';
         }
         break;
       case 'price':
@@ -345,17 +351,19 @@ const RoomTypeEdit = props => {
   }
 
   const handleQuantityChange = (e) => {
+    const value = Number.parseInt(e.target.value, 10);
     const newRoomType = {
       ...roomType,
-      quantity: Number.parseInt(e.target.value, 10)
+      quantity: !isNaN(value) ? value : ''
     };
     setRoomType(newRoomType);
   }
 
   const handlePriceChange = (e) => {
+    const value = Number.parseFloat(e.target.value, 10);
     const newRoomType = {
       ...roomType,
-      price: Number.parseFloat(e.target.value, 10)
+      price: !isNaN(value) ? value : ''
     };
     setRoomType(newRoomType);
   }
@@ -492,13 +500,15 @@ const RoomTypeEdit = props => {
                     </h3>
                   </Grid>
                   <Grid item>
-                    <IconButton
-                      className={classes.removeButton}
-                      aria-label="delete"
-                      onClick={deleteRoomType}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    {editMode &&
+                      <IconButton
+                        className={classes.removeButton}
+                        aria-label="delete"
+                        onClick={() => deleteRoomType(roomTypeId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
                   </Grid>
                 </Grid>
 
