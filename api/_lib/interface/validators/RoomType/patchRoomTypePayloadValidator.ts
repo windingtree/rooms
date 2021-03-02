@@ -5,7 +5,7 @@ import {
   validateOptionalNumber,
   validateMongoObjectId,
   validateOptionalBoolean,
-  validateOptionalArray
+  validateOptionalBedsArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -93,7 +93,7 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   if (typeof petFriendly !== 'undefined') payload.petFriendly = petFriendly
 
   const beds = request.body.beds
-  await validateOptionalArray('beds', beds)
+  await validateOptionalBedsArray('beds', beds)
   if (typeof beds !== 'undefined') payload.beds = beds
 
   return payload
