@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { DropzoneArea } from 'material-ui-dropzone'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles({
   note: {
@@ -10,62 +11,67 @@ const useStyles = makeStyles({
     marginBottom: '16px',
     color: '#717171',
   },
-  dropzoneClass: {
+  container: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     border: '1px solid #C7C7C7',
     boxSizing: 'border-box',
     borderRadius: '8px',
     minHeight: '129px',
     height: 'auto',
     backgroundColor: '#FBFBFB',
+    '&>p': {
+      textAlign: 'center',
+      color: 'rgba(117,117,117,1)'
+    },
     '&:focus': {
       borderColor: '#9226AD !important',
       outline: 'none'
     }
   },
-  text: {
-    fontSize: '16px'
-  },
-  textHidden: {
-    display: 'none'
-  },
-  previewContainer: {
-    margin: 0,
-    width: '100% !important',
-    maxWidth: '540px',
-    padding: '16px 8px 0 8px !important'
-  },
-  previewItem: {
-    padding: '0 8px 16px 8px !important',
-    '&>button': {
-      opacity: '1 !important',
-      width: '36px !important',
-      height: '36px !important',
-      backgroundColor: 'white !important',
-      boxShadow: '0 1px 1px 1px rgba(0,0,0,0.15)',
-      top: '-4px',
-      right: '-2px',
-      color: 'rgba(0,0,0,0.54)'
-    }
-  }
 });
 
 export default props => {
   const styles = useStyles();
   const {
-    note = '',
-    showFileNames = false,
-    onUpload = () => {},
-    ...restProps
+    note,
+    title,
+    uploading,
+    onLoad = () => {},
+    onError = () => {}
   } = props;
-  const [loadedFiles, setFiles] = useState([]);
-
-  const handleOnUpload = files => {
-    setFiles(files);
-    onUpload(files);
-  }
+  const onDrop = useCallback(async files => {
+    let images = [];
+    try {
+      images = await Promise.all(
+        files.map(image => new Promise(
+          (resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => {
+              reject(reader.error);
+              reader.abort();
+            };
+            reader.onloadend = () => {
+              resolve(reader
+                .result
+                .replace('data:', '')
+                .replace(/^.+,/, ''));
+            };
+            reader.readAsDataURL(image);
+          })
+        )
+      );
+    } catch (error) {
+      onError(error);
+    }
+    onLoad(images);
+  }, [onLoad, onError]);
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+    onDrop
+  });
 
   return (
     <>
@@ -76,26 +82,18 @@ export default props => {
           {note}
         </Typography>
       }
-      <DropzoneArea
-        dropzoneClass={styles.dropzoneClass}
-        acceptedFiles={['image/*']}
-        onChange={handleOnUpload}
-        showFileNames={showFileNames}
-        dropzoneText='Upload images'
-        showAlerts={false}
-        filesLimit={20}
-        Icon={() => (<></>)}
-        classes={{
-          text: loadedFiles.length === 0
-            ? styles.text
-            : styles.textHidden
-        }}
-        previewGridClasses={{
-          container: styles.previewContainer,
-          item: styles.previewItem
-        }}
-        {...restProps}
-      />
+      <div
+        className={styles.container}
+        {...getRootProps()}
+      >
+        <input {...getInputProps()} />
+        {!uploading &&
+          <p>{title}</p>
+        }
+        {uploading &&
+          <CircularProgress color='secondary' size={48} />
+        }
+      </div>
     </>
   );
 };

@@ -5,7 +5,7 @@ import {
   validateOptionalNumber,
   validateRequiredString,
   validateOptionalBoolean,
-  validateOptionalArray
+  validateOptionalBedsArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -94,7 +94,7 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   if (typeof petFriendly !== 'undefined') payload.petFriendly = petFriendly
 
   const beds = request.body.beds
-  await validateOptionalArray('beds', beds)
+  await validateOptionalBedsArray('beds', beds)
   if (typeof beds !== 'undefined') payload.beds = beds
 
   return payload

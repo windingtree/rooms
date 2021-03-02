@@ -172,6 +172,7 @@ const RoomTypeEdit = props => {
   const [validationErrors, setValidationErrors] = useState({});
   const [snackWarn, setSnackWarn] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imagesUploading, setImagesUploading] = useState(false);
   const editMode = roomTypeId !== 'temporary';
 
   const getRoomType = useCallback(roomTypeId => {
@@ -273,25 +274,6 @@ const RoomTypeEdit = props => {
       setValidationErrors(errors);
     }
   };
-
-  // const handlePropValueChange = (id, propName, newValue) => {
-  //   const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
-  //     if (roomType.id === id) {
-  //       return true
-  //     }
-
-  //     return false
-  //   })
-
-  //   if (roomTypeToUpdate[propName] === newValue) {
-  //     return
-  //   }
-
-  //   const data = {}
-  //   data[propName] = newValue
-
-  //   updateRoomType(id, data)
-  // }
 
   const deleteRoomType = id => {
     apiClient
@@ -472,6 +454,27 @@ const RoomTypeEdit = props => {
   };
 
   const chips = convertAmenitiesToChips(roomType.amenities);
+
+  const handleOnImagesLoadError = error => {
+    errorLogger(error);
+    setSnackWarn(error.message);
+  };
+
+  const handleOnImagesLoaded = images => {
+    console.log('IMAGES', images);
+    setImagesUploading(true);
+    apiClient
+      .uploadImages(images)
+      .then(response => {
+        setImagesUploading(false);
+        console.log('###', response);
+      })
+      .catch(error => {
+        setImagesUploading(false);
+        errorLogger(error);
+        setSnackWarn(error.message);
+      })
+  };
 
   return (
     <Grid
@@ -681,7 +684,11 @@ const RoomTypeEdit = props => {
                   Images
                 </Typography>
                 <DropzoneField
-                  note={'Add pictures here, so that the travellers could see what type of room is this'}
+                  note='Add pictures here, so that the travellers could see what type of room is this'
+                  title='Upload Images'
+                  uploading={imagesUploading}
+                  onError={handleOnImagesLoadError}
+                  onLoad={handleOnImagesLoaded}
                 />
 
               </Grid>

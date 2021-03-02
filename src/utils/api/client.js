@@ -9,6 +9,7 @@ import {
   createRoomType,
   updateRoomType,
   deleteRoomType,
+  uploadImages
 } from './roomTypes'
 
 import {
@@ -48,6 +49,7 @@ const apiClient = (function () {
     createRoomType,
     updateRoomType,
     deleteRoomType,
+    uploadImages,
 
     getBookings,
     getBooking,
