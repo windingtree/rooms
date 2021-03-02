@@ -29,7 +29,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       guestsNumber: baseRoomType.guestsNumber,
       childFriendly: baseRoomType.childFriendly,
       petFriendly: baseRoomType.petFriendly,
-      beds: baseRoomType.beds.map(el => el),
+      beds: baseRoomType.beds,
     }
   }
 
@@ -47,7 +47,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       guestsNumber: baseRoomTypeDbData.guestsNumber,
       childFriendly: baseRoomTypeDbData.childFriendly,
       petFriendly: baseRoomTypeDbData.petFriendly,
-      beds: baseRoomTypeDbData.beds.map(el => el),
+      beds: baseRoomTypeDbData.beds,
     }
   }
 
@@ -95,7 +95,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as boolean)
           break
         case 'beds':
-          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeBeds).map(el => el)
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeBeds)
           break
       }
 
