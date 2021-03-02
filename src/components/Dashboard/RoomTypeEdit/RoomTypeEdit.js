@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter, useParams } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -13,6 +13,10 @@ import Button from '@material-ui/core/Button'
 import TextFieldOrig from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
@@ -77,7 +81,8 @@ const useStyles = () => ({
   },
   cardFooter: {
     marginBottom: '16px'
-  }
+  },
+  imagesContainer: {}
 });
 
 const availableAmenities = [
@@ -160,6 +165,109 @@ const currencies = [
   }
 ];
 
+const imageStyle = makeStyles({
+  removeButton: {
+    position: 'absolute',
+    top: '-10px',
+    right: '-10px',
+    backgroundColor: 'rgba(255,255,255,0.7)'
+  }
+});
+const RoomImage = props => {
+  const classes = imageStyle();
+  const {
+    width = 'calc(90vw/4.5)',
+    height = 'calc(90vh/10)',
+    url,
+    onClick = () => {},
+    onDelete = () => {}
+  } = props;
+
+  return (
+    <div
+      style={{
+        width,
+        height,
+        maxWidth: '170px',
+        backgroundImage: `url(${url})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        display: 'inline-block',
+        margin: '0 16px 16px 0',
+        borderRadius: '8px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+      onClick={() => onClick(url)}
+    >
+      <IconButton
+        className={classes.removeButton}
+        aria-label="delete"
+        onClick={() => onDelete(url)}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </div>
+  );
+};
+
+const lightBoxStyle = makeStyles({
+  root: {
+    padding: 0
+  },
+  closeButtonWrapper: {
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    left: 0,
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  closeButton: {
+    backgroundColor: 'white'
+  }
+});
+const ImageLightBox = props => {
+  const classes = lightBoxStyle();
+  const {
+    url,
+    alt = 'Room view',
+    onClose = () => {}
+  } = props;
+
+  return (
+    <Dialog
+      open={typeof url === 'string'}
+      scroll='paper'
+      classes={{
+        root: classes.root
+      }}
+      onBackdropClick={onClose}
+    >
+      <div className={classes.closeButtonWrapper}>
+        <IconButton
+          className={classes.closeButton}
+          aria-label="close"
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <DialogContent
+        classes={{
+          root: classes.root
+        }}
+      >
+        <img
+          src={url}
+          alt={alt}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const RoomTypeEdit = props => {
   const { roomTypeId } =  useParams();
   const {
@@ -173,6 +281,7 @@ const RoomTypeEdit = props => {
   const [snackWarn, setSnackWarn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imagesUploading, setImagesUploading] = useState(false);
+  const [showImage, setShowImage] = useState(null);
   const editMode = roomTypeId !== 'temporary';
 
   const getRoomType = useCallback(roomTypeId => {
@@ -203,6 +312,7 @@ const RoomTypeEdit = props => {
         quantity: '',
         price: '',
         currency: 'USD',
+        images: [],
         amenities: ''
       });
     }
@@ -461,19 +571,43 @@ const RoomTypeEdit = props => {
   };
 
   const handleOnImagesLoaded = images => {
-    console.log('IMAGES', images);
     setImagesUploading(true);
     apiClient
       .uploadImages(images)
       .then(response => {
         setImagesUploading(false);
-        console.log('###', response);
+        const newRoomType = {
+          ...roomType,
+          images: [
+            ...roomType.images,
+            ...response.map(r => r.imageUrl)
+          ]
+        };
+        setRoomType(newRoomType);
       })
       .catch(error => {
         setImagesUploading(false);
         errorLogger(error);
         setSnackWarn(error.message);
       })
+  };
+
+  const handleImageClick = url => {
+    setShowImage(url);
+  };
+
+  const handleCloseLightBox = () => {
+    setShowImage(null);
+  };
+
+  const handleImageDelete = url => {
+    const newRoomType = {
+      ...roomType,
+      images: roomType.images.filter(
+        imageUrl => imageUrl !== url
+      )
+    };
+    setRoomType(newRoomType);
   };
 
   return (
@@ -680,12 +814,31 @@ const RoomTypeEdit = props => {
                   inputLabel="Add amenities"
                 />
 
+                <ImageLightBox
+                  url={showImage}
+                  onClose={handleCloseLightBox}
+                />
                 <Typography className={classes.sectionLabel}>
                   Images
                 </Typography>
+                <div className={classes.imagesContainer}>
+                  {roomType.images.map(((url, index) => (
+                    <RoomImage
+                      key={index}
+                      url={url}
+                      onClick={handleImageClick}
+                      onDelete={handleImageDelete}
+                    />
+                  )))}
+                </div>
                 <DropzoneField
-                  note='Add pictures here, so that the travellers could see what type of room is this'
+                  note={
+                    roomType.images.length === 0
+                      ? 'Add pictures here, so that the travellers could see what type of room is this'
+                      : undefined
+                  }
                   title='Upload Images'
+                  subTitle='or drag & drop images here'
                   uploading={imagesUploading}
                   onError={handleOnImagesLoadError}
                   onLoad={handleOnImagesLoaded}

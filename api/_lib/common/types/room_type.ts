@@ -15,12 +15,15 @@ type TRoomTypeDbDataFields =
   | 'childFriendly'
   | 'petFriendly'
   | 'beds'
+  | 'images'
 
 type IRoomTypeDbDataProjection = {
   [key in TRoomTypeDbDataFields]?: 1
 }
 
 type IRoomTypeBeds = Array<number>
+
+type IRoomTypeImages = Array<string>
 
 interface IBaseRoomType {
   hotelId: string
@@ -36,6 +39,7 @@ interface IBaseRoomType {
   childFriendly: boolean
   petFriendly: boolean
   beds: IRoomTypeBeds
+  images: IRoomTypeImages
 }
 
 interface IRoomType extends IBaseRoomType {
@@ -58,6 +62,7 @@ interface IPostRoomTypePayload {
   childFriendly?: boolean
   petFriendly?: boolean
   beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 interface IPatchRoomTypePayload {
@@ -74,6 +79,7 @@ interface IPatchRoomTypePayload {
   childFriendly?: boolean
   petFriendly?: boolean
   beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 interface IBaseRoomTypeDbData {
@@ -90,6 +96,7 @@ interface IBaseRoomTypeDbData {
   childFriendly: boolean
   petFriendly: boolean
   beds: IRoomTypeBeds
+  images: IRoomTypeImages
 }
 
 interface IRoomTypeDbData extends IBaseRoomTypeDbData {
@@ -110,6 +117,7 @@ interface IPatchRoomTypePayloadDbData {
   childFriendly?: boolean
   petFriendly?: boolean
   beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 type IRoomTypeCollectionDbData = Array<IRoomTypeDbData>
@@ -118,6 +126,7 @@ export {
   TRoomTypeDbDataFields,
   IRoomTypeDbDataProjection,
   IRoomTypeBeds,
+  IRoomTypeImages,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,

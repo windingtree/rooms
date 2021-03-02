@@ -33,6 +33,7 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
     imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
     beds: (typeof payload.beds !== 'undefined') ? payload.beds : [],
+    images: (typeof payload.images !== 'undefined') ? payload.images : [],
     childFriendly: (typeof payload.childFriendly !== 'undefined') ? payload.childFriendly : false,
     petFriendly: (typeof payload.petFriendly !== 'undefined') ? payload.petFriendly : false,
     guestsNumber: (typeof payload.guestsNumber !== 'undefined') ? payload.guestsNumber : 0,

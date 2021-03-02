@@ -8,6 +8,7 @@ import {
   IPatchRoomTypePayloadDbData,
 
   IRoomTypeBeds,
+  IRoomTypeImages,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -30,6 +31,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       childFriendly: baseRoomType.childFriendly,
       petFriendly: baseRoomType.petFriendly,
       beds: baseRoomType.beds,
+      images: baseRoomType.images,
     }
   }
 
@@ -48,6 +50,7 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       childFriendly: baseRoomTypeDbData.childFriendly,
       petFriendly: baseRoomTypeDbData.petFriendly,
       beds: baseRoomTypeDbData.beds,
+      images: baseRoomTypeDbData.images,
     }
   }
 
@@ -65,7 +68,8 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       'guestsNumber',
       'childFriendly',
       'petFriendly',
-      'beds'
+      'beds',
+      'images'
     ]
 
     return availProps.reduce((patchRoomTypePayloadDbData: IPatchRoomTypePayloadDbData, prop): IPatchRoomTypePayloadDbData => {
@@ -96,6 +100,9 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'beds':
           patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeBeds)
+          break
+        case 'images':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeImages)
           break
       }
 

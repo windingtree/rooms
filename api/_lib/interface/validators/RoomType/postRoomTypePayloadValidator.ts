@@ -5,7 +5,8 @@ import {
   validateOptionalNumber,
   validateRequiredString,
   validateOptionalBoolean,
-  validateOptionalBedsArray
+  validateOptionalBedsArray,
+  validateOptionalImagesArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -36,7 +37,8 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
     'guestsNumber',
     'childFriendly',
     'petFriendly',
-    'beds'
+    'beds',
+    'images'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -96,6 +98,10 @@ async function postRoomTypePayloadValidator(request: NowRequest): Promise<IPostR
   const beds = request.body.beds
   await validateOptionalBedsArray('beds', beds)
   if (typeof beds !== 'undefined') payload.beds = beds
+
+  const images = request.body.images
+  await validateOptionalImagesArray('images', images)
+  if (typeof images !== 'undefined') payload.images = images
 
   return payload
 }
