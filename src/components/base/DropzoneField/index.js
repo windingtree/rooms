@@ -31,13 +31,41 @@ const useStyles = makeStyles({
       outline: 'none'
     }
   },
+  title: {
+    fontSize: '16px',
+    textAlign: 'center',
+    color: 'rgba(117,117,117,1)'
+  },
+  subTitle: {
+    fontSize: '12px',
+    textAlign: 'center',
+    color: 'rgba(117,117,117,1)'
+  }
 });
+
+const loadImageAsBase64 = imageFile => new Promise(
+  (resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => {
+      reject(reader.error);
+      reader.abort();
+    };
+    reader.onloadend = () => {
+      resolve(reader
+        .result
+        .replace('data:', '')
+        .replace(/^.+,/, ''));
+    };
+    reader.readAsDataURL(imageFile);
+  }
+);
 
 export default props => {
   const styles = useStyles();
   const {
     note,
     title,
+    subTitle,
     uploading,
     onLoad = () => {},
     onError = () => {}
@@ -45,24 +73,10 @@ export default props => {
   const onDrop = useCallback(async files => {
     let images = [];
     try {
-      images = await Promise.all(
-        files.map(image => new Promise(
-          (resolve, reject) => {
-            const reader = new FileReader();
-            reader.onerror = () => {
-              reject(reader.error);
-              reader.abort();
-            };
-            reader.onloadend = () => {
-              resolve(reader
-                .result
-                .replace('data:', '')
-                .replace(/^.+,/, ''));
-            };
-            reader.readAsDataURL(image);
-          })
-        )
-      );
+      for (const imageFile of files) {
+        const imageData = await loadImageAsBase64(imageFile);
+        images.push(imageData);
+      }
     } catch (error) {
       onError(error);
     }
@@ -75,7 +89,7 @@ export default props => {
 
   return (
     <>
-      {note !== '' &&
+      {(note && note !== '') &&
         <Typography
           className={styles.note}
         >
@@ -88,7 +102,10 @@ export default props => {
       >
         <input {...getInputProps()} />
         {!uploading &&
-          <p>{title}</p>
+          <>
+            <Typography className={styles.title}>{title}</Typography>
+            {subTitle && <Typography className={styles.subTitle}>{subTitle}</Typography>}
+          </>
         }
         {uploading &&
           <CircularProgress color='secondary' size={48} />

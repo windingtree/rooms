@@ -5,7 +5,8 @@ import {
   validateOptionalNumber,
   validateMongoObjectId,
   validateOptionalBoolean,
-  validateOptionalBedsArray
+  validateOptionalBedsArray,
+  validateOptionalImagesArray,
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -34,7 +35,8 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
     'guestsNumber',
     'childFriendly',
     'petFriendly',
-    'beds'
+    'beds',
+    'images'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -95,6 +97,10 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const beds = request.body.beds
   await validateOptionalBedsArray('beds', beds)
   if (typeof beds !== 'undefined') payload.beds = beds
+
+  const images = request.body.images
+  await validateOptionalImagesArray('images', images)
+  if (typeof images !== 'undefined') payload.images = images
 
   return payload
 }

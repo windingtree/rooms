@@ -57,9 +57,6 @@ async function uploadImageToS3(requester: IProfile, payload: IPostUploadImagePay
     ACL: 'public-read'
   }
 
-  console.log('PARAMS')
-  console.log(params)
-
   let s3FileURL = ''
   try {
     s3FileURL = await uploadToS3Handler(s3bucket, params)
