@@ -26,8 +26,6 @@ async function getHealth(): Promise<IHealthStatus> {
     mongoStatusObj.err = pingErr
   }
 
-  console.log('ENV = ')
-  console.log(JSON.stringify(ENV))
 
   return {
     mongo: mongoStatusObj,

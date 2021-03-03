@@ -5,28 +5,47 @@ import Spinner from "../../base/Spinner/Spinner";
 import {apiClient} from "../../../utils/api";
 import {errorLogger, objClone} from "../../../utils/functions";
 import {makeStyles} from '@material-ui/core/styles';
-import {Box, CardActionArea, Link, Paper, Switch} from "@material-ui/core";
+import {Link, Paper, Switch, Typography} from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {TYPE_PERCENTAGE} from "../../../utils/api/rateModifiers";
 import {ApiCache} from "../../../utils/api_cache";
-import { withStyles } from '@material-ui/core/styles'
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 
-const useStyles = () => {
-    return {
-        typography:{
-            h3:{
-                fontSize: '3.2rem'
-            }
-        }
-    }
-}
-
-
-const createRatesStyles = makeStyles({
+const useStyles = makeStyles({
     add_new_href: {
         color: '#9226AD'
     },
+    grow: {
+        flexGrow: 1,
+    },
+    rate_list: {
+        width: '600px',
+        margin: '16px',
+        maxWidth: '90vw'
+    },
+    rate_list_item: {
+        minWidth: '500px',
+        minHeight:'60px',
+        marginTop:'10px',
+        marginBottom:'10px',
+        paddingLeft:'10px'
+    },
+    rate_edit_card: {
+        width: '600px',
+        margin: '16px',
+        maxWidth: '90vw'
+    },
+    rateName: {
+        fontSize: '1.5em',
+    },
+    negative: {
+        color: '#ff0000'
+    },
+    positive: {
+        color: '#00ff00'
+    }
 });
 
 const Rates = ({userProfile}) => {
@@ -35,7 +54,7 @@ const Rates = ({userProfile}) => {
     const [rateModifiers, setRateModifiers] = useState([])
     const [roomTypes, setRoomTypes] = useState([])
     const [loadInProgress, setLoadInProgress] = useState(false)
-    const classes = createRatesStyles();
+    const classes = useStyles();
     const apiCache = ApiCache.getInstance()
 
     /**
@@ -46,14 +65,10 @@ const Rates = ({userProfile}) => {
         setLoadInProgress(true);
         //populate data from cache to speed up page loading
         const cachedRateModifiers = apiCache.getRateModifiers();
-        sortRateModifiersByPriority(cachedRateModifiers)
         setRateModifiers(cachedRateModifiers)
-
         setRoomTypes(apiCache.getRoomTypes())
-
         //load data from the server
         let fetchRatesPromise = apiClient.getRateModifiers().then(rateModifiers => {
-            sortRateModifiersByPriority(rateModifiers);
             setRateModifiers(rateModifiers)});
         let fetchRoomsPromise = apiClient.getRoomTypes().then(roomTypes=>{setRoomTypes(roomTypes)});
         Promise.all([fetchRatesPromise,fetchRoomsPromise])
@@ -66,17 +81,6 @@ const Rates = ({userProfile}) => {
             })
 
     }, [apiCache])
-
-    function sortRateModifiersByPriority(rateModifiersList){
-        rateModifiersList.sort((a,b)=>{
-            if(a.priority>b.priority)
-                return -1;
-            if(a.priority<b.priority)
-                return 1;
-            return 0
-        })
-
-    }
 
     /**
      * Update rate modifier in the backend and update local store too
@@ -134,12 +138,12 @@ const Rates = ({userProfile}) => {
 
     return (
         <>
-                <h3>Rate modifiers</h3>
+            <h3>Rate modifiers</h3>
             {loadInProgress && (!rateModifiers || rateModifiers.length === 0) && <Spinner info="loading"/>}
             {rateModifiers && rateModifiers.length > 0 &&
-                <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes}
-                   handlePropertyValueChange={handlePropertyValueChange}
-                   handleEditRateModifier={handleEditRateModifier}/>
+            <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes}
+                               handlePropertyValueChange={handlePropertyValueChange}
+                               handleEditRateModifier={handleEditRateModifier}/>
             }
             {(!rateModifiers || rateModifiers.length === 0) &&
             <div style={{textAlign:"center"}}>
@@ -157,72 +161,9 @@ const Rates = ({userProfile}) => {
     )
 }
 
-export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange, handleEditRateModifier}) =>
-{
-    function getRoomNameById(roomTypeId){
-        if(roomTypes){
-            let room=roomTypes.find(({id})=>id === roomTypeId)
-            if(room)
-                return room.type;
-        }
-        return ''
-    }
-    const ratesList = rateModifiers && rateModifiers.map((rateModifier) => {
-        let rateModifierRoomIds = rateModifier.id;
-        let rateModifierRoomNames = [];
-        if (rateModifierRoomIds && Array.isArray(rateModifierRoomIds)) {
-            rateModifierRoomNames = rateModifierRoomIds.map(roomId => {
-                return getRoomNameById(roomId)
-            })
-        }
-        return (<RateModifierListItem
-            key={rateModifier.id}
-            id={rateModifier.id}
-            type={rateModifier.type}
-            enabled={rateModifier.enabled}
-            roomTypeNames={rateModifierRoomNames}
-            priceModifierAmount={rateModifier.priceModifierAmount}
-            priceModifierType={rateModifier.priceModifierType}
-            handlePropertyValueChange={handlePropertyValueChange}
-            handleEditRateModifier={handleEditRateModifier}/>)
-    })
-
-
-    return (
-        <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-        >
-                {ratesList}
-        </Grid>
-
-    )
-}
-
-const createRateStyles = makeStyles({
-    rate_card: {
-        width: '26em',
-        marginTop: '1em',
-        marginBottom: '1em',
-    },
-        rate_name: {
-            fontSize: '1.5em',
-        },
-        negative: {
-            color: '#ff0000'
-        },
-        positive: {
-            color: '#00ff00'
-        }
-    }
-);
-
-
 export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceModifierAmount, roomTypeNames, handlePropertyValueChange, handleEditRateModifier}) =>
 {
-    const classes = createRateStyles();
+    const classes = useStyles();
     //deconstruct rate modifier properties
     const handleEnabledChange = () => {
         handlePropertyValueChange(id, 'enabled', !enabled)
@@ -245,35 +186,186 @@ export const RateModifierListItem = ({id,type,enabled,priceModifierType,priceMod
         if(amount>0) {
             className = classes.positive
         }
-        amountStr = `${amount} ${typeStr}`
+        amountStr = `${amount}${typeStr}`
         return (<span className={className}>{amountStr}</span>)
     }
 
     return (
-        <Paper className={classes.rate_card}>
-            <CardActionArea >
-                <Grid container >
-                    <Grid item xs={8} onClick={handleEditClick}>
-                        <Box pl={2} pt={1} className={classes.rate_name}>{type} {formatDiscount()}</Box>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Switch
-                            checked={enabled}
-                            onChange={handleEnabledChange}
-                            name="enabled"
-                            inputProps={{'aria-label': 'secondary checkbox'}}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Box pl={2} pb={1}>
+<>
+            <Grid container
+                  direction="row"
+                  justify="center"
+                  alignItems="center" className={classes.rate_list_item}>
+                <Grid item xs={1}>
+                    <DragHandleIcon/>
+                </Grid>
+                <Grid item xs={7} onClick={handleEditClick}>
+                    <Grid container
+                          direction="row"
+                          justify="center"
+                          alignItems="center">
+                        <Grid item xs={12}>
+                            <Typography>{type} {formatDiscount()}</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
                             {roomTypeNames && roomTypeNames.join(',')}
-                        </Box>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </CardActionArea>
-        </Paper>
+                <Grid item xs={4} style={{textAlign:'right'}}>
+                    <Switch
+                        checked={enabled}
+                        onChange={handleEnabledChange}
+                        name="enabled"
+                        inputProps={{'aria-label': 'secondary checkbox'}}
+                    />
+                </Grid>
+            </Grid>
+</>
     )
 }
 
 
-export default withStyles(useStyles)(Rates)
+const sortRatesByPriority = rateModifiers => {
+    if(!Array.isArray(rateModifiers))
+        return [];
+    rateModifiers.sort((a,b)=>{
+        if(a.priority>b.priority)
+            return 1;
+        if(a.priority<b.priority)
+            return -1;
+        return 0
+    })
+    return rateModifiers;
+}
+
+const shiftUp = (list, startIndex, endIndex) => {
+    if(startIndex<endIndex)
+        throw new Error(`StartIndex (${startIndex}) must be higher than EndIndex (${endIndex})`)
+    for(let i=endIndex;i<startIndex;i++){
+        let tmp = list[i].priority;
+        list[i].priority=list[i + 1].priority
+        list[i + 1].priority=tmp;
+    }
+}
+
+const shiftDown = (list, startIndex, endIndex) => {
+    if(startIndex>endIndex)
+        throw new Error(`StartIndex (${startIndex}) must be lower than EndIndex (${endIndex})`)
+    for(let i=endIndex;i>startIndex;i--){
+        let tmp = list[i-1].priority;
+        list[i-1].priority=list[i].priority
+        list[i].priority=tmp;
+    }
+}
+
+const reorderRateModifiersList = (rateModifiers, startIndex, endIndex) => {
+    if(startIndex<endIndex) {
+        shiftDown(rateModifiers,startIndex,endIndex)
+    }
+    else {
+        shiftUp(rateModifiers,startIndex,endIndex)
+    }
+    sortRatesByPriority(rateModifiers)
+    return rateModifiers;
+}
+
+
+export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange, handleEditRateModifier}) => {
+    const [rates, setRates] = useState(sortRatesByPriority(rateModifiers));
+
+    const onDragEnd = (result) =>{
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+        const newRates = reorderRateModifiersList(
+            rates,
+            result.source.index,
+            result.destination.index
+        );
+        setRates(newRates)
+    }
+
+
+    //get room name based on its ID
+    function getRoomNameById(roomTypeId){
+        if(roomTypes){
+            let room=roomTypes.find(({id})=>id === roomTypeId)
+            if(room)
+                return room.type;
+        }
+        return ''
+    }
+
+    //get all room names that are assigned to a rate modifier
+    const getRateModifierRoomNames = (rateModifier) => {
+        let rateModifierRoomIds = rateModifier.id;
+        let rateModifierRoomNames = [];
+        if (rateModifierRoomIds && Array.isArray(rateModifierRoomIds)) {
+            rateModifierRoomNames = rateModifierRoomIds.map(roomId => {
+                return getRoomNameById(roomId)
+            })
+        }
+        return rateModifierRoomNames;
+    }
+
+    //sort rate modifiers by priority before displaying it
+    sortRatesByPriority(rateModifiers)
+
+    return (
+
+        <>
+            <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+            >
+
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                    <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        {rates.map((rateModifier, index) => (
+                            <Draggable key={rateModifier.id} draggableId={rateModifier.id} index={index}>
+                                {(provided, snapshot) => (
+                                    <Paper
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                    >
+                                        <RateModifierListItem
+                                            key={rateModifier.id}
+                                            id={rateModifier.id}
+                                            type={rateModifier.type}
+                                            enabled={rateModifier.enabled}
+                                            roomTypeNames={getRateModifierRoomNames(rateModifier.id)}
+                                            priceModifierAmount={rateModifier.priceModifierAmount}
+                                            priceModifierType={rateModifier.priceModifierType}
+                                            handlePropertyValueChange={handlePropertyValueChange}
+                                            handleEditRateModifier={handleEditRateModifier}/>
+
+                                    </Paper>
+                                )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
+
+            </Grid>
+        </>
+
+    );
+}
+
+
+
+
+export default Rates
