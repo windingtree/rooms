@@ -12,11 +12,13 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "email-validator": "^2.0.4",
+    "fetch-mock": "^9.11.0",
     "jsonwebtoken": "^8.5.1",
     "leaflet": "^1.7.1",
     "material-ui-dropzone": "3.5.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "11.3.1",
     "react-leaflet": "^3.0.0-rc.0",
@@ -58,6 +60,7 @@
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.17",
     "newman": "^5.2.0",
+    "storybook-addon-material-ui": "^0.9.0-alpha.24",
     "vercel": "^21.3.1",
     "yamljs": "^0.3.0"
   }
