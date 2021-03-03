@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RateModifierEditForm } from '../components/Dashboard/RateEdit/RateEditForm';
+import { RateModifierEditForm } from '../../components/Dashboard/RateEdit/RateEditForm';
 import {
     action
 } from '@storybook/addon-actions';

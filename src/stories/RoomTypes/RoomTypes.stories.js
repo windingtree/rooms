@@ -2,7 +2,7 @@ import React from 'react';
 import fetchMock from 'fetch-mock';
 import { MemoryRouter} from 'react-router'
 
-import RoomTypes from '../components/Dashboard/RoomTypes/RoomTypes';
+import RoomTypes from '../../components/Dashboard/RoomTypes/RoomTypes';
 
 export default {
     title: 'RoomTypes/RoomTypes',
