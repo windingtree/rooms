@@ -1,0 +1,1 @@
+export guestsTypes from "./guestTypes.json"
