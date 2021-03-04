@@ -1,7 +1,5 @@
 import React from 'react';
 import fetchMock from 'fetch-mock';
-import { MemoryRouter} from 'react-router'
-
 import Bookings from '../../components/Dashboard/Bookings/Bookings';
 
 export default {
@@ -15,6 +13,5 @@ export const ListOfBookings = () => {
     fetchMock.restore();
     fetchMock.mock('path:/api/v1/bookings',mockApiResponse);
     return (
-        <MemoryRouter><Bookings/></MemoryRouter>)
-
+        <Bookings/>)
 }

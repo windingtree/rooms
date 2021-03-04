@@ -1,1 +1,5 @@
-export guestsTypes from "./guestTypes.json"
+import guestsTypes from "./guestTypes.json"
+
+export {
+    guestsTypes
+}

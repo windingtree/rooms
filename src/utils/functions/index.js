@@ -1,5 +1,5 @@
 export {
-  errorLogger,
+  errorLogger
 } from './errorLogger'
 
 export {

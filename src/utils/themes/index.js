@@ -13,4 +13,16 @@ export {
   dropDownThemeObj,
 } from './drop_down'
 
+
+export const roomsStyles = {
+  forms:{
+      width:'600px',
+      formTitle:{
+        fontSize:'2rem',
+        fontWeight:'bold'
+      }
+    }
+}
+
+
 export const roomsTheme = createMuiTheme(baseMuiThemeObj)
