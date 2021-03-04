@@ -56,12 +56,12 @@ export const BookingListItem = ({booking, roomTypes}) => {
         history.push(`/dashboard/bookings/${booking.id}`)
     }
     return (
-        <Card className={classes.card} >
+        <Card className={classes.card}
+              onClick={handleClick}>
             <CardContent>
                 <Grid
                     container
                     justify="center"
-                    onClick={handleClick}
                 >
                     <Grid item xs={9} className={classes.guest_name}>
                         {guestName}
