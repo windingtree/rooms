@@ -10,10 +10,6 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import Typography from '@material-ui/core/Typography'
 
-import Spinner from '../../../base/Spinner/Spinner'
-import { errorLogger } from '../../../../utils/functions'
-import { apiClient } from '../../../../utils/api'
-
 const useStyles = () => {
   return {
     grow: {
@@ -35,17 +31,6 @@ const useStyles = () => {
 }
 
 class RoomTypeCard extends React.Component {
-  handleTrashClick = () => {
-    apiClient
-      .deleteRoomType(this.props.id)
-      .then(() => {
-        this.props.onDelete();
-      })
-      .catch((error) => {
-        if (this._isDestroyed) return
-        errorLogger(error)
-      })
-  }
 
   handleEditClick = () => {
     this.props.history.push(`/dashboard/room-types/${this.props.id}`)
@@ -63,9 +48,6 @@ class RoomTypeCard extends React.Component {
             justify="center"
             alignItems="stretch"
           >
-            {
-              (this.props.creating === true) ?
-              <Spinner info="creating" /> :
               <>
                 <Grid item>
                   <Typography>
@@ -75,23 +57,17 @@ class RoomTypeCard extends React.Component {
                 <Grid item>
                 </Grid>
               </>
-            }
           </Grid>
         </CardContent>
         <CardActions>
-          {
-            (this.props.creating === true)
-            ? <></>
-            : <>
+            <>
                 <IconButton aria-label="edit" onClick={this.handleEditClick}>
                   <EditIcon />
                 </IconButton>
-                <div className={classes.grow}></div>
                 <IconButton aria-label="delete" onClick={this.handleTrashClick}>
                   <DeleteIcon />
                 </IconButton>
               </>
-          }
         </CardActions>
       </Card>
     )

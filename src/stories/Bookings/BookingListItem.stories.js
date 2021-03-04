@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {BookingListItem} from '../../components/Dashboard/Bookings/BookingList/BookingListItem';
+import {BookingListItem} from '../../components/Dashboard/Bookings/BookingListItem';
 
 export default {
     title: 'Bookings/BookingListItem',

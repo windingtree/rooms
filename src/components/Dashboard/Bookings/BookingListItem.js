@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import CardContent from '@material-ui/core/CardContent'
 import * as moment from 'moment'
-import {roomsTheme} from "../../../../utils/themes/index"
+import {roomsTheme} from "../../../utils/themes"
 import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles( {

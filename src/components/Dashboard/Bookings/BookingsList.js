@@ -5,7 +5,7 @@ import {errorLogger} from '../../../utils/functions'
 import {apiClient} from '../../../utils/api'
 import {ApiCache} from '../../../utils/api_cache'
 import Spinner from '../../base/Spinner/Spinner'
-import {BookingListItem} from "./BookingList/BookingListItem";
+import {BookingListItem} from "./BookingListItem";
 
 
 import Button from "@material-ui/core/Button";
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 const apiCache = ApiCache.getInstance()
 
 
-const Bookings = () => {
+const BookingsList = () => {
     // const classes = useStyles();
 
     const [bookings, setBookings] = useState([]);
@@ -63,7 +63,9 @@ const Bookings = () => {
         <PageContentWrapper>
             {isLoadingInProgress() && <Spinner info="loading"/>}
             {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
-                <BookingsList bookings={bookings}/>
+            {bookings.map((booking) => (
+                <BookingListItem key={booking.id} booking={booking} roomTypes={[]} />
+            ))}
                     <Button
                         aria-label="edit"
                         onClick={() => handleEditClick('temporary')}
@@ -78,11 +80,5 @@ const Bookings = () => {
 
 
 
-const BookingsList = ({bookings})=>{
-    return bookings.map((booking) => (
-        <BookingListItem key={booking.id} booking={booking} roomTypes={[]} />
-    ))
-}
 
-
-export default Bookings;
+export default BookingsList;
