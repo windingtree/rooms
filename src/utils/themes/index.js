@@ -16,7 +16,8 @@ export {
 
 export const roomsStyles = {
   forms:{
-      width:'600px',
+      minWidth:'300px',
+      maxWidth:'600px',
       formTitle:{
         fontSize:'2rem',
         fontWeight:'bold'

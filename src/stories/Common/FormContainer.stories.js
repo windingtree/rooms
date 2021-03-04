@@ -1,13 +1,25 @@
 import React from 'react';
 
 
-import {FormWrapper} from '../../components/base/Common/FormWrapper';
+import {PageContentWrapper} from '../../components/base/Common/PageContentWrapper';
 
 export default {
-    title: 'Common/FormWrapper',
-    component: FormWrapper
+    title: 'Common/PageContentWrapper',
+    component: PageContentWrapper
 };
+const SomeComponent = () => {
+    return (
+        <div style={{border:'1px solid black'}}> Some dummy component </div>
+    )
+}
 
 export const Sample = () => {
-    return (<FormWrapper><h3>some dummy text</h3></FormWrapper>);
+    return (<PageContentWrapper>
+        <SomeComponent/>
+        <SomeComponent/>
+        <SomeComponent/>
+        <SomeComponent/>
+    </PageContentWrapper>);
 }
+
+

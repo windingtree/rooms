@@ -27,7 +27,7 @@ import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import {FormWrapper} from "../../base/Common/FormWrapper";
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
 
 
@@ -118,7 +118,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     }
 
     return (
-        <FormWrapper formTitle='Rate modifier'>
+        <PageContentWrapper formTitle='Rate modifier'>
         <form noValidate autoComplete="off">
             <Card style={{maxWidth:'600px'}}>
                 <CardContent>
@@ -221,7 +221,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                 </CardActions>
             </Card>
         </form>
-        </FormWrapper>
+        </PageContentWrapper>
     )
 }
 

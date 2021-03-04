@@ -13,7 +13,7 @@ const useStyles = (theme) => {
   return {
     root: {
       width: '10vw',
-      color: theme.palette.secondary.contrastText,
+      color: theme.palette.secondary.main,
       '&$selected': {
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.primary.contrastText,

@@ -7,7 +7,7 @@ import {apiClient} from '../../../utils/api'
 import {ApiCache} from '../../../utils/api_cache'
 import Spinner from '../../base/Spinner/Spinner'
 import * as moment from "moment";
-import {FormWrapper} from "../../base/Common/FormWrapper";
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -242,7 +242,7 @@ const BookingEdit = ({userProfile}) => {
 
     return (
 
-        <FormWrapper>
+        <PageContentWrapper>
             {
                 (!booking) ?
                     <Spinner info="loading"/> :
@@ -423,7 +423,7 @@ const BookingEdit = ({userProfile}) => {
                     </Card>
 
             }
-        </FormWrapper>
+        </PageContentWrapper>
     )
 }
 

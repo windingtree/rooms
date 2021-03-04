@@ -24,7 +24,7 @@ import SelectField from '../../base/SelectField'
 import CheckboxField from '../../base/CheckboxField'
 import MultiAutocomplete from '../../base/MultiAutocomplete/MultiAutocomplete'
 import DropzoneField from '../../base/DropzoneField'
-import {FormWrapper} from "../../base/Common/FormWrapper";
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
 const apiCache = ApiCache.getInstance();
 
@@ -42,11 +42,6 @@ const useStyles = () => ({
   formTitle:{
     fontSize:'22px',
     fontWeight:'bold'
-  },
-  room_type_card: {
-    width: '600px',
-    margin: '16px',
-    maxWidth: '90vw'
   },
   price_currency: {
     display: 'inline',
@@ -69,7 +64,6 @@ const useStyles = () => ({
   addBedButtonRoot: {
     marginBottom: '16px'
   },
-
   removeButton: {
     marginLeft: '16px'
   },
@@ -272,12 +266,11 @@ const RoomTypeEdit = props => {
   } = props;
   const [roomType, setRoomType] = useState(roomTypeInit || null);
   const [validationErrors, setValidationErrors] = useState({});
-  const [snackWarn, setSnackWarn] = useState(false);
+  const [snackWarn, setSnackWarn] = useState();
   const [loading, setLoading] = useState(false);
   const [imagesUploading, setImagesUploading] = useState(false);
   const [showImage, setShowImage] = useState(null);
   const editMode = roomTypeId !== 'temporary';
-  console.log('roomTypeId:',roomTypeId)
   const getRoomType = useCallback(roomTypeId => {
     const _roomType = apiCache.getRoomType(roomTypeId)
 
@@ -370,7 +363,6 @@ const RoomTypeEdit = props => {
       default:
     }
 
-    console.log('Validation Errors', errors);
 
     if (returnErrors) {
       return errors;
@@ -552,7 +544,7 @@ const RoomTypeEdit = props => {
         .catch(error => {
           setLoading(false);
           errorLogger(error)
-              .then(message => setSnackWarn(error))
+              .then(message => setSnackWarn(message))
 
         })
     }
@@ -562,7 +554,7 @@ const RoomTypeEdit = props => {
 
   const handleOnImagesLoadError = error => {
     errorLogger(error)
-      .then(message => setSnackWarn(error))
+      .then(message => setSnackWarn(message))
   };
 
   const handleOnImagesLoaded = images => {
@@ -606,9 +598,9 @@ const RoomTypeEdit = props => {
   };
 
   return (
-      <FormWrapper>
+      <PageContentWrapper>
       {roomType &&
-        <Card className={classes.room_type_card}>
+        <Card>
           <CardContent>
             <Grid
               container
@@ -859,7 +851,7 @@ const RoomTypeEdit = props => {
           </CardActions>
         </Card>
       }
-      </FormWrapper>
+      </PageContentWrapper>
   )
 }
 

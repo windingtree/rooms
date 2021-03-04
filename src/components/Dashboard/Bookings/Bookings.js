@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
 
 import {errorLogger} from '../../../utils/functions'
 import {apiClient} from '../../../utils/api'
@@ -9,20 +8,20 @@ import Spinner from '../../base/Spinner/Spinner'
 import {BookingListItem} from "./BookingList/BookingListItem";
 
 
-import {roomsStyles} from "../../../utils/themes/index"
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
+/*
 const useStyles = makeStyles({
-    bookingList: {
-        width: roomsStyles.forms.width
-    }
 })
+*/
 
 
 const apiCache = ApiCache.getInstance()
+
+
 const Bookings = () => {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     const [bookings, setBookings] = useState([]);
     const [apiLoading, setApiLoading] = useState(true);
@@ -47,41 +46,43 @@ const Bookings = () => {
             })
     }, [])
 
-    const getBookingsList = () => {
-        return bookings.map((booking) => (
-            <BookingListItem key={booking.id} booking={booking} roomTypes={[]} />
-        ))
-    }
-    return (
-        <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-        >
-            {
-                ((!bookings || !bookings.length) && (apiLoading)) ? <Spinner info="loading"/> :
-                    <Grid
-                        container
-                        direction="column"
-                        alignItems="center"
-                        className={classes.bookingList}
-                    >
-                        {getBookingsList()}
-                        <Grid item>
-                            <Button
-                                aria-label="edit"
-                                onClick={() => handleEditClick('temporary')}
-                                variant='contained'
-                            >
-                                + Add Reservation
-                            </Button>
-                        </Grid>
-                    </Grid>
 
-            }
-        </Grid>
+    const isDataEmpty = () => (!bookings || !bookings.length)
+    const isLoadingInProgress = () => (isDataEmpty() && apiLoading)
+
+    const welcomeMessage = () => {
+        return (
+            <>
+                <p>When someone books a Room in your hotel, the reservation appears here</p>
+                <p>In the meanwhile, try adding a manual reservation, because they are also kept here</p>
+            </>
+        )
+    }
+
+    return (
+        <PageContentWrapper>
+            {isLoadingInProgress() && <Spinner info="loading"/>}
+            {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
+                <BookingsList bookings={bookings}/>
+                    <Button
+                        aria-label="edit"
+                        onClick={() => handleEditClick('temporary')}
+                        variant='contained'
+                        color='primary'
+                    >
+                        + Add Reservation
+                    </Button>
+        </PageContentWrapper>
     )
 }
+
+
+
+const BookingsList = ({bookings})=>{
+    return bookings.map((booking) => (
+        <BookingListItem key={booking.id} booking={booking} roomTypes={[]} />
+    ))
+}
+
 
 export default Bookings;
