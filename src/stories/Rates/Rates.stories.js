@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {RateModifiersList} from '../../components/Dashboard/Rates/Rates';
+import RateModifiersList from '../../components/Dashboard/Rates/RatesList';
 import {TYPE_PERCENTAGE, TYPE_ABSOLUTE} from "../../utils/api/rateModifiers";
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '@storybook/addon-actions';
 
 export default {
-    title: 'Rates/RateModifierList',
+    title: 'Rates/RateModifiersList',
     component: RateModifiersList
 };
 const ratesList = [

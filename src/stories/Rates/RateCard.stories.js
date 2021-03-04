@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {RateModifierListItem} from '../../components/Dashboard/Rates/Rates';
+import RatesCard from '../../components/Dashboard/Rates/RatesCard';
 import {TYPE_PERCENTAGE} from "../../utils/api/rateModifiers";
 
 import {
@@ -8,8 +8,8 @@ import {
 } from '@storybook/addon-actions';
 
 export default {
-    title: 'Rates/RateModifierListItem',
-    component: RateModifierListItem
+    title: 'Rates/RatesCard',
+    component: RatesCard
 };
 const rateModifier =
     {
@@ -22,15 +22,11 @@ const rateModifier =
         priority:70
     }
 
-export const RateModifierItem = () => (
-    <RateModifierListItem
+export const RateCard = () => (
+    <RatesCard
         key={rateModifier.id}
-        id={rateModifier.id}
-        type={rateModifier.type}
-        enabled={rateModifier.enabled}
+        rateModifier={rateModifier}
         roomTypeNames={rateModifier.roomTypeNames}
-        priceModifierAmount={rateModifier.priceModifierAmount}
-        priceModifierType={rateModifier.priceModifierType}
         handlePropertyValueChange={action('handlePropertyValueChange')}
         handleEditRateModifier={action('handleEditRateModifier')}/>)
 
