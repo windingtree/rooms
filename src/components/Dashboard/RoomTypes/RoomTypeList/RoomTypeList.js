@@ -1,5 +1,4 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
 
 import RoomTypeCard from '../RoomTypeCard/RoomTypeCard'
 
@@ -7,14 +6,8 @@ const RoomTypeList = props => {
   const { roomTypes, onDelete = () => {} } = props;
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-    >
-      <div>
-        {roomTypes.map((roomType, index) => (
+        <>
+          {roomTypes.map((roomType, index) => (
           <RoomTypeCard
             key={index}
             id={roomType.id}
@@ -22,8 +15,7 @@ const RoomTypeList = props => {
             onDelete={onDelete}
           />
         ))}
-      </div>
-    </Grid>
+        </>
   );
 }
 

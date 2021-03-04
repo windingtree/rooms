@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { withRouter, useParams } from 'react-router-dom'
-import { withStyles, makeStyles } from '@material-ui/core/styles'
+import React, {useCallback, useEffect, useState} from 'react'
+import {useParams, withRouter} from 'react-router-dom'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -16,14 +16,15 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 
-import { errorLogger } from '../../../utils/functions'
-import { apiClient } from '../../../utils/api'
-import { ApiCache } from '../../../utils/api_cache'
+import {errorLogger} from '../../../utils/functions'
+import {apiClient} from '../../../utils/api'
+import {ApiCache} from '../../../utils/api_cache'
 import Spinner from '../../base/Spinner/Spinner'
 import SelectField from '../../base/SelectField'
 import CheckboxField from '../../base/CheckboxField'
 import MultiAutocomplete from '../../base/MultiAutocomplete/MultiAutocomplete'
 import DropzoneField from '../../base/DropzoneField'
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
 const apiCache = ApiCache.getInstance();
 
@@ -38,10 +39,9 @@ const useStyles = () => ({
   grow: {
     flexGrow: 1,
   },
-  room_type_card: {
-    width: '600px',
-    margin: '16px',
-    maxWidth: '90vw'
+  formTitle:{
+    fontSize:'22px',
+    fontWeight:'bold'
   },
   price_currency: {
     display: 'inline',
@@ -63,16 +63,6 @@ const useStyles = () => ({
   },
   addBedButtonRoot: {
     marginBottom: '16px'
-  },
-  saveButton: {
-    backgroundColor: '#9e21af',
-    color: 'white',
-    fontSize: '16px',
-    padding: '16px',
-    margin:'8px',
-    '&>span': {
-      justifyContent: 'flex-start'
-    }
   },
   removeButton: {
     marginLeft: '16px'
@@ -276,12 +266,11 @@ const RoomTypeEdit = props => {
   } = props;
   const [roomType, setRoomType] = useState(roomTypeInit || null);
   const [validationErrors, setValidationErrors] = useState({});
-  const [snackWarn, setSnackWarn] = useState(false);
+  const [snackWarn, setSnackWarn] = useState();
   const [loading, setLoading] = useState(false);
   const [imagesUploading, setImagesUploading] = useState(false);
   const [showImage, setShowImage] = useState(null);
   const editMode = roomTypeId !== 'temporary';
-
   const getRoomType = useCallback(roomTypeId => {
     const _roomType = apiCache.getRoomType(roomTypeId)
 
@@ -374,7 +363,6 @@ const RoomTypeEdit = props => {
       default:
     }
 
-    console.log('Validation Errors', errors);
 
     if (returnErrors) {
       return errors;
@@ -496,18 +484,18 @@ const RoomTypeEdit = props => {
     if(!Array.isArray(chipData)) {
       return '';
     }
-    const semicolonSeparatedList = chipData.reduce((acc, chip) => {
-       return `${acc}${chip.name};`
-     }, '')
-    return semicolonSeparatedList;
+    return chipData.reduce((acc, chip) => {
+      return `${acc}${chip.name};`
+    }, '');
   }
 
   //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{id:'1', name:'amenity1'}]
   const convertAmenitiesToChips = semicolonSeparatedList => {
     if(!semicolonSeparatedList)
       return [];
-    const chips = semicolonSeparatedList.split(';').map(label=>{return {name:label}})
-    return chips;
+    return semicolonSeparatedList.split(';').map(label => {
+      return {name: label}
+    });
   }
 
   const handleAmenitiesChange = value => {
@@ -549,14 +537,15 @@ const RoomTypeEdit = props => {
         ? apiClient.updateRoomType(roomTypeId, data)
         : apiClient.createRoomType(data)
       action
-        .then(r => {
+        .then(() => {
           setLoading(false);
           history.push('/dashboard/room-types');
         })
         .catch(error => {
           setLoading(false);
-          errorLogger(error);
-          setSnackWarn(error.message);
+          errorLogger(error)
+              .then(message => setSnackWarn(message))
+
         })
     }
   };
@@ -564,8 +553,8 @@ const RoomTypeEdit = props => {
   const chips = convertAmenitiesToChips(roomType.amenities);
 
   const handleOnImagesLoadError = error => {
-    errorLogger(error);
-    setSnackWarn(error.message);
+    errorLogger(error)
+      .then(message => setSnackWarn(message))
   };
 
   const handleOnImagesLoaded = images => {
@@ -585,8 +574,8 @@ const RoomTypeEdit = props => {
       })
       .catch(error => {
         setImagesUploading(false);
-        errorLogger(error);
-        setSnackWarn(error.message);
+        errorLogger(error)
+          .then(message => setSnackWarn(error))
       })
   };
 
@@ -609,15 +598,9 @@ const RoomTypeEdit = props => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      style={{ minHeight: '100%' }}
-    >
+      <PageContentWrapper>
       {roomType &&
-        <Card className={classes.room_type_card}>
+        <Card>
           <CardContent>
             <Grid
               container
@@ -630,9 +613,9 @@ const RoomTypeEdit = props => {
 
                 <Grid container>
                   <Grid item xs>
-                    <h3>
+                    <Typography className={classes.formTitle}>
                       Unit Type
-                    </h3>
+                    </Typography>
                   </Grid>
                   <Grid item>
                     {editMode &&
@@ -847,22 +830,15 @@ const RoomTypeEdit = props => {
           </CardContent>
           <CardActions>
             <Button
-              className={classes.saveButton}
               aria-label="done"
               onClick={handleSaveClick}
               variant='contained'
               fullWidth={true}
               disabled={loading}
+              color={"secondary"}
+              style={{justifyContent: "flex-start"}}
               endIcon={loading && <CircularProgress size={24}/>}
-            >
-              <Grid container>
-                <Grid item xs>
-                  <Typography style={{ textAlign: 'left' }}>
-                    Save
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Button>
+            >Save</Button>
             <Snackbar
               open={!!snackWarn}
               message={snackWarn}
@@ -875,7 +851,7 @@ const RoomTypeEdit = props => {
           </CardActions>
         </Card>
       }
-    </Grid>
+      </PageContentWrapper>
   )
 }
 

@@ -4,8 +4,7 @@ import {
   WHITE,
   LIGHT_GRAY,
   DARK_PURPLE,
-  MIDDLE_PURPLE,
-  BLACK
+  MIDDLE_PURPLE
 } from './theme_colors'
 
 const _baseMuiThemeObj = {
@@ -23,7 +22,7 @@ const _baseMuiThemeObj = {
       light: WHITE,
       main: DARK_PURPLE,
       dark: MIDDLE_PURPLE,
-      contrastText: BLACK,
+      contrastText: WHITE,
     },
   },
 }

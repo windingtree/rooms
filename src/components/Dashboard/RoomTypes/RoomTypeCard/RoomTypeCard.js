@@ -20,9 +20,7 @@ const useStyles = () => {
       flexGrow: 1,
     },
     room_type_card: {
-      width: '600px',
-      margin: '16px',
-      maxWidth: '90vw'
+      marginBottom: '16px',
     },
     price_currency: {
       display: 'inline',
@@ -40,12 +38,11 @@ class RoomTypeCard extends React.Component {
   handleTrashClick = () => {
     apiClient
       .deleteRoomType(this.props.id)
-      .then(r => {
+      .then(() => {
         this.props.onDelete();
       })
       .catch((error) => {
         if (this._isDestroyed) return
-
         errorLogger(error)
       })
   }

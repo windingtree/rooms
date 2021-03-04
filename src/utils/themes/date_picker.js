@@ -1,9 +1,8 @@
 import { objClone } from '../functions'
 
 import {
-  WHITE,
   LIGHT_GRAY,
-  DARK_PURPLE
+  DARK_PURPLE, BLACK
 } from './theme_colors'
 
 import { _baseMuiThemeObj } from './base'
@@ -12,19 +11,14 @@ const _datePickerThemeAdditionsObj = {
   overrides: {
     MuiPickersDay: {
       daySelected: {
-        color: WHITE,
+        color: DARK_PURPLE,
       },
       current: {
-        color: DARK_PURPLE,
+        color: BLACK,
         backgroundColor: LIGHT_GRAY,
       },
     },
-  },
-  palette: {
-    primary: {
-      main: DARK_PURPLE,
-    },
-  },
+  }
 }
 
 const datePickerThemeObj = Object.assign(

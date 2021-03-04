@@ -9,11 +9,27 @@ export default {
     component: RoomTypeEdit
 };
 
-const mockApiResponse = {"id":"603e458c5643c89b894c4014","hotelId":"603e45556c68369b12a512db","type":"small","description":"222","quantity":1,"price":100,"currency":"USD","devConPrice":0,"amenities":"American breakfast in the restaurant;Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;","imageUrl":"","guestsNumber":1,"childFriendly":true,"petFriendly":true,"beds":[1,0]}
+const response = {
+    "id": "603faf785f10ccc4a3c670f5",
+    "hotelId": "603e45556c68369b12a512db",
+    "type": "test",
+    "description": "test",
+    "quantity": 2,
+    "price": 122,
+    "currency": "USD",
+    "devConPrice": 0,
+    "amenities": "Spinning Center Gym (Basement Floor) except Spa and Hair Salon Services;Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;",
+    "imageUrl": "",
+    "guestsNumber": 2,
+    "childFriendly": true,
+    "petFriendly": false,
+    "beds": [0, 1],
+    "images": []
+}
 
 export const SampleForm = () => {
     fetchMock.restore();
-    fetchMock.mock('path:/api/v1/room_type/603e458c5643c89b894c4014',mockApiResponse);
+    fetchMock.mock('path:/api/v1/room_type/603e458c5643c89b894c4014',response);
     return (
         <MemoryRouter initialEntries={['/api/v1/room_type/603e458c5643c89b894c4014']}>
                 <Route path='/api/v1/room_type/:roomTypeId'>

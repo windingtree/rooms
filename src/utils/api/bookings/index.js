@@ -24,14 +24,15 @@ function getBookings() {
 }
 
 function getBooking(id) {
+    console.log('api.getBooking, id=', id)
   return fetch(`/api/v1/booking/${id}`, {
     method: 'GET',
     headers: makeAuthHeaders(),
   }).then(checkStatus)
     .then(parseJSON)
     .then((booking) => {
+        console.log('api.getBooking', booking)
       apiCache.updateBooking(id, booking)
-
       return booking
     })
 }

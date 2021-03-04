@@ -25,13 +25,16 @@ import {
 } from "../../../utils/api/rateModifiers";
 import MultiAutocomplete from "../../base/MultiAutocomplete/MultiAutocomplete";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
+import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
 
 
 const useStyles = makeStyles({
+    formTitle:{
+        color: 'red',
+    },
     saveButton: {
         background: DARK_PURPLE,
         color: WHITE,
@@ -115,6 +118,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     }
 
     return (
+        <PageContentWrapper formTitle='Rate modifier'>
         <form noValidate autoComplete="off">
             <Card style={{maxWidth:'600px'}}>
                 <CardContent>
@@ -126,8 +130,8 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                     >
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <Grid item xs={8}>
-                                    <h3>Rate Modifier</h3>
+                                <Grid item xs={8} >
+                                    <div className={classes.formTitle}>Rate Modifier</div>
                                 </Grid>
                                 <Grid item xs={4} style={{textAlign:'right'}}>
                                     <IconButton aria-label="delete" onClick={handleDelete}>
@@ -135,8 +139,6 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                     </IconButton>
                                 </Grid>
                             </Grid>
-
-
                             <TextField
                                 value={type}
                                 color="secondary"
@@ -208,12 +210,18 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" className={classes.saveButton} onClick={save} fullWidth size="large">
-                        Save
-                    </Button>
+                    <Button
+                        aria-label="done"
+                        onClick={save}
+                        variant='contained'
+                        fullWidth={true}
+                        color={"secondary"}
+                        style={{justifyContent: "flex-start"}}
+                    >Save</Button>
                 </CardActions>
             </Card>
         </form>
+        </PageContentWrapper>
     )
 }
 
