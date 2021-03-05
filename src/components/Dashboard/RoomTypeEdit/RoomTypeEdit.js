@@ -15,6 +15,8 @@ import Snackbar from '@material-ui/core/Snackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
 import {errorLogger} from '../../../utils/functions'
 import {apiClient} from '../../../utils/api'
@@ -25,6 +27,11 @@ import CheckboxField from '../../base/CheckboxField'
 import MultiAutocomplete from '../../base/MultiAutocomplete/MultiAutocomplete'
 import DropzoneField from '../../base/DropzoneField'
 import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
+
+import availableAmenities from '../../../utils/data/availableAmenities.json';
+import guestsNumbers from '../../../utils/data/guestsNumbers.json'
+import bedsTypes from '../../../utils/data/bedsTypes.json'
+import currencies from '../../../utils/data/currencies.json'
 
 const apiCache = ApiCache.getInstance();
 
@@ -70,88 +77,11 @@ const useStyles = () => ({
   cardFooter: {
     marginBottom: '16px'
   },
-  imagesContainer: {}
+  imagesContainer: {},
+  cardTitle: {
+    marginBottom: '16px'
+  }
 });
-
-const availableAmenities = [
-  { name: 'Shuttle Service: Airport - Hotel - Airport, at times established by the hotel' },
-
-  { name: 'Buffet breakfast at the restaurant' },
-  { name: 'Spinning Center Gym (Sótano 1) not SPA services' },
-  { name: 'Internet (High Speed) y Wi-Fi' },
-  { name: '5 first minutes in local calls' },
-  { name: 'Business Center 24 hours' },
-  { name: 'Safe box, air conditioning, hair dryer, iron and ironing board, laundry services' },
-  { name: 'Room service 24 hours' },
-
-  { name: 'American breakfast in the restaurant' },
-  { name: 'Spinning Center Gym (Basement Floor) except Spa and Hair Salon Services' },
-  { name: 'High Speed Wired Internet and Wi-Fi inside the hotel' },
-  { name: '5 minutes of local calls' },
-  { name: 'Business Center open 24 hours with printing services' },
-  { name: 'Safe deposit box, air conditioning and bioclimatic ventilation' },
-
-  { name: 'Room with Queen Bed' },
-  { name: 'Room with double beds' },
-  { name: 'Room with three beds' },
-  { name: 'Private bathroom with shower' },
-  { name: 'Flat screen TV' },
-  { name: 'DirecTV cable channels' },
-
-  { name: 'Minibar' },
-  { name: 'Exercises room' },
-  { name: 'Parking lot' },
-  { name: 'Free Wi-Fi throughout the building' },
-  { name: 'Security box' },
-  { name: 'Free local calls' },
-  { name: 'Free amenities' },
-  { name: 'Hair dryer' },
-  { name: 'Biosafety Certificate "Check In certified"' },
-  { name: 'Breakfast included in the rate' },
-
-  { name: 'Gym' },
-  { name: 'Spa and wet areas (sauna and Turkish)' },
-  { name: 'La Macuira restaurant' },
-  { name: 'Free Wi-Fi in rooms and throughout the building' },
-  { name: 'Business center' },
-  { name: 'Bar - Cafe' },
-  { name: 'Parking' },
-  { name: 'Biosafety Certificate "Check in certificate"' },
-];
-const guestsNumbers = [
-  {
-    label: '1 Guest',
-    value: 1
-  },
-  {
-    label: '2 Guests',
-    value: 2
-  },
-  {
-    label: '3 Guests',
-    value: 3
-  }
-];
-const bedsTypes = [
-  {
-    label: '1 Single bed',
-    value: 0
-  },
-  {
-    label: '1 Double bed',
-    value: 1
-  },
-  {
-    label: '1 Kingsize bed',
-    value: 2
-  }
-];
-const currencies = [
-  {
-    label: 'USD',
-    value: 'USD'
-  }
-];
 
 const imageStyle = makeStyles({
   removeButton: {
@@ -210,23 +140,47 @@ const lightBoxStyle = makeStyles({
     right: '8px',
     left: 0,
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    zIndex: 99999
   },
   closeButton: {
     backgroundColor: 'white'
+  },
+  prevButton: {
+    position: 'absolute',
+    top: 0,
+    left: '8px',
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyItems: 'center',
+    zIndex: 1
+  },
+  nextButton: {
+    position: 'absolute',
+    top: 0,
+    right: '8px',
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyItems: 'center',
+    zIndex: 1
   }
 });
 const ImageLightBox = props => {
   const classes = lightBoxStyle();
   const {
-    url,
+    images = [],
+    index = null,
     alt = 'Room view',
-    onClose = () => {}
+    onClose = () => {},
+    onPrev = () => {},
+    onNext = () => {}
   } = props;
 
   return (
     <Dialog
-      open={typeof url === 'string'}
+      open={index !== null}
       scroll='paper'
       classes={{
         root: classes.root
@@ -247,10 +201,30 @@ const ImageLightBox = props => {
           root: classes.root
         }}
       >
-        <img
-          src={url}
-          alt={alt}
-        />
+        {images[index] !== 'undefined' &&
+          <img
+            src={images[index]}
+            alt={alt}
+          />
+        }
+        <div className={classes.prevButton}>
+          <IconButton
+            className={classes.closeButton}
+            aria-label="next"
+            onClick={onPrev}
+          >
+            <ArrowBackIosIcon />
+          </IconButton>
+        </div>
+        <div className={classes.nextButton}>
+          <IconButton
+            className={classes.closeButton}
+            aria-label="next"
+            onClick={onNext}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -579,13 +553,27 @@ const RoomTypeEdit = props => {
       })
   };
 
-  const handleImageClick = url => {
-    setShowImage(url);
+  const handleImageClick = index => {
+    setShowImage(index);
   };
 
   const handleCloseLightBox = () => {
     setShowImage(null);
   };
+
+  const handlePrevImage = () => {
+    const prevIndex = showImage - 1;
+    setShowImage(prevIndex >= 0
+      ? prevIndex
+      : 0);
+  }
+
+  const handleNextImage = () => {
+    const nextIndex = showImage + 1;
+    setShowImage(nextIndex <= roomType.images.length - 1
+      ? nextIndex
+      : roomType.images.length - 1);
+  }
 
   const handleImageDelete = url => {
     const newRoomType = {
@@ -611,7 +599,10 @@ const RoomTypeEdit = props => {
             >
               <Grid item xs={12}>
 
-                <Grid container>
+                <Grid container
+                  className={classes.cardTitle}
+                  alignItems="center"
+                >
                   <Grid item xs>
                     <Typography className={classes.formTitle}>
                       Unit Type
@@ -796,8 +787,11 @@ const RoomTypeEdit = props => {
                 />
 
                 <ImageLightBox
-                  url={showImage}
+                  images={roomType.images}
+                  index={showImage}
                   onClose={handleCloseLightBox}
+                  onPrev={handlePrevImage}
+                  onNext={handleNextImage}
                 />
                 <Typography className={classes.sectionLabel}>
                   Images
@@ -807,7 +801,7 @@ const RoomTypeEdit = props => {
                     <RoomImage
                       key={index}
                       url={url}
-                      onClick={handleImageClick}
+                      onClick={() => handleImageClick(index)}
                       onDelete={handleImageDelete}
                     />
                   )))}

@@ -107,6 +107,7 @@ class App extends React.Component {
       })
       .catch((error) => {
         if (this._isDestroyed) return
+        console.log('@@@@', error);
 
         errorLogger(error)
       })
