@@ -124,7 +124,7 @@ export const RateModifierEditForm = ({userProfile}) => {
                 errorLogger(error)
                 .then(message=>setSnackWarn(message));
             })
-    }, [rateModifierId, editMode])
+    }, [rateModifierId, editMode, userProfile])
 
     function handleSave(record) {
         setLoadInProgress(true)
@@ -190,8 +190,8 @@ export const RateModifierEditForm = ({userProfile}) => {
                 break;
             case 'maxStay':
                 !isNaN(condition.maxStay) && (errors[field] = 'Valid number is required');
-            default:
                 break;
+            default:
         }
         if (returnErrors) {
             return errors;
