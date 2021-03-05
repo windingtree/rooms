@@ -28,7 +28,7 @@ export const RateModifierListItem = ({
                                          onEnableDisableFlagChanged,
                                          handleEditRateModifier
                                      }) => {
-    const {id, type, enabled,priority, priceModifierType, priceModifierAmount} = rateModifier;
+    const {id, type, enabled, priceModifierType, priceModifierAmount} = rateModifier;
     const classes = useStyles();
     const handleEnabledChange = () => {
         onEnableDisableFlagChanged(rateModifier, !enabled)
