@@ -32,7 +32,7 @@ const RateModifierEdit = () => {
     const {rateModifierId} = useParams();
     const history = useHistory();
     const editMode = rateModifierId !== 'temporary';
-    const [snackWarn, setSnackWarn] = useState();
+    // const [snackWarn, setSnackWarn] = useState();
 
     useEffect(() => {
 
@@ -64,9 +64,9 @@ const RateModifierEdit = () => {
         Promise.all(fetchingPromises)
             .catch(error => {
                 errorLogger(error)
-                    .then(message=>setSnackWarn(message));
+                    // .then(message=>setSnackWarn(message));
             })
-    }, [rateModifierId, apiCache])
+    }, [rateModifierId, editMode])
 
 
 
@@ -88,7 +88,7 @@ const RateModifierEdit = () => {
             })
             .catch((error) => {
                 errorLogger(error)
-                    .then(message=>setSnackWarn(message));
+                    // .then(message=>setSnackWarn(message));
             })
             .finally(() => {
                 setLoadInProgress(false)
@@ -102,7 +102,7 @@ const RateModifierEdit = () => {
         apiClient.deleteRateModifier(rateModifierId)
             .catch(error=>{
                 errorLogger(error)
-                    .then(message=>setSnackWarn(message));
+                    // .then(message=>setSnackWarn(message));
             });
         //don't wait for server response - redirect to list
         history.push(`/dashboard/rates`);

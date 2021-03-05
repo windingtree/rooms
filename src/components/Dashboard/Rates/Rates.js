@@ -39,7 +39,7 @@ const Rates = ({userProfile}) => {
                 setLoadInProgress(false);
             })
 
-    }, [apiCache])
+    }, [])
 
     /**
      * Update rate modifier in the backend and update local store too
