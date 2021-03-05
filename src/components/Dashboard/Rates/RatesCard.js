@@ -70,7 +70,7 @@ export const RateModifierListItem = ({
                           justify="center"
                           alignItems="center">
                         <Grid item xs={12}>
-                            <Typography>{type}/{priority} {formatDiscount()}</Typography>
+                            <Typography>{type} {formatDiscount()}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             {roomTypeNames && roomTypeNames.join(',')}
