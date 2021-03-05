@@ -60,7 +60,7 @@ const BookingsList = () => {
     }
 
     return (
-        <PageContentWrapper>
+        <PageContentWrapper title={"Bookings"}>
             {isLoadingInProgress() && <Spinner info="loading"/>}
             {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
             {bookings.map((booking) => (

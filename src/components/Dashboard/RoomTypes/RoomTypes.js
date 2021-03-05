@@ -89,7 +89,7 @@ class RoomTypes extends React.Component {
   render() {
     return (
 
-        <PageContentWrapper>
+        <PageContentWrapper title={"Unit types"}>
           {this.isLoadingInProgress() && <Spinner info="loading"/>}
           {this.isDataEmpty() && !this.isLoadingInProgress() && this.welcomeMessage()}
             <RoomTypeList

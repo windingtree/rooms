@@ -28,7 +28,7 @@ export const RateModifierListItem = ({
                                          onEnableDisableFlagChanged,
                                          handleEditRateModifier
                                      }) => {
-    const {id, type, enabled,priority, priceModifierType, priceModifierAmount} = rateModifier;
+    const {id, type, enabled, priceModifierType, priceModifierAmount} = rateModifier;
     const classes = useStyles();
     const handleEnabledChange = () => {
         onEnableDisableFlagChanged(rateModifier, !enabled)
@@ -70,7 +70,7 @@ export const RateModifierListItem = ({
                           justify="center"
                           alignItems="center">
                         <Grid item xs={12}>
-                            <Typography>{type}/{priority} {formatDiscount()}</Typography>
+                            <Typography>{type} {formatDiscount()}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             {roomTypeNames && roomTypeNames.join(',')}

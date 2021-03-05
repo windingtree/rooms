@@ -33,6 +33,9 @@ const useStyles = (theme) => {
     chip: {
       margin: theme.spacing(0.5),
     },
+    chipLabel: {
+      whiteSpace: 'pre-wrap'
+    },
     customInput: {
       // width: (props) => { return `${props.inputWidth}px` },
     },
@@ -207,7 +210,7 @@ class MultiAutocomplete extends React.Component {
             return (
               <li key={data.key}>
                 <Chip
-                  className={classes.chip}
+                    classes={{root:classes.chip,label:classes.chipLabel}}
                   label={data.label}
                   onDelete={this.handleDeleteChip(data)}
                   color="default"
