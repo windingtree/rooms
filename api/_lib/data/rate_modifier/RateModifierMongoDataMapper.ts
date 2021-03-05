@@ -1,4 +1,4 @@
-import {BaseMongoDataMapper} from '../../common/tools'
+import { BaseMongoDataMapper } from '../../common/tools'
 import {
     IBaseRateModifier,
     IBaseRateModifierDbData,
@@ -10,8 +10,8 @@ import {
     IRateModifierConditionPayload,
     IRateModifierDbData,
 } from '../../common/types'
-import {ObjectID} from "mongodb";
-import {rateModifierConditionTypeFromString} from "../../interface/validators/RateModifier";
+import { ObjectID } from "mongodb";
+import { rateModifierConditionTypeFromString } from "../../interface/validators/RateModifier";
 
 class RateModifierMongoDataMapper extends BaseMongoDataMapper {
     fromBaseEntity(record: IBaseRateModifier): IBaseRateModifierDbData {
