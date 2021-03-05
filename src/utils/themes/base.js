@@ -9,7 +9,10 @@ import {
 
 const _baseMuiThemeObj = {
   typography: {
-    fontFamily: ['Inter'].join(',')
+    fontFamily: ['Inter'].join(','),
+    fontWeightBold: 600,
+    fontWeightNormal: 500,
+    fontWeightLight: 400
   },
   palette: {
     primary: {
