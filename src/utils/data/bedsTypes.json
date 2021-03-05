@@ -1,0 +1,14 @@
+[
+    {
+        "label": "1 Single bed",
+        "value": 0
+    },
+    {
+        "label": "1 Double bed",
+        "value": 1
+    },
+    {
+        "label": "1 Kingsize bed",
+        "value": 2
+    }
+]

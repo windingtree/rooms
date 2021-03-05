@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
+import { withStyles } from '@material-ui/core/styles'
 
 import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
@@ -8,6 +9,15 @@ import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
 import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
+
+const styles = () => ({
+  addButtonRoot: {
+    '&>.MuiButton-label': {
+      justifyContent: 'flex-start',
+      textTransform: 'none'
+    }
+  }
+});
 
 class RoomTypes extends React.Component {
   constructor(props) {
@@ -87,6 +97,9 @@ class RoomTypes extends React.Component {
               onDelete={this.handleTypeDelete}
             />
               <Button
+                classes={{
+                  root: this.props.classes.addButtonRoot
+                }}
                 aria-label="edit"
                 onClick={() => this.handleEditClick('temporary')}
                 variant='contained'
@@ -99,4 +112,4 @@ class RoomTypes extends React.Component {
   }
 }
 
-export default withRouter(RoomTypes)
+export default withRouter(withStyles(styles)(RoomTypes))
