@@ -29,11 +29,16 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
+import Typography from "@material-ui/core/Typography";
 
 
 const useStyles = makeStyles({
-    formTitle:{
-        color: 'red',
+    formTitle: {
+        fontSize: '22px',
+        fontWeight: 'bold'
+    },
+    removeButton: {
+        marginLeft: '16px'
     },
     saveButton: {
         background: DARK_PURPLE,
@@ -54,6 +59,7 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
     const [rooms, setRooms] = useState(rateModifier.rooms?rateModifier.rooms:[])
     const [validationErrors, setValidationErrors] = useState({})
     const classes = useStyles();
+    const editMode = rateModifier.id !== 'temporary';
 
     const isNullOrEmpty = (param) => {
         return (param === undefined || param === null || param === '')
@@ -129,14 +135,22 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                         spacing={2}
                     >
                         <Grid item xs={12}>
-                            <Grid container spacing={0}>
-                                <Grid item xs={8} >
-                                    <div className={classes.formTitle}>Rate Modifier</div>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Typography className={classes.formTitle}>
+                                        Rate Modifier
+                                    </Typography>
                                 </Grid>
-                                <Grid item xs={4} style={{textAlign:'right'}}>
-                                    <IconButton aria-label="delete" onClick={handleDelete}>
+                                <Grid item>
+                                    {editMode &&
+                                    <IconButton
+                                        className={classes.removeButton}
+                                        aria-label="delete"
+                                        onClick={handleDelete}
+                                    >
                                         <DeleteIcon/>
                                     </IconButton>
+                                    }
                                 </Grid>
                             </Grid>
                             <TextField

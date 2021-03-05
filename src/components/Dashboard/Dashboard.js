@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import NavTop from './NavTop/NavTop'
 import NavBottom from './NavBottom/NavBottom'
 import Calendar from './Calendar/Calendar'
-import Bookings from './Bookings/Bookings'
+import BookingsList from './Bookings/BookingsList'
 import BookingTypeEdit from './BookingTypeEdit/BookingTypeEdit'
 import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
@@ -138,7 +138,7 @@ class Dashboard extends React.Component {
               </Route>
 
               <Route exact path="/dashboard/bookings">
-                { this.isLoggedIn ? <Bookings userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <BookingsList userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/bookings/:bookingId">
                 { this.isLoggedIn ? <BookingTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }

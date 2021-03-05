@@ -3,16 +3,14 @@ import React from 'react'
 import RoomTypeCard from '../RoomTypeCard/RoomTypeCard'
 
 const RoomTypeList = props => {
-  const { roomTypes, onDelete = () => {} } = props;
+  const { roomTypes } = props;
 
   return (
         <>
           {roomTypes.map((roomType, index) => (
           <RoomTypeCard
             key={index}
-            id={roomType.id}
-            type={roomType.type}
-            onDelete={onDelete}
+            roomType={roomType}
           />
         ))}
         </>

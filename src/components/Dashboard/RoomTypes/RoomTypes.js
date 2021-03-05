@@ -71,8 +71,7 @@ class RoomTypes extends React.Component {
   welcomeMessage = () => {
     return (
         <>
-          <p>When someone books a Room in your hotel, the reservation appears here</p>
-          <p>In the meanwhile, try adding a manual reservation, because they are also kept here</p>
+          <p>Let’s create your first Unit Type in the App</p><p/>
         </>
     )
   }

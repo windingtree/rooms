@@ -8,13 +8,32 @@ import {RateModifierEditForm} from "./RateEditForm";
 import Grid from "@material-ui/core/Grid";
 import {ApiCache} from "../../../utils/api_cache";
 
+const apiCache = ApiCache.getInstance()
+
+const initializeNewRecord = (userProfile) => {
+    return {id: 'temporary', hotelId: userProfile.hotelId, priority: getNewPriority()}
+}
+
+
+const getNewPriority = () => {
+    let lowestPriority = 10;
+    apiCache.getRateModifiers().forEach(record => {
+        let priority = parseInt(record.priority);
+        if (priority < lowestPriority)
+            lowestPriority = priority;
+    })
+    return lowestPriority - 1;
+}
+
 const RateModifierEdit = () => {
     const [isLoadInProgress, setLoadInProgress] = useState(false)
     const [rateModifier, setRateModifier] = useState()
     const [roomTypes, setRoomTypes] = useState()
     const {rateModifierId} = useParams();
     const history = useHistory();
-    const apiCache = ApiCache.getInstance()
+    const editMode = rateModifierId !== 'temporary';
+    // const [snackWarn, setSnackWarn] = useState();
+
     useEffect(() => {
 
         //first load room types from cache
@@ -25,10 +44,11 @@ const RateModifierEdit = () => {
                 setRoomTypes(roomTypes)
             }),
         ]
-        if (rateModifierId === 'temporary') {
+        if (!editMode) {
             //if it's 'temporary' record (newly created, without copy in DB or cache) - skip loading from cache, just prepare new record
-            let profile = apiCache.getProfile()
-            setRateModifier({id: 'temporary', hotelId: profile.hotelId})
+            let userProfile = apiCache.getProfile()
+            let newRec=initializeNewRecord(userProfile)
+            setRateModifier(newRec)
         } else {
             //otherwise, load record from cache
             let record = apiCache.getRateModifier(rateModifierId)
@@ -43,20 +63,19 @@ const RateModifierEdit = () => {
         //wait for all requests to complete
         Promise.all(fetchingPromises)
             .catch(error => {
-                console.error('Failed to fetch rate data:', error)
                 errorLogger(error)
+                    // .then(message=>setSnackWarn(message));
             })
-            .finally(() => {
-                // setLoadInProgress(false);
-            })
-    }, [rateModifierId, apiCache])
+    }, [rateModifierId, editMode])
+
+
 
     function handleSaveRateModifier(record) {
         setLoadInProgress(true)
         apiCache.updateRateModifier(rateModifierId, record)
         delete record.id;
         let savePromise
-        if (rateModifierId === 'temporary') {
+        if (!editMode) {
             //new record is being created - POST it to server
             savePromise = apiClient.createRateModifier(record);
         } else {
@@ -69,6 +88,7 @@ const RateModifierEdit = () => {
             })
             .catch((error) => {
                 errorLogger(error)
+                    // .then(message=>setSnackWarn(message));
             })
             .finally(() => {
                 setLoadInProgress(false)
@@ -82,6 +102,7 @@ const RateModifierEdit = () => {
         apiClient.deleteRateModifier(rateModifierId)
             .catch(error=>{
                 errorLogger(error)
+                    // .then(message=>setSnackWarn(message));
             });
         //don't wait for server response - redirect to list
         history.push(`/dashboard/rates`);

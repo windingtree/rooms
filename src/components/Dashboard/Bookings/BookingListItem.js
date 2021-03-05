@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import CardContent from '@material-ui/core/CardContent'
 import * as moment from 'moment'
-import {roomsTheme} from "../../../../utils/themes/index"
+import {roomsTheme} from "../../../utils/themes"
 import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles( {
@@ -56,12 +56,12 @@ export const BookingListItem = ({booking, roomTypes}) => {
         history.push(`/dashboard/bookings/${booking.id}`)
     }
     return (
-        <Card className={classes.card} >
+        <Card className={classes.card}
+              onClick={handleClick}>
             <CardContent>
                 <Grid
                     container
                     justify="center"
-                    onClick={handleClick}
                 >
                     <Grid item xs={9} className={classes.guest_name}>
                         {guestName}
