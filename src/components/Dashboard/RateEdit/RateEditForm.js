@@ -305,7 +305,7 @@ export const RateModifierEditForm = ({userProfile}) => {
                                 onChange={(e) => handlePropertyChange('type',e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={6} sm={6}>
                             <TextField
                                 value={rateModifier.priceModifierAmount}
                                 variant="outlined"
@@ -318,7 +318,7 @@ export const RateModifierEditForm = ({userProfile}) => {
                                 onChange={(e) => handlePropertyChange('priceModifierAmount',e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6} >
+                        <Grid item xs={6} sm={6} >
                             <TextField value={rateModifier.priceModifierType}
                                     color="secondary"
                                     variant="outlined"
