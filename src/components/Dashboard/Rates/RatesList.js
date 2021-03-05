@@ -49,7 +49,7 @@ const reorderRateModifiersList = (rateModifiers, startIndex, endIndex) => {
 }
 
 
-export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange, handleEditRateModifier}) => {
+export const RateModifiersList = ({rateModifiers, roomTypes, rateModifierChanged, handleEditRateModifier}) => {
     const [rates, setRates] = useState(sortRatesByPriority(rateModifiers));
     console.log('Render list')
     const onDragEnd = (result) =>{
@@ -70,7 +70,7 @@ export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValue
 
         for(let i=startIndex;i<=endIndex;i++){
             let record = newRates[i];
-            handlePropertyValueChange(record.id,'priority',record.priority);
+            rateModifierChanged(record);
         }
         setRates(newRates)
     }
@@ -98,8 +98,16 @@ export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValue
         return rateModifierRoomNames;
     }
 
+    const onEnableDisableFlagChanged=(rateModifier, newEnabled)=>{
+        rateModifier.enabled = newEnabled;
+        rateModifierChanged(rateModifier)
+    }
+
+
     //sort rate modifiers by priority before displaying it
     sortRatesByPriority(rateModifiers)
+
+
 
     return (
 
@@ -124,7 +132,7 @@ export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValue
                                             key={rateModifier.id}
                                             rateModifier={rateModifier}
                                             roomTypeNames={getRateModifierRoomNames(rateModifier)}
-                                            handlePropertyValueChange={handlePropertyValueChange}
+                                            onEnableDisableFlagChanged={onEnableDisableFlagChanged}
                                             handleEditRateModifier={handleEditRateModifier}/>
 
                                     </Paper>

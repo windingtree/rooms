@@ -58,7 +58,8 @@ async function postRateModifierPayloadValidator(request: NowRequest): Promise<IP
   payload.priceModifierType = request.body.priceModifierType
   payload.priceModifierAmount = request.body.priceModifierAmount
   payload.combinable = !!request.body.combinable
-  // payload.condition = !!request.body.condition
+  payload.condition = request.body.condition
+  payload.rooms = request.body.rooms
 
   return payload
 }

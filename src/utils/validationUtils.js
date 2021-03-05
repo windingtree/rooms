@@ -5,6 +5,6 @@ export const isEmpty = (param) => {
 }
 
 
-export const isValidNumber = (param) => {
-    return (!isNaN(param))
+export const isValidFloatNumber = (param) => {
+    return (!isNaN(parseFloat(param)))
 }

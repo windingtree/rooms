@@ -13,7 +13,7 @@ import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
 import Rates from './Rates/Rates'
 import Profile from './Profile/Profile'
 import { history } from '../../utils/history'
-import RateModifierEdit from "./RateEdit/RateEdit";
+import RateModifierEditForm from "./RateEdit/RateEditForm";
 import {Sandbox} from "../Dev/Sandbox";
 
 const useStyles = () => {
@@ -159,7 +159,7 @@ class Dashboard extends React.Component {
                 { this.isLoggedIn ? <Rates userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/rates/:rateModifierId">
-                { this.isLoggedIn ? <RateModifierEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <RateModifierEditForm userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/profile">
                 { this.isLoggedIn ? <Profile userProfile={this.props.userProfile} /> : <Redirect to="/" /> }

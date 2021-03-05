@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -28,8 +28,16 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
-import {DARK_PURPLE, WHITE} from "../../../utils/themes/theme_colors";
 import Typography from "@material-ui/core/Typography";
+import {useHistory, useParams} from "react-router-dom";
+import {apiClient} from "../../../utils/api";
+import {errorLogger, objClone} from "../../../utils/functions";
+import {ApiCache} from "../../../utils/api_cache";
+import Spinner from "../../base/Spinner/Spinner";
+import {isEmpty, isValidFloatNumber} from "../../../utils/validationUtils";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from "@material-ui/icons/Close";
 
 
 const useStyles = makeStyles({
@@ -37,76 +45,191 @@ const useStyles = makeStyles({
         fontSize: '22px',
         fontWeight: 'bold'
     },
+    sectionLabel: {
+        color: '#000000',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        marginBottom: '16px'
+    },
     removeButton: {
         marginLeft: '16px'
-    },
-    saveButton: {
-        background: DARK_PURPLE,
-        color: WHITE,
-        justifyContent: "flex-start",
-        margin:'10px'
-    },
+    }
 });
+const apiCache = ApiCache.getInstance()
+
+const initializeNewRecord = (userProfile) => {
+    return {
+        id: 'temporary',
+        type: '',
+        priceModifierAmount:0,
+        priceModifierType:TYPE_PERCENTAGE,
+        hotelId: userProfile.hotelId,
+        priority: getNewPriority(),
+        criteriaType: CRITERIA_TYPE_DATERANGE,
+        condition: {},
+        rooms: []
+    }
+}
+const getNewPriority = () => {
+    let lowestPriority = 10;
+    apiCache.getRateModifiers().forEach(record => {
+        let priority = parseInt(record.priority);
+        if (priority < lowestPriority)
+            lowestPriority = priority;
+    })
+    return lowestPriority - 1;
+}
 
 
-export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSave, handleDelete}) => {
-    const [type, setType] = useState(rateModifier.type)
-    const [enabled] = useState(rateModifier.enabled)
-    const [criteria, setCriteria] = useState(rateModifier.condition ? rateModifier.condition : {})
-    const [criteriaType, setCriteriaType] = useState(rateModifier.criteriaType ? rateModifier.criteriaType : '')
-    const [priceModifierType, setPriceModifierType] = useState(rateModifier.priceModifierType ? rateModifier.priceModifierType : TYPE_PERCENTAGE)
-    const [priceModifierAmount, setPriceModifierAmount] = useState(rateModifier.priceModifierAmount ? rateModifier.priceModifierAmount : 0)
-    const [rooms, setRooms] = useState(rateModifier.rooms?rateModifier.rooms:[])
+export const RateModifierEditForm = ({userProfile}) => {
+    const [isLoadInProgress, setLoadInProgress] = useState(false)
+    const [rateModifier, setRateModifier] = useState()
+    const [availableRooms, setAvailableRooms] = useState()
+    const {rateModifierId} = useParams();
+    const history = useHistory();
     const [validationErrors, setValidationErrors] = useState({})
     const classes = useStyles();
-    const editMode = rateModifier.id !== 'temporary';
+    const editMode = rateModifierId !== 'temporary';
+    const [snackWarn, setSnackWarn] = useState();
 
-    const isNullOrEmpty = (param) => {
-        return (param === undefined || param === null || param === '')
+
+    useEffect(() => {
+
+        //first load room types from cache
+        setAvailableRooms(apiCache.getRoomTypes());
+        //then load it from server
+        let fetchingPromises = [
+            apiClient.getRoomTypes().then(roomTypes => {
+                setAvailableRooms(roomTypes)
+            }),
+        ]
+        if (!editMode) {
+            //if it's 'temporary' record (newly created, without copy in DB or cache) - skip loading from cache, just prepare new record
+            let newRec=initializeNewRecord(userProfile)
+            setRateModifier(newRec)
+        } else {
+            //otherwise, load record from cache
+            let record = apiCache.getRateModifier(rateModifierId)
+            if (record) {
+                setRateModifier(record)
+            }
+            //...and then from server too
+            fetchingPromises.push(apiClient.getRateModifier(rateModifierId).then(rateModifier => {
+                setRateModifier(rateModifier)
+            }));
+        }
+        //wait for all requests to complete
+        Promise.all(fetchingPromises)
+            .catch(error => {
+                errorLogger(error)
+                .then(message=>setSnackWarn(message));
+            })
+    }, [rateModifierId, editMode, userProfile])
+
+    function handleSave(record) {
+        setLoadInProgress(true)
+        apiCache.updateRateModifier(rateModifierId, record)
+        delete record.id;
+        let savePromise
+        if (!editMode) {
+            //new record is being created - POST it to server
+            savePromise = apiClient.createRateModifier(record);
+        } else {
+            //existing record is being saved - PATCH it to server
+            savePromise = apiClient.updateRateModifier(rateModifierId, record)
+        }
+        savePromise
+            .then(() => {
+                history.push(`/dashboard/rates`)
+            })
+            .catch((error) => {
+                errorLogger(error)
+                 .then(message=>setSnackWarn(message));
+            })
+            .finally(() => {
+                setLoadInProgress(false)
+            })
+
     }
 
-    function validate() {
-        const errors = {}
-        if (isNullOrEmpty(type)) {
-            errors['type'] = 'Field is required'
-        }
-        if (isNullOrEmpty(priceModifierAmount)) {
-            errors['priceModifierAmount'] = 'Valid number is required'
-        }
+    function handleDelete() {
+        //delete record from cache and server
+        apiCache.deleteRateModifier(rateModifierId);
+        apiClient.deleteRateModifier(rateModifierId)
+            .then(()=>{
+                history.push(`/dashboard/rates`);
+            })
+            .catch(error=>{
+                errorLogger(error)
+                .then(message=>setSnackWarn(message));
+            })
+        //don't wait for server response - redirect to list
+    }
 
-        if (isNullOrEmpty(criteriaType)) {
-            errors['criteriaType'] = 'Select condition type'
+
+
+    const validate = (field, returnErrors = false) => {
+        const errors = {}
+        let rooms = rateModifier.rooms || []
+        let condition = rateModifier.condition || {}
+        switch (field) {
+            case 'type':
+                isEmpty(rateModifier.type) && (errors[field] = 'Required field');
+                break;
+            case 'priceModifierAmount':
+                !isValidFloatNumber(rateModifier.priceModifierAmount) && (errors[field] = 'Valid number is required');
+                break;
+            case 'criteriaType':
+                isEmpty(rateModifier.criteriaType) && (errors[field] = 'Select condition type');
+                break;
+            case 'rooms':
+                (rooms.length === 0) && (errors[field] = 'At least one room must be selected');
+                break;
+            case 'minStay':
+                !isNaN(condition.minStay) && (errors[field] = 'Valid number is required');
+                break;
+            case 'maxStay':
+                !isNaN(condition.maxStay) && (errors[field] = 'Valid number is required');
+                break;
+            default:
         }
-        if (!rooms || rooms.length === 0) {
-            errors['rooms'] = 'At least one room must be selected'
+        if (returnErrors) {
+            return errors;
+        } else {
+            setValidationErrors(errors);
         }
-        if (criteriaType === CRITERIA_TYPE_LENGTH_OF_STAY) {
-            if ((isNullOrEmpty(criteria.minStay) || isNaN(criteria.minStay)) && (isNullOrEmpty(criteria.maxStay) || isNaN(criteria.maxStay))) {
-                errors['minStay'] = 'At least on of fields should be provided'
-                errors['maxStay'] = 'At least on of fields should be provided'
-            }
-        }
-        setValidationErrors(errors)
-        return Object.keys(errors).length === 0;
+    };
+
+    const validateForm = () =>{
+         let errors = Object
+            .keys(rateModifier)
+            .map(key => validate(key, true))
+            .filter(e => Object.keys(e).length > 0)
+            .reduce(
+                (a, v) => ({
+                    ...a,
+                    ...v
+                }),
+                {}
+            );
+         setValidationErrors(errors)
+        return Object.keys(errors).length===0;
     }
     function save() {
-        if(!validate()){
-            console.log('Form is not valid')
+        if(!validateForm()){
+            setSnackWarn('Please fill all required fields properly');
             return;
         }
-        const record = Object.assign({}, rateModifier);
-        record.type = type;
-        record.enabled = enabled;
-        record.priceModifierType = priceModifierType;
-        record.priceModifierAmount = priceModifierAmount;
-        record.criteriaType = criteriaType;
-        record.condition = criteria;
-        record.rooms=rooms;
-        handleSave(record);
+        handleSave(rateModifier);
+    }
+    const handlePropertyChange = (fieldName, value) => {
+        const newRecord = objClone(rateModifier)
+        newRecord[fieldName] = value;
+        setRateModifier(newRecord);
     }
 
     function handleCriteriaChanged(criteria) {
-        setCriteria(criteria)
+        handlePropertyChange('condition',criteria)
     }
 
     function getRoomNameById(roomTypeId){
@@ -115,18 +238,34 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
             return '';
         return room.type;
     }
-    let roomNames = availableRooms.map(room=>{return {name:room.type, id: room.id}})
-    let selectedRooms = rooms.map((id)=>{return {name:getRoomNameById(id), id: id}})
+    let roomNames = [];
+    if(availableRooms){
+        roomNames = availableRooms.map(room=>{return {name:room.type, id: room.id}})
+    }
+    let selectedRooms=[];
+    if(rateModifier && rateModifier.rooms){
+        selectedRooms = rateModifier.rooms.map((id)=>{return {name:getRoomNameById(id), id: id}})
+    }
+    const onWarnSnackClose = () => {
+        setSnackWarn(false);
+    }
 
     function handleSelectedRoomsChanged(chips) {
         let roomIdList = chips.map(({id})=>id)
-        setRooms(roomIdList)
+        handlePropertyChange('rooms',roomIdList)
+        // setRooms(roomIdList)
     }
 
+
+    if (!rateModifier) {
+        return (
+            <Spinner info="loading" />
+        );
+    }
     return (
         <PageContentWrapper formTitle='Rate modifier'>
         <form noValidate autoComplete="off">
-            <Card style={{maxWidth:'600px'}}>
+            <Card>
                 <CardContent>
                     <Grid
                         container
@@ -154,70 +293,78 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                                 </Grid>
                             </Grid>
                             <TextField
-                                value={type}
+                                value={rateModifier.type}
                                 color="secondary"
                                 variant="outlined"
                                 label="Name"
                                 fullWidth
+                                autoFocus={true}
                                 helperText={validationErrors['type']}
                                 error={validationErrors['type']!==undefined}
-                                onBlur={validate}
-                                onChange={(e) => setType(e.target.value)}
+                                onBlur={()=>validate('type')}
+                                onChange={(e) => handlePropertyChange('type',e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                value={priceModifierAmount}
+                                value={rateModifier.priceModifierAmount}
                                 variant="outlined"
                                 color="secondary"
                                 label="Value"
                                 helperText={validationErrors['priceModifierAmount']}
                                 error={validationErrors['priceModifierAmount']!==undefined}
-                                onBlur={validate}
+                                onBlur={()=>validate('priceModifierAmount')}
                                 fullWidth
-                                onChange={(e) => setPriceModifierAmount(e.target.value)}
+                                onChange={(e) => handlePropertyChange('priceModifierAmount',e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} >
-                            <TextField value={priceModifierType}
+                            <TextField value={rateModifier.priceModifierType}
                                     color="secondary"
                                     variant="outlined"
                                     label="Units"
                                     fullWidth
                                     select
-                                    onChange={(e) => setPriceModifierType(e.target.value)}>
+                                       onBlur={()=>validate('priceModifierType')}
+                                    onChange={(e) => handlePropertyChange('priceModifierType',e.target.value)}>
                                 <MenuItem value={TYPE_ABSOLUTE}>$</MenuItem>
                                 <MenuItem value={TYPE_PERCENTAGE}>%</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <h3>What triggers the modifier?</h3>
+                            <Typography className={classes.sectionLabel}>
+                                What triggers the modifier?
+                            </Typography>
+
                             <TextField
                                 color="secondary"
                                 variant="outlined"
                                 label="Choose trigger"
                                 fullWidth
                                 select
-                                value={criteriaType}
+                                value={rateModifier.criteriaType}
                                 helperText={validationErrors['criteriaType']}
                                 error={validationErrors['criteriaType']!==undefined}
-                                onBlur={validate}
-                                onChange={(e) => setCriteriaType(e.target.value)}>
+                                onBlur={()=>validate('criteriaType')}
+                                onChange={(e) => handlePropertyChange('criteriaType',e.target.value)}>
                                 <MenuItem value={CRITERIA_TYPE_DATERANGE}>Date</MenuItem>
                                 <MenuItem value={CRITERIA_TYPE_DAYOFWEEK}>Day of week</MenuItem>
                                 <MenuItem value={CRITERIA_TYPE_LENGTH_OF_STAY}>Length of stay</MenuItem>
                             </TextField>
                         </Grid>
-                        <CriteriaForm criteria={criteria} criteriaType={criteriaType}
+                        <CriteriaForm criteria={rateModifier.condition} criteriaType={rateModifier.criteriaType}
                                       handleCriteriaChanged={handleCriteriaChanged} handleValidate={validate} validationErrors={validationErrors}/>
                         <Grid item xs={12}>
-                            <h3>Which rooms are affected?</h3>
+                            <Typography className={classes.sectionLabel}>
+                                Which rooms are affected?
+                            </Typography>
                             <MultiAutocomplete
                                 options={roomNames}
                                 value={selectedRooms}
-                                onValueChange={(val)=>{validate();handleSelectedRoomsChanged(val)}}
+                                onValueChange={(val)=>{handleSelectedRoomsChanged(val);}}
                                 inputLabel="Choose room types"
                                 helperText={validationErrors['rooms']}
+                                onBlur={()=>validate('rooms')}
                                 error={validationErrors['rooms']!==undefined}
                             />
                         </Grid>
@@ -229,9 +376,20 @@ export const RateModifierEditForm = ({rateModifier, availableRooms=[], handleSav
                         onClick={save}
                         variant='contained'
                         fullWidth={true}
+                        disabled={isLoadInProgress}
                         color={"secondary"}
                         style={{justifyContent: "flex-start"}}
+                        endIcon={isLoadInProgress && <CircularProgress size={24}/>}
                     >Save</Button>
+                    <Snackbar
+                        open={!!snackWarn}
+                        message={snackWarn}
+                        action={
+                            <IconButton size='small' aria-label='close' color='inherit' onClick={onWarnSnackClose}>
+                                <CloseIcon fontSize='small' />
+                            </IconButton>
+                        }
+                    />
                 </CardActions>
             </Card>
         </form>
@@ -388,3 +546,6 @@ export const DayOfWeekCondition = ({criteria,handleCriteriaPropertyChange, valid
         </>
     )
 }
+
+
+export default RateModifierEditForm;

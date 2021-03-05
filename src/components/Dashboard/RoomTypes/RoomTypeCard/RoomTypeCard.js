@@ -6,7 +6,6 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { roomsTheme } from '../../../../utils/themes';
-import Button from '@material-ui/core/Button';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import bedsTypes from '../../../../utils/data/bedsTypes.json';

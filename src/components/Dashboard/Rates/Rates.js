@@ -84,18 +84,6 @@ const Rates = ({userProfile}) => {
         history.push(`/dashboard/rates/${id}`)
     }
 
-    function handlePropertyValueChange(id, propertyName, propertyValue) {
-        const recordToUpdate = rateModifiers.find((record) => {
-            return record.id === id;
-        })
-        if (recordToUpdate[propertyName] === propertyValue) {
-            console.log(`handlePropertyValueChange, record in store already same, recordToUpdate=`, recordToUpdate)
-            return
-        }
-        const data = {}
-        data[propertyName] = propertyValue
-        updateRecord(id, data)
-    }
 
     const isDataEmpty = () => (!rateModifiers || !rateModifiers.length)
     const isLoadingInProgress = () => (isDataEmpty() && loadInProgress)
@@ -109,6 +97,13 @@ const Rates = ({userProfile}) => {
         )
     }
 
+    //order changed - save record
+    const rateModifierChanged = (record) => {
+        let data = objClone(record);
+        delete data.id
+        updateRecord(record.id, data)
+    }
+
     return (
 
     <PageContentWrapper>
@@ -116,7 +111,7 @@ const Rates = ({userProfile}) => {
         {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
         {rateModifiers && rateModifiers.length > 0 &&
         <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes} key={Math.random()}
-                           handlePropertyValueChange={handlePropertyValueChange}
+                           rateModifierChanged={rateModifierChanged}
                            handleEditRateModifier={handleEditRateModifier}/>
         }
         <Button
