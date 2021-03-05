@@ -187,7 +187,7 @@ class MultiAutocomplete extends React.Component {
               getOptionDisabled={(option) => option.disabled}
 
               className={classes.customInput}
-
+              onBlur={()=>{this.props.onBlur && this.props.onBlur()}}
               renderInput={(params) => {
                 return (
                   <TextField

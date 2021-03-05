@@ -25,13 +25,13 @@ const useStyles = makeStyles({
 export const RateModifierListItem = ({
                                          rateModifier,
                                          roomTypeNames,
-                                         handlePropertyValueChange,
+                                         onEnableDisableFlagChanged,
                                          handleEditRateModifier
                                      }) => {
     const {id, type, enabled,priority, priceModifierType, priceModifierAmount} = rateModifier;
     const classes = useStyles();
     const handleEnabledChange = () => {
-        handlePropertyValueChange(id, 'enabled', !enabled)
+        onEnableDisableFlagChanged(rateModifier, !enabled)
     }
     const handleEditClick = () => {
         handleEditRateModifier(id)
