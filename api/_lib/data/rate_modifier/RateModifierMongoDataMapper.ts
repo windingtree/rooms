@@ -1,4 +1,4 @@
-import { BaseMongoDataMapper } from '../../common/tools'
+import {BaseMongoDataMapper} from '../../common/tools'
 import {
     IBaseRateModifier,
     IBaseRateModifierDbData,
@@ -6,11 +6,12 @@ import {
     IPatchRateModifierPayloadDbData,
     IRateModifier,
     IRateModifierCollection,
-    IRateModifierCollectionDbData, IRateModifierConditionPayload,
+    IRateModifierCollectionDbData,
+    IRateModifierConditionPayload,
     IRateModifierDbData,
 } from '../../common/types'
-import { ObjectID } from "mongodb";
-import { rateModifierConditionTypeFromString } from "../../interface/validators/RateModifier";
+import {ObjectID} from "mongodb";
+import {rateModifierConditionTypeFromString} from "../../interface/validators/RateModifier";
 
 class RateModifierMongoDataMapper extends BaseMongoDataMapper {
     fromBaseEntity(record: IBaseRateModifier): IBaseRateModifierDbData {
@@ -75,64 +76,11 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
             'condition',
             'rooms'
         ]
-/*
-            if (!(prop in payload)) {
-                return patchRoomTypePayloadDbData
-            }
-                patchRoomTypePayloadDbData
-          /*  switch (prop) {
-                case 'hotelId':
-                    patchRoomTypePayloadDbData[prop] = this.toObjectId((payload[prop] as string))
-                    break
-                case 'enabled':
-                case 'combinable':
-                    patchRoomTypePayloadDbData[prop] = (payload[prop] as boolean)
-                    break
-                case 'description':
-                case 'priceModifierType':
-                case 'type':
-                    patchRoomTypePayloadDbData[prop] = payload[prop] as string
-                    break;
-                case 'priceModifierAmount':
-                    patchRoomTypePayloadDbData[prop] = payload[prop] as number
-                    break;
-                case 'condition':
-                    const payloadCondition: IRateModifierConditionPayload = payload[prop] as IRateModifierConditionPayload
-                    let dbCondition: IRateModifierConditionPayload = {};
-                    if (payloadCondition) {
-                        dbCondition = {
-                            minStay: payloadCondition.minStay,
-                            maxStay: payloadCondition.maxStay,
-                            monday: payloadCondition.monday,
-                            tuesday: payloadCondition.tuesday,
-                            wednesday: payloadCondition.wednesday,
-                            thursday: payloadCondition.thursday,
-                            friday: payloadCondition.friday,
-                            saturday: payloadCondition.saturday,
-                            sunday: payloadCondition.sunday,
-                            startDate: payloadCondition.startDate,
-                            endDate: payloadCondition.endDate,
-                            promoCode: payloadCondition.promoCode,
-                        }
-                    }
-                    patchRoomTypePayloadDbData[prop] = dbCondition;
-                    break;
-                case 'rooms':
-                    /!*patchRoomTypePayloadDbData[prop] = payload[prop] as Array<string>
-                    console.log('patchRoomTypePayloadDbData[prop]=', patchRoomTypePayloadDbData[prop])*!/
-                    patchRoomTypePayloadDbData[prop] = [this.toObjectId("dasd")];
-                    break;
-                case 'criteriaType':
-                    patchRoomTypePayloadDbData[prop] = IRateModifierConditionType.LENGTH_OF_STAY;
-                    break;
-            }
-
-        return patchRoomTypePayloadDbData*/
         return availProps.reduce((patchRoomTypePayloadDbData: IPatchRateModifierPayloadDbData, prop): IPatchRateModifierPayloadDbData => {
             if (!(prop in payload)) {
                 return patchRoomTypePayloadDbData
             }
-            switch(prop){
+            switch (prop) {
                 case 'hotelId':
                     patchRoomTypePayloadDbData[prop] = this.toObjectId((payload[prop] as string))
                     break
@@ -144,6 +92,9 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
                 case 'priceModifierType':
                 case 'type':
                     patchRoomTypePayloadDbData[prop] = payload[prop] as string
+                    break;
+                case 'priority':
+                    patchRoomTypePayloadDbData[prop] = payload[prop] as number
                     break;
                 case 'priceModifierAmount':
                     patchRoomTypePayloadDbData[prop] = payload[prop] as number
@@ -170,15 +121,16 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
                     patchRoomTypePayloadDbData[prop] = dbCondition;
                     break;
                 case 'rooms':
-                    const rooms:Array<ObjectID> = [];
-                    if(payload.rooms){
-                        payload.rooms.forEach((roomId:string)=>{
-                            const roomObjId:ObjectID|null=this.toObjectId(roomId)
-                            if(roomObjId)
-                                {rooms.push(roomObjId);}
+                    const rooms: Array<ObjectID> = [];
+                    if (payload.rooms) {
+                        payload.rooms.forEach((roomId: string) => {
+                            const roomObjId: ObjectID | null = this.toObjectId(roomId)
+                            if (roomObjId) {
+                                rooms.push(roomObjId);
+                            }
                         })
                     }
-                    patchRoomTypePayloadDbData[prop]=rooms;
+                    patchRoomTypePayloadDbData[prop] = rooms;
                     break;
                 case 'criteriaType':
                     patchRoomTypePayloadDbData[prop] = rateModifierConditionTypeFromString(payload[prop]);
@@ -186,8 +138,7 @@ class RateModifierMongoDataMapper extends BaseMongoDataMapper {
             }
 
             return patchRoomTypePayloadDbData;
-        }, {})
-
+        }, {});
     }
 
 

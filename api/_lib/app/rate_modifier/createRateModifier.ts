@@ -36,11 +36,11 @@ async function createRateModifier(requester: IProfile, payload: IPostRateModifie
         enabled: !!payload.enabled,
         criteriaType: rateModifierConditionTypeFromString(payload.criteriaType),
         priceModifierType: payload.priceModifierType?payload.priceModifierType:'',
-        priceModifierAmount: 0,
-        combinable: true,
-        priority: 3,
-        condition: {},
-        rooms: []
+        priceModifierAmount: payload.priceModifierAmount as number,
+        combinable: !!payload.combinable,
+        priority: payload.priority as number,
+        condition: payload.condition?payload.condition:{},
+        rooms: payload.rooms?payload.rooms:[]
     }
     const rateModifierId: string = await repository.createRateModifier(record)
     return Object.assign({}, record, { id: rateModifierId })
@@ -53,5 +53,6 @@ function toValueOrEmpty(param?: string) {
     }
     return ''
 }
+
 
 export { createRateModifier }

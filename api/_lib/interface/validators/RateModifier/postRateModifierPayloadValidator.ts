@@ -53,6 +53,12 @@ async function postRateModifierPayloadValidator(request: NowRequest): Promise<IP
   if (typeof description !== 'undefined') payload.description = description
 
   payload.enabled = !!request.body.enabled
+  payload.priority = request.body.priority
+  payload.criteriaType = request.body.criteriaType
+  payload.priceModifierType = request.body.priceModifierType
+  payload.priceModifierAmount = request.body.priceModifierAmount
+  payload.combinable = !!request.body.combinable
+  // payload.condition = !!request.body.condition
 
   return payload
 }

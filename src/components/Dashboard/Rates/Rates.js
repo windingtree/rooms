@@ -59,6 +59,7 @@ const Rates = ({userProfile}) => {
             }
         })
         setRateModifiers(updatedRecords)
+        apiCache.updateRateModifier(id,data)
         apiClient.updateRateModifier(id, data)
             .catch((error) => {
                 errorLogger(error)
@@ -88,6 +89,7 @@ const Rates = ({userProfile}) => {
             return record.id === id;
         })
         if (recordToUpdate[propertyName] === propertyValue) {
+            console.log(`handlePropertyValueChange, record in store already same, recordToUpdate=`, recordToUpdate)
             return
         }
         const data = {}
@@ -113,7 +115,7 @@ const Rates = ({userProfile}) => {
         {isLoadingInProgress() && <Spinner info="loading"/>}
         {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
         {rateModifiers && rateModifiers.length > 0 &&
-        <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes}
+        <RateModifiersList rateModifiers={rateModifiers} roomTypes={roomTypes} key={Math.random()}
                            handlePropertyValueChange={handlePropertyValueChange}
                            handleEditRateModifier={handleEditRateModifier}/>
         }

@@ -94,7 +94,7 @@ const BookingEdit = ({userProfile}) => {
             })
             .catch(error=>{
                 errorLogger(error)
-                setSnackWarn(error.message);
+                    .then(message=>setSnackWarn(message));
             })
     };
 
@@ -174,7 +174,6 @@ const BookingEdit = ({userProfile}) => {
             //workaround to avoid validation errors
             delete data.guestsNumber;
             delete data.orderId;
-            //update cache
 
             //update backend
             const action = editMode
@@ -221,7 +220,6 @@ const BookingEdit = ({userProfile}) => {
             default:
         }
 
-        console.log('Validation Errors', errors);
 
         if (returnErrors) {
             return errors;
@@ -237,8 +235,6 @@ const BookingEdit = ({userProfile}) => {
             return {label: type, value: id}
         });
     }
-
-    console.log('datePickerTheme', datePickerTheme)
 
     return (
 

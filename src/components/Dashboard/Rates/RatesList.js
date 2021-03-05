@@ -51,17 +51,27 @@ const reorderRateModifiersList = (rateModifiers, startIndex, endIndex) => {
 
 export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValueChange, handleEditRateModifier}) => {
     const [rates, setRates] = useState(sortRatesByPriority(rateModifiers));
-
+    console.log('Render list')
     const onDragEnd = (result) =>{
         // dropped outside the list
         if (!result.destination) {
             return;
         }
-        const newRates = reorderRateModifiersList(
-            rates,
-            result.source.index,
-            result.destination.index
-        );
+        //reorder items (change priorities of dragged items)
+        const newRates = reorderRateModifiersList(rates,result.source.index,result.destination.index);
+
+        //now we need to update priorities (of ALL changed records) in the database
+        let startIndex = result.source.index;
+        let endIndex = result.destination.index;
+        if(startIndex>endIndex){
+            startIndex = result.destination.index;
+            endIndex = result.source.index;
+        }
+
+        for(let i=startIndex;i<=endIndex;i++){
+            let record = newRates[i];
+            handlePropertyValueChange(record.id,'priority',record.priority);
+        }
         setRates(newRates)
     }
 
@@ -78,7 +88,7 @@ export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValue
 
     //get all room names that are assigned to a rate modifier
     const getRateModifierRoomNames = (rateModifier) => {
-        let rateModifierRoomIds = rateModifier.id;
+        let rateModifierRoomIds = rateModifier.rooms;
         let rateModifierRoomNames = [];
         if (rateModifierRoomIds && Array.isArray(rateModifierRoomIds)) {
             rateModifierRoomNames = rateModifierRoomIds.map(roomId => {
@@ -113,7 +123,7 @@ export const RateModifiersList = ({rateModifiers, roomTypes, handlePropertyValue
                                         <RateModifierListItem
                                             key={rateModifier.id}
                                             rateModifier={rateModifier}
-                                            roomTypeNames={getRateModifierRoomNames(rateModifier.id)}
+                                            roomTypeNames={getRateModifierRoomNames(rateModifier)}
                                             handlePropertyValueChange={handlePropertyValueChange}
                                             handleEditRateModifier={handleEditRateModifier}/>
 

@@ -28,8 +28,7 @@ export const RateModifierListItem = ({
                                          handlePropertyValueChange,
                                          handleEditRateModifier
                                      }) => {
-    const {id, type, enabled, priceModifierType, priceModifierAmount} = rateModifier;
-
+    const {id, type, enabled,priority, priceModifierType, priceModifierAmount} = rateModifier;
     const classes = useStyles();
     const handleEnabledChange = () => {
         handlePropertyValueChange(id, 'enabled', !enabled)
@@ -71,7 +70,7 @@ export const RateModifierListItem = ({
                           justify="center"
                           alignItems="center">
                         <Grid item xs={12}>
-                            <Typography>{type} {formatDiscount()}</Typography>
+                            <Typography>{type}/{priority} {formatDiscount()}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             {roomTypeNames && roomTypeNames.join(',')}
