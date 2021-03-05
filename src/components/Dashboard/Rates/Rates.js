@@ -106,7 +106,7 @@ const Rates = ({userProfile}) => {
 
     return (
 
-    <PageContentWrapper>
+    <PageContentWrapper title={"Rate Modifiers"}>
         {isLoadingInProgress() && <Spinner info="loading"/>}
         {isDataEmpty() && !isLoadingInProgress() && welcomeMessage()}
         {rateModifiers && rateModifiers.length > 0 &&

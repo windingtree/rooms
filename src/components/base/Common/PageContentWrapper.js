@@ -9,12 +9,16 @@ const useStyles = makeStyles({
         maxWidth: roomsStyles.forms.maxWidth,
         marginTop:'20px',
         marginBottom:'20px'
-    }
+    },
+    pageTitle: {
+        marginBottom:'20px',
+        fontSize: '1.75em'
+    },
 })
 
 
 
-export const PageContentWrapper = ({children}) => {
+export const PageContentWrapper = ({title, children}) => {
     const classes = useStyles();
     return (
         <Grid
@@ -22,7 +26,7 @@ export const PageContentWrapper = ({children}) => {
             direction="column"
             justify="center"
             alignItems="center"
-            style={{ minHeight: '100%' }}
+            style={{ minHeight: '100%'}}
         >
             <Grid
                 container
@@ -30,6 +34,7 @@ export const PageContentWrapper = ({children}) => {
                 alignItems="stretch"
                 className={classes.mainContent}
             >
+                {title && <div className={classes.pageTitle}>{title}</div> }
                 {children}
             </Grid>
         </Grid>

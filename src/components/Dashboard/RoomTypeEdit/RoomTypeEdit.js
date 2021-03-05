@@ -549,7 +549,7 @@ const RoomTypeEdit = props => {
       .catch(error => {
         setImagesUploading(false);
         errorLogger(error)
-          .then(message => setSnackWarn(error))
+          .then(message => setSnackWarn(message))
       })
   };
 
@@ -586,7 +586,7 @@ const RoomTypeEdit = props => {
   };
 
   return (
-      <PageContentWrapper>
+      <PageContentWrapper >
       {roomType &&
         <Card>
           <CardContent>

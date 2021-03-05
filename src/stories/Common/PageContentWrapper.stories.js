@@ -13,8 +13,18 @@ const SomeComponent = () => {
     )
 }
 
-export const Sample = () => {
+export const WithoutPageTitle = () => {
     return (<PageContentWrapper>
+        <SomeComponent/>
+        <SomeComponent/>
+        <SomeComponent/>
+        <SomeComponent/>
+    </PageContentWrapper>);
+}
+
+
+export const WithPageTitle = () => {
+    return (<PageContentWrapper title={"Page title"}>
         <SomeComponent/>
         <SomeComponent/>
         <SomeComponent/>

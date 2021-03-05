@@ -1,9 +1,10 @@
 import React from 'react'
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
 class Calendar extends React.Component {
   render() {
     return (
-      <h1>Calendar</h1>
+      <PageContentWrapper title={"Calendar"}/>
     )
   }
 }
