@@ -8,7 +8,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { roomsTheme } from '../../../../utils/themes';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import bedsTypes from '../../../../utils/data/bedsTypes.json';
 import currencies from '../../../../utils/data/currencies.json';
 import { Typography } from '@material-ui/core'
 
@@ -67,7 +66,6 @@ const RoomTypeCard = props =>{
     } = props;
     const {
         type,
-        beds,
         quantity,
         price,
         currency,
