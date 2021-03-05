@@ -7,8 +7,7 @@ const useStyles = makeStyles({
     mainContent: {
         // minWidth: roomsStyles.forms.minWidth,
         maxWidth: roomsStyles.forms.maxWidth,
-        marginTop:'20px',
-        marginBottom:'20px'
+        padding:'20px'
     },
     pageTitle: {
         marginBottom:'20px',
