@@ -19,11 +19,12 @@ const useStyles = makeStyles({
         cursor:'pointer'
     },
     roomPrice:{
-        fontWeight:roomsTheme.typography.fontWeightNormal,
+        fontWeight:roomsTheme.typography.fontWeightRegular,
         fontSize: '16px',
+        textAlign:'right'
     },
     roomType: {
-        fontWeight:roomsTheme.typography.fontWeightNormal,
+        fontWeight:roomsTheme.typography.fontWeightRegular,
         fontSize: '16px',
     },
     numberUnits:{
@@ -97,13 +98,14 @@ const RoomTypeCard = props =>{
           >
               <Grid
                 container
-                alignItems='center'
+                alignItems='baseline'
                 justify='space-between'
+
               >
-                <Grid item className={classes.roomType}>
+                <Grid item className={classes.roomType} xs={9}>
                     {type}
                 </Grid>
-                <Grid item className={classes.roomPrice}>
+                <Grid item className={classes.roomPrice} xs={3}>
                     {currencyObj.symbol}{price}/night
                 </Grid>
             </Grid>
