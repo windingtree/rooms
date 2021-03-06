@@ -37,11 +37,6 @@ const useStyles = makeStyles({
         fontSize: '22px',
         fontWeight: 'bold'
     },
-    room_type_card: {
-        width: '600px',
-        margin: '16px',
-        maxWidth: '90vw'
-    },
     sectionLabel: {
         color: '#000000',
         fontSize: '16px',
@@ -242,7 +237,7 @@ const BookingEdit = ({userProfile}) => {
             {
                 (!booking) ?
                     <Spinner info="loading"/> :
-                    <Card className={classes.room_type_card}>
+                    <Card>
                         <CardContent>
                             <Grid
                                 container

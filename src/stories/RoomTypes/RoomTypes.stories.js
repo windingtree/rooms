@@ -19,7 +19,9 @@ const mockApiResponse = [{
     "currency": "USD",
     "devConPrice": 0,
     "amenities": "American breakfast in the restaurant;Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;",
-    "imageUrl": "",
+    "images" : [
+        "https://local-rooms-images.s3.us-west-2.amazonaws.com/f4dc4b6f-781e-4f26-aa9e-aa692f43258f"
+    ],
     "guestsNumber": 1,
     "childFriendly": true,
     "petFriendly": true,
