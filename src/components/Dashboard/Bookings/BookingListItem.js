@@ -10,7 +10,6 @@ import {useHistory} from "react-router-dom";
 const useStyles = makeStyles( {
         card:{
             marginBottom:'10px',
-            minWidth:'400px',
             width:'100%',
             cursor:'pointer'
         },
