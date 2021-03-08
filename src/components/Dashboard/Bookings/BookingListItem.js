@@ -49,7 +49,7 @@ export const BookingListItem = ({booking, roomTypes}) => {
         let checkIn = moment(checkInDate);
         let checkOut = moment(checkOutDate);
 
-        return `${checkIn.format("d MMM")}-${checkOut.format("d MMM YYYY")}`;
+        return `${checkIn.format("D MMM")}-${checkOut.format("D MMM YYYY")}`;
     }
     const handleClick = () => {
         history.push(`/dashboard/bookings/${booking.id}`)
@@ -66,7 +66,7 @@ export const BookingListItem = ({booking, roomTypes}) => {
                         {guestName}
                     </Grid>
                     <Grid item xs={3} className={classes.booking_price} style={{textAlign:'right'}}>
-                        $260
+                        $125
                     </Grid>
                     <Grid item xs={12} className={classes.room_name}>
                         {getRoomName()}
@@ -75,7 +75,7 @@ export const BookingListItem = ({booking, roomTypes}) => {
                         {formatStayDate()}
                     </Grid>
                     <Grid item xs={12} className={classes.booking_type}>
-                        Pays at the counter
+                        Prepaid
                     </Grid>
                 </Grid>
             </CardContent>
