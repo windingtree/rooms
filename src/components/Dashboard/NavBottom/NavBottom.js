@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
-import RoomServiceIcon from '@material-ui/icons/RoomService'
+// import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
+// import RoomServiceIcon from '@material-ui/icons/RoomService'
 import HotelIcon from '@material-ui/icons/Hotel'
 import SyncAltIcon from '@material-ui/icons/SyncAlt'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
@@ -60,22 +60,26 @@ class NavBottom extends React.Component {
           onChange={this.navChange}
           showLabels
         >
+{/*
           <BottomNavigationAction
             classes={classes}
             label="Calendar"
             icon={<CalendarTodayIcon color={this.iconColor(0)} />}
           />
+*/}
           <BottomNavigationAction
             classes={classes}
             label="Bookings"
             icon={<SyncAltIcon color={this.iconColor(1)} />}
           />
+{/*
           <BottomNavigationAction
             classes={classes}
             label="Today"
             icon={<RoomServiceIcon color={this.iconColor(2)} />}
           />
           <BottomNavigationAction
+*/}
             classes={classes}
             label="Room Types"
             icon={<HotelIcon color={this.iconColor(3)} />}
