@@ -101,6 +101,11 @@ const RoomImage = props => {
     onDelete = () => {}
   } = props;
 
+  const handleImageDelete = e => {
+    e.stopPropagation();
+    onDelete(url)
+  };
+
   return (
     <div
       style={{
@@ -122,7 +127,7 @@ const RoomImage = props => {
       <IconButton
         className={classes.removeButton}
         aria-label="delete"
-        onClick={() => onDelete(url)}
+        onClick={handleImageDelete}
       >
         <DeleteIcon />
       </IconButton>
