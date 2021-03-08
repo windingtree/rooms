@@ -49,7 +49,7 @@ export const BookingListItem = ({booking, roomTypes}) => {
         let checkIn = moment(checkInDate);
         let checkOut = moment(checkOutDate);
 
-        return `${checkIn.format("d MMM")}-${checkOut.format("d MMM YYYY")}`;
+        return `${checkIn.format("D MMM")}-${checkOut.format("D MMM YYYY")}`;
     }
     const handleClick = () => {
         history.push(`/dashboard/bookings/${booking.id}`)
