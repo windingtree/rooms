@@ -179,11 +179,11 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       }
 
       let roomTypeMedia: Array<{ type: string, url: string }> = []
-      if (typeof roomType.imageUrl === 'string' && roomType.imageUrl.length > 0) {
-        roomTypeMedia = [{
+      if (Array.isArray(roomType.images) && roomType.images.length > 0) {
+        roomTypeMedia = roomType.images.map(imageUrl => ({
           "type": "photo",
-          "url": roomType.imageUrl,
-        }]
+          "url": imageUrl
+        }));
       }
 
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
