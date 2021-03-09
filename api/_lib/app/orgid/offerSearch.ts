@@ -135,11 +135,11 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     }
 
     let hotelMedia: Array<{ type: string, url: string }> = []
-    if (typeof hotel.imageUrl === 'string' && hotel.imageUrl.length > 0) {
-      hotelMedia = [{
+    if (Array.isArray(hotel.images) && hotel.images.length > 0) {
+      hotelMedia = hotel.images.map(url => ({
         type: 'photo',
-        url: hotel.imageUrl,
-      }]
+        url
+      }));
     }
 
     result.accommodations[hotel.id] = {
@@ -180,9 +180,9 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
       let roomTypeMedia: Array<{ type: string, url: string }> = []
       if (Array.isArray(roomType.images) && roomType.images.length > 0) {
-        roomTypeMedia = roomType.images.map(imageUrl => ({
-          "type": "photo",
-          "url": imageUrl
+        roomTypeMedia = roomType.images.map(url => ({
+          type: 'photo',
+          url
         }));
       }
 

@@ -39,7 +39,7 @@ async function getClientAppOneTimePassword(payload: IOneTimePasswordPayload): Pr
       description: '',
       address: '',
       location: { lat: 0, lng: 0 },
-      imageUrl: '',
+      images: [],
       email: '',
     })
 

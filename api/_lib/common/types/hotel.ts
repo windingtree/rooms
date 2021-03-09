@@ -7,7 +7,7 @@ type THotelDbDataFields =
   | 'description'
   | 'address'
   | 'location'
-  | 'imageUrl'
+  | 'images'
   | 'email'
 
 type IHotelDbDataProjection = {
@@ -30,7 +30,7 @@ interface IBaseHotel {
   description: string
   address: string
   location: IHotelLocation
-  imageUrl: string
+  images: Array<string>
   email: string
 }
 
@@ -46,7 +46,7 @@ interface IPostHotelPayload {
   description?: string
   address?: string
   location?: IHotelLocation
-  imageUrl?: string
+  images?: Array<string>
   email?: string
 }
 
@@ -56,7 +56,7 @@ interface IPatchHotelPayload {
   description?: string
   address?: string
   location?: IHotelLocation
-  imageUrl?: string
+  images?: Array<string>
   email?: string
 }
 
@@ -66,7 +66,7 @@ interface IBaseHotelDbData {
   description: string
   address: string
   location: IHotelDbLocation
-  imageUrl: string
+  images?: Array<string>
   email: string
 }
 
@@ -80,7 +80,7 @@ interface IPatchHotelPayloadDbData {
   description?: string
   address?: string
   location?: IHotelDbLocation
-  imageUrl?: string
+  images?: Array<string>
   email?: string
 }
 

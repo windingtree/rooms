@@ -22,6 +22,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import UseMapEventsHook from "./UseMapEventsHook";
+import ImagesGallery from '../../base/Images/ImagesGallery';
+import DropzoneField from '../../base/DropzoneField'
 
 
 const useStyles = makeStyles({
@@ -56,6 +58,7 @@ export const Profile = ({userProfile}) => {
   const [validationErrors, setValidationErrors] = useState({})
   const classes = useStyles();
   const [snackWarn, setSnackWarn] = useState();
+  const [imagesUploading, setImagesUploading] = useState(false);
 
   console.log('Hotel:', hotel)
   console.log('profile:',userProfile)
@@ -180,6 +183,41 @@ export const Profile = ({userProfile}) => {
     console.log('setLocation:', newLocation)
     handlePropertyChange('location', newLocation);
   }
+
+  const handleOnImagesLoadError = error => {
+    errorLogger(error)
+      .then(message => setSnackWarn(message))
+  };
+
+  const handleOnImagesLoaded = images => {
+    setImagesUploading(true);
+    apiClient
+      .uploadImages(images)
+      .then(response => {
+        setImagesUploading(false);
+        const newRoomType = {
+          ...hotel,
+          images: [
+            ...(Array.isArray(hotel.images) ? hotel.images : []),
+            ...response.map(r => r.imageUrl)
+          ]
+        };
+        setHotel(newRoomType);
+      })
+      .catch(error => {
+        setImagesUploading(false);
+        errorLogger(error)
+          .then(message => setSnackWarn(message))
+      })
+  };
+
+  const handleImageChange = images => {
+    const newHotel = {
+      ...hotel,
+      images
+    };
+    setHotel(newHotel);
+  };
 
 
   if (!hotel || !hotel.id) {
@@ -311,7 +349,7 @@ export const Profile = ({userProfile}) => {
                   <Typography className={classes.sectionLabel}>
                     Images
                   </Typography>
-                  <TextField
+                  {/* <TextField
                       value={hotel.imageUrl}
                       color="secondary"
                       variant="outlined"
@@ -321,6 +359,22 @@ export const Profile = ({userProfile}) => {
                       error={validationErrors['imageUrl']!==undefined}
                       onBlur={()=>validate('imageUrl')}
                       onChange={(e) => handlePropertyChange('imageUrl',e.target.value)}
+                  /> */}
+                  <ImagesGallery
+                    images={hotel.images}
+                    onChange={handleImageChange}
+                  />
+                  <DropzoneField
+                    note={
+                      Array.isArray(hotel.images) && hotel.images.length === 0
+                        ? 'Add pictures here'
+                        : undefined
+                    }
+                    title='Upload Images'
+                    subTitle='or drag & drop images here'
+                    uploading={imagesUploading}
+                    onError={handleOnImagesLoadError}
+                    onLoad={handleOnImagesLoaded}
                   />
                 </Grid>
               </Grid>
