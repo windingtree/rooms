@@ -50,7 +50,6 @@ class RoomTypeRepo extends BaseDataRepo {
       'currency',
       'devConPrice',
       'amenities',
-      'imageUrl',
       'guestsNumber',
       'childFriendly',
       'petFriendly',

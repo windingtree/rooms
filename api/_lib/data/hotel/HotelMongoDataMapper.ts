@@ -29,7 +29,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
           (baseHotel.location as IHotelLocation).lng,
         ]
       },
-      imageUrl: baseHotel.imageUrl,
+      images: baseHotel.images,
       email: baseHotel.email,
     }
   }
@@ -44,7 +44,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
         lat: baseHotelDbData.location.coordinates[0],
         lng: baseHotelDbData.location.coordinates[1],
       },
-      imageUrl: baseHotelDbData.imageUrl,
+      images: baseHotelDbData.images,
       email: baseHotelDbData.email,
     }
   }
@@ -56,7 +56,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
       'description',
       'address',
       'location',
-      'imageUrl',
+      'images',
       'email',
     ]
 
@@ -81,7 +81,7 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
         case 'name':
         case 'description':
         case 'address':
-        case 'imageUrl':
+        case 'images':
         case 'email':
           patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
           break

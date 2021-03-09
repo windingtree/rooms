@@ -26,7 +26,6 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       currency: baseRoomType.currency,
       devConPrice: baseRoomType.devConPrice,
       amenities: baseRoomType.amenities,
-      imageUrl: baseRoomType.imageUrl,
       guestsNumber: baseRoomType.guestsNumber,
       childFriendly: baseRoomType.childFriendly,
       petFriendly: baseRoomType.petFriendly,
@@ -45,7 +44,6 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       currency: baseRoomTypeDbData.currency,
       devConPrice: baseRoomTypeDbData.devConPrice,
       amenities: baseRoomTypeDbData.amenities,
-      imageUrl: baseRoomTypeDbData.imageUrl,
       guestsNumber: baseRoomTypeDbData.guestsNumber,
       childFriendly: baseRoomTypeDbData.childFriendly,
       petFriendly: baseRoomTypeDbData.petFriendly,
@@ -64,7 +62,6 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       'currency',
       'devConPrice',
       'amenities',
-      'imageUrl',
       'guestsNumber',
       'childFriendly',
       'petFriendly',
@@ -85,7 +82,6 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
         case 'description':
         case 'currency':
         case 'amenities':
-        case 'imageUrl':
           patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as string)
           break
         case 'quantity':

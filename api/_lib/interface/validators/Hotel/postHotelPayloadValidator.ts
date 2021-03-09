@@ -4,6 +4,7 @@ import {
   validateOptionalString,
   validateOptionalLocation,
   validateRequiredString,
+  validateOptionalImagesArray
 } from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
@@ -26,7 +27,7 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
       lat: 0,
       lng: 0,
     },
-    imageUrl: '',
+    images: [],
     email: '',
   }
 
@@ -36,7 +37,7 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
     'description',
     'address',
     'location',
-    'imageUrl',
+    'images',
     'email',
   ]
 
@@ -66,9 +67,9 @@ async function postHotelPayloadValidator(request: NowRequest): Promise<IPostHote
   await validateOptionalLocation('location', location)
   if (typeof location !== 'undefined') payload.location = location
 
-  const imageUrl = request.body.imageUrl
-  await validateOptionalString('imageUrl', imageUrl)
-  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
+  const images = request.body.images
+  await validateOptionalImagesArray('images', images)
+  if (typeof images !== 'undefined') payload.images = images
 
   const email = request.body.email
   await validateOptionalString('email', email)

@@ -12,6 +12,8 @@ async function extractErrorData(error){
   try{
     if (error && error.response && isFunction(error.response.json)) {
       return await error.response.json();
+    } else if (error && error.message) {
+      return error.message;
     }
   }catch(err){
     console.error('Failed to parse error response')
@@ -21,9 +23,11 @@ async function extractErrorData(error){
 
 //get human readable message to be displayed in UI
 function getHumanReadableErrorMessage(errorData){
-  let errorMessage = 'Unknown error occured';
+  let errorMessage = 'Unknown error occurred';
   if(errorData && errorData.err){
     errorMessage = errorData.err;
+  } else if (typeof errorData === 'string') {
+    errorMessage = errorData;
   }
   return errorMessage;
 }

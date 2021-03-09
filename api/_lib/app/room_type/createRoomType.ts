@@ -31,7 +31,6 @@ async function createRoomType(requester: IProfile, payload: IPostRoomTypePayload
     currency: (typeof payload.currency !== 'undefined') ? payload.currency : 'USD',
     devConPrice: (typeof payload.devConPrice !== 'undefined') ? payload.devConPrice : 0,
     amenities: (typeof payload.amenities !== 'undefined') ? payload.amenities : '',
-    imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
     beds: (typeof payload.beds !== 'undefined') ? payload.beds : [],
     images: (typeof payload.images !== 'undefined') ? payload.images : [],
     childFriendly: (typeof payload.childFriendly !== 'undefined') ? payload.childFriendly : false,

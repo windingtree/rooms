@@ -31,7 +31,6 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
     'currency',
     'devConPrice',
     'amenities',
-    'imageUrl',
     'guestsNumber',
     'childFriendly',
     'petFriendly',
@@ -77,10 +76,6 @@ async function patchRoomTypePayloadValidator(request: NowRequest): Promise<IPatc
   const amenities = request.body.amenities
   await validateOptionalString('amenities', amenities)
   if (typeof amenities !== 'undefined') payload.amenities = amenities
-
-  const imageUrl = request.body.imageUrl
-  await validateOptionalString('imageUrl', imageUrl)
-  if (typeof imageUrl !== 'undefined') payload.imageUrl = imageUrl
 
   const guestsNumber = request.body.guestsNumber
   await validateOptionalNumber('guestsNumber', guestsNumber)

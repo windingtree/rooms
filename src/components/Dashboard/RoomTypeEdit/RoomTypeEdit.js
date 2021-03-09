@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {useParams, withRouter} from 'react-router-dom'
-import {makeStyles, withStyles} from '@material-ui/core/styles'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useParams, withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -13,10 +13,6 @@ import Button from '@material-ui/core/Button'
 import TextFieldOrig from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
 import {errorLogger} from '../../../utils/functions'
 import {apiClient} from '../../../utils/api'
@@ -25,8 +21,9 @@ import Spinner from '../../base/Spinner/Spinner'
 import SelectField from '../../base/SelectField'
 import CheckboxField from '../../base/CheckboxField'
 import MultiAutocomplete from '../../base/MultiAutocomplete/MultiAutocomplete'
+import ImagesGallery from '../../base/Images/ImagesGallery';
 import DropzoneField from '../../base/DropzoneField'
-import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
+import { PageContentWrapper } from '../../base/Common/PageContentWrapper';
 
 import availableAmenities from '../../../utils/data/availableAmenities.json';
 import guestsNumbers from '../../../utils/data/guestsNumbers.json'
@@ -83,158 +80,6 @@ const useStyles = () => ({
   }
 });
 
-const imageStyle = makeStyles({
-  removeButton: {
-    position: 'absolute',
-    top: '-10px',
-    right: '-10px',
-    backgroundColor: 'rgba(255,255,255,0.7)'
-  }
-});
-const RoomImage = props => {
-  const classes = imageStyle();
-  const {
-    width = 'calc(90vw/4.5)',
-    height = 'calc(90vh/10)',
-    url,
-    onClick = () => {},
-    onDelete = () => {}
-  } = props;
-
-  const handleImageDelete = e => {
-    e.stopPropagation();
-    onDelete(url)
-  };
-
-  return (
-    <div
-      style={{
-        width,
-        height,
-        maxWidth: '170px',
-        backgroundImage: `url(${url})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        display: 'inline-block',
-        margin: '0 16px 16px 0',
-        borderRadius: '8px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-      onClick={() => onClick(url)}
-    >
-      <IconButton
-        className={classes.removeButton}
-        aria-label="delete"
-        onClick={handleImageDelete}
-      >
-        <DeleteIcon />
-      </IconButton>
-    </div>
-  );
-};
-
-const lightBoxStyle = makeStyles({
-  root: {
-    padding: 0
-  },
-  closeButtonWrapper: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    left: 0,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    zIndex: 99999
-  },
-  closeButton: {
-    backgroundColor: 'white'
-  },
-  prevButton: {
-    position: 'absolute',
-    top: 0,
-    left: '8px',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyItems: 'center',
-    zIndex: 1
-  },
-  nextButton: {
-    position: 'absolute',
-    top: 0,
-    right: '8px',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyItems: 'center',
-    zIndex: 1
-  }
-});
-const ImageLightBox = props => {
-  const classes = lightBoxStyle();
-  const {
-    images = [],
-    index = null,
-    alt = 'Room view',
-    onClose = () => {},
-    onPrev = () => {},
-    onNext = () => {}
-  } = props;
-
-  return (
-    <Dialog
-      open={index !== null}
-      scroll='paper'
-      classes={{
-        root: classes.root
-      }}
-      onBackdropClick={onClose}
-    >
-      <div className={classes.closeButtonWrapper}>
-        <IconButton
-          className={classes.closeButton}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </div>
-      <DialogContent
-        classes={{
-          root: classes.root
-        }}
-      >
-        {images[index] !== 'undefined' &&
-          <img
-            src={images[index]}
-            alt={alt}
-          />
-        }
-        <div className={classes.prevButton}>
-          <IconButton
-            className={classes.closeButton}
-            aria-label="next"
-            onClick={onPrev}
-          >
-            <ArrowBackIosIcon />
-          </IconButton>
-        </div>
-        <div className={classes.nextButton}>
-          <IconButton
-            className={classes.closeButton}
-            aria-label="next"
-            onClick={onNext}
-          >
-            <ArrowForwardIosIcon />
-          </IconButton>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const RoomTypeEdit = props => {
   const { roomTypeId } =  useParams();
   const {
@@ -248,7 +93,6 @@ const RoomTypeEdit = props => {
   const [snackWarn, setSnackWarn] = useState();
   const [loading, setLoading] = useState(false);
   const [imagesUploading, setImagesUploading] = useState(false);
-  const [showImage, setShowImage] = useState(null);
   const editMode = roomTypeId !== 'temporary';
   const getRoomType = useCallback(roomTypeId => {
     const _roomType = apiCache.getRoomType(roomTypeId)
@@ -558,34 +402,10 @@ const RoomTypeEdit = props => {
       })
   };
 
-  const handleImageClick = index => {
-    setShowImage(index);
-  };
-
-  const handleCloseLightBox = () => {
-    setShowImage(null);
-  };
-
-  const handlePrevImage = () => {
-    const prevIndex = showImage - 1;
-    setShowImage(prevIndex >= 0
-      ? prevIndex
-      : 0);
-  }
-
-  const handleNextImage = () => {
-    const nextIndex = showImage + 1;
-    setShowImage(nextIndex <= roomType.images.length - 1
-      ? nextIndex
-      : roomType.images.length - 1);
-  }
-
-  const handleImageDelete = url => {
+  const handleImageChange = images => {
     const newRoomType = {
       ...roomType,
-      images: roomType.images.filter(
-        imageUrl => imageUrl !== url
-      )
+      images
     };
     setRoomType(newRoomType);
   };
@@ -791,17 +611,21 @@ const RoomTypeEdit = props => {
                   inputLabel="Add amenities"
                 />
 
-                <ImageLightBox
+                {/* <ImageLightBox
                   images={roomType.images}
                   index={showImage}
                   onClose={handleCloseLightBox}
                   onPrev={handlePrevImage}
                   onNext={handleNextImage}
-                />
+                /> */}
                 <Typography className={classes.sectionLabel}>
                   Images
                 </Typography>
-                <div className={classes.imagesContainer}>
+                <ImagesGallery
+                  images={roomType.images}
+                  onChange={handleImageChange}
+                />
+                {/* <div className={classes.imagesContainer}>
                   {roomType.images.map(((url, index) => (
                     <RoomImage
                       key={index}
@@ -810,7 +634,7 @@ const RoomTypeEdit = props => {
                       onDelete={handleImageDelete}
                     />
                   )))}
-                </div>
+                </div> */}
                 <DropzoneField
                   note={
                     roomType.images.length === 0

@@ -10,7 +10,6 @@ type TRoomTypeDbDataFields =
   | 'currency'
   | 'devConPrice'
   | 'amenities'
-  | 'imageUrl'
   | 'guestsNumber'
   | 'childFriendly'
   | 'petFriendly'
@@ -34,7 +33,6 @@ interface IBaseRoomType {
   currency: string
   devConPrice: number
   amenities: string
-  imageUrl: string
   guestsNumber: number
   childFriendly: boolean
   petFriendly: boolean
@@ -57,7 +55,6 @@ interface IPostRoomTypePayload {
   currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
   guestsNumber?: number
   childFriendly?: boolean
   petFriendly?: boolean
@@ -74,7 +71,6 @@ interface IPatchRoomTypePayload {
   currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
   guestsNumber?: number
   childFriendly?: boolean
   petFriendly?: boolean
@@ -91,7 +87,6 @@ interface IBaseRoomTypeDbData {
   currency: string
   devConPrice: number
   amenities: string
-  imageUrl: string
   guestsNumber: number
   childFriendly: boolean
   petFriendly: boolean
@@ -112,7 +107,6 @@ interface IPatchRoomTypePayloadDbData {
   currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
   guestsNumber?: number
   childFriendly?: boolean
   petFriendly?: boolean
