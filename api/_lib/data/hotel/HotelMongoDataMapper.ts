@@ -44,7 +44,9 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
         lat: baseHotelDbData.location.coordinates[0],
         lng: baseHotelDbData.location.coordinates[1],
       },
-      images: baseHotelDbData.images,
+      images: (typeof baseHotelDbData.images !== 'undefined') ?
+        baseHotelDbData.images.map((img) => img) :
+        [],
       email: baseHotelDbData.email,
     }
   }
@@ -52,12 +54,12 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
   fromPatchEntityPayload(patchHotelPayload: IPatchHotelPayload): IPatchHotelPayloadDbData {
     const availProps: Array<keyof IPatchHotelPayload> = [
       'ownerId',
+      'location',
       'name',
       'description',
       'address',
-      'location',
-      'images',
       'email',
+      'images',
     ]
 
     return availProps.reduce((patchHotelPayloadDbData: IPatchHotelPayloadDbData, prop): IPatchHotelPayloadDbData => {
@@ -81,9 +83,13 @@ class HotelMongoDataMapper extends BaseMongoDataMapper {
         case 'name':
         case 'description':
         case 'address':
-        case 'images':
         case 'email':
           patchHotelPayloadDbData[prop] = patchHotelPayload[prop]
+          break
+        case 'images':
+          patchHotelPayloadDbData[prop] = (typeof patchHotelPayload[prop] !== 'undefined') ?
+            (patchHotelPayload[prop] as Array<string>).map((img) => img) :
+            []
           break
       }
 
