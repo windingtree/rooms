@@ -90,6 +90,8 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     guestName: payload.travellerName || '',
     guestEmail: payload.travellerEmail || '',
     phoneNumber: payload.travellerPhone || '',
+    price: offer.offer.price.public || -1,
+    currency: offer.offer.price.currency || '',
   }
   await bookingRepo.createBooking(baseBooking)
   await offerRepo.deleteOfferByOfferId(payload.offerId)

@@ -33,6 +33,8 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
     guestEmail: (typeof payload.guestEmail !== 'undefined') ? payload.guestEmail : '',
     phoneNumber: (typeof payload.phoneNumber !== 'undefined') ? payload.phoneNumber : '',
     roomTypeId: (typeof payload.roomTypeId !== 'undefined') ? payload.roomTypeId : '',
+    price: (typeof payload.price !== 'undefined') ? payload.price : -1,
+    currency: (typeof payload.currency !== 'undefined') ? payload.currency : '',
   }
   const bookingId: string = await bookingRepo.createBooking(baseBooking)
   const booking: IBooking = Object.assign({}, baseBooking, { id: bookingId })

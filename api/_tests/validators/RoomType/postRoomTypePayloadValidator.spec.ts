@@ -488,7 +488,11 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
 
           const payload = await sut(request)
 
-          expect(payload.images[0]).to.equal(value)
+          if (typeof payload.images === 'undefined') {
+            new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
+          }
+
+          expect((payload.images as Array<string>)[0]).to.equal(value)
         })
       })
     })

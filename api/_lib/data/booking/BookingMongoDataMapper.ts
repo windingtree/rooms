@@ -22,6 +22,8 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       guestEmail: baseBooking.guestEmail,
       phoneNumber: baseBooking.phoneNumber,
       roomTypeId: this.toObjectId(baseBooking.roomTypeId),
+      price: baseBooking.price,
+      currency: baseBooking.currency,
     }
   }
 
@@ -35,6 +37,8 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       guestEmail: baseBookingDbData.guestEmail,
       phoneNumber: baseBookingDbData.phoneNumber,
       roomTypeId: this.fromObjectId(baseBookingDbData.roomTypeId),
+      price: baseBookingDbData.price,
+      currency: baseBookingDbData.currency,
     }
   }
 
