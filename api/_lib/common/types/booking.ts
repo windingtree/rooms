@@ -91,6 +91,17 @@ interface IPatchBookingPayloadDbData {
 
 type IBookingCollectionDbData = Array<IBookingDbData>
 
+interface IBookingPrice {
+  price: number
+}
+
+interface IGetBookingPricePayload {
+  hotelId: string
+  roomTypeId: string
+  arrival: string,
+  departure: string
+}
+
 export {
   TBookingDbDataFields,
   IBookingDbDataProjection,
@@ -103,4 +114,6 @@ export {
   IBookingDbData,
   IPatchBookingPayloadDbData,
   IBookingCollectionDbData,
+  IBookingPrice,
+  IGetBookingPricePayload,
 }

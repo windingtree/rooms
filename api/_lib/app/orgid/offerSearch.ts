@@ -18,7 +18,7 @@ import {
   ILocationRectangleDbType,
   IOrgDetails
 } from '../../common/types'
-import { calculateOfferPrice } from "../rate_modifier/pricingEngine";
+import { calculateOfferPrice } from "../../app/rate_modifier";
 
 const moment = extendMoment(Moment)
 

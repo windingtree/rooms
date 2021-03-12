@@ -38,6 +38,8 @@ export {
   IBookingDbData,
   IPatchBookingPayloadDbData,
   IBookingCollectionDbData,
+  IBookingPrice,
+  IGetBookingPricePayload,
 } from './booking'
 
 export {
