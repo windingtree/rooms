@@ -19,6 +19,7 @@ import {
   IRateModifier,
   IRateModifierCollection,
   IUploadImage,
+  IBookingPrice,
 } from '../types'
 
 type TAvailableResultTypes =
@@ -40,6 +41,7 @@ type TAvailableResultTypes =
   |IRateModifier
   |IRateModifierCollection
   |IUploadImage
+  |IBookingPrice
   |string
 
 type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<TAvailableResultTypes>

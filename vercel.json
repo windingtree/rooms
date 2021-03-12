@@ -74,6 +74,10 @@
       "destination": "/api/v1/booking.ts"
     },
     {
+      "source": "/api/v1/booking_price",
+      "destination": "/api/v1/booking_price.ts"
+    },
+    {
       "source": "/api/v1/bookings",
       "destination": "/api/v1/bookings.ts"
     },
