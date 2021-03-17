@@ -27,11 +27,10 @@ describe('Cache', () => {
     expect(cache.get('key2')).to.be.equal('value2');
 
     setTimeout(()=>{
-      console.log('check after time')
       expect(cache.get('key1')).to.equal(undefined)
       expect(cache.get('key2')).to.equal(undefined)
       done()
-    },2*evictionTimeInMillis)
+    }, 2 * evictionTimeInMillis)
   })
 
 

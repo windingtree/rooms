@@ -19,7 +19,7 @@ let sampleBooking = {
     "roomTypeId": "603fe9af51e89ef30c319734"
 };
 
-let roomTypes = [{"id":"603fe9af51e89ef30c319734","hotelId":"603fb077e22411c76f2abff9","type":"Single","description":"single","quantity":1,"price":1,"currency":"USD","devConPrice":0,"amenities":"Room with Queen Bed;","imageUrl":"","guestsNumber":1,"childFriendly":true,"petFriendly":false,"beds":[1],"images":[]},{"id":"603fe9c3122854f339d77069","hotelId":"603fb077e22411c76f2abff9","type":"Double","description":"ddd","quantity":1,"price":1,"currency":"USD","devConPrice":0,"amenities":"Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;","imageUrl":"","guestsNumber":2,"childFriendly":true,"petFriendly":false,"beds":[1],"images":[]}]
+let roomTypes = [{"id":"603fe9af51e89ef30c319734","hotelId":"603fb077e22411c76f2abff9","type":"Single","description":"single","quantity":1,"price":1,"currency":"USD","devConPrice":0,"amenities":"Room with Queen Bed;","imageUrl":"","numberOfGuests":1,"childFriendly":true,"petFriendly":false,"beds":[1],"images":[]},{"id":"603fe9c3122854f339d77069","hotelId":"603fb077e22411c76f2abff9","type":"Double","description":"ddd","quantity":1,"price":1,"currency":"USD","devConPrice":0,"amenities":"Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;","imageUrl":"","numberOfGuests":2,"childFriendly":true,"petFriendly":false,"beds":[1],"images":[]}]
 
 export const BookingItem = () => {
     return (
