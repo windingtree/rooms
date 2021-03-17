@@ -21,6 +21,7 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       guestName: baseBooking.guestName,
       guestEmail: baseBooking.guestEmail,
       phoneNumber: baseBooking.phoneNumber,
+      numberOfGuests: baseBooking.numberOfGuests,
       roomTypeId: this.toObjectId(baseBooking.roomTypeId),
       price: baseBooking.price,
       currency: baseBooking.currency,
@@ -36,6 +37,7 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       guestName: baseBookingDbData.guestName,
       guestEmail: baseBookingDbData.guestEmail,
       phoneNumber: baseBookingDbData.phoneNumber,
+      numberOfGuests: baseBookingDbData.numberOfGuests,
       roomTypeId: this.fromObjectId(baseBookingDbData.roomTypeId),
       price: baseBookingDbData.price,
       currency: baseBookingDbData.currency,
@@ -50,6 +52,7 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       'guestName',
       'guestEmail',
       'phoneNumber',
+      'numberOfGuests',
       'roomTypeId',
       'price',
       'currency'
@@ -76,6 +79,7 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
           patchBookingPayloadDbData[prop] = this.toObjectId((patchBookingPayload[prop] as string))
           break
         case 'price':
+        case 'numberOfGuests':
           patchBookingPayloadDbData[prop] = (patchBookingPayload[prop] as number)
           break
       }

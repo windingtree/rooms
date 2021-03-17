@@ -32,6 +32,7 @@ async function createBooking(requester: IProfile, payload: IPostBookingPayload):
     guestName: (typeof payload.guestName !== 'undefined') ? payload.guestName : '',
     guestEmail: (typeof payload.guestEmail !== 'undefined') ? payload.guestEmail : '',
     phoneNumber: (typeof payload.phoneNumber !== 'undefined') ? payload.phoneNumber : '',
+    numberOfGuests: (typeof payload.numberOfGuests !== 'undefined') ? payload.numberOfGuests : 0,
     roomTypeId: (typeof payload.roomTypeId !== 'undefined') ? payload.roomTypeId : '',
     price: (typeof payload.price !== 'undefined') ? payload.price : -1,
     currency: (typeof payload.currency !== 'undefined') ? payload.currency : '',
