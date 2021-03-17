@@ -197,7 +197,6 @@ const BookingEdit = ({userProfile}) => {
         }
     };
     const handlePropertyChange = (fieldName, value) => {
-        console.log(`handlePropertyChange,[${fieldName}]=[${value}]`)
         const newBooking = objClone(booking)
         switch (fieldName) {
             case 'checkInDate':
@@ -285,7 +284,7 @@ const BookingEdit = ({userProfile}) => {
                 isEmpty(booking.phoneNumber) && (errors[field] = 'Required field');
                 break;
             case 'numberOfGuests':
-                !isValidInt(booking.numberOfGuests) && (errors[field] = 'Required field');
+                (!isValidInt(booking.numberOfGuests) || booking.numberOfGuests <1) && (errors[field] = 'Required field');
                 break;
             default:
         }
