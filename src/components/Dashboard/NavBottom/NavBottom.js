@@ -1,22 +1,20 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import HotelIcon from '@material-ui/icons/Hotel'
 import SyncAltIcon from '@material-ui/icons/SyncAlt'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
 const useStyles = (theme) => {
   return {
     root: {
-      width: '10vw',
       color: theme.palette.secondary.main,
       '&$selected': {
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.primary.contrastText,
       },
-      minWidth: '64px'
     },
     label: {
       fontSize: '0.72rem',
@@ -49,12 +47,7 @@ class NavBottom extends React.Component {
     const { classes } = this.props
 
     return (
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
+        <PageContentWrapper>
         <BottomNavigation
           value={this.props.currentDashboard}
           onChange={this.navChange}
@@ -76,7 +69,7 @@ class NavBottom extends React.Component {
             icon={<TrendingUpIcon color={this.iconColor(2)} />}
           />
         </BottomNavigation>
-      </Grid>
+        </PageContentWrapper>
     )
   }
 }
