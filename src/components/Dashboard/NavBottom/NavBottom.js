@@ -10,7 +10,6 @@ import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 const useStyles = (theme) => {
   return {
     root: {
-      border:'1px solid red',
       color: theme.palette.secondary.main,
       '&$selected': {
         color: theme.palette.primary.main,
