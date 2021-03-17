@@ -1,6 +1,10 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateRequiredString, validateOptionalString } from '../../../interface/validators/_helpers'
+import {
+  validateRequiredString,
+  validateOptionalString,
+  validateOptionalNumber
+} from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
@@ -21,6 +25,8 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
     guestEmail: '',
     phoneNumber: '',
     roomTypeId: '',
+    price: 0,
+    currency: '',
   }
 
   const ALLOWED_PROPS: Array<keyof IPostBookingPayload> = [
@@ -31,6 +37,8 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
     'guestEmail',
     'phoneNumber',
     'roomTypeId',
+    'price',
+    'currency'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -67,6 +75,8 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
   await validateOptionalString('roomTypeId', roomTypeId)
   payload.roomTypeId = roomTypeId
 
+  payload.currency=await validateOptionalString('currency', request.body.currency)
+  payload.price=await validateOptionalNumber('price', request.body.price)
   return payload
 }
 

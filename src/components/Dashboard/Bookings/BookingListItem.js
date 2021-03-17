@@ -32,7 +32,7 @@ const useStyles = makeStyles( {
 })
 
 export const BookingListItem = ({booking, roomTypes}) => {
-    const {checkInDate, checkOutDate, guestName, roomTypeId} = booking;
+    const {checkInDate, checkOutDate, guestName, roomTypeId, price, currency} = booking;
     const classes = useStyles();
     const history = useHistory();
     const getRoomName =()=> {
@@ -66,7 +66,7 @@ export const BookingListItem = ({booking, roomTypes}) => {
                         {guestName}
                     </Grid>
                     <Grid item xs={3} className={classes.booking_price} style={{textAlign:'right'}}>
-                        $125
+                        {price}{currency}
                     </Grid>
                     <Grid item xs={12} className={classes.room_name}>
                         {getRoomName()}

@@ -29,8 +29,8 @@ async function getBookingPrice(requester: IProfile, data: IGetBookingPricePayloa
   }
 
   const price = await calculateOfferPrice(hotel, roomType, data.arrival, data.departure, roomType.price)
-
-  return { price }
+  //FIXME: hardcoded currency code, to be changed
+  return { price: price, currency: 'USD' }
 }
 
 export { getBookingPrice }

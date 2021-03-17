@@ -8,10 +8,10 @@ import { getBookingPrice } from '../_lib/app/booking'
 
 import { IProfile, IBookingPrice, IGetBookingPricePayload } from '../_lib/common/types'
 
-async function GET(request: NowRequest): Promise<IBookingPrice> {
+async function POST(request: NowRequest): Promise<IBookingPrice> {
   const requester: IProfile = await authenticateClientAppRequest(request)
 
-  await authorizeRequest(requester.role, { method: 'GET', route: 'room_types' })
+  await authorizeRequest(requester.role, { method: 'POST', route: 'booking' })
 
   const payload: IGetBookingPricePayload = await getBookingPricePayloadValidator(request)
 
@@ -19,5 +19,5 @@ async function GET(request: NowRequest): Promise<IBookingPrice> {
 }
 
 export default async (request: NowRequest, response: NowResponse): Promise<void> => {
-  await genericApiMethodHandler(request, response, { GET })
+  await genericApiMethodHandler(request, response, { POST })
 }

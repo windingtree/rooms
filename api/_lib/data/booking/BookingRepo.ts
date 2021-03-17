@@ -51,6 +51,8 @@ class BookingRepo extends BaseDataRepo {
       'guestEmail',
       'phoneNumber',
       'roomTypeId',
+      'price',
+      'currency'
     ]
 
     return allowedFields.reduce((projection: IBookingDbDataProjection, field) => {

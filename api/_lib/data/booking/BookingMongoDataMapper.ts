@@ -51,6 +51,8 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
       'guestEmail',
       'phoneNumber',
       'roomTypeId',
+      'price',
+      'currency'
     ]
 
     return availProps.reduce((patchBookingPayloadDbData: IPatchBookingPayloadDbData, prop): IPatchBookingPayloadDbData => {
@@ -62,6 +64,7 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
         case 'guestName':
         case 'guestEmail':
         case 'phoneNumber':
+        case 'currency':
           patchBookingPayloadDbData[prop] = patchBookingPayload[prop]
           break
         case 'checkInDate':
@@ -71,6 +74,9 @@ class BookingMongoDataMapper extends BaseMongoDataMapper {
         case 'hotelId':
         case 'roomTypeId':
           patchBookingPayloadDbData[prop] = this.toObjectId((patchBookingPayload[prop] as string))
+          break
+        case 'price':
+          patchBookingPayloadDbData[prop] = (patchBookingPayload[prop] as number)
           break
       }
 
