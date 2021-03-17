@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {createMuiTheme, TextField} from "@material-ui/core";
-import {isEmpty} from "../../../utils/validationUtils";
+import {isEmpty, isValidInt} from "../../../utils/validationUtils";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import {ThemeProvider} from "@material-ui/core/styles";
@@ -65,6 +65,7 @@ const initializeNewRecord = (userProfile) => {
         guestName: '',
         guestEmail: '',
         phoneNumber: '',
+        numberOfGuests:1
     }
 }
 
@@ -281,6 +282,9 @@ const BookingEdit = ({userProfile}) => {
                 break;
             case 'phoneNumber':
                 isEmpty(booking.phoneNumber) && (errors[field] = 'Required field');
+                break;
+            case 'numberOfGuests':
+                (!isValidInt(booking.numberOfGuests) || booking.numberOfGuests <1) && (errors[field] = 'Required field');
                 break;
             default:
         }

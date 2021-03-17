@@ -8,3 +8,7 @@ export const isEmpty = (param) => {
 export const isValidFloatNumber = (param) => {
     return (!isNaN(parseFloat(param)))
 }
+
+export const isValidInt = (param) => {
+    return (!isNaN(parseInt(param)))
+}
