@@ -108,7 +108,9 @@ const BookingEdit = ({userProfile}) => {
         }
         apiClient
             .getRoomTypes()
-            .then(setRoomTypes)
+            .then(types=>{
+                setRoomTypes(types)
+            })
             .catch(error=>{
                 errorLogger(error)
                     .then(message=>setSnackWarn(message))
@@ -196,6 +198,21 @@ const BookingEdit = ({userProfile}) => {
     };
     const handlePropertyChange = (fieldName, value) => {
         const newBooking = objClone(booking)
+        switch (fieldName) {
+            case 'checkInDate':
+                let checkInDate=moment(value);
+                let checkOutDate=moment(booking.checkOutDate)
+                //check if check-in date is same or after check-out
+                if(checkInDate.isValid() && checkOutDate.isValid() && checkInDate.isSameOrAfter(checkOutDate)){
+                    //in that case - push check-out date forward 1 day
+                    newBooking['checkOutDate'] = checkInDate.add(1, 'days');
+                }
+                break;
+            case 'checkOutDate':
+                break;
+            default:
+        }
+
         newBooking[fieldName] = value;
         setBooking(newBooking);
         //if one of properties that influence the price has changed - recalculate price
@@ -204,20 +221,20 @@ const BookingEdit = ({userProfile}) => {
     }
     const recalculatePrice = (record) => {
         const {checkInDate, checkOutDate, roomTypeId} = record;
-        if (!checkInDate) {
-            setPriceAndHelperText(null, '', 'Choose check-in date');
+        if (!checkInDate || !moment(checkInDate).isValid()) {
+            setPriceAndHelperText(record,null, '', 'Choose check-in date');
             return
         }
-        if (!checkOutDate) {
-            setPriceAndHelperText(null, '', 'Choose check-out date');
+        if (!checkOutDate || !moment(checkOutDate).isValid()) {
+            setPriceAndHelperText(record,null, '', 'Choose check-out date');
             return
         }
         if (!roomTypeId || roomTypeId.length === 0) {
-            setPriceAndHelperText(null, '', 'Choose room type');
+            setPriceAndHelperText(record,null, '', 'Choose room type');
             return
         }
         //unset any helper text
-        setPriceAndHelperText(null, '', undefined);
+        setPriceAndHelperText(record,null, '', undefined);
         //display spinner
         setPriceRecalcInProgress(true)
         const request = {
@@ -228,18 +245,18 @@ const BookingEdit = ({userProfile}) => {
         }
         apiClient.getBookingPrice(request)
             .then(data => {
-                setPriceAndHelperText(data.price, data.currency, undefined);
-            }).catch(err => {
-            setPriceAndHelperText(null, '', 'Failed to calculate the price');
+                setPriceAndHelperText(record,data.price, data.currency, undefined);
+            }).catch(() => {
+            setPriceAndHelperText(record,null, '', 'Failed to calculate the price');
         })
-            .finally(() => {
-                setPriceRecalcInProgress(false)
-            })
+        .finally(() => {
+            setPriceRecalcInProgress(false)
+        })
     }
 
 
-    const setPriceAndHelperText = (price, currency, text) => {
-        const newBooking = objClone(booking);
+    const setPriceAndHelperText = (record, price, currency, text) => {
+        const newBooking = objClone(record);
         newBooking.price = price;
         newBooking.currency = currency;
         setBooking(newBooking)
@@ -268,7 +285,6 @@ const BookingEdit = ({userProfile}) => {
                 break;
             default:
         }
-
 
         if (returnErrors) {
             return errors;
@@ -340,7 +356,7 @@ const BookingEdit = ({userProfile}) => {
                                                 fullWidth
                                                 inputVariant="outlined"
                                                 value={booking.checkInDate}
-                                                onChange={(e) => handlePropertyChange('checkInDate', e)}
+                                                onChange={e => handlePropertyChange('checkInDate', e)}
                                                 KeyboardButtonProps={{
                                                     'aria-label': 'change check-in date',
                                                 }}
@@ -366,7 +382,7 @@ const BookingEdit = ({userProfile}) => {
                                                 fullWidth
                                                 inputVariant="outlined"
                                                 value={booking.checkOutDate}
-                                                onChange={(e) => handlePropertyChange('checkOutDate', e)}
+                                                onChange={e => handlePropertyChange('checkOutDate', e)}
                                                 KeyboardButtonProps={{
                                                     'aria-label': 'change check-out date',
                                                 }}
@@ -458,7 +474,7 @@ const BookingEdit = ({userProfile}) => {
                                 onClick={handleSaveClick}
                                 variant='contained'
                                 fullWidth={true}
-                                disabled={loading}
+                                disabled={loading || priceRecalcInProgress}
                                 color={"secondary"}
                                 style={{justifyContent: "flex-start"}}
                                 endIcon={loading && <CircularProgress size={24}/>}
