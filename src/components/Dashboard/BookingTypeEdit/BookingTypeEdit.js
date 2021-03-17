@@ -21,7 +21,7 @@ import MomentUtils from "@date-io/moment";
 import {ThemeProvider} from "@material-ui/core/styles";
 import {datePickerThemeObj} from "../../../utils/themes";
 import SelectField from "../../base/SelectField";
-import {guestsTypes} from "../../../utils/data/index"
+import guestsTypes from "../../../utils/data/guestsTypes.json"
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -174,9 +174,8 @@ const BookingEdit = ({userProfile}) => {
         } else {
             const { id: bookingId, ...data } = booking;
             delete data.id;
-            // delete data.price;
+
             //workaround to avoid validation errors
-            delete data.guestsNumber;
             delete data.orderId;
 
             //update backend
@@ -415,11 +414,11 @@ const BookingEdit = ({userProfile}) => {
                                 <Grid item xs={12}>
                                     <SelectField
                                         options={guestsTypes}
-                                        value={booking.guestsNumber}
-                                        onBlur={() => validate('guestsNumber')}
-                                        onChange={(e) => handlePropertyChange('guestsNumber', e)}
-                                        helperText={validationErrors['guestsNumber']}
-                                        error={validationErrors['guestsNumber'] !== undefined}
+                                        value={booking.numberOfGuests}
+                                        onBlur={() => validate('numberOfGuests')}
+                                        onChange={(e) => handlePropertyChange('numberOfGuests', e)}
+                                        helperText={validationErrors['numberOfGuests']}
+                                        error={validationErrors['numberOfGuests'] !== undefined}
                                         label="Number of Guests"
                                         fullWidth={true}
                                     />

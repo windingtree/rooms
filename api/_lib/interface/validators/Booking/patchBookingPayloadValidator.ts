@@ -26,6 +26,7 @@ async function patchBookingPayloadValidator(request: NowRequest): Promise<IPatch
     'guestName',
     'guestEmail',
     'phoneNumber',
+    'numberOfGuests',
     'roomTypeId',
     'price',
     'currency'
@@ -62,12 +63,22 @@ async function patchBookingPayloadValidator(request: NowRequest): Promise<IPatch
   await validateOptionalString('phoneNumber', phoneNumber)
   if (typeof phoneNumber !== 'undefined') payload.phoneNumber = phoneNumber
 
+  const numberOfGuests = request.body.numberOfGuests
+  await validateOptionalNumber('numberOfGuests', numberOfGuests)
+  if (typeof numberOfGuests !== 'undefined') payload.numberOfGuests = numberOfGuests
+
   const roomTypeId = request.body.roomTypeId
+  await validateMongoObjectId('roomTypeId', roomTypeId)
   await validateOptionalString('roomTypeId', roomTypeId)
   if (typeof roomTypeId !== 'undefined') payload.roomTypeId = roomTypeId
 
-  payload.currency=await validateOptionalString('currency', request.body.currency)
-  payload.price=await validateOptionalNumber('price', request.body.price)
+  const currency = request.body.currency
+  await validateOptionalString('currency', currency)
+  if (typeof currency !== 'undefined') payload.currency = currency
+
+  const price = request.body.price
+  await validateOptionalNumber('price', price)
+  if (typeof price !== 'undefined') payload.price = price
 
   return payload
 }

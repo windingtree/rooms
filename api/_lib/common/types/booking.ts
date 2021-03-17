@@ -9,6 +9,7 @@ type TBookingDbDataFields =
   | 'guestName'
   | 'guestEmail'
   | 'phoneNumber'
+  | 'numberOfGuests'
   | 'roomTypeId'
   | 'price'
   | 'currency'
@@ -25,6 +26,7 @@ interface IBaseBooking {
   guestName: string
   guestEmail: string
   phoneNumber: string
+  numberOfGuests: number
   roomTypeId: string
   price: number
   currency: string
@@ -43,6 +45,7 @@ interface IPostBookingPayload {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: string
   price?: number
   currency?: string
@@ -55,6 +58,7 @@ interface IPatchBookingPayload {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: string
   price?: number
   currency?: string
@@ -68,6 +72,7 @@ interface IBaseBookingDbData {
   guestName: string
   guestEmail: string
   phoneNumber: string
+  numberOfGuests: number
   roomTypeId: ObjectID|null
   price: number
   currency: string
@@ -84,6 +89,7 @@ interface IPatchBookingPayloadDbData {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: ObjectID|null
   price?: number
   currency?: string

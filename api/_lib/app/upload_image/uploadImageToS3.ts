@@ -21,13 +21,8 @@ function uploadToS3Handler(s3bucket: AWS.S3, params: AWS.S3.PutObjectRequest): P
 
   s3bucket.upload(params, async (err: unknown, data: AWS.S3.ManagedUpload.SendData) => {
     if (err) {
-      console.log('s3bucket.upload() error:')
-      console.log(err)
-
       reject(err)
     }
-
-    console.log(`File uploaded successfully. S3 file is located at: '${data.Location}'.`);
 
     resolve(data.Location)
   });

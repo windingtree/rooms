@@ -92,7 +92,6 @@ async function calculateOfferPrice(hotel: IHotel, room: IRoomType, arrival: stri
             //if there are applicable rate modifiers (meaning the condition is met) - calculate price for a given day
             if (isRateModifierApplicable(rateModifier, arrivalDate, departureDate, date)) {
                 dayPrice = calculatePrice(dayPrice, rateModifier)
-                console.log(`Calculated room price, room:${room.type}, base rate:${basePrice}, calculated:${dayPrice}, rateModifier:`, rateModifier.type)
             }
         })
         //add calculated price to the total
@@ -173,7 +172,6 @@ function calculatePrice(baseRate: number, rateModifier: IRateModifier) {
         const amount = Number(rateModifier.priceModifierAmount);
         newPrice = baseRate + amount;
     } else {
-        console.warn('Unknown rate modifier type:', rateModifier.priceModifierType)
         throw new CError(HTTP_STATUS.BAD_GATEWAY, `Unknown priceModifierType: ${rateModifier.priceModifierType}`)
     }
     return newPrice;

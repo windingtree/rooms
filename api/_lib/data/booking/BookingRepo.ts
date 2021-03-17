@@ -50,6 +50,7 @@ class BookingRepo extends BaseDataRepo {
       'guestName',
       'guestEmail',
       'phoneNumber',
+      'numberOfGuests',
       'roomTypeId',
       'price',
       'currency'
