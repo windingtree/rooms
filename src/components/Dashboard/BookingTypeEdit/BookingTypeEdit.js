@@ -27,6 +27,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
 import CardActions from "@material-ui/core/CardActions";
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const datePickerTheme = createMuiTheme(datePickerThemeObj)
 
@@ -42,6 +43,9 @@ const useStyles = makeStyles({
         fontSize: '16px',
         fontWeight: 'bold',
         marginBottom: '16px'
+    },
+    bookingPrice: {
+        color: '#9226AD',
     },
     removeButton: {
         marginLeft: '16px'
@@ -74,6 +78,9 @@ const BookingEdit = ({userProfile}) => {
     const [validationErrors, setValidationErrors] = useState({});
     const classes = useStyles()
     const [snackWarn, setSnackWarn] = useState();
+
+    const [priceCalcWarning, setPriceCalcWarning] = useState();     //warning displayed below price (e.g. if user did not select room type_
+    const [priceRecalcInProgress, setPriceRecalcInProgress] = useState(false);
 
 
     //load booking
@@ -165,7 +172,7 @@ const BookingEdit = ({userProfile}) => {
         } else {
             const { id: bookingId, ...data } = booking;
             delete data.id;
-
+            // delete data.price;
             //workaround to avoid validation errors
             delete data.guestsNumber;
             delete data.orderId;
@@ -191,7 +198,54 @@ const BookingEdit = ({userProfile}) => {
         const newBooking = objClone(booking)
         newBooking[fieldName] = value;
         setBooking(newBooking);
+        //if one of properties that influence the price has changed - recalculate price
+        if (['checkInDate', 'checkOutDate', 'roomTypeId'].includes(fieldName))
+            recalculatePrice(newBooking)
     }
+    const recalculatePrice = (record) => {
+        const {checkInDate, checkOutDate, roomTypeId} = record;
+        if (!checkInDate) {
+            setPriceAndHelperText(null, '', 'Choose check-in date');
+            return
+        }
+        if (!checkOutDate) {
+            setPriceAndHelperText(null, '', 'Choose check-out date');
+            return
+        }
+        if (!roomTypeId || roomTypeId.length === 0) {
+            setPriceAndHelperText(null, '', 'Choose room type');
+            return
+        }
+        //unset any helper text
+        setPriceAndHelperText(null, '', undefined);
+        //display spinner
+        setPriceRecalcInProgress(true)
+        const request = {
+            arrival: checkInDate,
+            departure: checkOutDate,
+            roomTypeId: roomTypeId,
+            hotelId: userProfile.hotelId
+        }
+        apiClient.getBookingPrice(request)
+            .then(data => {
+                setPriceAndHelperText(data.price, data.currency, undefined);
+            }).catch(err => {
+            setPriceAndHelperText(null, '', 'Failed to calculate the price');
+        })
+            .finally(() => {
+                setPriceRecalcInProgress(false)
+            })
+    }
+
+
+    const setPriceAndHelperText = (price, currency, text) => {
+        const newBooking = objClone(booking);
+        newBooking.price = price;
+        newBooking.currency = currency;
+        setBooking(newBooking)
+        setPriceCalcWarning(text);
+    }
+
     const validate = (field, returnErrors = false) => {
         const errors = {}
         let yesterday = new moment().subtract(1,'days');
@@ -386,6 +440,14 @@ const BookingEdit = ({userProfile}) => {
                                     />
 
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <div className={classes.bookingPrice}>
+                                        Guest pays: {booking.price} {booking.currency}
+                                        {priceRecalcInProgress && <CircularProgress color="secondary" size={24}/>}
+                                    </div>
+                                    <FormHelperText>{priceCalcWarning}</FormHelperText>
+                                </Grid>
+
                             </Grid>
 
 

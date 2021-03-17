@@ -92,7 +92,8 @@ interface IPatchBookingPayloadDbData {
 type IBookingCollectionDbData = Array<IBookingDbData>
 
 interface IBookingPrice {
-  price: number
+  price: number,
+  currency: string
 }
 
 interface IGetBookingPricePayload {

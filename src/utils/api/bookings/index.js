@@ -83,10 +83,24 @@ function deleteBooking(id) {
     })
 }
 
+function getBookingPrice(data) {
+    return fetch(`/api/v1/booking_price`, {
+        method: 'POST',
+        headers: makeAuthHeaders(),
+        body: JSON.stringify(data)
+    }).then(checkStatus)
+        .then(parseJSON)
+        .then((data) => {
+            return data
+        })
+}
+
+
 export {
   getBookings,
   getBooking,
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingPrice
 }

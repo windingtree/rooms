@@ -1,6 +1,10 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateOptionalString, validateMongoObjectId } from '../../../interface/validators/_helpers'
+import {
+  validateOptionalString,
+  validateMongoObjectId,
+  validateOptionalNumber
+} from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
@@ -23,6 +27,8 @@ async function patchBookingPayloadValidator(request: NowRequest): Promise<IPatch
     'guestEmail',
     'phoneNumber',
     'roomTypeId',
+    'price',
+    'currency'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -59,6 +65,9 @@ async function patchBookingPayloadValidator(request: NowRequest): Promise<IPatch
   const roomTypeId = request.body.roomTypeId
   await validateOptionalString('roomTypeId', roomTypeId)
   if (typeof roomTypeId !== 'undefined') payload.roomTypeId = roomTypeId
+
+  payload.currency=await validateOptionalString('currency', request.body.currency)
+  payload.price=await validateOptionalNumber('price', request.body.price)
 
   return payload
 }

@@ -18,6 +18,7 @@ import {
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingPrice
 } from './bookings'
 
 import {
@@ -56,6 +57,7 @@ const apiClient = (function () {
     createBooking,
     updateBooking,
     deleteBooking,
+    getBookingPrice,
 
     getProfile,
     updateProfile,
