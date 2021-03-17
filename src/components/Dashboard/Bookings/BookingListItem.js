@@ -28,11 +28,16 @@ const useStyles = makeStyles( {
         booking_type:{
             paddingTop:'8px',
             color:roomsTheme.palette.secondary.main
+        },
+        number_of_guests: {
+            paddingTop:'2px',
+            color:roomsTheme.palette.secondary.main,
+            fontWeight:roomsTheme.typography.fontWeightBold,
         }
 })
 
 export const BookingListItem = ({booking, roomTypes}) => {
-    const {checkInDate, checkOutDate, guestName, roomTypeId, price, currency} = booking;
+    const {checkInDate, checkOutDate, guestName, roomTypeId, price, currency, numberOfGuests} = booking;
     const classes = useStyles();
     const history = useHistory();
     const getRoomName =()=> {
@@ -76,6 +81,9 @@ export const BookingListItem = ({booking, roomTypes}) => {
                     </Grid>
                     <Grid item xs={12} className={classes.booking_type}>
                         Prepaid
+                    </Grid>
+                    <Grid item xs={12} className={classes.number_of_guests} style={{textAlign:'right'}}>
+                        {numberOfGuests} guests
                     </Grid>
                 </Grid>
             </CardContent>

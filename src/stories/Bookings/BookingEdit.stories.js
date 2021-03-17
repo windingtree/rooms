@@ -20,7 +20,7 @@ const mockRoomTypesResponse = [{
     "devConPrice": 0,
     "amenities": "American breakfast in the restaurant;Safe box, air conditioning, hair dryer, iron and ironing board, laundry services;",
     "imageUrl": "",
-    "guestsNumber": 1,
+    "numberOfGuests": 1,
     "childFriendly": true,
     "petFriendly": true,
     "beds": [1, 0]
@@ -35,7 +35,7 @@ const mockRoomTypesResponse = [{
     "devConPrice": 0,
     "amenities": "Room service 24 hours;American breakfast in the restaurant;",
     "imageUrl": "",
-    "guestsNumber": 2,
+    "numberOfGuests": 2,
     "childFriendly": false,
     "petFriendly": false,
     "beds": [1]
