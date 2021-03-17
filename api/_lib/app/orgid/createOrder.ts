@@ -9,7 +9,7 @@ import { OfferRepo } from '../../data/offer/OfferRepo'
 import { getPaymentInfo, claimGuarantee } from '../../data/simard'
 
 import { CONSTANTS } from '../../common/constants'
-import { CError } from '../../common/tools'
+import { CError, isObject } from '../../common/tools'
 import {
   IPostCreateOrderPayload,
   ICreateOrderResult,
@@ -80,6 +80,19 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     )
   }
 
+  let numberOfGuests = 0
+  if (isObject(payload.passengers)) {
+    const passengerList = Object.keys(payload.passengers)
+
+    if (Array.isArray(passengerList)) {
+      const numOfPassengers = passengerList.length
+
+      if (numOfPassengers > 0) {
+        numberOfGuests = numOfPassengers
+      }
+    }
+  }
+
   const orderId = uuidv4()
   const baseBooking: IBaseBooking = {
     orderId,
@@ -90,6 +103,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     guestName: payload.travellerName || '',
     guestEmail: payload.travellerEmail || '',
     phoneNumber: payload.travellerPhone || '',
+    numberOfGuests,
     price: offer.offer.price.public || -1,
     currency: offer.offer.price.currency || '',
   }
