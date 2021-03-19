@@ -2,13 +2,8 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
 import LoginForm from './LoginForm'
-beforeEach(() => {
-  const script = document.createElement('script');
-  document.body.appendChild(script);
-})
 
 test('renders "Log in to Rooms" message', () => {
-
 
   const { getByText } = render(
     <BrowserRouter>
