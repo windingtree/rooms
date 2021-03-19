@@ -14,6 +14,7 @@ import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
 import Spinner from './base/Spinner/Spinner'
+import {gaUserEvent, GoogleAnalytics} from "../utils/functions/google-analytics";
 
 const {
   JWT_SECRET,
@@ -138,7 +139,7 @@ class App extends React.Component {
 
   handleLogout = () => {
     this.resetLocalStorage()
-
+    gaUserEvent('logout')
     this.setState({
       isLoggedIn: false,
       loadingProfile: false,
@@ -179,6 +180,7 @@ class App extends React.Component {
                   }
                 </Route>
                 <Route render={() => <h1>404: page not found</h1>} />
+                <GoogleAnalytics/>
               </Switch>
           }
         </main>
