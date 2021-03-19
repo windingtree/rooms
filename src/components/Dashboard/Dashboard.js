@@ -115,7 +115,7 @@ class Dashboard extends React.Component {
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">
-                <Redirect to="/dashboard/bookings" />
+                <Redirect to="/dashboard/room-types" />
               </Route>
               <Route exact path="/dashboard/bookings">
                 { this.isLoggedIn ? <BookingsList userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
