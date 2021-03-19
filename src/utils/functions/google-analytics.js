@@ -3,13 +3,19 @@ import ReactGA from 'react-ga';
 import {ApiCache} from "../api_cache";
 const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID || 'G-Y6E0HKDFXC'
 
+//google analytics will fail to initialize if run in a test runner (jest), hence it has to be disabled in this case
+const isTestMode = process.NODE_ENV === 'test'
+
 ReactGA.initialize(GA_TRACKING_ID, {
-    debug: true,
-    titleCase: false
+    debug: false,
+    titleCase: false,
+    testMode: isTestMode
 });
 
 
 export const gaGenericError = (error, type) => {
+    if(isTestMode)
+        return;
     ReactGA.event({
         category: 'generic_error',
         action: type,
@@ -18,6 +24,9 @@ export const gaGenericError = (error, type) => {
 }
 
 export const gaUserEvent = (action) => {
+    if(isTestMode)
+        return;
+
     ReactGA.event({
         category: 'user',
         action: action,
@@ -29,6 +38,9 @@ export const gaUserEvent = (action) => {
 export const GoogleAnalytics = () => {
     const apiCache = ApiCache.getInstance()
     const location = useLocation();
+    if(isTestMode)
+        return;
+
     ReactGA.pageview(location.pathname);
     if(apiCache)
     {
