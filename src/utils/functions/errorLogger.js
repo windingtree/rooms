@@ -1,10 +1,12 @@
 import { isFunction } from './isFunction'
+import {gaGenericError} from "./google-analytics";
 
 //log error
 async function errorLogger(error) {
   let errorData = await extractErrorData(error)
-  console.error('Error details:',errorData?errorData:'Unknown error')
-  return getHumanReadableErrorMessage(errorData)
+  let errorMessage = getHumanReadableErrorMessage(errorData)
+  gaGenericError(errorMessage,'generic_error')
+  return errorMessage;
 }
 
 //try to extract error data from the response or null if it's not possible
