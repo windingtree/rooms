@@ -12,8 +12,10 @@ const useStyles = () => {
       alignItems: 'center',
     },
     mainTitle: {
+      textAlign: 'left',
       position: 'static',
-      width: '280px',
+      width: '80%',
+      maxWidth: '600px',
       left: '0px',
       top: '60px',
       fontFamily: 'Inter',
@@ -25,12 +27,13 @@ const useStyles = () => {
       flex: 'none',
       order: 0,
       flexGrow: 1,
-      margin: '0.5em 0',
+      padding: '80px 0px 10px 0px ',
     },
     paragraph: {
       textAlign: 'left',
       position: 'static',
-      width: '40%',
+      width: '80%',
+      maxWidth: '600px',
       minWidth: '280px',
       left: '0px',
       top: '0px',
@@ -38,22 +41,24 @@ const useStyles = () => {
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '20px',
-      lineHeight: '24px',
+      lineHeight: '28px',
       color: '#42424F',
-      flex: 'none',
+      flex: 'auto',
       order: 0,
       flexGrow: 1,
-      margin: '0.5em 0',
+      margin: '20px 0px 80px 0px',
     },
     image: {
-      width: '280px',
+      width: '80%',
+      maxWidth: '300px',
       margin: '0.5em 0',
     },
     loginBtn: {
-      width: '40%',
-      minWidth: '280px',
-      maxWidth: '380px',
-      margin: '0.5em 0',
+      fontWeight: '700',
+      width: '88%',
+      maxWidth: '600px',
+      padding: '20px 20px',
+      margin: '20px 20px 40px 20px',
     },
     footer: {
       marginTop: '1.5em',
@@ -62,8 +67,9 @@ const useStyles = () => {
       backgroundColor: '#9226AD',
     },
     footerChild: {
+      margin: '2em 2em',
+      padding: '40px 0px',
       textAlign: 'left',
-      margin: '4.5em 2em',
       fontFamily: 'Inter',
       fontStyle: 'normal',
       fontWeight: 500,
@@ -88,8 +94,8 @@ class OnBoarding extends React.Component {
         <div className={classes.paragraph}>No more pen &amp; paper or excel sheets or whatever you use to manage your Hotel</div>
         <img alt="" className={classes.image} src="./intro/01.png" />
         <div className={classes.paragraph}>Track your bookings hassle-free, manage rooms availability, create special offers, and get connected to online travel agencies</div>
-        <Button className={classes.loginBtn} variant="contained" color="secondary" onClick={this.loginClickHandler}>Try Rooms</Button>
-        <div className={classes.paragraph}>Rooms is a lightweight one-stop web application, that gives you all you need, and nothing you don’t really need</div>
+        <Button className={classes.loginBtn} variant="contained" color="secondary" onClick={this.loginClickHandler}>LOG IN TO ROOMS</Button>
+        <div className={classes.paragraph}>Rooms is a lightweight one-stop hotel management web application, that gives you all you need, and nothing you don’t really need</div>
         <h1 className={classes.mainTitle}>All you need</h1>
         <img alt="" className={classes.image} src="./intro/02.png" />
         <div className={classes.paragraph}>Create a Profile for your Hotel and let travellers find you immediately</div>
@@ -102,7 +108,7 @@ class OnBoarding extends React.Component {
         <img alt="" className={classes.image} src="./intro/06.png" />
         <div className={classes.paragraph}>Create records manually,
 so that phone reservations, walk-ins, or messenger bookings will all drop in the same bucket with those coming from the Internet</div>
-        <Button className={classes.loginBtn} variant="contained" color="secondary" onClick={this.loginClickHandler}>Try Rooms</Button>
+        <Button className={classes.loginBtn} variant="contained" color="secondary" onClick={this.loginClickHandler}>LOG IN TO ROOMS</Button>
         <div className={classes.paragraph}>Ah, btw.. It’s free if you run a single hotel within one account</div>
         <div className={classes.footer}>
           <div className={classes.footerChild}>Provided to you by Winding Tree — Decentralized Travel Marketplace</div>
