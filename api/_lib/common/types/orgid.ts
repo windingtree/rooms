@@ -48,6 +48,7 @@ interface IDecodedOrgIdToken {
 
 export {
   IOrgJwtTokenOptions,
+  IOrgDetailsOrganization,
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,

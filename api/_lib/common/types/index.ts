@@ -62,6 +62,7 @@ export {
 
 export {
   IOrgJwtTokenOptions,
+  IOrgDetailsOrganization,
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,

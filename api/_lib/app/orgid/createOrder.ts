@@ -112,8 +112,20 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
 
   await claimGuarantee(payload.guaranteeId)
 
+  const reservationNumber = orderId.split('-')[0].toUpperCase()
+
   if (typeof offer.hotelEmail === 'string' && offer.hotelEmail.length > 0) {
-    await emailNewBooking(requester.organization.did, orderId, offer.hotelEmail)
+    await emailNewBooking(
+      requester.organization,
+      orderId,
+      reservationNumber,
+      offer.arrival,
+      offer.departure,
+      payload.travellerName || '',
+      payload.travellerEmail || '',
+      payload.travellerPhone || '',
+      offer.hotelEmail
+    )
   }
 
   const result: ICreateOrderResult = {
@@ -130,7 +142,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       },
       status: 'OK',
       response: 'Committed',
-      reservationNumber: orderId.split('-')[0].toUpperCase(),
+      reservationNumber,
     },
   }
 
