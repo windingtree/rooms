@@ -18,6 +18,7 @@ function jwtParse(token: string): Promise<void> {
   jwt.verify(token, 'test', (err, decoded) => {
     if (err && err.message === 'jwt malformed') {
       reject(err)
+      return
     }
 
     resolve()
