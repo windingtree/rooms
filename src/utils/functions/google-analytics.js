@@ -1,7 +1,7 @@
 import {useLocation} from 'react-router-dom';
 import ReactGA from 'react-ga';
 import {ApiCache} from "../api_cache";
-const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID || 'G-Y6E0HKDFXC'
+const GA_TRACKING_ID = 'G-42GYVFWQES'
 
 //google analytics will fail to initialize if run in a test runner (jest), hence it has to be disabled in this case
 const isTestMode = process.NODE_ENV === 'test'
