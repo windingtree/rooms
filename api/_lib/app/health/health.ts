@@ -1,5 +1,7 @@
 import { MongoDB } from '../../infra/mongo'
 
+import { AppConfig } from '../../app/config'
+
 import { ENV } from '../../common/env'
 import { IHealthStatusMongo, IHealthStatus } from '../../common/types'
 
@@ -26,6 +28,9 @@ async function getHealth(): Promise<IHealthStatus> {
     mongoStatusObj.err = pingErr
   }
 
+  console.log(JSON.stringify(ENV))
+  const appConfig = await AppConfig.getInstance().getConfig()
+  console.log(JSON.stringify(appConfig))
 
   return {
     mongo: mongoStatusObj,
