@@ -22,6 +22,12 @@ function uploadToS3Handler(s3bucket: AWS.S3, params: AWS.S3.PutObjectRequest): P
   s3bucket.upload(params, async (err: unknown, data: AWS.S3.ManagedUpload.SendData) => {
     if (err) {
       reject(err)
+      return
+    }
+
+    if (!data) {
+      reject(`Error. AWS returned 'undefined'.`)
+      return
     }
 
     resolve(data.Location)
