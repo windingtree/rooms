@@ -1,9 +1,10 @@
 import React from 'react'
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
 
 class Today extends React.Component {
   render() {
     return (
-      <h1>Today</h1>
+      <PageContentWrapper title={"Today"}/>
     )
   }
 }

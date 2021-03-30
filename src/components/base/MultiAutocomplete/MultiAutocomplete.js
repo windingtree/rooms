@@ -1,13 +1,13 @@
 import React from 'react'
-import { createMuiTheme } from '@material-ui/core'
-import { withStyles, ThemeProvider } from '@material-ui/core/styles'
+import {createMuiTheme} from '@material-ui/core'
+import {ThemeProvider, withStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Chip from '@material-ui/core/Chip'
-import { v4 as uuidv4 } from 'uuid'
-
-import { objClone } from '../../../utils/functions'
-import { dropDownThemeObj } from '../../../utils/themes'
+import {v4 as uuidv4} from 'uuid'
+import { FormHelperText } from '@material-ui/core';
+import {objClone} from '../../../utils/functions'
+import {dropDownThemeObj} from '../../../utils/themes'
 
 const dropDownTheme = createMuiTheme(dropDownThemeObj)
 
@@ -16,9 +16,10 @@ const useStyles = (theme) => {
     container: {
       display: 'flex',
       flexDirection: 'column',
+      marginBottom: '16px'
     },
     select: {
-      padding: theme.spacing(0.5),
+      // padding: theme.spacing(0.5),
       margin: 0,
     },
     chips: {
@@ -32,8 +33,11 @@ const useStyles = (theme) => {
     chip: {
       margin: theme.spacing(0.5),
     },
+    chipLabel: {
+      whiteSpace: 'pre-wrap'
+    },
     customInput: {
-      width: (props) => { return `${props.inputWidth}px` },
+      // width: (props) => { return `${props.inputWidth}px` },
     },
   }
 }
@@ -44,17 +48,20 @@ class MultiAutocomplete extends React.Component {
 
     this._isDestroyed = false
 
-    const options = this.props.options.map((option) => {
+    const options = this.props.options.map(({name, id}) => {
       return {
-        name: option.name,
-        id: uuidv4(),
+        name: name,
+        id: id ? id : uuidv4(),
         disabled: false,
       }
     })
-
-    const chipData = this.props.value.split(';').map((chipName) => {
+    const chipData = this.props.value.map(({id, name}) => {
       const optionMatch = options.find((option) => {
-        return option.name === chipName
+        //if we have field ID - use that to find selected items
+        if(id && option.id === id)
+          return true;
+        //otherwise try to match by the name
+        return option.name === name
       })
 
       if (optionMatch) {
@@ -62,7 +69,7 @@ class MultiAutocomplete extends React.Component {
 
         return {
           key: uuidv4(),
-          label: chipName,
+          label: name,
           optionId: optionMatch.id,
         }
       } else {
@@ -106,15 +113,19 @@ class MultiAutocomplete extends React.Component {
       options,
     })
 
-    const newParentValue = chipData.reduce((acc, chip) => {
-      return `${acc}${chip.label};`
-    }, '')
+    const newParentValue = this.generateNewValue(chipData)
     this.props.onValueChange(newParentValue)
+  }
+
+  //generate data to be passed as 'onValueChange' parameter
+  generateNewValue = (chipData) => {
+    return chipData.map((chip) => {
+      return {name: chip.label, id: chip.optionId}
+    });
   }
 
   handleAddChip = (option) => {
     const chipData = objClone(this.state.chipData)
-
     chipData.push({
       key: uuidv4(),
       label: option.name,
@@ -135,10 +146,7 @@ class MultiAutocomplete extends React.Component {
       chipData,
       options,
     })
-
-    const newParentValue = chipData.reduce((acc, chip) => {
-      return `${acc}${chip.label};`
-    }, '')
+    const newParentValue = this.generateNewValue(chipData)
     this.props.onValueChange(newParentValue)
   }
 
@@ -161,12 +169,12 @@ class MultiAutocomplete extends React.Component {
 
   render () {
     const { classes } = this.props
-
     return (
       <div className={classes.container}>
         <div className={classes.select}>
           <ThemeProvider theme={dropDownTheme}>
             <Autocomplete
+              fullWidth={this.props.fullWidth}
               value={this.state.value}
               onChange={(event, newValue) => {
                 this.setValue(newValue)
@@ -182,17 +190,19 @@ class MultiAutocomplete extends React.Component {
               getOptionDisabled={(option) => option.disabled}
 
               className={classes.customInput}
-
+              onBlur={()=>{this.props.onBlur && this.props.onBlur()}}
               renderInput={(params) => {
                 return (
                   <TextField
                     {...params}
                     label={this.props.inputLabel}
+                    color="secondary"
                     variant="outlined"
                   />
                 )
               }}
             />
+            <FormHelperText error={this.props.error} >{this.props.helperText}</FormHelperText>
           </ThemeProvider>
         </div>
         <div className={classes.chips}>
@@ -200,7 +210,7 @@ class MultiAutocomplete extends React.Component {
             return (
               <li key={data.key}>
                 <Chip
-                  className={classes.chip}
+                    classes={{root:classes.chip,label:classes.chipLabel}}
                   label={data.label}
                   onDelete={this.handleDeleteChip(data)}
                   color="default"

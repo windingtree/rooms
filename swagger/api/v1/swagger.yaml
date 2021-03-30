@@ -89,6 +89,92 @@ components:
           type: string
         roomType:
           type: string
+    RateModifier:
+      description: 'Rate modifier can influence the base rate (e.g. discount or increase final price) depending on certain criteria'
+      type: object
+      properties:
+        id:
+          type: string
+          description: record identifier (key)
+        type:
+          type: string
+          description: rate modifier name
+        hotelId:
+          type: string
+          description: identifer of a hotel to which this rate modifier belongs to
+        description:
+          type: string
+        enabled:
+          type: boolean
+        priority:
+          type: number
+        criteriaType:
+          type: string
+          description: 'Type of condition that should be evaluated in order to apply given rate modifier'
+          enum:
+            - DATE_RANGE
+            - DAYOFWEEK
+            - LENGTH_OF_STAY
+            - UNSPECIFIED
+        priceModifierType:
+          type: string
+          description: 'How priceModifierAmount should be trated - as an absolut number of percentage'
+          enum:
+            - percentage
+            - absolute
+        priceModifierAmount:
+          type: number
+        combinable:
+          type: boolean
+        condition:
+          type: object
+          description: 'Set of criteria/conditions that if evaluated to true would make this rate modifier applicable to a given booking'
+          properties:
+            minStay:
+              type: number
+            maxStay:
+              type: number
+            monday:
+              type: boolean
+            tuesday:
+              type: boolean
+            wednesday:
+              type: boolean
+            thursday:
+              type: boolean
+            friday:
+              type: boolean
+            saturday:
+              type: boolean
+            sunday:
+              type: boolean
+            startDate:
+              type: string
+            endDate:
+              type: string
+            promoCode:
+              type: string
+        rooms:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - type
+        - hotelId
+        - enabled
+        - criteriaType
+        - priceModifierType
+        - priceModifierAmount
+        - condition
+        - rooms
+    RateModifiersResponse:
+      type: array
+      description: ''
+      uniqueItems: false
+      x-examples: {}
+      items:
+        $ref: '#/components/schemas/RateModifier'
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
@@ -422,6 +508,251 @@ paths:
       description: Delete a Room Type by ID.
       tags:
         - RoomTypes
+  /rate_modifiers:
+    get:
+      summary: ''
+      tags:
+        - RateModifiers
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateModifiersResponse'
+              examples:
+                example:
+                  value:
+                    - id: 602b1ae4e36d3d000774fb06
+                      hotelId: 60141a5e2980b000085f0dc8
+                      type: Weekend price
+                      description: ''
+                      enabled: false
+                      priority: 3
+                      criteriaType: DAYOFWEEK
+                      priceModifierType: percentage
+                      priceModifierAmount: '-10'
+                      combinable: true
+                      condition:
+                        saturday: true
+                        sunday: true
+                      rooms:
+                        - 602b5e4ec26f250009ee8134
+                        - 602b5e5dc26f250009ee8135
+                    - id: 60336a1b266fcf0008876080
+                      hotelId: 60141a5e2980b000085f0dc8
+                      type: Long stay(10+days)
+                      description: ''
+                      enabled: true
+                      priority: 3
+                      criteriaType: LENGTH_OF_STAY
+                      priceModifierType: percentage
+                      priceModifierAmount: '-30'
+                      combinable: true
+                      condition:
+                        minStay: '10'
+                      rooms:
+                        - 602b5e4ec26f250009ee8134
+                        - 602b5e5dc26f250009ee8135
+                    - id: 6033b4ab923b9300080776e4
+                      hotelId: 60141a5e2980b000085f0dc8
+                      type: 1st June promo
+                      description: ''
+                      enabled: false
+                      priority: 3
+                      criteriaType: DATE_RANGE
+                      priceModifierType: percentage
+                      priceModifierAmount: '-50'
+                      combinable: true
+                      condition:
+                        startDate: '2021-06-01T16:34:00+02:00'
+                        endDate: '2021-06-01T16:34:00+02:00'
+                      rooms:
+                        - 602b5e4ec26f250009ee8134
+                        - 602b5e5dc26f250009ee8135
+      operationId: GetRateModifiers
+      description: Get all available Rate Modifiers
+      parameters: []
+    post:
+      summary: ''
+      operationId: PostRateModifiers
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateModifier'
+              examples:
+                example:
+                  value:
+                    hotelId: 60141a5e2980b000085f0dc8
+                    type: '1st June Promo'
+                    description: ''
+                    enabled: true
+                    criteriaType: UNSPECIFIED
+                    priceModifierType: ''
+                    priceModifierAmount: 0
+                    combinable: true
+                    priority: 3
+                    condition: {}
+                    rooms: []
+                    id: 603510916347ba0009bff82d
+      description: Create a new Rate Modifier.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateModifier'
+            examples:
+              example:
+                value:
+                  hotelId: 60141a5e2980b000085f0dc8
+                  enabled: true
+                  type: 1st June Promo
+        description: ''
+      tags:
+        - RateModifiers
+  '/rate_modifiers/{rateModifierId}':
+    parameters:
+      - schema:
+          type: string
+        name: rateModifierId
+        in: path
+        required: true
+        description: Rate Modifier ID
+    get:
+      summary: ''
+      tags:
+        - RateModifiers
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateModifier'
+              examples:
+                example:
+                  value:
+                    id: 6033b4ab923b9300080776e4
+                    hotelId: 60141a5e2980b000085f0dc8
+                    type: 1st June promo
+                    description: ''
+                    enabled: false
+                    priority: 3
+                    criteriaType: DATE_RANGE
+                    priceModifierType: percentage
+                    priceModifierAmount: '-50'
+                    combinable: true
+                    condition:
+                      minStay: null
+                      maxStay: null
+                      monday: null
+                      tuesday: null
+                      wednesday: null
+                      thursday: null
+                      friday: null
+                      saturday: null
+                      sunday: null
+                      startDate: '2021-06-01T16:34:00+02:00'
+                      endDate: '2021-06-01T16:34:00+02:00'
+                      promoCode: null
+                    rooms:
+                      - 602b5e4ec26f250009ee8134
+                      - 602b5e5dc26f250009ee8135
+
+      operationId: GetRateModifierByRateId
+      description: Get a Rate Modifier by ID.
+    patch:
+      summary: ''
+      operationId: PatchRateModifierById
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateModifier'
+              examples:
+                example:
+                  value:
+                    id: 6033b4ab923b9300080776e4
+                    hotelId: 60141a5e2980b000085f0dc8
+                    type: 1st June promo
+                    description: ''
+                    enabled: false
+                    priority: 3
+                    criteriaType: DATE_RANGE
+                    priceModifierType: percentage
+                    priceModifierAmount: '-50'
+                    combinable: true
+                    condition:
+                      minStay: null
+                      maxStay: null
+                      monday: null
+                      tuesday: null
+                      wednesday: null
+                      thursday: null
+                      friday: null
+                      saturday: null
+                      sunday: null
+                      startDate: '2021-06-01T16:34:00+02:00'
+                      endDate: '2021-06-01T16:34:00+02:00'
+                      promoCode: null
+                    rooms:
+                      - 602b5e4ec26f250009ee8134
+                      - 602b5e5dc26f250009ee8135
+
+      description: Update rate modifier by ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateModifier'
+            examples:
+              example:
+                value:
+                  hotelId: 60141a5e2980b000085f0dc8
+                  type: 1st June promo
+                  description: ''
+                  enabled: false
+                  priority: 3
+                  criteriaType: DATE_RANGE
+                  priceModifierType: percentage
+                  priceModifierAmount: '-50'
+                  combinable: true
+                  condition:
+                    startDate: '2021-06-01T16:34:00+02:00'
+                    endDate: '2021-06-01T16:34:00+02:00'
+                  rooms:
+                    - 602b5e4ec26f250009ee8134
+                    - 602b5e5dc26f250009ee8135
+
+      tags:
+        - RateModifiers
+    delete:
+      summary: ''
+      operationId: DeleteRateModifierById
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  status:
+                    type: string
+              examples:
+                example:
+                  value:
+                    status: OK
+      description: Delete Rate Modifier by ID
+      tags:
+        - RateModifiers
+
   /bookings:
     get:
       summary: ''

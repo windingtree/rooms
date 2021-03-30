@@ -7,6 +7,8 @@ import {
   IRoomTypeCollectionDbData,
   IPatchRoomTypePayloadDbData,
 
+  IRoomTypeBeds,
+  IRoomTypeImages,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -21,9 +23,14 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomType.description,
       quantity: baseRoomType.quantity,
       price: baseRoomType.price,
+      currency: baseRoomType.currency,
       devConPrice: baseRoomType.devConPrice,
       amenities: baseRoomType.amenities,
-      imageUrl: baseRoomType.imageUrl,
+      guestsNumber: baseRoomType.guestsNumber,
+      childFriendly: baseRoomType.childFriendly,
+      petFriendly: baseRoomType.petFriendly,
+      beds: baseRoomType.beds,
+      images: baseRoomType.images,
     }
   }
 
@@ -34,9 +41,14 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       description: baseRoomTypeDbData.description,
       quantity: baseRoomTypeDbData.quantity,
       price: baseRoomTypeDbData.price,
+      currency: baseRoomTypeDbData.currency,
       devConPrice: baseRoomTypeDbData.devConPrice,
       amenities: baseRoomTypeDbData.amenities,
-      imageUrl: baseRoomTypeDbData.imageUrl,
+      guestsNumber: baseRoomTypeDbData.guestsNumber,
+      childFriendly: baseRoomTypeDbData.childFriendly,
+      petFriendly: baseRoomTypeDbData.petFriendly,
+      beds: baseRoomTypeDbData.beds,
+      images: baseRoomTypeDbData.images,
     }
   }
 
@@ -47,13 +59,18 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
       'description',
       'quantity',
       'price',
+      'currency',
       'devConPrice',
       'amenities',
-      'imageUrl',
+      'guestsNumber',
+      'childFriendly',
+      'petFriendly',
+      'beds',
+      'images'
     ]
 
     return availProps.reduce((patchRoomTypePayloadDbData: IPatchRoomTypePayloadDbData, prop): IPatchRoomTypePayloadDbData => {
-      if (!patchRoomTypePayload[prop]) {
+      if (patchRoomTypePayload[prop] === undefined) {
         return patchRoomTypePayloadDbData
       }
 
@@ -63,14 +80,25 @@ class RoomTypeMongoDataMapper extends BaseMongoDataMapper {
           break
         case 'type':
         case 'description':
+        case 'currency':
         case 'amenities':
-        case 'imageUrl':
-          patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as string)
           break
         case 'quantity':
         case 'price':
         case 'devConPrice':
-          patchRoomTypePayloadDbData[prop] = patchRoomTypePayload[prop]
+        case 'guestsNumber':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as number)
+          break
+        case 'childFriendly':
+        case 'petFriendly':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as boolean)
+          break
+        case 'beds':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeBeds)
+          break
+        case 'images':
+          patchRoomTypePayloadDbData[prop] = (patchRoomTypePayload[prop] as IRoomTypeImages)
           break
       }
 

@@ -9,6 +9,7 @@ import {
   createRoomType,
   updateRoomType,
   deleteRoomType,
+  uploadImages
 } from './roomTypes'
 
 import {
@@ -17,6 +18,7 @@ import {
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingPrice
 } from './bookings'
 
 import {
@@ -29,6 +31,15 @@ import {
   updateHotel,
 } from './hotel'
 
+import {
+  getRateModifiers,
+  getRateModifier,
+  updateRateModifier,
+  deleteRateModifier,
+  createRateModifier
+} from './rateModifiers'
+
+
 const apiClient = (function () {
   return {
     login,
@@ -39,18 +50,26 @@ const apiClient = (function () {
     createRoomType,
     updateRoomType,
     deleteRoomType,
+    uploadImages,
 
     getBookings,
     getBooking,
     createBooking,
     updateBooking,
     deleteBooking,
+    getBookingPrice,
 
     getProfile,
     updateProfile,
 
     getHotel,
     updateHotel,
+
+    getRateModifiers,
+    getRateModifier,
+    updateRateModifier,
+    deleteRateModifier,
+    createRateModifier
   }
 }())
 

@@ -62,14 +62,16 @@ class AppConfig {
       ENABLE_LOGIN_WITHOUT_SENDGRID: '',
 
       ONE_MONGO_CONNECTION_PER_REQUEST: '',
+
+      AWS_BUCKET_NAME: '',
+      AWS_REGION: '',
+      AWS_ACCESS_KEY_ID: '',
+      AWS_SECRET_ACCESS_KEY: '',
     }
 
     let decryptOk = true
     let decryptError: unknown|null = null
 
-    console.log('')
-    console.log('=============== appConfigs ===============')
-    console.log('')
     appConfigs.forEach((item: IAppConfig) => {
       let value = item.value
 
@@ -84,12 +86,7 @@ class AppConfig {
 
       const key: keyof IAppConfigHash = item.key as keyof IAppConfigHash
       appConfig[key] = value
-
-      console.log(`key = ${key}; value = ${value}.`)
     })
-    console.log('')
-    console.log('=============== done ===============')
-    console.log('')
 
     if (!decryptOk) {
       throw new CError(INTERNAL_SERVER_ERROR, 'Could not decrypt AppConfig items.', decryptError)
@@ -139,6 +136,11 @@ class AppConfig {
       'ENABLE_LOGIN_WITHOUT_SENDGRID',
 
       'ONE_MONGO_CONNECTION_PER_REQUEST',
+
+      'AWS_BUCKET_NAME',
+      'AWS_REGION',
+      'AWS_ACCESS_KEY_ID',
+      'AWS_SECRET_ACCESS_KEY',
     ]
 
     if (this._appConfig === null) {

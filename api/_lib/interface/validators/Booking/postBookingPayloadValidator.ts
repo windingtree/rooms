@@ -1,6 +1,11 @@
 import { NowRequest } from '@vercel/node'
 
-import { validateRequiredString, validateOptionalString } from '../../../interface/validators/_helpers'
+import {
+  validateMongoObjectId,
+  validateRequiredString,
+  validateOptionalString,
+  validateOptionalNumber
+} from '../../../interface/validators/_helpers'
 
 import { CONSTANTS } from '../../../common/constants'
 import { CError } from '../../../common/tools'
@@ -20,7 +25,10 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
     guestName: '',
     guestEmail: '',
     phoneNumber: '',
+    numberOfGuests: 0,
     roomTypeId: '',
+    price: 0,
+    currency: 'USD',
   }
 
   const ALLOWED_PROPS: Array<keyof IPostBookingPayload> = [
@@ -30,7 +38,10 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
     'guestName',
     'guestEmail',
     'phoneNumber',
+    'numberOfGuests',
     'roomTypeId',
+    'price',
+    'currency'
   ]
 
   for (const [key] of Object.entries(request.body)) {
@@ -40,32 +51,46 @@ async function postBookingPayloadValidator(request: NowRequest): Promise<IPostBo
   }
 
   const hotelId = request.body.hotelId
+  await validateMongoObjectId('hotelId', hotelId)
   await validateRequiredString('hotelId', hotelId)
-  payload.hotelId = hotelId
+  if (typeof hotelId !== 'undefined') payload.hotelId = hotelId
 
   const checkInDate = request.body.checkInDate
   await validateOptionalString('checkInDate', checkInDate)
-  payload.checkInDate = checkInDate
+  if (typeof checkInDate !== 'undefined') payload.checkInDate = checkInDate
 
   const checkOutDate = request.body.checkOutDate
   await validateOptionalString('checkOutDate', checkOutDate)
-  payload.checkOutDate = checkOutDate
+  if (typeof checkOutDate !== 'undefined') payload.checkOutDate = checkOutDate
 
   const guestName = request.body.guestName
   await validateOptionalString('guestName', guestName)
-  payload.guestName = guestName
+  if (typeof guestName !== 'undefined') payload.guestName = guestName
 
   const guestEmail = request.body.guestEmail
   await validateOptionalString('guestEmail', guestEmail)
-  payload.guestEmail = guestEmail
+  if (typeof guestEmail !== 'undefined') payload.guestEmail = guestEmail
 
   const phoneNumber = request.body.phoneNumber
   await validateOptionalString('phoneNumber', phoneNumber)
-  payload.phoneNumber = phoneNumber
+  if (typeof phoneNumber !== 'undefined') payload.phoneNumber = phoneNumber
+
+  const numberOfGuests = request.body.numberOfGuests
+  await validateOptionalNumber('numberOfGuests', numberOfGuests)
+  if (typeof numberOfGuests !== 'undefined') payload.numberOfGuests = numberOfGuests
 
   const roomTypeId = request.body.roomTypeId
+  await validateMongoObjectId('roomTypeId', roomTypeId)
   await validateOptionalString('roomTypeId', roomTypeId)
-  payload.roomTypeId = roomTypeId
+  if (typeof roomTypeId !== 'undefined') payload.roomTypeId = roomTypeId
+
+  const currency = request.body.currency
+  await validateOptionalString('currency', currency)
+  if (typeof currency !== 'undefined') payload.currency = currency
+
+  const price = request.body.price
+  await validateOptionalNumber('price', price)
+  if (typeof price !== 'undefined') payload.price = price
 
   return payload
 }

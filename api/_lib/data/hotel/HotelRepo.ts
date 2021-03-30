@@ -49,7 +49,7 @@ class HotelRepo extends BaseDataRepo {
       'description',
       'address',
       'location',
-      'imageUrl',
+      'images',
       'email',
     ]
 

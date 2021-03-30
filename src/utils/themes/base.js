@@ -4,12 +4,16 @@ import {
   WHITE,
   LIGHT_GRAY,
   DARK_PURPLE,
-  LIGHT_PURPLE,
-  MIDDLE_PURPLE,
-  BLACK
+  MIDDLE_PURPLE
 } from './theme_colors'
 
 const _baseMuiThemeObj = {
+  typography: {
+    fontFamily: ['Inter'].join(','),
+    fontWeightBold: 600,
+    fontWeightNormal: 500,
+    fontWeightLight: 400
+  },
   palette: {
     primary: {
       light: WHITE,
@@ -19,9 +23,9 @@ const _baseMuiThemeObj = {
     },
     secondary: {
       light: WHITE,
-      main: LIGHT_PURPLE,
+      main: DARK_PURPLE,
       dark: MIDDLE_PURPLE,
-      contrastText: BLACK,
+      contrastText: WHITE,
     },
   },
 }

@@ -12,11 +12,16 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "email-validator": "^2.0.4",
+    "fetch-mock": "^9.11.0",
     "jsonwebtoken": "^8.5.1",
     "leaflet": "^1.7.1",
+    "material-ui-dropzone": "3.5.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
+    "react-dropzone": "11.3.1",
+    "react-ga": "^3.3.0",
     "react-leaflet": "^3.0.0-rc.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
@@ -29,7 +34,9 @@
     "dev": "vercel dev",
     "postman-local": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/local.postman_environment.json",
     "postman-develop": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/staging.postman_environment.json",
-    "postman-master": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/prod.postman_environment.json"
+    "postman-master": "newman run ./api/_postman/tests/API_Tests.postman_collection.json --environment ./api/_postman/environments/prod.postman_environment.json",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,8 +54,15 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.1.17",
+    "@storybook/addon-essentials": "^6.1.17",
+    "@storybook/addon-links": "^6.1.17",
+    "@storybook/node-logger": "^6.1.17",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.17",
     "newman": "^5.2.0",
-    "vercel": "^21.1.0",
+    "storybook-addon-material-ui": "^0.9.0-alpha.24",
+    "vercel": "^21.3.3",
     "yamljs": "^0.3.0"
   }
 }

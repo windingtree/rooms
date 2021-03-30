@@ -192,7 +192,6 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
       expect(payload.quantity).to.equal(undefined)
       expect(payload.price).to.equal(undefined)
       expect(payload.amenities).to.equal(undefined)
-      expect(payload.imageUrl).to.equal(undefined)
     })
 
     it('should throw if unsupported non-required property is provided', async () => {
@@ -423,10 +422,10 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
       })
     })
 
-    describe('check of "imageUrl" property in body', () => {
+    describe('check of "images" property in body', () => {
       describe('should throw if value is', () => {
         it('null', async () => {
-          requestBody.imageUrl = null
+          requestBody.images = null
 
           await expect(sut(request)).to.be.rejected
 
@@ -434,13 +433,13 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
             await sut(request)
           } catch (err) {
             expect(err).to.deep.equal(
-              new CError(BAD_REQUEST, `Property 'imageUrl' is optional. If provided, it must have a value of type 'string'.`)
+              new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
             )
           }
         })
 
         it('number', async () => {
-          requestBody.imageUrl = 42
+          requestBody.images = 42
 
           await expect(sut(request)).to.be.rejected
 
@@ -448,13 +447,13 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
             await sut(request)
           } catch (err) {
             expect(err).to.deep.equal(
-              new CError(BAD_REQUEST, `Property 'imageUrl' is optional. If provided, it must have a value of type 'string'.`)
+              new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
             )
           }
         })
 
         it('object', async () => {
-          requestBody.imageUrl = { a: 'a' }
+          requestBody.images = { a: 'a' }
 
           await expect(sut(request)).to.be.rejected
 
@@ -462,13 +461,13 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
             await sut(request)
           } catch (err) {
             expect(err).to.deep.equal(
-              new CError(BAD_REQUEST, `Property 'imageUrl' is optional. If provided, it must have a value of type 'string'.`)
+              new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
             )
           }
         })
 
         it('function', async () => {
-          requestBody.imageUrl = () => 42
+          requestBody.images = () => 42
 
           await expect(sut(request)).to.be.rejected
 
@@ -476,7 +475,7 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
             await sut(request)
           } catch (err) {
             expect(err).to.deep.equal(
-              new CError(BAD_REQUEST, `Property 'imageUrl' is optional. If provided, it must have a value of type 'string'.`)
+              new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
             )
           }
         })
@@ -485,11 +484,15 @@ describe('validators :: RoomType :: postRoomTypePayloadValidator', () => {
       describe('should pass', () => {
         it('if a proper value is provided', async () => {
           const value = uuidv4()
-          requestBody.imageUrl = value
+          requestBody.images = [value];
 
           const payload = await sut(request)
 
-          expect(payload.imageUrl).to.equal(value)
+          if (typeof payload.images === 'undefined') {
+            new CError(BAD_REQUEST, `Property 'images' is optional. If provided, it must have a value of type 'array'.`)
+          }
+
+          expect((payload.images as Array<string>)[0]).to.equal(value)
         })
       })
     })

@@ -1,15 +1,23 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
-import IconButton from '@material-ui/core/IconButton'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
-import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import { withStyles } from '@material-ui/core/styles'
 
-import { errorLogger, objClone, removeProp } from '../../../utils/functions'
+import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
 import { ApiCache } from '../../../utils/api_cache'
 import RoomTypeList from './RoomTypeList/RoomTypeList'
 import Spinner from '../../base/Spinner/Spinner'
+import {PageContentWrapper} from "../../base/Common/PageContentWrapper";
+
+const styles = () => ({
+  addButtonRoot: {
+    '&>.MuiButton-label': {
+      justifyContent: 'flex-start',
+      textTransform: 'none'
+    }
+  }
+});
 
 class RoomTypes extends React.Component {
   constructor(props) {
@@ -32,10 +40,6 @@ class RoomTypes extends React.Component {
     this._isDestroyed = true
   }
 
-  handleAddNewClick = () => {
-    this.createRoomType()
-  }
-
   handleEditClick = (id) => {
     this.props.history.push(`/dashboard/room-types/${id}`)
   }
@@ -44,23 +48,8 @@ class RoomTypes extends React.Component {
     this.deleteRoomType(id)
   }
 
-  handlePropValueChange = (id, propName, newValue) => {
-    const roomTypeToUpdate = this.state.roomTypes.find((roomType) => {
-      if (roomType.id === id) {
-        return true
-      }
-
-      return false
-    })
-
-    if (roomTypeToUpdate[propName] === newValue) {
-      return
-    }
-
-    const data = {}
-    data[propName] = newValue
-
-    this.updateRoomType(id, data)
+  handleTypeDelete = () => {
+    this.getRoomTypes()
   }
 
   getRoomTypes = () => {
@@ -86,123 +75,41 @@ class RoomTypes extends React.Component {
       })
   }
 
-  initRoomTypeObj = () => {
-    const roomTypeObj = {
-      id: uuidv4(),
-      creating: true,
+  isDataEmpty = () => (!this.state.roomTypes || !this.state.roomTypes.length)
+  isLoadingInProgress = () => (this.isDataEmpty() && this.state.apiLoading)
 
-      hotelId: this.props.userProfile.hotelId,
-
-      type: '',
-      quantity: 0,
-      price: 0,
-      amenities: '',
-      imageUrl: '',
-    }
-
-    return roomTypeObj
-  }
-
-  createRoomType = () => {
-    const newRoomType = this.initRoomTypeObj()
-
-    this.setState({
-      roomTypes: this.state.roomTypes.concat(newRoomType),
-    })
-
-    apiClient.createRoomType(removeProp(objClone(newRoomType), 'id', 'creating'))
-      .then((createdRoomType) => {
-        if (this._isDestroyed) return
-
-        this.setState({
-          roomTypes: this.state.roomTypes.map((roomType) => {
-            if (roomType.id === newRoomType.id) {
-              return createdRoomType
-            } else {
-              return roomType
-            }
-          }),
-        })
-      })
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
-  }
-
-  updateRoomType = (id, data) => {
-    this.setState({
-      roomTypes: this.state.roomTypes.map((roomType) => {
-        if (roomType.id === id) {
-          const _roomType = Object.assign(
-            {},
-            objClone(roomType),
-            objClone(data)
-          )
-
-          return _roomType
-        } else {
-          return roomType
-        }
-      }),
-    })
-
-    apiClient
-      .updateRoomType(id, data)
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
-  }
-
-  deleteRoomType = (id) => {
-    this.setState({
-      roomTypes: this.state.roomTypes.filter(roomType => roomType.id !== id),
-    })
-
-    apiClient
-      .deleteRoomType(id)
-      .catch((error) => {
-        if (this._isDestroyed) return
-
-        errorLogger(error)
-      })
+  welcomeMessage = () => {
+    return (
+        <>
+          <p>Let’s create your first Unit Type in the App</p><p/>
+        </>
+    )
   }
 
   render() {
     return (
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        style={{ minHeight: '100%' }}
-      >
-        {
-          ((!this.state.roomTypes || !this.state.roomTypes.length) && (this.state.apiLoading)) ?
-            <Spinner info="loading" /> :
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              <RoomTypeList
-                roomTypes={this.state.roomTypes}
-                onEditClick={this.handleEditClick}
-                onTrashClick={this.handleTrashClick}
-                onPropValueChange={this.handlePropValueChange}
-              />
-              <IconButton aria-label="edit" onClick={this.handleAddNewClick}>
-                <AddCircleIcon />
-              </IconButton>
-            </Grid>
-        }
-      </Grid>
+
+        <PageContentWrapper title={"Unit types"}>
+          {this.isLoadingInProgress() && <Spinner info="loading"/>}
+          {this.isDataEmpty() && !this.isLoadingInProgress() && this.welcomeMessage()}
+            <RoomTypeList
+              roomTypes={this.state.roomTypes}
+              onDelete={this.handleTypeDelete}
+            />
+              <Button
+                classes={{
+                  root: this.props.classes.addButtonRoot
+                }}
+                aria-label="edit"
+                onClick={() => this.handleEditClick('temporary')}
+                variant='contained'
+                color='primary'
+              >
+                + Add Unit Type
+              </Button>
+        </PageContentWrapper>
     )
   }
 }
 
-export default withRouter(RoomTypes)
+export default withRouter(withStyles(styles)(RoomTypes))

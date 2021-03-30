@@ -4,15 +4,15 @@ import { withStyles } from '@material-ui/core/styles'
 
 import NavTop from './NavTop/NavTop'
 import NavBottom from './NavBottom/NavBottom'
-import Calendar from './Calendar/Calendar'
-import Bookings from './Bookings/Bookings'
+import BookingsList from './Bookings/BookingsList'
 import BookingTypeEdit from './BookingTypeEdit/BookingTypeEdit'
-import Today from './Today/Today'
 import RoomTypes from './RoomTypes/RoomTypes'
 import RoomTypeEdit from './RoomTypeEdit/RoomTypeEdit'
 import Rates from './Rates/Rates'
 import Profile from './Profile/Profile'
 import { history } from '../../utils/history'
+import RateModifierEditForm from "./RateEdit/RateEditForm";
+import {Sandbox} from "../Dev/Sandbox";
 
 const useStyles = () => {
   return {
@@ -68,20 +68,14 @@ class Dashboard extends React.Component {
       currentDashboard = 2
     } else {
       switch (this.props.match.params.dashboardSectionId) {
-        case 'calendar':
+        case 'bookings':
           currentDashboard = 0
           break
-        case 'bookings':
+        case 'room-types':
           currentDashboard = 1
           break
-        case 'today':
-          currentDashboard = 2
-          break
-        case 'room-types':
-          currentDashboard = 3
-          break
         case 'rates':
-          currentDashboard = 4
+          currentDashboard = 2
           break
         default:
           // Maybe a valid URL, but no icon for it in bottom nav panel.
@@ -95,22 +89,14 @@ class Dashboard extends React.Component {
   handleOnNav(whereTo) {
     switch (whereTo) {
       case 0:
-        this.props.history.push('/dashboard/calendar')
-        this.setState({ currentDashboard: 0 })
-        break
-      case 1:
         this.props.history.push('/dashboard/bookings')
         this.setState({ currentDashboard: 1 })
         break
-      case 2:
-        this.props.history.push('/dashboard/today')
-        this.setState({ currentDashboard: 2 })
-        break
-      case 3:
+      case 1:
         this.props.history.push('/dashboard/room-types')
         this.setState({ currentDashboard: 3 })
         break
-      case 4:
+      case 2:
         this.props.history.push('/dashboard/rates')
         this.setState({ currentDashboard: 4 })
         break
@@ -129,23 +115,14 @@ class Dashboard extends React.Component {
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">
-                <Redirect to="/dashboard/today" />
+                <Redirect to="/dashboard/room-types" />
               </Route>
-              <Route exact path="/dashboard/calendar">
-                { this.isLoggedIn ? <Calendar userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
-              </Route>
-
               <Route exact path="/dashboard/bookings">
-                { this.isLoggedIn ? <Bookings userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
+                { this.isLoggedIn ? <BookingsList userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/bookings/:bookingId">
                 { this.isLoggedIn ? <BookingTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
-
-              <Route exact path="/dashboard/today">
-                { this.isLoggedIn ? <Today userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
-              </Route>
-
               <Route exact path="/dashboard/room-types">
                 { this.isLoggedIn ? <RoomTypes userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
@@ -156,11 +133,15 @@ class Dashboard extends React.Component {
               <Route exact path="/dashboard/rates">
                 { this.isLoggedIn ? <Rates userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
-
+              <Route exact path="/dashboard/rates/:rateModifierId">
+                { this.isLoggedIn ? <RateModifierEditForm userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
+              </Route>
               <Route exact path="/dashboard/profile">
                 { this.isLoggedIn ? <Profile userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
-
+              <Route exact path="/dashboard/dev/fonts">
+                <Sandbox/>
+              </Route>
               <Route render={() => <h1>404: page not found</h1>} />
             </Switch>
           </div>

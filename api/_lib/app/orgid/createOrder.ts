@@ -9,7 +9,7 @@ import { OfferRepo } from '../../data/offer/OfferRepo'
 import { getPaymentInfo, claimGuarantee } from '../../data/simard'
 
 import { CONSTANTS } from '../../common/constants'
-import { CError } from '../../common/tools'
+import { CError, isObject } from '../../common/tools'
 import {
   IPostCreateOrderPayload,
   ICreateOrderResult,
@@ -80,6 +80,19 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     )
   }
 
+  let numberOfGuests = 0
+  if (isObject(payload.passengers)) {
+    const passengerList = Object.keys(payload.passengers)
+
+    if (Array.isArray(passengerList)) {
+      const numOfPassengers = passengerList.length
+
+      if (numOfPassengers > 0) {
+        numberOfGuests = numOfPassengers
+      }
+    }
+  }
+
   const orderId = uuidv4()
   const baseBooking: IBaseBooking = {
     orderId,
@@ -90,14 +103,29 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
     guestName: payload.travellerName || '',
     guestEmail: payload.travellerEmail || '',
     phoneNumber: payload.travellerPhone || '',
+    numberOfGuests,
+    price: offer.offer.price.public || -1,
+    currency: offer.offer.price.currency || '',
   }
   await bookingRepo.createBooking(baseBooking)
   await offerRepo.deleteOfferByOfferId(payload.offerId)
 
   await claimGuarantee(payload.guaranteeId)
 
+  const reservationNumber = orderId.split('-')[0].toUpperCase()
+
   if (typeof offer.hotelEmail === 'string' && offer.hotelEmail.length > 0) {
-    await emailNewBooking(requester.organization.did, orderId, offer.hotelEmail)
+    await emailNewBooking(
+      requester.organization,
+      orderId,
+      reservationNumber,
+      offer.arrival,
+      offer.departure,
+      payload.travellerName || '',
+      payload.travellerEmail || '',
+      payload.travellerPhone || '',
+      offer.hotelEmail
+    )
   }
 
   const result: ICreateOrderResult = {
@@ -114,7 +142,7 @@ async function createOrder(requester: IOrgDetails, payload: IPostCreateOrderPayl
       },
       status: 'OK',
       response: 'Committed',
-      reservationNumber: orderId.split('-')[0].toUpperCase(),
+      reservationNumber,
     },
   }
 

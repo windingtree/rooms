@@ -7,13 +7,22 @@ type TRoomTypeDbDataFields =
   | 'description'
   | 'quantity'
   | 'price'
+  | 'currency'
   | 'devConPrice'
   | 'amenities'
-  | 'imageUrl'
+  | 'guestsNumber'
+  | 'childFriendly'
+  | 'petFriendly'
+  | 'beds'
+  | 'images'
 
 type IRoomTypeDbDataProjection = {
   [key in TRoomTypeDbDataFields]?: 1
 }
+
+type IRoomTypeBeds = Array<number>
+
+type IRoomTypeImages = Array<string>
 
 interface IBaseRoomType {
   hotelId: string
@@ -21,9 +30,14 @@ interface IBaseRoomType {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
-  imageUrl: string
+  guestsNumber: number
+  childFriendly: boolean
+  petFriendly: boolean
+  beds: IRoomTypeBeds
+  images: IRoomTypeImages
 }
 
 interface IRoomType extends IBaseRoomType {
@@ -38,9 +52,14 @@ interface IPostRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 interface IPatchRoomTypePayload {
@@ -49,9 +68,14 @@ interface IPatchRoomTypePayload {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 interface IBaseRoomTypeDbData {
@@ -60,9 +84,14 @@ interface IBaseRoomTypeDbData {
   description: string
   quantity: number
   price: number
+  currency: string
   devConPrice: number
   amenities: string
-  imageUrl: string
+  guestsNumber: number
+  childFriendly: boolean
+  petFriendly: boolean
+  beds: IRoomTypeBeds
+  images: IRoomTypeImages
 }
 
 interface IRoomTypeDbData extends IBaseRoomTypeDbData {
@@ -75,9 +104,14 @@ interface IPatchRoomTypePayloadDbData {
   description?: string
   quantity?: number
   price?: number
+  currency?: string
   devConPrice?: number
   amenities?: string
-  imageUrl?: string
+  guestsNumber?: number
+  childFriendly?: boolean
+  petFriendly?: boolean
+  beds?: IRoomTypeBeds
+  images?: IRoomTypeImages
 }
 
 type IRoomTypeCollectionDbData = Array<IRoomTypeDbData>
@@ -85,6 +119,8 @@ type IRoomTypeCollectionDbData = Array<IRoomTypeDbData>
 export {
   TRoomTypeDbDataFields,
   IRoomTypeDbDataProjection,
+  IRoomTypeBeds,
+  IRoomTypeImages,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,

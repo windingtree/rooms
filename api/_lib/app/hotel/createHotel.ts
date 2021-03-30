@@ -46,7 +46,7 @@ async function createHotel(requester: IProfile, payload: IPostHotelPayload): Pro
     description: (typeof payload.description !== 'undefined') ? payload.description : '',
     address: (typeof payload.address !== 'undefined') ? payload.address : '',
     location: (typeof payload.location !== 'undefined') ? payload.location : { lat: 0, lng: 0 },
-    imageUrl: (typeof payload.imageUrl !== 'undefined') ? payload.imageUrl : '',
+    images: (Array.isArray(payload.images)) ? payload.images : [],
     email: (typeof payload.email !== 'undefined') ? payload.email : '',
   }
   const hotelId: string = await hotelRepo.createHotel(baseHotel)

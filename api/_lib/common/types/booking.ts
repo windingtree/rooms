@@ -9,7 +9,10 @@ type TBookingDbDataFields =
   | 'guestName'
   | 'guestEmail'
   | 'phoneNumber'
+  | 'numberOfGuests'
   | 'roomTypeId'
+  | 'price'
+  | 'currency'
 
 type IBookingDbDataProjection = {
   [key in TBookingDbDataFields]?: 1
@@ -23,7 +26,10 @@ interface IBaseBooking {
   guestName: string
   guestEmail: string
   phoneNumber: string
+  numberOfGuests: number
   roomTypeId: string
+  price: number
+  currency: string
 }
 
 interface IBooking extends IBaseBooking {
@@ -39,7 +45,10 @@ interface IPostBookingPayload {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: string
+  price?: number
+  currency?: string
 }
 
 interface IPatchBookingPayload {
@@ -49,7 +58,10 @@ interface IPatchBookingPayload {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: string
+  price?: number
+  currency?: string
 }
 
 interface IBaseBookingDbData {
@@ -60,7 +72,10 @@ interface IBaseBookingDbData {
   guestName: string
   guestEmail: string
   phoneNumber: string
+  numberOfGuests: number
   roomTypeId: ObjectID|null
+  price: number
+  currency: string
 }
 
 interface IBookingDbData extends IBaseBookingDbData {
@@ -74,10 +89,25 @@ interface IPatchBookingPayloadDbData {
   guestName?: string
   guestEmail?: string
   phoneNumber?: string
+  numberOfGuests?: number
   roomTypeId?: ObjectID|null
+  price?: number
+  currency?: string
 }
 
 type IBookingCollectionDbData = Array<IBookingDbData>
+
+interface IBookingPrice {
+  price: number,
+  currency: string
+}
+
+interface IGetBookingPricePayload {
+  hotelId: string
+  roomTypeId: string
+  arrival: string,
+  departure: string
+}
 
 export {
   TBookingDbDataFields,
@@ -91,4 +121,6 @@ export {
   IBookingDbData,
   IPatchBookingPayloadDbData,
   IBookingCollectionDbData,
+  IBookingPrice,
+  IGetBookingPricePayload,
 }

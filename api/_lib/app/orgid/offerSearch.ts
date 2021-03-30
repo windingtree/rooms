@@ -16,8 +16,9 @@ import {
   IBaseOfferCollection,
   ILocationRectangle,
   ILocationRectangleDbType,
-  IOrgDetails,
+  IOrgDetails
 } from '../../common/types'
+import { calculateOfferPrice } from "../../app/rate_modifier";
 
 const moment = extendMoment(Moment)
 
@@ -41,39 +42,7 @@ async function convertToNum(val: number|string|null|undefined): Promise<number> 
   return num
 }
 
-function enumerateDaysBetweenDates(startDate: string, endDate: string): Array<Date> {
-  const currDate = moment.utc(startDate).startOf('day')
-  const lastDate = moment.utc(endDate).startOf('day')
 
-  const dates = [currDate.clone().toDate()]
-
-  while (currDate.add(1, 'days').diff(lastDate) < 0) {
-    dates.push(currDate.clone().toDate())
-  }
-
-  return dates
-}
-
-function calculateTotalPrice(price: number, devConPrice: number, arrival: string, departure: string): number {
-  const devConStartDate = moment.utc('2021-08-10T00:00:00+00:00')
-  const devConStopDate = moment.utc('2021-08-13T23:59:59+00:00')
-
-  const devConDateRange = moment.range(devConStartDate, devConStopDate)
-
-  const stayDates: Array<Date> = enumerateDaysBetweenDates(arrival, departure)
-
-  let totalPrice = 0
-
-  stayDates.forEach((date: Date) => {
-    if (devConDateRange.contains(date)) {
-      totalPrice += devConPrice
-    } else {
-      totalPrice += price
-    }
-  })
-
-  return totalPrice
-}
 
 async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise<IOfferSearchResults> {
   let searchLocation
@@ -118,6 +87,8 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   const roomTypes: IRoomTypeCollection = await roomTypeRepo.readRoomTypes()
 
+
+
   const result: IOfferSearchResults = {
     accommodations: {},
     pricePlans: {
@@ -131,12 +102,23 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       },
     },
     offers: {},
-    passengers: {
-      PAX1: {
-        type: 'ADT',
-      },
-    },
+    passengers: {}
   }
+
+
+  //convert passengers from request to the format expected by the client
+  const paxData = request.body.passengers;
+
+  Object.keys(paxData).forEach(paxId => {
+    const paxRecord = paxData[paxId]
+    const type = paxRecord.type;
+    const count = isNaN(paxRecord.count)?1:paxRecord.count;
+    for(let i=0;i<count;i++){
+      result.passengers[uuidv4()] = {
+        type: type
+      }
+    }
+  });
 
   hotels.forEach((hotel) => {
     let numAvailRoomTypes = 0
@@ -145,7 +127,6 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       if (roomType.hotelId !== hotel.id) {
         return
       }
-
       numAvailRoomTypes += 1
     })
 
@@ -154,11 +135,11 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
     }
 
     let hotelMedia: Array<{ type: string, url: string }> = []
-    if (typeof hotel.imageUrl === 'string' && hotel.imageUrl.length > 0) {
-      hotelMedia = [{
+    if (Array.isArray(hotel.images) && hotel.images.length > 0) {
+      hotelMedia = hotel.images.map(url => ({
         type: 'photo',
-        url: hotel.imageUrl,
-      }]
+        url
+      }));
     }
 
     result.accommodations[hotel.id] = {
@@ -198,11 +179,11 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
       }
 
       let roomTypeMedia: Array<{ type: string, url: string }> = []
-      if (typeof roomType.imageUrl === 'string' && roomType.imageUrl.length > 0) {
-        roomTypeMedia = [{
-          "type": "photo",
-          "url": roomType.imageUrl,
-        }]
+      if (Array.isArray(roomType.images) && roomType.images.length > 0) {
+        roomTypeMedia = roomType.images.map(url => ({
+          type: 'photo',
+          url
+        }));
       }
 
       result.accommodations[hotel.id].roomTypes[roomType.id] = {
@@ -233,10 +214,10 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
   const cachedBaseOffers: IBaseOfferCollection = []
   const createdAt = moment.utc(new Date())
 
-  roomTypes.forEach((roomType) => {
-    hotels.forEach((hotel) => {
-      if (roomType.hotelId !== hotel.id) {
-        return
+  for (const roomType of roomTypes) {
+    for (const hotelRecord of hotels) {
+      if (roomType.hotelId !== hotelRecord.id) {
+        continue;
       }
 
       let price = 0
@@ -244,26 +225,17 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         price = roomType.price
       }
 
-      let devConPrice = 0
-      if (typeof roomType.devConPrice === 'number' && roomType.devConPrice > 0) {
-        devConPrice = roomType.devConPrice
-      }
-
-      if (devConPrice === 0) {
-        devConPrice = price
-      }
-
       const offerId = uuidv4()
       const offer = {
         pricePlansReferences: {
           BAR: {
-            accommodation: hotel.id,
+            accommodation: hotelRecord.id,
             roomType: roomType.id,
           },
         },
         price: {
           currency: 'USD',
-          public: calculateTotalPrice(price, devConPrice, arrival, departure),
+          public:await calculateOfferPrice(hotelRecord, roomType, arrival, departure, price),
           taxes: 0,
         },
       }
@@ -276,10 +248,10 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
         offer,
         createdAt: createdAt.format(),
         debtorOrgId: requester.organization.id,
-        hotelEmail: hotel.email,
+        hotelEmail: hotelRecord.email,
       })
-    })
-  })
+    }
+  }
 
   if (cachedBaseOffers.length > 0) {
     await offerRepo.createOffers(cachedBaseOffers)
@@ -287,5 +259,7 @@ async function offerSearch(request: NowRequest, requester: IOrgDetails): Promise
 
   return result
 }
+
+
 
 export { offerSearch }

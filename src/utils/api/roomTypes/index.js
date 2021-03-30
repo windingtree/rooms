@@ -82,10 +82,28 @@ function deleteRoomType(id) {
     })
 }
 
+function uploadImages(images) {
+  return Promise.all(images.map(
+    image => fetch(
+      `/api/v1/upload_image`,
+      {
+        method: 'POST',
+        headers: makeAuthHeaders(),
+        body: JSON.stringify({
+          file: image
+        })
+      }
+    )
+    .then(checkStatus)
+    .then(parseJSON)
+  ));
+}
+
 export {
   getRoomTypes,
   getRoomType,
   createRoomType,
   updateRoomType,
   deleteRoomType,
+  uploadImages,
 }

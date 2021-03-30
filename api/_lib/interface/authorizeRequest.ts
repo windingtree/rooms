@@ -71,6 +71,22 @@ const AUTHORIZE_RULES: IAuthorizeRules = {
   'api_test/teardown': {
     POST: allowRoles(SUPER_ADMIN),
   },
+
+  'rate_modifier': {
+    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'rate_modifier/{id}': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+    PATCH: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+    DELETE: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
+  'rate_modifiers': {
+    GET: allowRoles(SUPER_ADMIN, MANAGER, OWNER, OBSERVER),
+  },
+
+  'upload_image': {
+    POST: allowRoles(SUPER_ADMIN, MANAGER, OWNER),
+  },
 }
 
 async function authorizeRequest(role: keyof IProfileRole, action: IAuthorizeRequestAction): Promise<boolean> {

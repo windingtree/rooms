@@ -8,6 +8,7 @@ import { localStorageFallback } from '../../../utils/storage_factory'
 import { CONSTANTS } from '../../../utils/constants'
 import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
+import {gaUserEvent} from "../../../utils/functions/google-analytics";
 
 const {
   LOCAL_STORAGE_SESSION_EMAIL_KEY,
@@ -142,7 +143,7 @@ class LoginForm extends React.Component {
 
     const sessionToken = localStorageFallback.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
     localStorageFallback.setItem(LOCAL_STORAGE_SESSION_EMAIL_KEY, this.state.email)
-
+    gaUserEvent('one_time_password_requested')
     apiClient
       .emailOneTimePassword({ email: this.state.email, sessionToken })
       .then((response) => {
@@ -182,11 +183,13 @@ class LoginForm extends React.Component {
         if (this._isDestroyed) {
           return
         }
-
+        console.log('success')
         this.setState({ tryingToLogin: false })
         this.props.onLogin(response)
+        gaUserEvent('login_success')
       })
       .catch((error) => {
+        gaUserEvent('login_failure')
         if (this._isDestroyed) {
           return
         }
@@ -278,8 +281,7 @@ class LoginForm extends React.Component {
               <h3>SendGrid is not working. Use the following OTP:</h3>
               <h5>{this.state.secondLoginOption}</h5>
             </div> :
-
-            <div></div>
+            <div/>
           }
         </header>
       </div>

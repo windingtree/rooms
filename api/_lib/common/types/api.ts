@@ -16,6 +16,10 @@ import {
   IStatus,
   IHealthStatus,
   IOtpStatus,
+  IRateModifier,
+  IRateModifierCollection,
+  IUploadImage,
+  IBookingPrice,
 } from '../types'
 
 type TAvailableResultTypes =
@@ -34,6 +38,10 @@ type TAvailableResultTypes =
   |IStatus
   |IHealthStatus
   |IOtpStatus
+  |IRateModifier
+  |IRateModifierCollection
+  |IUploadImage
+  |IBookingPrice
   |string
 
 type TMethodFunc = (request: NowRequest, response: NowResponse) => Promise<TAvailableResultTypes>

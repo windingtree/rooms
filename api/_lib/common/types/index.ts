@@ -13,6 +13,8 @@ export {
 export {
   TRoomTypeDbDataFields,
   IRoomTypeDbDataProjection,
+  IRoomTypeBeds,
+  IRoomTypeImages,
   IBaseRoomType,
   IRoomType,
   IRoomTypeCollection,
@@ -36,6 +38,8 @@ export {
   IBookingDbData,
   IPatchBookingPayloadDbData,
   IBookingCollectionDbData,
+  IBookingPrice,
+  IGetBookingPricePayload,
 } from './booking'
 
 export {
@@ -58,6 +62,7 @@ export {
 
 export {
   IOrgJwtTokenOptions,
+  IOrgDetailsOrganization,
   IOrgDetails,
   IDecodedOrgToken,
   IVerifiedOrgJwtResults,
@@ -152,3 +157,25 @@ export {
 export {
   IJwtToken,
 } from './jwt'
+
+export {
+  TRateModifierDbDataFields,
+  IRateModifierDbDataProjection,
+  IBaseRateModifier,
+  IRateModifier,
+  IRateModifierCollection,
+  IPostRateModifierPayload,
+  IPatchRateModifierPayload,
+  IBaseRateModifierDbData,
+  IRateModifierDbData,
+  IPatchRateModifierPayloadDbData,
+  IRateModifierCollectionDbData,
+  IRateModifierConditionPayload,
+  IRateModifierConditionType,
+  IRateModifierDiscountType,
+} from './rate_modifiers'
+
+export {
+  IPostUploadImagePayload,
+  IUploadImage,
+} from './upload_image'
