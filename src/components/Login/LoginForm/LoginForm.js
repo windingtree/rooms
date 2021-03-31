@@ -8,7 +8,7 @@ import { localStorageFallback } from '../../../utils/storage_factory'
 import { CONSTANTS } from '../../../utils/constants'
 import { errorLogger } from '../../../utils/functions'
 import { apiClient } from '../../../utils/api'
-import {gaUserEvent} from "../../../utils/functions/google-analytics";
+import {gaUserEvent} from "../../../utils/functions/analytics";
 
 const {
   LOCAL_STORAGE_SESSION_EMAIL_KEY,
