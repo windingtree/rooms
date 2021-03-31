@@ -45,7 +45,7 @@ const styles = makeStyles({
   }
 });
 
-export default props => {
+const ImageLightBox = (props) => {
   const classes = styles();
   const {
     images = [],
@@ -107,3 +107,4 @@ export default props => {
     </Dialog>
   );
 };
+export default ImageLightBox;

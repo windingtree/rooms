@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default props => {
+const SelectField = (props) => {
   const styles = useStyles();
   const {
     value = '',
@@ -50,3 +50,4 @@ export default props => {
     </TextField>
   );
 };
+export default SelectField;

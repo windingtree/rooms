@@ -12,7 +12,7 @@ const styles = makeStyles({
   }
 });
 
-export default  props => {
+const Image = (props) => {
   const classes = styles();
   const {
     width = '13vw',
@@ -62,3 +62,5 @@ export default  props => {
     </div>
   );
 };
+
+export default Image;

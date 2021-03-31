@@ -60,7 +60,7 @@ const loadImageAsBase64 = imageFile => new Promise(
   }
 );
 
-export default props => {
+const DropzoneField = (props) => {
   const styles = useStyles();
   const {
     note,
@@ -114,3 +114,5 @@ export default props => {
     </>
   );
 };
+
+export default DropzoneField;
