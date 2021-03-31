@@ -16,7 +16,7 @@ const styles = makeStyles({
   }
 });
 
-export default props => {
+const ImagesGallery = (props) => {
   const classes = styles();
   const {
     images = [],
@@ -113,3 +113,4 @@ export default props => {
     </>
   );
 };
+export default ImagesGallery;

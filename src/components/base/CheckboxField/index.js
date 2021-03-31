@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default props => {
+const CheckboxField = (props) => {
   const styles = useStyles();
   const {
     label,
@@ -48,3 +48,5 @@ export default props => {
     />
   );
 };
+
+export default CheckboxField;
