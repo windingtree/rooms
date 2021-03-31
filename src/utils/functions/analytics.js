@@ -48,7 +48,7 @@ export const PageView = ({title}) => {
     const apiCache = ApiCache.getInstance()
     const location = useLocation();
     if(isTestMode)
-        return;
+        return null;
 
     _pageView(window.location.href, location.pathname,title?title:'undefined');
     if(apiCache)
