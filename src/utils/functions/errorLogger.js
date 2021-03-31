@@ -1,5 +1,5 @@
 import { isFunction } from './isFunction'
-import {gaGenericError} from "./google-analytics";
+import {gaGenericError} from "./analytics";
 
 //log error
 async function errorLogger(error) {

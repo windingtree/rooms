@@ -13,6 +13,7 @@ import Profile from './Profile/Profile'
 import { history } from '../../utils/history'
 import RateModifierEditForm from "./RateEdit/RateEditForm";
 import {Sandbox} from "../Dev/Sandbox";
+import {PageView} from "../../utils/functions/analytics";
 
 const useStyles = () => {
   return {
@@ -115,34 +116,42 @@ class Dashboard extends React.Component {
           <div className={classes.main_content}>
             <Switch>
               <Route exact path="/dashboard">
+                <PageView title="room-types"/>
                 <Redirect to="/dashboard/room-types" />
               </Route>
               <Route exact path="/dashboard/bookings">
+                <PageView title="bookings"/>
                 { this.isLoggedIn ? <BookingsList userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/bookings/:bookingId">
+                <PageView title="bookings"/>
                 { this.isLoggedIn ? <BookingTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/room-types">
+                <PageView title="roomtypes"/>
                 { this.isLoggedIn ? <RoomTypes userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/room-types/:roomTypeId">
+                <PageView title="roomtypes"/>
                 { this.isLoggedIn ? <RoomTypeEdit userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
 
               <Route exact path="/dashboard/rates">
+                <PageView title="rates"/>
                 { this.isLoggedIn ? <Rates userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/rates/:rateModifierId">
+                <PageView title="rates"/>
                 { this.isLoggedIn ? <RateModifierEditForm userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/profile">
+                <PageView title="hotel_profile"/>
                 { this.isLoggedIn ? <Profile userProfile={this.props.userProfile} /> : <Redirect to="/" /> }
               </Route>
               <Route exact path="/dashboard/dev/fonts">
                 <Sandbox/>
               </Route>
-              <Route render={() => <h1>404: page not found</h1>} />
+              <Route render={() => <><PageView title="404_not_found"/><h1>404: page not found</h1></>} />
             </Switch>
           </div>
           <div className={classes.nav_bottom}>

@@ -14,7 +14,7 @@ import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import { history } from '../utils/history'
 import Spinner from './base/Spinner/Spinner'
-import {gaUserEvent, GoogleAnalytics} from "../utils/functions/google-analytics";
+import {gaUserEvent, PageView} from "../utils/functions/analytics";
 
 const {
   JWT_SECRET,
@@ -159,15 +159,19 @@ class App extends React.Component {
               <Spinner info="loading" /> :
               <Switch>
                 <Route exact path="/">
+                  <PageView title="/"/>
                   { !this.state.isLoggedIn ? <OnBoarding/> : <Redirect to="/dashboard" /> }
                 </Route>
                 <Route exact path="/login">
+                  <PageView title="login"/>
                   <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
                 </Route>
                 <Route exact path="/login/:oneTimePassword">
+                  <PageView title="login_one_time_password"/>
                   <Login onLogin={this.handleOnLogin} onLogout={this.handleLogout} />
                 </Route>
                 <Route exact path="/dashboard">
+                  <PageView title="dashboard"/>
                   { this.state.isLoggedIn ?
                     <Dashboard userProfile={this.state.profile} handleLogout={this.handleLogout} /> :
                     <Redirect to="/" />
@@ -179,8 +183,7 @@ class App extends React.Component {
                     <Redirect to="/" />
                   }
                 </Route>
-                <Route render={() => <h1>404: page not found</h1>} />
-                <GoogleAnalytics/>
+                <Route render={() => <><PageView title="404_not_found"/><h1>404: page not found</h1></>} />
               </Switch>
           }
         </main>
