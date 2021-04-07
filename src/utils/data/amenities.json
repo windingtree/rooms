@@ -1,0 +1,1174 @@
+[
+  {
+    "id": "1",
+    "name": "Adjoining rooms"
+  },
+  {
+    "id": "2",
+    "name": "Air conditioning"
+  },
+  {
+    "id": "3",
+    "name": "Alarm clock"
+  },
+  {
+    "id": "4",
+    "name": "All news channel"
+  },
+  {
+    "id": "5",
+    "name": "AM/FM radio"
+  },
+  {
+    "id": "6",
+    "name": "Baby listening device"
+  },
+  {
+    "id": "7",
+    "name": "Balcony/Lanai/Terrace"
+  },
+  {
+    "id": "8",
+    "name": "Barbeque grills"
+  },
+  {
+    "id": "9",
+    "name": "Bath tub with spray jets"
+  },
+  {
+    "id": "10",
+    "name": "Bathrobe"
+  },
+  {
+    "id": "11",
+    "name": "Bathroom amenities"
+  },
+  {
+    "id": "12",
+    "name": "Bathroom telephone"
+  },
+  {
+    "id": "13",
+    "name": "Bathtub"
+  },
+  {
+    "id": "14",
+    "name": "Bathtub only"
+  },
+  {
+    "id": "15",
+    "name": "Bathtub/shower combination"
+  },
+  {
+    "id": "16",
+    "name": "Bidet"
+  },
+  {
+    "id": "17",
+    "name": "Bottled water"
+  },
+  {
+    "id": "18",
+    "name": "Cable television"
+  },
+  {
+    "id": "19",
+    "name": "Coffee/Tea maker"
+  },
+  {
+    "id": "20",
+    "name": "Color television"
+  },
+  {
+    "id": "21",
+    "name": "Computer"
+  },
+  {
+    "id": "22",
+    "name": "Connecting rooms"
+  },
+  {
+    "id": "23",
+    "name": "Converters/ Voltage adaptors"
+  },
+  {
+    "id": "24",
+    "name": "Copier"
+  },
+  {
+    "id": "25",
+    "name": "Cordless phone"
+  },
+  {
+    "id": "26",
+    "name": "Cribs"
+  },
+  {
+    "id": "27",
+    "name": "Data port"
+  },
+  {
+    "id": "28",
+    "name": "Desk"
+  },
+  {
+    "id": "29",
+    "name": "Desk with lamp"
+  },
+  {
+    "id": "30",
+    "name": "Dining guide"
+  },
+  {
+    "id": "31",
+    "name": "Direct dial phone number"
+  },
+  {
+    "id": "32",
+    "name": "Dishwasher"
+  },
+  {
+    "id": "33",
+    "name": "Double beds"
+  },
+  {
+    "id": "34",
+    "name": "Dual voltage outlet"
+  },
+  {
+    "id": "35",
+    "name": "Electrical current voltage"
+  },
+  {
+    "id": "36",
+    "name": "Ergonomic chair"
+  },
+  {
+    "id": "37",
+    "name": "Extended phone cord"
+  },
+  {
+    "id": "38",
+    "name": "Fax machine"
+  },
+  {
+    "id": "39",
+    "name": "Fire alarm"
+  },
+  {
+    "id": "40",
+    "name": "Fire alarm with light"
+  },
+  {
+    "id": "41",
+    "name": "Fireplace"
+  },
+  {
+    "id": "42",
+    "name": "Free toll free calls"
+  },
+  {
+    "id": "43",
+    "name": "Free calls"
+  },
+  {
+    "id": "44",
+    "name": "Free credit card access calls"
+  },
+  {
+    "id": "45",
+    "name": "Free local calls"
+  },
+  {
+    "id": "46",
+    "name": "Free movies/video"
+  },
+  {
+    "id": "47",
+    "name": "Full kitchen"
+  },
+  {
+    "id": "48",
+    "name": "Grab bars in bathroom"
+  },
+  {
+    "id": "49",
+    "name": "Grecian tub"
+  },
+  {
+    "id": "50",
+    "name": "Hairdryer"
+  },
+  {
+    "id": "51",
+    "name": "High speed internet connection"
+  },
+  {
+    "id": "52",
+    "name": "Interactive web TV"
+  },
+  {
+    "id": "53",
+    "name": "International direct dialing"
+  },
+  {
+    "id": "54",
+    "name": "Internet access"
+  },
+  {
+    "id": "55",
+    "name": "Iron"
+  },
+  {
+    "id": "56",
+    "name": "Ironing board"
+  },
+  {
+    "id": "57",
+    "name": "Whirpool"
+  },
+  {
+    "id": "58",
+    "name": "King bed"
+  },
+  {
+    "id": "59",
+    "name": "Kitchen"
+  },
+  {
+    "id": "60",
+    "name": "Kitchen supplies"
+  },
+  {
+    "id": "61",
+    "name": "Kitchenette"
+  },
+  {
+    "id": "62",
+    "name": "Knock light"
+  },
+  {
+    "id": "63",
+    "name": "Laptop"
+  },
+  {
+    "id": "64",
+    "name": "Large desk"
+  },
+  {
+    "id": "65",
+    "name": "Large work area"
+  },
+  {
+    "id": "66",
+    "name": "Laundry basket/clothes hamper"
+  },
+  {
+    "id": "67",
+    "name": "Loft"
+  },
+  {
+    "id": "68",
+    "name": "Microwave"
+  },
+  {
+    "id": "69",
+    "name": "Minibar"
+  },
+  {
+    "id": "70",
+    "name": "Modem"
+  },
+  {
+    "id": "71",
+    "name": "Modem jack"
+  },
+  {
+    "id": "72",
+    "name": "Multi-line phone"
+  },
+  {
+    "id": "73",
+    "name": "Newspaper"
+  },
+  {
+    "id": "74",
+    "name": "Non-smoking"
+  },
+  {
+    "id": "75",
+    "name": "Notepads"
+  },
+  {
+    "id": "76",
+    "name": "Office supplies"
+  },
+  {
+    "id": "77",
+    "name": "Oven"
+  },
+  {
+    "id": "78",
+    "name": "Pay per view movies on TV"
+  },
+  {
+    "id": "79",
+    "name": "Pens"
+  },
+  {
+    "id": "80",
+    "name": "Phone in bathroom"
+  },
+  {
+    "id": "81",
+    "name": "Plates and bowls"
+  },
+  {
+    "id": "82",
+    "name": "Pots and pans"
+  },
+  {
+    "id": "83",
+    "name": "Prayer mats"
+  },
+  {
+    "id": "84",
+    "name": "Printer"
+  },
+  {
+    "id": "85",
+    "name": "Private bathroom"
+  },
+  {
+    "id": "86",
+    "name": "Queen bed"
+  },
+  {
+    "id": "87",
+    "name": "Recliner"
+  },
+  {
+    "id": "88",
+    "name": "Refrigerator"
+  },
+  {
+    "id": "89",
+    "name": "Refrigerator with ice maker"
+  },
+  {
+    "id": "90",
+    "name": "Remote control television"
+  },
+  {
+    "id": "91",
+    "name": "Rollaway bed"
+  },
+  {
+    "id": "92",
+    "name": "Safe"
+  },
+  {
+    "id": "93",
+    "name": "Scanner"
+  },
+  {
+    "id": "94",
+    "name": "Separate closet"
+  },
+  {
+    "id": "95",
+    "name": "Separate modem line available"
+  },
+  {
+    "id": "96",
+    "name": "Shoe polisher"
+  },
+  {
+    "id": "97",
+    "name": "Shower only"
+  },
+  {
+    "id": "98",
+    "name": "Silverware/utensils"
+  },
+  {
+    "id": "99",
+    "name": "Sitting area"
+  },
+  {
+    "id": "100",
+    "name": "Smoke detectors"
+  },
+  {
+    "id": "101",
+    "name": "Smoking"
+  },
+  {
+    "id": "102",
+    "name": "Sofa bed"
+  },
+  {
+    "id": "103",
+    "name": "Speaker phone"
+  },
+  {
+    "id": "104",
+    "name": "Stereo"
+  },
+  {
+    "id": "105",
+    "name": "Stove"
+  },
+  {
+    "id": "106",
+    "name": "Tape recorder"
+  },
+  {
+    "id": "107",
+    "name": "Telephone"
+  },
+  {
+    "id": "108",
+    "name": "Telephone for hearing impaired"
+  },
+  {
+    "id": "109",
+    "name": "Telephones with message light"
+  },
+  {
+    "id": "110",
+    "name": "Toaster oven"
+  },
+  {
+    "id": "111",
+    "name": "Trouser/Pant press"
+  },
+  {
+    "id": "112",
+    "name": "Turn down service"
+  },
+  {
+    "id": "113",
+    "name": "Twin bed"
+  },
+  {
+    "id": "114",
+    "name": "Vaulted ceilings"
+  },
+  {
+    "id": "115",
+    "name": "VCR movies"
+  },
+  {
+    "id": "116",
+    "name": "VCR player"
+  },
+  {
+    "id": "117",
+    "name": "Video games"
+  },
+  {
+    "id": "118",
+    "name": "Voice mail"
+  },
+  {
+    "id": "119",
+    "name": "Wake-up calls"
+  },
+  {
+    "id": "120",
+    "name": "Water closet"
+  },
+  {
+    "id": "121",
+    "name": "Water purification system"
+  },
+  {
+    "id": "122",
+    "name": "Wet bar"
+  },
+  {
+    "id": "123",
+    "name": "Wireless internet connection"
+  },
+  {
+    "id": "124",
+    "name": "Wireless keyboard"
+  },
+  {
+    "id": "125",
+    "name": "Adaptor available for telephone PC use"
+  },
+  {
+    "id": "126",
+    "name": "Air conditioning individually controlled in room"
+  },
+  {
+    "id": "127",
+    "name": "Bathtub &whirlpool separate"
+  },
+  {
+    "id": "128",
+    "name": "Telephone with data ports"
+  },
+  {
+    "id": "129",
+    "name": "CD  player"
+  },
+  {
+    "id": "130",
+    "name": "Complimentary local calls time limit"
+  },
+  {
+    "id": "131",
+    "name": "Extra person charge for rollaway use"
+  },
+  {
+    "id": "132",
+    "name": "Down/feather pillows"
+  },
+  {
+    "id": "133",
+    "name": "Desk with electrical outlet"
+  },
+  {
+    "id": "134",
+    "name": "ESPN available"
+  },
+  {
+    "id": "135",
+    "name": "Foam pillows"
+  },
+  {
+    "id": "136",
+    "name": "HBO available"
+  },
+  {
+    "id": "137",
+    "name": "High ceilings"
+  },
+  {
+    "id": "138",
+    "name": "Marble bathroom"
+  },
+  {
+    "id": "139",
+    "name": "List of movie channels available"
+  },
+  {
+    "id": "140",
+    "name": "Pets allowed"
+  },
+  {
+    "id": "141",
+    "name": "Oversized bathtub"
+  },
+  {
+    "id": "142",
+    "name": "Shower"
+  },
+  {
+    "id": "143",
+    "name": "Sink in-room"
+  },
+  {
+    "id": "144",
+    "name": "Soundproofed room"
+  },
+  {
+    "id": "145",
+    "name": "Storage space"
+  },
+  {
+    "id": "146",
+    "name": "Tables and chairs"
+  },
+  {
+    "id": "147",
+    "name": "Two-line phone"
+  },
+  {
+    "id": "148",
+    "name": "Walk-in closet"
+  },
+  {
+    "id": "149",
+    "name": "Washer/dryer"
+  },
+  {
+    "id": "150",
+    "name": "Weight scale"
+  },
+  {
+    "id": "151",
+    "name": "Welcome gift"
+  },
+  {
+    "id": "152",
+    "name": "Spare electrical outlet available at desk"
+  },
+  {
+    "id": "153",
+    "name": "Non-refundable charge for pets"
+  },
+  {
+    "id": "154",
+    "name": "Refundable deposit for pets"
+  },
+  {
+    "id": "155",
+    "name": "Separate tub and shower"
+  },
+  {
+    "id": "156",
+    "name": "Entrance type to guest room"
+  },
+  {
+    "id": "157",
+    "name": "Ceiling fan"
+  },
+  {
+    "id": "158",
+    "name": "CNN available"
+  },
+  {
+    "id": "159",
+    "name": "Electrical adaptors available"
+  },
+  {
+    "id": "160",
+    "name": "Buffet breakfast"
+  },
+  {
+    "id": "161",
+    "name": "Accessible room"
+  },
+  {
+    "id": "162",
+    "name": "Closets in room"
+  },
+  {
+    "id": "163",
+    "name": "DVD player"
+  },
+  {
+    "id": "164",
+    "name": "Mini-refrigerator"
+  },
+  {
+    "id": "165",
+    "name": "Separate line billing for multi-line phone"
+  },
+  {
+    "id": "166",
+    "name": "Self-controlled heating/cooling system"
+  },
+  {
+    "id": "167",
+    "name": "Toaster"
+  },
+  {
+    "id": "168",
+    "name": "Analog data port"
+  },
+  {
+    "id": "169",
+    "name": "Collect calls"
+  },
+  {
+    "id": "170",
+    "name": "International calls"
+  },
+  {
+    "id": "171",
+    "name": "Carrier access"
+  },
+  {
+    "id": "172",
+    "name": "Interstate calls"
+  },
+  {
+    "id": "173",
+    "name": "Intrastate calls"
+  },
+  {
+    "id": "174",
+    "name": "Local calls"
+  },
+  {
+    "id": "175",
+    "name": "Long distance calls"
+  },
+  {
+    "id": "176",
+    "name": "Operator-assisted calls"
+  },
+  {
+    "id": "177",
+    "name": "Credit card access calls"
+  },
+  {
+    "id": "178",
+    "name": "Calling card calls"
+  },
+  {
+    "id": "179",
+    "name": "Toll free calls"
+  },
+  {
+    "id": "180",
+    "name": "Universal AC/DC adaptors"
+  },
+  {
+    "id": "181",
+    "name": "Bathtub seat"
+  },
+  {
+    "id": "182",
+    "name": "Canopy/poster bed"
+  },
+  {
+    "id": "183",
+    "name": "Cups/glassware"
+  },
+  {
+    "id": "184",
+    "name": "Entertainment center"
+  },
+  {
+    "id": "185",
+    "name": "Family/oversized room"
+  },
+  {
+    "id": "186",
+    "name": "Hypoallergenic bed"
+  },
+  {
+    "id": "187",
+    "name": "Hypoallergenic pillows"
+  },
+  {
+    "id": "188",
+    "name": "Lamp"
+  },
+  {
+    "id": "189",
+    "name": "Meal included - breakfast"
+  },
+  {
+    "id": "190",
+    "name": "Meal included - continental breakfast"
+  },
+  {
+    "id": "191",
+    "name": "Meal included - dinner"
+  },
+  {
+    "id": "192",
+    "name": "Meal included - lunch"
+  },
+  {
+    "id": "193",
+    "name": "Shared bathroom"
+  },
+  {
+    "id": "194",
+    "name": "Telephone TDD/Textphone"
+  },
+  {
+    "id": "195",
+    "name": "Water bed"
+  },
+  {
+    "id": "196",
+    "name": "Extra adult charge"
+  },
+  {
+    "id": "197",
+    "name": "Extra child charge"
+  },
+  {
+    "id": "198",
+    "name": "Extra child charge for rollaway use"
+  },
+  {
+    "id": "199",
+    "name": "Meal included:  full American breakfast"
+  },
+  {
+    "id": "200",
+    "name": "Futon"
+  },
+  {
+    "id": "201",
+    "name": "Murphy bed"
+  },
+  {
+    "id": "202",
+    "name": "Tatami mats"
+  },
+  {
+    "id": "203",
+    "name": "Single bed"
+  },
+  {
+    "id": "204",
+    "name": "Annex room"
+  },
+  {
+    "id": "205",
+    "name": "Free newspaper"
+  },
+  {
+    "id": "206",
+    "name": "Honeymoon suites"
+  },
+  {
+    "id": "207",
+    "name": "Complimentary high speed internet in room"
+  },
+  {
+    "id": "208",
+    "name": "Maid service"
+  },
+  {
+    "id": "209",
+    "name": "PC hook-up in room"
+  },
+  {
+    "id": "210",
+    "name": "Satellite television"
+  },
+  {
+    "id": "211",
+    "name": "VIP rooms"
+  },
+  {
+    "id": "212",
+    "name": "Cell phone recharger"
+  },
+  {
+    "id": "213",
+    "name": "DVR player"
+  },
+  {
+    "id": "214",
+    "name": "iPod docking station"
+  },
+  {
+    "id": "215",
+    "name": "Media center"
+  },
+  {
+    "id": "216",
+    "name": "Plug & play panel"
+  },
+  {
+    "id": "217",
+    "name": "Satellite radio"
+  },
+  {
+    "id": "218",
+    "name": "Video on demand"
+  },
+  {
+    "id": "219",
+    "name": "Exterior corridors"
+  },
+  {
+    "id": "220",
+    "name": "Gulf view"
+  },
+  {
+    "id": "221",
+    "name": "Accessible room"
+  },
+  {
+    "id": "222",
+    "name": "Interior corridors"
+  },
+  {
+    "id": "223",
+    "name": "Mountain view"
+  },
+  {
+    "id": "224",
+    "name": "Ocean view"
+  },
+  {
+    "id": "225",
+    "name": "High speed internet access fee"
+  },
+  {
+    "id": "226",
+    "name": "High speed wireless"
+  },
+  {
+    "id": "227",
+    "name": "Premium movie channels"
+  },
+  {
+    "id": "228",
+    "name": "Slippers"
+  },
+  {
+    "id": "229",
+    "name": "First nighters' kit"
+  },
+  {
+    "id": "230",
+    "name": "Chair provided with desk"
+  },
+  {
+    "id": "231",
+    "name": "Pillow top mattress"
+  },
+  {
+    "id": "232",
+    "name": "Feather bed"
+  },
+  {
+    "id": "233",
+    "name": "Duvet"
+  },
+  {
+    "id": "234",
+    "name": "Luxury linen type"
+  },
+  {
+    "id": "235",
+    "name": "International channels"
+  },
+  {
+    "id": "236",
+    "name": "Pantry"
+  },
+  {
+    "id": "237",
+    "name": "Dish-cleaning supplies"
+  },
+  {
+    "id": "238",
+    "name": "Double vanity"
+  },
+  {
+    "id": "239",
+    "name": "Lighted makeup mirror"
+  },
+  {
+    "id": "240",
+    "name": "Upgraded bathroom amenities"
+  },
+  {
+    "id": "241",
+    "name": "VCR player available at front desk"
+  },
+  {
+    "id": "242",
+    "name": "Instant hot water"
+  },
+  {
+    "id": "243",
+    "name": "Outdoor space"
+  },
+  {
+    "id": "244",
+    "name": "Hinoki tub"
+  },
+  {
+    "id": "245",
+    "name": "Private pool"
+  },
+  {
+    "id": "246",
+    "name": "High Definition (HD) Flat Panel Television  - 32 inches or greater "
+  },
+  {
+    "id": "247",
+    "name": "Room windows open"
+  },
+  {
+    "id": "248",
+    "name": "Bedding type unknown or unspecified"
+  },
+  {
+    "id": "249",
+    "name": "Full bed"
+  },
+  {
+    "id": "250",
+    "name": "Round bed"
+  },
+  {
+    "id": "251",
+    "name": "TV"
+  },
+  {
+    "id": "252",
+    "name": "Child rollaway"
+  },
+  {
+    "id": "253",
+    "name": "DVD player available at front desk"
+  },
+  {
+    "id": "254",
+    "name": "Video game player"
+  },
+  {
+    "id": "255",
+    "name": "Video game player available at front desk"
+  },
+  {
+    "id": "256",
+    "name": "Dining room seats"
+  },
+  {
+    "id": "257",
+    "name": "Full size mirror"
+  },
+  {
+    "id": "258",
+    "name": "Mobile/cellular phones"
+  },
+  {
+    "id": "259",
+    "name": "Movies"
+  },
+  {
+    "id": "260",
+    "name": "Multiple closets"
+  },
+  {
+    "id": "261",
+    "name": "Plates/glassware"
+  },
+  {
+    "id": "262",
+    "name": "Safe large enough to accommodate a laptop"
+  },
+  {
+    "id": "263",
+    "name": "Bed linen thread count"
+  },
+  {
+    "id": "264",
+    "name": "Blackout curtain"
+  },
+  {
+    "id": "265",
+    "name": "Bluray player"
+  },
+  {
+    "id": "266",
+    "name": "Device with mp3"
+  },
+  {
+    "id": "267",
+    "name": "No adult channels or adult channel lock"
+  },
+  {
+    "id": "268",
+    "name": "Non-allergenic room"
+  },
+  {
+    "id": "269",
+    "name": "Pillow type"
+  },
+  {
+    "id": "270",
+    "name": "Seating area with sofa/chair"
+  },
+  {
+    "id": "271",
+    "name": "Separate toilet area"
+  },
+  {
+    "id": "272",
+    "name": "Web enabled"
+  },
+  {
+    "id": "273",
+    "name": "Widescreen TV"
+  },
+  {
+    "id": "274",
+    "name": "Other data connection"
+  },
+  {
+    "id": "275",
+    "name": "Phoneline billed separately"
+  },
+  {
+    "id": "276",
+    "name": "Separate tub or shower"
+  },
+  {
+    "id": "277",
+    "name": "Video games"
+  },
+  {
+    "id": "278",
+    "name": "Roof ventilator"
+  },
+  {
+    "id": "279",
+    "name": "Children's playpen"
+  },
+  {
+    "id": "280",
+    "name": "Plunge pool"
+  },
+  {
+    "id": "281",
+    "name": "DVD movies"
+  },
+  {
+    "id": "282",
+    "name": "Air filtration"
+  },
+  {
+    "id": "283",
+    "name": "Exercise Equipment in Room"
+  },
+  {
+    "id": "284",
+    "name": "Wrapped coffee and condiments packages"
+  },
+  {
+    "id": "285",
+    "name": "TV remotes disinfected"
+  },
+  {
+    "id": "286",
+    "name": "Extraneous room amenities removed"
+  },
+  {
+    "id": "287",
+    "name": "Electronics controlled by personal mobile device"
+  },
+  {
+    "id": "288",
+    "name": "TV controlled by personal mobile device "
+  },
+  {
+    "id": "289",
+    "name": "Voice enabled room controls "
+  },
+  {
+    "id": "290",
+    "name": "Room air purification system"
+  },
+  {
+    "id": "291",
+    "name": "Allergy friendly room"
+  },
+  {
+    "id": "292",
+    "name": "Medical grade air purification system"
+  },
+  {
+    "id": "293",
+    "name": "All surfaces sanitized between stays"
+  }
+]

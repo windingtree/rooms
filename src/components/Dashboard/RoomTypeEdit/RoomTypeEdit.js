@@ -25,7 +25,7 @@ import ImagesGallery from '../../base/Images/ImagesGallery';
 import DropzoneField from '../../base/DropzoneField'
 import { PageContentWrapper } from '../../base/Common/PageContentWrapper';
 
-import availableAmenities from '../../../utils/data/availableAmenities.json';
+import {getAvailableAmenities} from '../../../utils/data/amenities'
 import guestsNumbers from '../../../utils/data/guestsNumbers.json'
 import bedsTypes from '../../../utils/data/bedsTypes.json'
 import currencies from '../../../utils/data/currencies.json'
@@ -94,6 +94,9 @@ const RoomTypeEdit = props => {
   const [loading, setLoading] = useState(false);
   const [imagesUploading, setImagesUploading] = useState(false);
   const editMode = roomTypeId !== 'temporary';
+  const availableAmenities = getAvailableAmenities();
+
+
   const getRoomType = useCallback(roomTypeId => {
     const _roomType = apiCache.getRoomType(roomTypeId)
 
@@ -312,7 +315,7 @@ const RoomTypeEdit = props => {
     }, '');
   }
 
-  //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{id:'1', name:'amenity1'}]
+  //this will convert semicolon separated string (e.g. "amenity1;amenity2') to array of [{ name:'amenity1'}]
   const convertAmenitiesToChips = semicolonSeparatedList => {
     if(!semicolonSeparatedList)
       return [];
