@@ -1,4 +1,11 @@
-# Winding Tree Rooms
+# !! Development is now done elsewhere !!
+
+- back-end API has moved to [windingtree/rooms-api](https://github.com/windingtree/rooms-api)
+- front-end UI has moved to [windingtree/rooms-ui](https://github.com/windingtree/rooms-ui)
+
+This repository is archived now, no further development will happen here.
+
+## Winding Tree Rooms
 
 Winding Tree's `Rooms` is an easy to use web application in ReactJS and NodeJS for small hoteliers to manage their inventory and expose it to the Winding Tree marketplace.
 
